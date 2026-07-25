@@ -1,4 +1,4 @@
-import Anthropic from '@anthropic-ai/sdk';
+﻿import Anthropic from '@anthropic-ai/sdk';
 import { buildInsights, type Insight } from './insights.js';
 import { DEFAULT_MODEL } from './runtime.js';
 import type { ToolContext } from './tools/registry.js';
@@ -18,7 +18,7 @@ import type { AgentEvent } from './types.js';
  */
 
 const SYSTEM = `
-Sos el Director de Negocio de PyME AI, hablándole al dueño de un comercio importador boliviano
+Sos el Director de Negocio de Mentor IA, hablándole al dueño de un comercio importador boliviano
 que está abriendo su local y te da treinta segundos.
 
 Te paso los hallazgos que el sistema ya detectó y cuantificó. Tu único trabajo es redactarlos.

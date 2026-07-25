@@ -69,7 +69,7 @@ export default function App() {
       <main className="flex-1 space-y-4 overflow-y-auto">
         <header>
           <h1 className="text-xl font-bold">
-            PyME <span className="text-[var(--color-accent)]">AI</span>
+            Mentor <span className="text-[var(--color-accent)]">IA</span>
           </h1>
           <p className="text-sm text-slate-400">
             Tus agentes ya revisaron el negocio. Esto es lo que encontraron.

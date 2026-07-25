@@ -146,7 +146,7 @@ quedando sin capital de trabajo.
 
 ## 5. Análisis competitivo
 
-| | **PyME AI** | **Odoo** | **Zoho One** | **HubSpot** | **Excel + WhatsApp** |
+| | **Mentor IA** | **Odoo** | **Zoho One** | **HubSpot** | **Excel + WhatsApp** |
 |---|---|---|---|---|---|
 | Time-to-value | 15 min | 4–12 semanas | 2–4 semanas | 1–2 semanas | 0 (ya lo usan) |
 | Precio/mes PYME | USD 29–99 | USD 25/usr + implementación | USD 37/usr | USD 800+ | 0 |

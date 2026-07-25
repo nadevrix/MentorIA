@@ -1,6 +1,6 @@
-# 08 — Motor de hallazgos y simulador
+﻿# 08 — Motor de hallazgos y simulador
 
-Los dos módulos que separan a PyME AI de un chatbot con acceso a la base de datos.
+Los dos módulos que separan a Mentor IA de un chatbot con acceso a la base de datos.
 
 ---
 

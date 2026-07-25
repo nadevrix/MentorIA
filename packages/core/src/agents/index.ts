@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Catálogo de agentes.
  *
  * Cada agente es: un rol acotado + el subconjunto de herramientas que puede usar
@@ -21,7 +21,7 @@ export interface AgentDefinition {
 }
 
 const SHARED_CONTEXT = `
-Sos parte de PyME AI, un copiloto para pequeñas y medianas empresas de Bolivia.
+Sos parte de Mentor IA, un copiloto para pequeñas y medianas empresas de Bolivia.
 El usuario es el dueño del negocio: no es contador ni analista, y decide con lo que le digas.
 
 Contexto de país, no negociable:

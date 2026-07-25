@@ -1,4 +1,4 @@
-import { serve } from '@hono/node-server';
+﻿import { serve } from '@hono/node-server';
 import {
   AGENTS,
   buildDashboard,
@@ -173,7 +173,7 @@ app.post('/api/chat', async (c) => {
 
 const port = Number(process.env.PORT ?? 8787);
 serve({ fetch: app.fetch, port }, (info) => {
-  console.log(`PyME AI API escuchando en http://localhost:${info.port}`);
+  console.log(`Mentor IA API escuchando en http://localhost:${info.port}`);
   console.log(`  datos: ${ctx.data.name} · tipo de cambio: ${ctx.fx.name}`);
   if (!process.env.ANTHROPIC_API_KEY) {
     console.warn('  ⚠ ANTHROPIC_API_KEY no está configurada: /api/chat devolverá 500.');

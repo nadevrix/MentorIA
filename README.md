@@ -1,4 +1,4 @@
-# PyME AI
+﻿# Mentor IA
 
 **Agentes de IA que protegen el margen de las PyMEs bolivianas cuando se mueve el dólar.**
 
@@ -7,7 +7,7 @@ Un comercio importador compró su mercadería con el dólar a 11 y hoy repone a 
 al mismo precio, ve movimiento en caja y cree que gana — pero ya no puede reponer lo que vende.
 Nadie le avisa. Su Excel no sabe de tipo de cambio.
 
-PyME AI sí. Cinco agentes especializados leen las ventas, el inventario, los clientes y el tipo de
+Mentor IA sí. Cinco agentes especializados leen las ventas, el inventario, los clientes y el tipo de
 cambio del negocio, **recalculan el margen real al costo de reposición de hoy** y devuelven acciones
 concretas: qué precio subir, a cuánto, qué cliente contactar, qué pago vence.
 
