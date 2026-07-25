@@ -1,0 +1,182 @@
+[
+  {
+    "id": "gto-0001",
+    "date": "2026-07-20",
+    "category": "alquiler",
+    "description": "Alquiler local Av. Cristo Redentor",
+    "amountBob": 4500,
+    "dueDate": null,
+    "paid": true
+  },
+  {
+    "id": "gto-0002",
+    "date": "2026-07-20",
+    "category": "sueldos",
+    "description": "Planilla (2 empleados)",
+    "amountBob": 6400,
+    "dueDate": null,
+    "paid": true
+  },
+  {
+    "id": "gto-0003",
+    "date": "2026-07-18",
+    "category": "servicios",
+    "description": "Luz, agua e internet",
+    "amountBob": 708.74,
+    "dueDate": null,
+    "paid": true
+  },
+  {
+    "id": "gto-0004",
+    "date": "2026-07-12",
+    "category": "marketing",
+    "description": "Pauta en Facebook e Instagram",
+    "amountBob": 865,
+    "dueDate": null,
+    "paid": true
+  },
+  {
+    "id": "gto-0005",
+    "date": "2026-06-20",
+    "category": "alquiler",
+    "description": "Alquiler local Av. Cristo Redentor",
+    "amountBob": 4500,
+    "dueDate": null,
+    "paid": true
+  },
+  {
+    "id": "gto-0006",
+    "date": "2026-06-20",
+    "category": "sueldos",
+    "description": "Planilla (2 empleados)",
+    "amountBob": 6400,
+    "dueDate": null,
+    "paid": true
+  },
+  {
+    "id": "gto-0007",
+    "date": "2026-06-18",
+    "category": "servicios",
+    "description": "Luz, agua e internet",
+    "amountBob": 845.67,
+    "dueDate": null,
+    "paid": true
+  },
+  {
+    "id": "gto-0008",
+    "date": "2026-06-12",
+    "category": "marketing",
+    "description": "Pauta en Facebook e Instagram",
+    "amountBob": 692.88,
+    "dueDate": null,
+    "paid": true
+  },
+  {
+    "id": "gto-0009",
+    "date": "2026-05-21",
+    "category": "alquiler",
+    "description": "Alquiler local Av. Cristo Redentor",
+    "amountBob": 4500,
+    "dueDate": null,
+    "paid": true
+  },
+  {
+    "id": "gto-0010",
+    "date": "2026-05-21",
+    "category": "sueldos",
+    "description": "Planilla (2 empleados)",
+    "amountBob": 6400,
+    "dueDate": null,
+    "paid": true
+  },
+  {
+    "id": "gto-0011",
+    "date": "2026-05-19",
+    "category": "servicios",
+    "description": "Luz, agua e internet",
+    "amountBob": 830.98,
+    "dueDate": null,
+    "paid": true
+  },
+  {
+    "id": "gto-0012",
+    "date": "2026-05-13",
+    "category": "marketing",
+    "description": "Pauta en Facebook e Instagram",
+    "amountBob": 656.97,
+    "dueDate": null,
+    "paid": true
+  },
+  {
+    "id": "gto-0013",
+    "date": "2026-04-21",
+    "category": "alquiler",
+    "description": "Alquiler local Av. Cristo Redentor",
+    "amountBob": 4500,
+    "dueDate": null,
+    "paid": true
+  },
+  {
+    "id": "gto-0014",
+    "date": "2026-04-21",
+    "category": "sueldos",
+    "description": "Planilla (2 empleados)",
+    "amountBob": 6400,
+    "dueDate": null,
+    "paid": true
+  },
+  {
+    "id": "gto-0015",
+    "date": "2026-04-19",
+    "category": "servicios",
+    "description": "Luz, agua e internet",
+    "amountBob": 857.2,
+    "dueDate": null,
+    "paid": true
+  },
+  {
+    "id": "gto-0016",
+    "date": "2026-04-13",
+    "category": "marketing",
+    "description": "Pauta en Facebook e Instagram",
+    "amountBob": 666.45,
+    "dueDate": null,
+    "paid": true
+  },
+  {
+    "id": "gto-0017",
+    "date": "2026-07-05",
+    "category": "mercaderia",
+    "description": "Lote importado desde Iquique",
+    "amountBob": 38500,
+    "dueDate": null,
+    "paid": true
+  },
+  {
+    "id": "gto-0018",
+    "date": "2026-07-13",
+    "category": "mercaderia",
+    "description": "Saldo proveedor Shenzhen Direct",
+    "amountBob": 14200,
+    "dueDate": "2026-07-28",
+    "paid": false
+  },
+  {
+    "id": "gto-0019",
+    "date": "2026-07-15",
+    "category": "impuestos",
+    "description": "IVA/IT del mes",
+    "amountBob": 3120,
+    "dueDate": "2026-07-30",
+    "paid": false
+  },
+  {
+    "id": "gto-0020",
+    "date": "2026-06-30",
+    "category": "servicios",
+    "description": "Factura de energía eléctrica",
+    "amountBob": 742,
+    "dueDate": "2026-07-23",
+    "paid": false
+  }
+]

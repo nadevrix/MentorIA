@@ -1,0 +1,122 @@
+[
+  {
+    "id": "cli-001",
+    "name": "Multitienda La Ramada",
+    "phone": "+591 72510608",
+    "segment": "mayorista",
+    "firstPurchaseDate": "2025-08-10",
+    "lastPurchaseDate": "2026-06-21",
+    "totalSpentBob": 6358,
+    "purchaseCount": 22
+  },
+  {
+    "id": "cli-002",
+    "name": "Celulares Don Beto",
+    "phone": "+591 73290210",
+    "segment": "mayorista",
+    "firstPurchaseDate": "2026-01-08",
+    "lastPurchaseDate": "2026-06-10",
+    "totalSpentBob": 14272,
+    "purchaseCount": 16
+  },
+  {
+    "id": "cli-003",
+    "name": "Tecno Equipetrol",
+    "phone": "+591 72202216",
+    "segment": "mayorista",
+    "firstPurchaseDate": "2026-03-22",
+    "lastPurchaseDate": "2026-07-24",
+    "totalSpentBob": 25916,
+    "purchaseCount": 22
+  },
+  {
+    "id": "cli-004",
+    "name": "Juana Vargas",
+    "phone": "+591 79759769",
+    "segment": "corporativo",
+    "firstPurchaseDate": "2025-08-23",
+    "lastPurchaseDate": "2026-05-18",
+    "totalSpentBob": 5920,
+    "purchaseCount": 10
+  },
+  {
+    "id": "cli-005",
+    "name": "Marco Antonio Suárez",
+    "phone": "+591 72827185",
+    "segment": "corporativo",
+    "firstPurchaseDate": "2025-06-25",
+    "lastPurchaseDate": "2026-06-07",
+    "totalSpentBob": 11130,
+    "purchaseCount": 10
+  },
+  {
+    "id": "cli-006",
+    "name": "Kiosko Universitario",
+    "phone": "+591 73643859",
+    "segment": "mayorista",
+    "firstPurchaseDate": "2025-07-28",
+    "lastPurchaseDate": "2026-06-01",
+    "totalSpentBob": 13243,
+    "purchaseCount": 17
+  },
+  {
+    "id": "cli-007",
+    "name": "Distribuidora Plan 3000",
+    "phone": "+591 75258146",
+    "segment": "corporativo",
+    "firstPurchaseDate": "2026-01-22",
+    "lastPurchaseDate": "2026-05-19",
+    "totalSpentBob": 4389,
+    "purchaseCount": 7
+  },
+  {
+    "id": "cli-008",
+    "name": "Ana Claros",
+    "phone": "+591 73483926",
+    "segment": "mayorista",
+    "firstPurchaseDate": "2025-06-26",
+    "lastPurchaseDate": "2026-04-29",
+    "totalSpentBob": 11726,
+    "purchaseCount": 13
+  },
+  {
+    "id": "cli-009",
+    "name": "Import Center Norte",
+    "phone": "+591 79781316",
+    "segment": "mayorista",
+    "firstPurchaseDate": "2025-09-04",
+    "lastPurchaseDate": "2026-05-31",
+    "totalSpentBob": 5808,
+    "purchaseCount": 22
+  },
+  {
+    "id": "cli-010",
+    "name": "Rodrigo Áñez",
+    "phone": "+591 76455822",
+    "segment": "mayorista",
+    "firstPurchaseDate": "2025-08-31",
+    "lastPurchaseDate": "2026-05-16",
+    "totalSpentBob": 17290,
+    "purchaseCount": 14
+  },
+  {
+    "id": "cli-011",
+    "name": "Café Los Tajibos",
+    "phone": "+591 72389678",
+    "segment": "minorista",
+    "firstPurchaseDate": "2025-08-13",
+    "lastPurchaseDate": "2026-07-14",
+    "totalSpentBob": 4955,
+    "purchaseCount": 5
+  },
+  {
+    "id": "cli-012",
+    "name": "Papelería El Trompillo",
+    "phone": "+591 72125002",
+    "segment": "mayorista",
+    "firstPurchaseDate": "2025-09-05",
+    "lastPurchaseDate": "2026-06-19",
+    "totalSpentBob": 26000,
+    "purchaseCount": 20
+  }
+]

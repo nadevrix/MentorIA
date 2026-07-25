@@ -1,0 +1,5823 @@
+[
+  {
+    "id": "vta-0001",
+    "date": "2026-03-27",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-012",
+        "quantity": 4,
+        "unitPriceBob": 830
+      },
+      {
+        "productId": "prod-009",
+        "quantity": 2,
+        "unitPriceBob": 245
+      }
+    ],
+    "totalBob": 3810,
+    "channel": "tiktok"
+  },
+  {
+    "id": "vta-0002",
+    "date": "2026-03-27",
+    "customerId": "cli-007",
+    "items": [
+      {
+        "productId": "prod-013",
+        "quantity": 2,
+        "unitPriceBob": 5
+      }
+    ],
+    "totalBob": 10,
+    "channel": "whatsapp"
+  },
+  {
+    "id": "vta-0003",
+    "date": "2026-03-28",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-011",
+        "quantity": 1,
+        "unitPriceBob": 15
+      },
+      {
+        "productId": "prod-003",
+        "quantity": 4,
+        "unitPriceBob": 140
+      },
+      {
+        "productId": "prod-004",
+        "quantity": 2,
+        "unitPriceBob": 35
+      }
+    ],
+    "totalBob": 645,
+    "channel": "tienda"
+  },
+  {
+    "id": "vta-0004",
+    "date": "2026-03-30",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-011",
+        "quantity": 3,
+        "unitPriceBob": 15
+      },
+      {
+        "productId": "prod-006",
+        "quantity": 2,
+        "unitPriceBob": 140
+      }
+    ],
+    "totalBob": 325,
+    "channel": "tienda"
+  },
+  {
+    "id": "vta-0005",
+    "date": "2026-03-31",
+    "customerId": "cli-002",
+    "items": [
+      {
+        "productId": "prod-002",
+        "quantity": 4,
+        "unitPriceBob": 430
+      },
+      {
+        "productId": "prod-013",
+        "quantity": 2,
+        "unitPriceBob": 5
+      }
+    ],
+    "totalBob": 1730,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0006",
+    "date": "2026-03-31",
+    "customerId": "cli-007",
+    "items": [
+      {
+        "productId": "prod-006",
+        "quantity": 3,
+        "unitPriceBob": 140
+      },
+      {
+        "productId": "prod-001",
+        "quantity": 1,
+        "unitPriceBob": 175
+      }
+    ],
+    "totalBob": 595,
+    "channel": "whatsapp"
+  },
+  {
+    "id": "vta-0007",
+    "date": "2026-03-31",
+    "customerId": "cli-007",
+    "items": [
+      {
+        "productId": "prod-002",
+        "quantity": 3,
+        "unitPriceBob": 430
+      },
+      {
+        "productId": "prod-006",
+        "quantity": 1,
+        "unitPriceBob": 140
+      },
+      {
+        "productId": "prod-014",
+        "quantity": 1,
+        "unitPriceBob": 45
+      }
+    ],
+    "totalBob": 1475,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0008",
+    "date": "2026-04-01",
+    "customerId": "cli-003",
+    "items": [
+      {
+        "productId": "prod-003",
+        "quantity": 4,
+        "unitPriceBob": 140
+      },
+      {
+        "productId": "prod-002",
+        "quantity": 2,
+        "unitPriceBob": 430
+      }
+    ],
+    "totalBob": 1420,
+    "channel": "whatsapp"
+  },
+  {
+    "id": "vta-0009",
+    "date": "2026-04-01",
+    "customerId": "cli-007",
+    "items": [
+      {
+        "productId": "prod-004",
+        "quantity": 2,
+        "unitPriceBob": 35
+      }
+    ],
+    "totalBob": 70,
+    "channel": "whatsapp"
+  },
+  {
+    "id": "vta-0010",
+    "date": "2026-04-02",
+    "customerId": "cli-011",
+    "items": [
+      {
+        "productId": "prod-012",
+        "quantity": 1,
+        "unitPriceBob": 830
+      }
+    ],
+    "totalBob": 830,
+    "channel": "whatsapp"
+  },
+  {
+    "id": "vta-0011",
+    "date": "2026-04-02",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-011",
+        "quantity": 4,
+        "unitPriceBob": 15
+      },
+      {
+        "productId": "prod-002",
+        "quantity": 1,
+        "unitPriceBob": 430
+      },
+      {
+        "productId": "prod-001",
+        "quantity": 3,
+        "unitPriceBob": 175
+      }
+    ],
+    "totalBob": 1015,
+    "channel": "facebook"
+  },
+  {
+    "id": "vta-0012",
+    "date": "2026-04-02",
+    "customerId": "cli-006",
+    "items": [
+      {
+        "productId": "prod-013",
+        "quantity": 3,
+        "unitPriceBob": 5
+      },
+      {
+        "productId": "prod-011",
+        "quantity": 2,
+        "unitPriceBob": 15
+      }
+    ],
+    "totalBob": 45,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0013",
+    "date": "2026-04-02",
+    "customerId": "cli-010",
+    "items": [
+      {
+        "productId": "prod-014",
+        "quantity": 4,
+        "unitPriceBob": 45
+      }
+    ],
+    "totalBob": 180,
+    "channel": "tiktok"
+  },
+  {
+    "id": "vta-0014",
+    "date": "2026-04-03",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-010",
+        "quantity": 3,
+        "unitPriceBob": 25
+      },
+      {
+        "productId": "prod-011",
+        "quantity": 4,
+        "unitPriceBob": 15
+      }
+    ],
+    "totalBob": 135,
+    "channel": "tiktok"
+  },
+  {
+    "id": "vta-0015",
+    "date": "2026-04-04",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-012",
+        "quantity": 1,
+        "unitPriceBob": 830
+      },
+      {
+        "productId": "prod-010",
+        "quantity": 2,
+        "unitPriceBob": 25
+      },
+      {
+        "productId": "prod-006",
+        "quantity": 2,
+        "unitPriceBob": 140
+      }
+    ],
+    "totalBob": 1160,
+    "channel": "tienda"
+  },
+  {
+    "id": "vta-0016",
+    "date": "2026-04-06",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-014",
+        "quantity": 3,
+        "unitPriceBob": 45
+      },
+      {
+        "productId": "prod-013",
+        "quantity": 1,
+        "unitPriceBob": 5
+      },
+      {
+        "productId": "prod-012",
+        "quantity": 2,
+        "unitPriceBob": 830
+      }
+    ],
+    "totalBob": 1800,
+    "channel": "tiktok"
+  },
+  {
+    "id": "vta-0017",
+    "date": "2026-04-06",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-007",
+        "quantity": 4,
+        "unitPriceBob": 670
+      }
+    ],
+    "totalBob": 2680,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0018",
+    "date": "2026-04-06",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-001",
+        "quantity": 2,
+        "unitPriceBob": 175
+      },
+      {
+        "productId": "prod-014",
+        "quantity": 3,
+        "unitPriceBob": 45
+      },
+      {
+        "productId": "prod-004",
+        "quantity": 2,
+        "unitPriceBob": 35
+      }
+    ],
+    "totalBob": 555,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0019",
+    "date": "2026-04-07",
+    "customerId": "cli-001",
+    "items": [
+      {
+        "productId": "prod-005",
+        "quantity": 3,
+        "unitPriceBob": 325
+      }
+    ],
+    "totalBob": 975,
+    "channel": "whatsapp"
+  },
+  {
+    "id": "vta-0020",
+    "date": "2026-04-07",
+    "customerId": "cli-004",
+    "items": [
+      {
+        "productId": "prod-011",
+        "quantity": 4,
+        "unitPriceBob": 15
+      },
+      {
+        "productId": "prod-003",
+        "quantity": 2,
+        "unitPriceBob": 140
+      }
+    ],
+    "totalBob": 340,
+    "channel": "tienda"
+  },
+  {
+    "id": "vta-0021",
+    "date": "2026-04-07",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-006",
+        "quantity": 2,
+        "unitPriceBob": 140
+      }
+    ],
+    "totalBob": 280,
+    "channel": "tienda"
+  },
+  {
+    "id": "vta-0022",
+    "date": "2026-04-08",
+    "customerId": "cli-003",
+    "items": [
+      {
+        "productId": "prod-008",
+        "quantity": 2,
+        "unitPriceBob": 405
+      }
+    ],
+    "totalBob": 810,
+    "channel": "tienda"
+  },
+  {
+    "id": "vta-0023",
+    "date": "2026-04-09",
+    "customerId": "cli-004",
+    "items": [
+      {
+        "productId": "prod-002",
+        "quantity": 2,
+        "unitPriceBob": 430
+      },
+      {
+        "productId": "prod-009",
+        "quantity": 3,
+        "unitPriceBob": 245
+      }
+    ],
+    "totalBob": 1595,
+    "channel": "tiktok"
+  },
+  {
+    "id": "vta-0024",
+    "date": "2026-04-09",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-011",
+        "quantity": 1,
+        "unitPriceBob": 15
+      },
+      {
+        "productId": "prod-007",
+        "quantity": 1,
+        "unitPriceBob": 670
+      },
+      {
+        "productId": "prod-006",
+        "quantity": 2,
+        "unitPriceBob": 140
+      }
+    ],
+    "totalBob": 965,
+    "channel": "whatsapp"
+  },
+  {
+    "id": "vta-0025",
+    "date": "2026-04-09",
+    "customerId": "cli-012",
+    "items": [
+      {
+        "productId": "prod-007",
+        "quantity": 3,
+        "unitPriceBob": 670
+      },
+      {
+        "productId": "prod-010",
+        "quantity": 1,
+        "unitPriceBob": 25
+      }
+    ],
+    "totalBob": 2035,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0026",
+    "date": "2026-04-09",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-013",
+        "quantity": 3,
+        "unitPriceBob": 5
+      },
+      {
+        "productId": "prod-002",
+        "quantity": 1,
+        "unitPriceBob": 430
+      },
+      {
+        "productId": "prod-003",
+        "quantity": 3,
+        "unitPriceBob": 140
+      }
+    ],
+    "totalBob": 865,
+    "channel": "facebook"
+  },
+  {
+    "id": "vta-0027",
+    "date": "2026-04-10",
+    "customerId": "cli-012",
+    "items": [
+      {
+        "productId": "prod-006",
+        "quantity": 1,
+        "unitPriceBob": 140
+      },
+      {
+        "productId": "prod-014",
+        "quantity": 3,
+        "unitPriceBob": 45
+      },
+      {
+        "productId": "prod-005",
+        "quantity": 4,
+        "unitPriceBob": 325
+      }
+    ],
+    "totalBob": 1575,
+    "channel": "tienda"
+  },
+  {
+    "id": "vta-0028",
+    "date": "2026-04-11",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-006",
+        "quantity": 1,
+        "unitPriceBob": 140
+      },
+      {
+        "productId": "prod-002",
+        "quantity": 4,
+        "unitPriceBob": 430
+      }
+    ],
+    "totalBob": 1860,
+    "channel": "tiktok"
+  },
+  {
+    "id": "vta-0029",
+    "date": "2026-04-11",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-004",
+        "quantity": 4,
+        "unitPriceBob": 35
+      },
+      {
+        "productId": "prod-008",
+        "quantity": 4,
+        "unitPriceBob": 405
+      }
+    ],
+    "totalBob": 1760,
+    "channel": "facebook"
+  },
+  {
+    "id": "vta-0030",
+    "date": "2026-04-12",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-013",
+        "quantity": 4,
+        "unitPriceBob": 5
+      },
+      {
+        "productId": "prod-004",
+        "quantity": 1,
+        "unitPriceBob": 35
+      }
+    ],
+    "totalBob": 55,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0031",
+    "date": "2026-04-12",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-011",
+        "quantity": 1,
+        "unitPriceBob": 15
+      }
+    ],
+    "totalBob": 15,
+    "channel": "whatsapp"
+  },
+  {
+    "id": "vta-0032",
+    "date": "2026-04-13",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-004",
+        "quantity": 4,
+        "unitPriceBob": 35
+      }
+    ],
+    "totalBob": 140,
+    "channel": "tiktok"
+  },
+  {
+    "id": "vta-0033",
+    "date": "2026-04-13",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-005",
+        "quantity": 2,
+        "unitPriceBob": 325
+      },
+      {
+        "productId": "prod-010",
+        "quantity": 4,
+        "unitPriceBob": 25
+      }
+    ],
+    "totalBob": 750,
+    "channel": "tienda"
+  },
+  {
+    "id": "vta-0034",
+    "date": "2026-04-13",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-014",
+        "quantity": 1,
+        "unitPriceBob": 45
+      }
+    ],
+    "totalBob": 45,
+    "channel": "tienda"
+  },
+  {
+    "id": "vta-0035",
+    "date": "2026-04-14",
+    "customerId": "cli-007",
+    "items": [
+      {
+        "productId": "prod-003",
+        "quantity": 4,
+        "unitPriceBob": 140
+      },
+      {
+        "productId": "prod-006",
+        "quantity": 3,
+        "unitPriceBob": 140
+      }
+    ],
+    "totalBob": 980,
+    "channel": "whatsapp"
+  },
+  {
+    "id": "vta-0036",
+    "date": "2026-04-15",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-003",
+        "quantity": 4,
+        "unitPriceBob": 140
+      },
+      {
+        "productId": "prod-001",
+        "quantity": 2,
+        "unitPriceBob": 175
+      },
+      {
+        "productId": "prod-009",
+        "quantity": 2,
+        "unitPriceBob": 245
+      }
+    ],
+    "totalBob": 1400,
+    "channel": "tienda"
+  },
+  {
+    "id": "vta-0037",
+    "date": "2026-04-15",
+    "customerId": "cli-001",
+    "items": [
+      {
+        "productId": "prod-003",
+        "quantity": 3,
+        "unitPriceBob": 140
+      },
+      {
+        "productId": "prod-012",
+        "quantity": 4,
+        "unitPriceBob": 830
+      }
+    ],
+    "totalBob": 3740,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0038",
+    "date": "2026-04-16",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-003",
+        "quantity": 3,
+        "unitPriceBob": 140
+      }
+    ],
+    "totalBob": 420,
+    "channel": "tiktok"
+  },
+  {
+    "id": "vta-0039",
+    "date": "2026-04-16",
+    "customerId": "cli-008",
+    "items": [
+      {
+        "productId": "prod-008",
+        "quantity": 3,
+        "unitPriceBob": 405
+      }
+    ],
+    "totalBob": 1215,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0040",
+    "date": "2026-04-16",
+    "customerId": "cli-002",
+    "items": [
+      {
+        "productId": "prod-002",
+        "quantity": 1,
+        "unitPriceBob": 430
+      }
+    ],
+    "totalBob": 430,
+    "channel": "tiktok"
+  },
+  {
+    "id": "vta-0041",
+    "date": "2026-04-16",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-006",
+        "quantity": 4,
+        "unitPriceBob": 140
+      },
+      {
+        "productId": "prod-007",
+        "quantity": 4,
+        "unitPriceBob": 670
+      }
+    ],
+    "totalBob": 3240,
+    "channel": "tienda"
+  },
+  {
+    "id": "vta-0042",
+    "date": "2026-04-16",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-013",
+        "quantity": 3,
+        "unitPriceBob": 5
+      },
+      {
+        "productId": "prod-007",
+        "quantity": 4,
+        "unitPriceBob": 670
+      }
+    ],
+    "totalBob": 2695,
+    "channel": "tienda"
+  },
+  {
+    "id": "vta-0043",
+    "date": "2026-04-17",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-008",
+        "quantity": 4,
+        "unitPriceBob": 405
+      }
+    ],
+    "totalBob": 1620,
+    "channel": "facebook"
+  },
+  {
+    "id": "vta-0044",
+    "date": "2026-04-18",
+    "customerId": "cli-001",
+    "items": [
+      {
+        "productId": "prod-001",
+        "quantity": 1,
+        "unitPriceBob": 175
+      },
+      {
+        "productId": "prod-007",
+        "quantity": 4,
+        "unitPriceBob": 670
+      },
+      {
+        "productId": "prod-005",
+        "quantity": 1,
+        "unitPriceBob": 325
+      }
+    ],
+    "totalBob": 3180,
+    "channel": "tienda"
+  },
+  {
+    "id": "vta-0045",
+    "date": "2026-04-18",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-011",
+        "quantity": 3,
+        "unitPriceBob": 15
+      },
+      {
+        "productId": "prod-009",
+        "quantity": 4,
+        "unitPriceBob": 245
+      }
+    ],
+    "totalBob": 1025,
+    "channel": "facebook"
+  },
+  {
+    "id": "vta-0046",
+    "date": "2026-04-18",
+    "customerId": "cli-009",
+    "items": [
+      {
+        "productId": "prod-014",
+        "quantity": 1,
+        "unitPriceBob": 45
+      }
+    ],
+    "totalBob": 45,
+    "channel": "whatsapp"
+  },
+  {
+    "id": "vta-0047",
+    "date": "2026-04-18",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-001",
+        "quantity": 2,
+        "unitPriceBob": 175
+      },
+      {
+        "productId": "prod-007",
+        "quantity": 4,
+        "unitPriceBob": 670
+      },
+      {
+        "productId": "prod-013",
+        "quantity": 3,
+        "unitPriceBob": 5
+      }
+    ],
+    "totalBob": 3045,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0048",
+    "date": "2026-04-18",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-007",
+        "quantity": 2,
+        "unitPriceBob": 670
+      },
+      {
+        "productId": "prod-001",
+        "quantity": 4,
+        "unitPriceBob": 175
+      }
+    ],
+    "totalBob": 2040,
+    "channel": "tienda"
+  },
+  {
+    "id": "vta-0049",
+    "date": "2026-04-19",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-003",
+        "quantity": 1,
+        "unitPriceBob": 140
+      }
+    ],
+    "totalBob": 140,
+    "channel": "tiktok"
+  },
+  {
+    "id": "vta-0050",
+    "date": "2026-04-20",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-007",
+        "quantity": 1,
+        "unitPriceBob": 670
+      },
+      {
+        "productId": "prod-003",
+        "quantity": 1,
+        "unitPriceBob": 140
+      },
+      {
+        "productId": "prod-012",
+        "quantity": 1,
+        "unitPriceBob": 830
+      }
+    ],
+    "totalBob": 1640,
+    "channel": "whatsapp"
+  },
+  {
+    "id": "vta-0051",
+    "date": "2026-04-20",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-013",
+        "quantity": 3,
+        "unitPriceBob": 5
+      },
+      {
+        "productId": "prod-003",
+        "quantity": 3,
+        "unitPriceBob": 140
+      },
+      {
+        "productId": "prod-008",
+        "quantity": 3,
+        "unitPriceBob": 405
+      }
+    ],
+    "totalBob": 1650,
+    "channel": "whatsapp"
+  },
+  {
+    "id": "vta-0052",
+    "date": "2026-04-20",
+    "customerId": "cli-004",
+    "items": [
+      {
+        "productId": "prod-009",
+        "quantity": 1,
+        "unitPriceBob": 245
+      },
+      {
+        "productId": "prod-002",
+        "quantity": 3,
+        "unitPriceBob": 430
+      }
+    ],
+    "totalBob": 1535,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0053",
+    "date": "2026-04-20",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-005",
+        "quantity": 3,
+        "unitPriceBob": 325
+      },
+      {
+        "productId": "prod-011",
+        "quantity": 4,
+        "unitPriceBob": 15
+      },
+      {
+        "productId": "prod-009",
+        "quantity": 3,
+        "unitPriceBob": 245
+      }
+    ],
+    "totalBob": 1770,
+    "channel": "facebook"
+  },
+  {
+    "id": "vta-0054",
+    "date": "2026-04-21",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-012",
+        "quantity": 1,
+        "unitPriceBob": 830
+      },
+      {
+        "productId": "prod-008",
+        "quantity": 2,
+        "unitPriceBob": 405
+      }
+    ],
+    "totalBob": 1640,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0055",
+    "date": "2026-04-21",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-013",
+        "quantity": 3,
+        "unitPriceBob": 5
+      }
+    ],
+    "totalBob": 15,
+    "channel": "tiktok"
+  },
+  {
+    "id": "vta-0056",
+    "date": "2026-04-21",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-012",
+        "quantity": 3,
+        "unitPriceBob": 830
+      },
+      {
+        "productId": "prod-006",
+        "quantity": 2,
+        "unitPriceBob": 140
+      }
+    ],
+    "totalBob": 2770,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0057",
+    "date": "2026-04-21",
+    "customerId": "cli-011",
+    "items": [
+      {
+        "productId": "prod-004",
+        "quantity": 4,
+        "unitPriceBob": 35
+      },
+      {
+        "productId": "prod-013",
+        "quantity": 2,
+        "unitPriceBob": 5
+      }
+    ],
+    "totalBob": 150,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0058",
+    "date": "2026-04-22",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-002",
+        "quantity": 2,
+        "unitPriceBob": 430
+      },
+      {
+        "productId": "prod-004",
+        "quantity": 2,
+        "unitPriceBob": 35
+      },
+      {
+        "productId": "prod-007",
+        "quantity": 1,
+        "unitPriceBob": 670
+      }
+    ],
+    "totalBob": 1600,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0059",
+    "date": "2026-04-23",
+    "customerId": "cli-012",
+    "items": [
+      {
+        "productId": "prod-012",
+        "quantity": 3,
+        "unitPriceBob": 830
+      },
+      {
+        "productId": "prod-011",
+        "quantity": 2,
+        "unitPriceBob": 15
+      },
+      {
+        "productId": "prod-013",
+        "quantity": 2,
+        "unitPriceBob": 5
+      }
+    ],
+    "totalBob": 2530,
+    "channel": "whatsapp"
+  },
+  {
+    "id": "vta-0060",
+    "date": "2026-04-23",
+    "customerId": "cli-011",
+    "items": [
+      {
+        "productId": "prod-008",
+        "quantity": 2,
+        "unitPriceBob": 405
+      },
+      {
+        "productId": "prod-006",
+        "quantity": 3,
+        "unitPriceBob": 140
+      }
+    ],
+    "totalBob": 1230,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0061",
+    "date": "2026-04-24",
+    "customerId": "cli-008",
+    "items": [
+      {
+        "productId": "prod-011",
+        "quantity": 3,
+        "unitPriceBob": 15
+      },
+      {
+        "productId": "prod-001",
+        "quantity": 3,
+        "unitPriceBob": 175
+      },
+      {
+        "productId": "prod-010",
+        "quantity": 1,
+        "unitPriceBob": 25
+      }
+    ],
+    "totalBob": 595,
+    "channel": "tienda"
+  },
+  {
+    "id": "vta-0062",
+    "date": "2026-04-24",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-014",
+        "quantity": 1,
+        "unitPriceBob": 45
+      },
+      {
+        "productId": "prod-007",
+        "quantity": 4,
+        "unitPriceBob": 670
+      },
+      {
+        "productId": "prod-012",
+        "quantity": 3,
+        "unitPriceBob": 830
+      }
+    ],
+    "totalBob": 5215,
+    "channel": "whatsapp"
+  },
+  {
+    "id": "vta-0063",
+    "date": "2026-04-25",
+    "customerId": "cli-004",
+    "items": [
+      {
+        "productId": "prod-014",
+        "quantity": 1,
+        "unitPriceBob": 45
+      },
+      {
+        "productId": "prod-009",
+        "quantity": 1,
+        "unitPriceBob": 245
+      }
+    ],
+    "totalBob": 290,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0064",
+    "date": "2026-04-25",
+    "customerId": "cli-008",
+    "items": [
+      {
+        "productId": "prod-013",
+        "quantity": 1,
+        "unitPriceBob": 5
+      },
+      {
+        "productId": "prod-011",
+        "quantity": 3,
+        "unitPriceBob": 15
+      },
+      {
+        "productId": "prod-005",
+        "quantity": 1,
+        "unitPriceBob": 325
+      }
+    ],
+    "totalBob": 375,
+    "channel": "whatsapp"
+  },
+  {
+    "id": "vta-0065",
+    "date": "2026-04-25",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-009",
+        "quantity": 3,
+        "unitPriceBob": 245
+      }
+    ],
+    "totalBob": 735,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0066",
+    "date": "2026-04-27",
+    "customerId": "cli-012",
+    "items": [
+      {
+        "productId": "prod-007",
+        "quantity": 3,
+        "unitPriceBob": 670
+      }
+    ],
+    "totalBob": 2010,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0067",
+    "date": "2026-04-27",
+    "customerId": "cli-005",
+    "items": [
+      {
+        "productId": "prod-003",
+        "quantity": 2,
+        "unitPriceBob": 140
+      }
+    ],
+    "totalBob": 280,
+    "channel": "tienda"
+  },
+  {
+    "id": "vta-0068",
+    "date": "2026-04-28",
+    "customerId": "cli-009",
+    "items": [
+      {
+        "productId": "prod-011",
+        "quantity": 2,
+        "unitPriceBob": 15
+      }
+    ],
+    "totalBob": 30,
+    "channel": "whatsapp"
+  },
+  {
+    "id": "vta-0069",
+    "date": "2026-04-28",
+    "customerId": "cli-002",
+    "items": [
+      {
+        "productId": "prod-005",
+        "quantity": 1,
+        "unitPriceBob": 325
+      },
+      {
+        "productId": "prod-004",
+        "quantity": 2,
+        "unitPriceBob": 35
+      },
+      {
+        "productId": "prod-014",
+        "quantity": 4,
+        "unitPriceBob": 45
+      }
+    ],
+    "totalBob": 575,
+    "channel": "facebook"
+  },
+  {
+    "id": "vta-0070",
+    "date": "2026-04-28",
+    "customerId": "cli-004",
+    "items": [
+      {
+        "productId": "prod-014",
+        "quantity": 1,
+        "unitPriceBob": 45
+      },
+      {
+        "productId": "prod-006",
+        "quantity": 2,
+        "unitPriceBob": 140
+      },
+      {
+        "productId": "prod-003",
+        "quantity": 1,
+        "unitPriceBob": 140
+      }
+    ],
+    "totalBob": 465,
+    "channel": "whatsapp"
+  },
+  {
+    "id": "vta-0071",
+    "date": "2026-04-28",
+    "customerId": "cli-012",
+    "items": [
+      {
+        "productId": "prod-002",
+        "quantity": 1,
+        "unitPriceBob": 430
+      },
+      {
+        "productId": "prod-013",
+        "quantity": 1,
+        "unitPriceBob": 5
+      },
+      {
+        "productId": "prod-012",
+        "quantity": 4,
+        "unitPriceBob": 830
+      }
+    ],
+    "totalBob": 3755,
+    "channel": "tiktok"
+  },
+  {
+    "id": "vta-0072",
+    "date": "2026-04-29",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-014",
+        "quantity": 3,
+        "unitPriceBob": 45
+      },
+      {
+        "productId": "prod-006",
+        "quantity": 2,
+        "unitPriceBob": 140
+      }
+    ],
+    "totalBob": 415,
+    "channel": "tiktok"
+  },
+  {
+    "id": "vta-0073",
+    "date": "2026-04-30",
+    "customerId": "cli-012",
+    "items": [
+      {
+        "productId": "prod-012",
+        "quantity": 3,
+        "unitPriceBob": 830
+      }
+    ],
+    "totalBob": 2490,
+    "channel": "facebook"
+  },
+  {
+    "id": "vta-0074",
+    "date": "2026-04-30",
+    "customerId": "cli-003",
+    "items": [
+      {
+        "productId": "prod-004",
+        "quantity": 3,
+        "unitPriceBob": 35
+      },
+      {
+        "productId": "prod-008",
+        "quantity": 2,
+        "unitPriceBob": 405
+      }
+    ],
+    "totalBob": 915,
+    "channel": "whatsapp"
+  },
+  {
+    "id": "vta-0075",
+    "date": "2026-04-30",
+    "customerId": "cli-007",
+    "items": [
+      {
+        "productId": "prod-003",
+        "quantity": 1,
+        "unitPriceBob": 140
+      }
+    ],
+    "totalBob": 140,
+    "channel": "tienda"
+  },
+  {
+    "id": "vta-0076",
+    "date": "2026-05-01",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-004",
+        "quantity": 1,
+        "unitPriceBob": 35
+      }
+    ],
+    "totalBob": 35,
+    "channel": "whatsapp"
+  },
+  {
+    "id": "vta-0077",
+    "date": "2026-05-01",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-009",
+        "quantity": 1,
+        "unitPriceBob": 245
+      },
+      {
+        "productId": "prod-003",
+        "quantity": 1,
+        "unitPriceBob": 140
+      }
+    ],
+    "totalBob": 385,
+    "channel": "whatsapp"
+  },
+  {
+    "id": "vta-0078",
+    "date": "2026-05-01",
+    "customerId": "cli-004",
+    "items": [
+      {
+        "productId": "prod-002",
+        "quantity": 1,
+        "unitPriceBob": 430
+      }
+    ],
+    "totalBob": 430,
+    "channel": "tiktok"
+  },
+  {
+    "id": "vta-0079",
+    "date": "2026-05-02",
+    "customerId": "cli-005",
+    "items": [
+      {
+        "productId": "prod-004",
+        "quantity": 4,
+        "unitPriceBob": 35
+      },
+      {
+        "productId": "prod-002",
+        "quantity": 1,
+        "unitPriceBob": 430
+      },
+      {
+        "productId": "prod-010",
+        "quantity": 1,
+        "unitPriceBob": 25
+      }
+    ],
+    "totalBob": 595,
+    "channel": "tienda"
+  },
+  {
+    "id": "vta-0080",
+    "date": "2026-05-02",
+    "customerId": "cli-007",
+    "items": [
+      {
+        "productId": "prod-011",
+        "quantity": 4,
+        "unitPriceBob": 15
+      },
+      {
+        "productId": "prod-008",
+        "quantity": 3,
+        "unitPriceBob": 405
+      },
+      {
+        "productId": "prod-009",
+        "quantity": 2,
+        "unitPriceBob": 245
+      }
+    ],
+    "totalBob": 1765,
+    "channel": "tienda"
+  },
+  {
+    "id": "vta-0081",
+    "date": "2026-05-03",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-011",
+        "quantity": 1,
+        "unitPriceBob": 15
+      }
+    ],
+    "totalBob": 15,
+    "channel": "whatsapp"
+  },
+  {
+    "id": "vta-0082",
+    "date": "2026-05-03",
+    "customerId": "cli-008",
+    "items": [
+      {
+        "productId": "prod-008",
+        "quantity": 3,
+        "unitPriceBob": 405
+      },
+      {
+        "productId": "prod-014",
+        "quantity": 1,
+        "unitPriceBob": 45
+      },
+      {
+        "productId": "prod-009",
+        "quantity": 3,
+        "unitPriceBob": 245
+      }
+    ],
+    "totalBob": 1995,
+    "channel": "facebook"
+  },
+  {
+    "id": "vta-0083",
+    "date": "2026-05-04",
+    "customerId": "cli-008",
+    "items": [
+      {
+        "productId": "prod-001",
+        "quantity": 1,
+        "unitPriceBob": 175
+      },
+      {
+        "productId": "prod-007",
+        "quantity": 4,
+        "unitPriceBob": 670
+      }
+    ],
+    "totalBob": 2855,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0084",
+    "date": "2026-05-04",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-006",
+        "quantity": 1,
+        "unitPriceBob": 140
+      }
+    ],
+    "totalBob": 140,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0085",
+    "date": "2026-05-05",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-010",
+        "quantity": 3,
+        "unitPriceBob": 25
+      }
+    ],
+    "totalBob": 75,
+    "channel": "whatsapp"
+  },
+  {
+    "id": "vta-0086",
+    "date": "2026-05-05",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-013",
+        "quantity": 3,
+        "unitPriceBob": 5
+      },
+      {
+        "productId": "prod-009",
+        "quantity": 1,
+        "unitPriceBob": 245
+      }
+    ],
+    "totalBob": 260,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0087",
+    "date": "2026-05-05",
+    "customerId": "cli-007",
+    "items": [
+      {
+        "productId": "prod-012",
+        "quantity": 2,
+        "unitPriceBob": 830
+      },
+      {
+        "productId": "prod-007",
+        "quantity": 3,
+        "unitPriceBob": 670
+      }
+    ],
+    "totalBob": 3670,
+    "channel": "facebook"
+  },
+  {
+    "id": "vta-0088",
+    "date": "2026-05-05",
+    "customerId": "cli-004",
+    "items": [
+      {
+        "productId": "prod-009",
+        "quantity": 3,
+        "unitPriceBob": 245
+      },
+      {
+        "productId": "prod-007",
+        "quantity": 4,
+        "unitPriceBob": 670
+      }
+    ],
+    "totalBob": 3415,
+    "channel": "facebook"
+  },
+  {
+    "id": "vta-0089",
+    "date": "2026-05-05",
+    "customerId": "cli-005",
+    "items": [
+      {
+        "productId": "prod-007",
+        "quantity": 1,
+        "unitPriceBob": 670
+      },
+      {
+        "productId": "prod-011",
+        "quantity": 3,
+        "unitPriceBob": 15
+      },
+      {
+        "productId": "prod-009",
+        "quantity": 1,
+        "unitPriceBob": 245
+      }
+    ],
+    "totalBob": 960,
+    "channel": "facebook"
+  },
+  {
+    "id": "vta-0090",
+    "date": "2026-05-06",
+    "customerId": "cli-004",
+    "items": [
+      {
+        "productId": "prod-011",
+        "quantity": 1,
+        "unitPriceBob": 15
+      },
+      {
+        "productId": "prod-002",
+        "quantity": 3,
+        "unitPriceBob": 430
+      }
+    ],
+    "totalBob": 1305,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0091",
+    "date": "2026-05-06",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-010",
+        "quantity": 3,
+        "unitPriceBob": 25
+      }
+    ],
+    "totalBob": 75,
+    "channel": "facebook"
+  },
+  {
+    "id": "vta-0092",
+    "date": "2026-05-06",
+    "customerId": "cli-011",
+    "items": [
+      {
+        "productId": "prod-009",
+        "quantity": 1,
+        "unitPriceBob": 245
+      }
+    ],
+    "totalBob": 245,
+    "channel": "whatsapp"
+  },
+  {
+    "id": "vta-0093",
+    "date": "2026-05-06",
+    "customerId": "cli-005",
+    "items": [
+      {
+        "productId": "prod-008",
+        "quantity": 1,
+        "unitPriceBob": 405
+      },
+      {
+        "productId": "prod-001",
+        "quantity": 2,
+        "unitPriceBob": 175
+      }
+    ],
+    "totalBob": 755,
+    "channel": "facebook"
+  },
+  {
+    "id": "vta-0094",
+    "date": "2026-05-06",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-013",
+        "quantity": 1,
+        "unitPriceBob": 5
+      },
+      {
+        "productId": "prod-004",
+        "quantity": 4,
+        "unitPriceBob": 35
+      },
+      {
+        "productId": "prod-007",
+        "quantity": 3,
+        "unitPriceBob": 670
+      }
+    ],
+    "totalBob": 2155,
+    "channel": "facebook"
+  },
+  {
+    "id": "vta-0095",
+    "date": "2026-05-07",
+    "customerId": "cli-011",
+    "items": [
+      {
+        "productId": "prod-012",
+        "quantity": 3,
+        "unitPriceBob": 830
+      },
+      {
+        "productId": "prod-006",
+        "quantity": 3,
+        "unitPriceBob": 140
+      },
+      {
+        "productId": "prod-011",
+        "quantity": 1,
+        "unitPriceBob": 15
+      }
+    ],
+    "totalBob": 2925,
+    "channel": "tienda"
+  },
+  {
+    "id": "vta-0096",
+    "date": "2026-05-07",
+    "customerId": "cli-011",
+    "items": [
+      {
+        "productId": "prod-013",
+        "quantity": 1,
+        "unitPriceBob": 5
+      },
+      {
+        "productId": "prod-009",
+        "quantity": 1,
+        "unitPriceBob": 245
+      },
+      {
+        "productId": "prod-008",
+        "quantity": 1,
+        "unitPriceBob": 405
+      }
+    ],
+    "totalBob": 655,
+    "channel": "tiktok"
+  },
+  {
+    "id": "vta-0097",
+    "date": "2026-05-07",
+    "customerId": "cli-008",
+    "items": [
+      {
+        "productId": "prod-009",
+        "quantity": 3,
+        "unitPriceBob": 245
+      }
+    ],
+    "totalBob": 735,
+    "channel": "tiktok"
+  },
+  {
+    "id": "vta-0098",
+    "date": "2026-05-07",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-008",
+        "quantity": 4,
+        "unitPriceBob": 405
+      },
+      {
+        "productId": "prod-002",
+        "quantity": 3,
+        "unitPriceBob": 430
+      }
+    ],
+    "totalBob": 2910,
+    "channel": "whatsapp"
+  },
+  {
+    "id": "vta-0099",
+    "date": "2026-05-07",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-005",
+        "quantity": 1,
+        "unitPriceBob": 325
+      },
+      {
+        "productId": "prod-013",
+        "quantity": 3,
+        "unitPriceBob": 5
+      },
+      {
+        "productId": "prod-007",
+        "quantity": 2,
+        "unitPriceBob": 670
+      }
+    ],
+    "totalBob": 1680,
+    "channel": "facebook"
+  },
+  {
+    "id": "vta-0100",
+    "date": "2026-05-08",
+    "customerId": "cli-005",
+    "items": [
+      {
+        "productId": "prod-012",
+        "quantity": 2,
+        "unitPriceBob": 830
+      }
+    ],
+    "totalBob": 1660,
+    "channel": "tiktok"
+  },
+  {
+    "id": "vta-0101",
+    "date": "2026-05-08",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-006",
+        "quantity": 4,
+        "unitPriceBob": 140
+      }
+    ],
+    "totalBob": 560,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0102",
+    "date": "2026-05-09",
+    "customerId": "cli-005",
+    "items": [
+      {
+        "productId": "prod-010",
+        "quantity": 2,
+        "unitPriceBob": 25
+      },
+      {
+        "productId": "prod-008",
+        "quantity": 2,
+        "unitPriceBob": 405
+      }
+    ],
+    "totalBob": 860,
+    "channel": "tienda"
+  },
+  {
+    "id": "vta-0103",
+    "date": "2026-05-09",
+    "customerId": "cli-012",
+    "items": [
+      {
+        "productId": "prod-002",
+        "quantity": 2,
+        "unitPriceBob": 430
+      },
+      {
+        "productId": "prod-003",
+        "quantity": 1,
+        "unitPriceBob": 140
+      }
+    ],
+    "totalBob": 1000,
+    "channel": "tienda"
+  },
+  {
+    "id": "vta-0104",
+    "date": "2026-05-11",
+    "customerId": "cli-006",
+    "items": [
+      {
+        "productId": "prod-014",
+        "quantity": 4,
+        "unitPriceBob": 45
+      }
+    ],
+    "totalBob": 180,
+    "channel": "facebook"
+  },
+  {
+    "id": "vta-0105",
+    "date": "2026-05-11",
+    "customerId": "cli-008",
+    "items": [
+      {
+        "productId": "prod-012",
+        "quantity": 4,
+        "unitPriceBob": 830
+      },
+      {
+        "productId": "prod-007",
+        "quantity": 3,
+        "unitPriceBob": 670
+      },
+      {
+        "productId": "prod-006",
+        "quantity": 3,
+        "unitPriceBob": 140
+      }
+    ],
+    "totalBob": 5750,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0106",
+    "date": "2026-05-11",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-009",
+        "quantity": 2,
+        "unitPriceBob": 245
+      },
+      {
+        "productId": "prod-012",
+        "quantity": 1,
+        "unitPriceBob": 830
+      }
+    ],
+    "totalBob": 1320,
+    "channel": "facebook"
+  },
+  {
+    "id": "vta-0107",
+    "date": "2026-05-11",
+    "customerId": "cli-011",
+    "items": [
+      {
+        "productId": "prod-004",
+        "quantity": 1,
+        "unitPriceBob": 35
+      }
+    ],
+    "totalBob": 35,
+    "channel": "facebook"
+  },
+  {
+    "id": "vta-0108",
+    "date": "2026-05-12",
+    "customerId": "cli-004",
+    "items": [
+      {
+        "productId": "prod-006",
+        "quantity": 2,
+        "unitPriceBob": 140
+      },
+      {
+        "productId": "prod-014",
+        "quantity": 3,
+        "unitPriceBob": 45
+      },
+      {
+        "productId": "prod-002",
+        "quantity": 3,
+        "unitPriceBob": 430
+      }
+    ],
+    "totalBob": 1705,
+    "channel": "whatsapp"
+  },
+  {
+    "id": "vta-0109",
+    "date": "2026-05-13",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-011",
+        "quantity": 4,
+        "unitPriceBob": 15
+      },
+      {
+        "productId": "prod-009",
+        "quantity": 4,
+        "unitPriceBob": 245
+      }
+    ],
+    "totalBob": 1040,
+    "channel": "tiktok"
+  },
+  {
+    "id": "vta-0110",
+    "date": "2026-05-13",
+    "customerId": "cli-009",
+    "items": [
+      {
+        "productId": "prod-007",
+        "quantity": 4,
+        "unitPriceBob": 670
+      },
+      {
+        "productId": "prod-012",
+        "quantity": 3,
+        "unitPriceBob": 830
+      },
+      {
+        "productId": "prod-014",
+        "quantity": 3,
+        "unitPriceBob": 45
+      }
+    ],
+    "totalBob": 5305,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0111",
+    "date": "2026-05-13",
+    "customerId": "cli-002",
+    "items": [
+      {
+        "productId": "prod-011",
+        "quantity": 4,
+        "unitPriceBob": 15
+      },
+      {
+        "productId": "prod-006",
+        "quantity": 1,
+        "unitPriceBob": 140
+      }
+    ],
+    "totalBob": 200,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0112",
+    "date": "2026-05-13",
+    "customerId": "cli-003",
+    "items": [
+      {
+        "productId": "prod-004",
+        "quantity": 4,
+        "unitPriceBob": 35
+      },
+      {
+        "productId": "prod-010",
+        "quantity": 3,
+        "unitPriceBob": 25
+      }
+    ],
+    "totalBob": 215,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0113",
+    "date": "2026-05-13",
+    "customerId": "cli-001",
+    "items": [
+      {
+        "productId": "prod-008",
+        "quantity": 4,
+        "unitPriceBob": 405
+      }
+    ],
+    "totalBob": 1620,
+    "channel": "tiktok"
+  },
+  {
+    "id": "vta-0114",
+    "date": "2026-05-14",
+    "customerId": "cli-011",
+    "items": [
+      {
+        "productId": "prod-010",
+        "quantity": 4,
+        "unitPriceBob": 25
+      },
+      {
+        "productId": "prod-008",
+        "quantity": 2,
+        "unitPriceBob": 405
+      }
+    ],
+    "totalBob": 910,
+    "channel": "tienda"
+  },
+  {
+    "id": "vta-0115",
+    "date": "2026-05-14",
+    "customerId": "cli-002",
+    "items": [
+      {
+        "productId": "prod-010",
+        "quantity": 3,
+        "unitPriceBob": 25
+      }
+    ],
+    "totalBob": 75,
+    "channel": "facebook"
+  },
+  {
+    "id": "vta-0116",
+    "date": "2026-05-14",
+    "customerId": "cli-005",
+    "items": [
+      {
+        "productId": "prod-010",
+        "quantity": 4,
+        "unitPriceBob": 25
+      }
+    ],
+    "totalBob": 100,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0117",
+    "date": "2026-05-14",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-009",
+        "quantity": 2,
+        "unitPriceBob": 245
+      },
+      {
+        "productId": "prod-007",
+        "quantity": 4,
+        "unitPriceBob": 670
+      }
+    ],
+    "totalBob": 3170,
+    "channel": "tiktok"
+  },
+  {
+    "id": "vta-0118",
+    "date": "2026-05-15",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-013",
+        "quantity": 2,
+        "unitPriceBob": 5
+      }
+    ],
+    "totalBob": 10,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0119",
+    "date": "2026-05-15",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-001",
+        "quantity": 1,
+        "unitPriceBob": 175
+      },
+      {
+        "productId": "prod-013",
+        "quantity": 2,
+        "unitPriceBob": 5
+      }
+    ],
+    "totalBob": 185,
+    "channel": "facebook"
+  },
+  {
+    "id": "vta-0120",
+    "date": "2026-05-15",
+    "customerId": "cli-005",
+    "items": [
+      {
+        "productId": "prod-005",
+        "quantity": 4,
+        "unitPriceBob": 325
+      },
+      {
+        "productId": "prod-002",
+        "quantity": 4,
+        "unitPriceBob": 430
+      },
+      {
+        "productId": "prod-007",
+        "quantity": 4,
+        "unitPriceBob": 670
+      }
+    ],
+    "totalBob": 5700,
+    "channel": "tienda"
+  },
+  {
+    "id": "vta-0121",
+    "date": "2026-05-16",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-001",
+        "quantity": 1,
+        "unitPriceBob": 175
+      },
+      {
+        "productId": "prod-006",
+        "quantity": 3,
+        "unitPriceBob": 140
+      },
+      {
+        "productId": "prod-007",
+        "quantity": 1,
+        "unitPriceBob": 670
+      }
+    ],
+    "totalBob": 1265,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0122",
+    "date": "2026-05-16",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-013",
+        "quantity": 2,
+        "unitPriceBob": 5
+      },
+      {
+        "productId": "prod-012",
+        "quantity": 3,
+        "unitPriceBob": 830
+      }
+    ],
+    "totalBob": 2500,
+    "channel": "tiktok"
+  },
+  {
+    "id": "vta-0123",
+    "date": "2026-05-16",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-008",
+        "quantity": 4,
+        "unitPriceBob": 405
+      },
+      {
+        "productId": "prod-003",
+        "quantity": 4,
+        "unitPriceBob": 140
+      }
+    ],
+    "totalBob": 2180,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0124",
+    "date": "2026-05-16",
+    "customerId": "cli-005",
+    "items": [
+      {
+        "productId": "prod-011",
+        "quantity": 3,
+        "unitPriceBob": 15
+      }
+    ],
+    "totalBob": 45,
+    "channel": "tienda"
+  },
+  {
+    "id": "vta-0125",
+    "date": "2026-05-16",
+    "customerId": "cli-007",
+    "items": [
+      {
+        "productId": "prod-010",
+        "quantity": 4,
+        "unitPriceBob": 25
+      },
+      {
+        "productId": "prod-005",
+        "quantity": 4,
+        "unitPriceBob": 325
+      }
+    ],
+    "totalBob": 1400,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0126",
+    "date": "2026-05-17",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-003",
+        "quantity": 2,
+        "unitPriceBob": 140
+      },
+      {
+        "productId": "prod-011",
+        "quantity": 2,
+        "unitPriceBob": 15
+      }
+    ],
+    "totalBob": 310,
+    "channel": "facebook"
+  },
+  {
+    "id": "vta-0127",
+    "date": "2026-05-18",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-010",
+        "quantity": 1,
+        "unitPriceBob": 25
+      }
+    ],
+    "totalBob": 25,
+    "channel": "tienda"
+  },
+  {
+    "id": "vta-0128",
+    "date": "2026-05-18",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-006",
+        "quantity": 2,
+        "unitPriceBob": 140
+      },
+      {
+        "productId": "prod-008",
+        "quantity": 3,
+        "unitPriceBob": 405
+      }
+    ],
+    "totalBob": 1495,
+    "channel": "facebook"
+  },
+  {
+    "id": "vta-0129",
+    "date": "2026-05-18",
+    "customerId": "cli-006",
+    "items": [
+      {
+        "productId": "prod-013",
+        "quantity": 2,
+        "unitPriceBob": 5
+      },
+      {
+        "productId": "prod-009",
+        "quantity": 3,
+        "unitPriceBob": 245
+      }
+    ],
+    "totalBob": 745,
+    "channel": "tiktok"
+  },
+  {
+    "id": "vta-0130",
+    "date": "2026-05-18",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-006",
+        "quantity": 3,
+        "unitPriceBob": 140
+      }
+    ],
+    "totalBob": 420,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0131",
+    "date": "2026-05-18",
+    "customerId": "cli-003",
+    "items": [
+      {
+        "productId": "prod-007",
+        "quantity": 2,
+        "unitPriceBob": 670
+      },
+      {
+        "productId": "prod-013",
+        "quantity": 4,
+        "unitPriceBob": 5
+      }
+    ],
+    "totalBob": 1360,
+    "channel": "tienda"
+  },
+  {
+    "id": "vta-0132",
+    "date": "2026-05-19",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-006",
+        "quantity": 1,
+        "unitPriceBob": 140
+      }
+    ],
+    "totalBob": 140,
+    "channel": "tienda"
+  },
+  {
+    "id": "vta-0133",
+    "date": "2026-05-19",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-004",
+        "quantity": 2,
+        "unitPriceBob": 35
+      },
+      {
+        "productId": "prod-009",
+        "quantity": 1,
+        "unitPriceBob": 245
+      }
+    ],
+    "totalBob": 315,
+    "channel": "facebook"
+  },
+  {
+    "id": "vta-0134",
+    "date": "2026-05-19",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-010",
+        "quantity": 2,
+        "unitPriceBob": 25
+      },
+      {
+        "productId": "prod-004",
+        "quantity": 4,
+        "unitPriceBob": 35
+      }
+    ],
+    "totalBob": 190,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0135",
+    "date": "2026-05-20",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-010",
+        "quantity": 4,
+        "unitPriceBob": 25
+      }
+    ],
+    "totalBob": 100,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0136",
+    "date": "2026-05-20",
+    "customerId": "cli-002",
+    "items": [
+      {
+        "productId": "prod-013",
+        "quantity": 4,
+        "unitPriceBob": 5
+      },
+      {
+        "productId": "prod-010",
+        "quantity": 4,
+        "unitPriceBob": 25
+      },
+      {
+        "productId": "prod-012",
+        "quantity": 2,
+        "unitPriceBob": 830
+      }
+    ],
+    "totalBob": 1780,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0137",
+    "date": "2026-05-20",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-014",
+        "quantity": 3,
+        "unitPriceBob": 45
+      },
+      {
+        "productId": "prod-009",
+        "quantity": 4,
+        "unitPriceBob": 245
+      }
+    ],
+    "totalBob": 1115,
+    "channel": "whatsapp"
+  },
+  {
+    "id": "vta-0138",
+    "date": "2026-05-20",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-006",
+        "quantity": 4,
+        "unitPriceBob": 140
+      },
+      {
+        "productId": "prod-012",
+        "quantity": 2,
+        "unitPriceBob": 830
+      },
+      {
+        "productId": "prod-005",
+        "quantity": 1,
+        "unitPriceBob": 325
+      }
+    ],
+    "totalBob": 2545,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0139",
+    "date": "2026-05-20",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-004",
+        "quantity": 1,
+        "unitPriceBob": 35
+      }
+    ],
+    "totalBob": 35,
+    "channel": "tiktok"
+  },
+  {
+    "id": "vta-0140",
+    "date": "2026-05-21",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-010",
+        "quantity": 2,
+        "unitPriceBob": 25
+      },
+      {
+        "productId": "prod-008",
+        "quantity": 2,
+        "unitPriceBob": 405
+      }
+    ],
+    "totalBob": 860,
+    "channel": "tiktok"
+  },
+  {
+    "id": "vta-0141",
+    "date": "2026-05-22",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-002",
+        "quantity": 4,
+        "unitPriceBob": 430
+      },
+      {
+        "productId": "prod-004",
+        "quantity": 3,
+        "unitPriceBob": 35
+      },
+      {
+        "productId": "prod-001",
+        "quantity": 3,
+        "unitPriceBob": 175
+      }
+    ],
+    "totalBob": 2350,
+    "channel": "tienda"
+  },
+  {
+    "id": "vta-0142",
+    "date": "2026-05-23",
+    "customerId": "cli-011",
+    "items": [
+      {
+        "productId": "prod-011",
+        "quantity": 4,
+        "unitPriceBob": 15
+      },
+      {
+        "productId": "prod-001",
+        "quantity": 3,
+        "unitPriceBob": 175
+      },
+      {
+        "productId": "prod-005",
+        "quantity": 2,
+        "unitPriceBob": 325
+      }
+    ],
+    "totalBob": 1235,
+    "channel": "facebook"
+  },
+  {
+    "id": "vta-0143",
+    "date": "2026-05-23",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-003",
+        "quantity": 3,
+        "unitPriceBob": 140
+      },
+      {
+        "productId": "prod-011",
+        "quantity": 1,
+        "unitPriceBob": 15
+      }
+    ],
+    "totalBob": 435,
+    "channel": "tienda"
+  },
+  {
+    "id": "vta-0144",
+    "date": "2026-05-25",
+    "customerId": "cli-012",
+    "items": [
+      {
+        "productId": "prod-012",
+        "quantity": 1,
+        "unitPriceBob": 830
+      },
+      {
+        "productId": "prod-014",
+        "quantity": 4,
+        "unitPriceBob": 45
+      }
+    ],
+    "totalBob": 1010,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0145",
+    "date": "2026-05-25",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-004",
+        "quantity": 4,
+        "unitPriceBob": 35
+      },
+      {
+        "productId": "prod-010",
+        "quantity": 4,
+        "unitPriceBob": 25
+      }
+    ],
+    "totalBob": 240,
+    "channel": "tienda"
+  },
+  {
+    "id": "vta-0146",
+    "date": "2026-05-26",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-012",
+        "quantity": 2,
+        "unitPriceBob": 830
+      },
+      {
+        "productId": "prod-001",
+        "quantity": 4,
+        "unitPriceBob": 175
+      },
+      {
+        "productId": "prod-014",
+        "quantity": 1,
+        "unitPriceBob": 45
+      }
+    ],
+    "totalBob": 2405,
+    "channel": "tienda"
+  },
+  {
+    "id": "vta-0147",
+    "date": "2026-05-27",
+    "customerId": "cli-007",
+    "items": [
+      {
+        "productId": "prod-001",
+        "quantity": 4,
+        "unitPriceBob": 175
+      },
+      {
+        "productId": "prod-013",
+        "quantity": 1,
+        "unitPriceBob": 5
+      }
+    ],
+    "totalBob": 705,
+    "channel": "whatsapp"
+  },
+  {
+    "id": "vta-0148",
+    "date": "2026-05-28",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-005",
+        "quantity": 4,
+        "unitPriceBob": 325
+      },
+      {
+        "productId": "prod-014",
+        "quantity": 4,
+        "unitPriceBob": 45
+      }
+    ],
+    "totalBob": 1480,
+    "channel": "facebook"
+  },
+  {
+    "id": "vta-0149",
+    "date": "2026-05-28",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-003",
+        "quantity": 2,
+        "unitPriceBob": 140
+      },
+      {
+        "productId": "prod-010",
+        "quantity": 2,
+        "unitPriceBob": 25
+      },
+      {
+        "productId": "prod-004",
+        "quantity": 3,
+        "unitPriceBob": 35
+      }
+    ],
+    "totalBob": 435,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0150",
+    "date": "2026-05-28",
+    "customerId": "cli-007",
+    "items": [
+      {
+        "productId": "prod-007",
+        "quantity": 1,
+        "unitPriceBob": 670
+      }
+    ],
+    "totalBob": 670,
+    "channel": "tiktok"
+  },
+  {
+    "id": "vta-0151",
+    "date": "2026-05-28",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-004",
+        "quantity": 3,
+        "unitPriceBob": 35
+      }
+    ],
+    "totalBob": 105,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0152",
+    "date": "2026-05-29",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-012",
+        "quantity": 1,
+        "unitPriceBob": 830
+      },
+      {
+        "productId": "prod-014",
+        "quantity": 2,
+        "unitPriceBob": 45
+      }
+    ],
+    "totalBob": 920,
+    "channel": "tienda"
+  },
+  {
+    "id": "vta-0153",
+    "date": "2026-05-30",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-013",
+        "quantity": 3,
+        "unitPriceBob": 5
+      },
+      {
+        "productId": "prod-011",
+        "quantity": 4,
+        "unitPriceBob": 15
+      }
+    ],
+    "totalBob": 75,
+    "channel": "tienda"
+  },
+  {
+    "id": "vta-0154",
+    "date": "2026-05-30",
+    "customerId": "cli-008",
+    "items": [
+      {
+        "productId": "prod-013",
+        "quantity": 1,
+        "unitPriceBob": 5
+      },
+      {
+        "productId": "prod-001",
+        "quantity": 1,
+        "unitPriceBob": 175
+      }
+    ],
+    "totalBob": 180,
+    "channel": "tiktok"
+  },
+  {
+    "id": "vta-0155",
+    "date": "2026-05-30",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-009",
+        "quantity": 2,
+        "unitPriceBob": 245
+      }
+    ],
+    "totalBob": 490,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0156",
+    "date": "2026-06-01",
+    "customerId": "cli-007",
+    "items": [
+      {
+        "productId": "prod-013",
+        "quantity": 1,
+        "unitPriceBob": 5
+      }
+    ],
+    "totalBob": 5,
+    "channel": "tienda"
+  },
+  {
+    "id": "vta-0157",
+    "date": "2026-06-02",
+    "customerId": "cli-010",
+    "items": [
+      {
+        "productId": "prod-010",
+        "quantity": 3,
+        "unitPriceBob": 25
+      },
+      {
+        "productId": "prod-011",
+        "quantity": 1,
+        "unitPriceBob": 15
+      }
+    ],
+    "totalBob": 90,
+    "channel": "whatsapp"
+  },
+  {
+    "id": "vta-0158",
+    "date": "2026-06-02",
+    "customerId": "cli-011",
+    "items": [
+      {
+        "productId": "prod-010",
+        "quantity": 1,
+        "unitPriceBob": 25
+      }
+    ],
+    "totalBob": 25,
+    "channel": "whatsapp"
+  },
+  {
+    "id": "vta-0159",
+    "date": "2026-06-03",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-005",
+        "quantity": 2,
+        "unitPriceBob": 325
+      }
+    ],
+    "totalBob": 650,
+    "channel": "tiktok"
+  },
+  {
+    "id": "vta-0160",
+    "date": "2026-06-04",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-004",
+        "quantity": 3,
+        "unitPriceBob": 35
+      },
+      {
+        "productId": "prod-005",
+        "quantity": 3,
+        "unitPriceBob": 325
+      },
+      {
+        "productId": "prod-007",
+        "quantity": 1,
+        "unitPriceBob": 670
+      }
+    ],
+    "totalBob": 1750,
+    "channel": "whatsapp"
+  },
+  {
+    "id": "vta-0161",
+    "date": "2026-06-04",
+    "customerId": "cli-003",
+    "items": [
+      {
+        "productId": "prod-001",
+        "quantity": 3,
+        "unitPriceBob": 175
+      },
+      {
+        "productId": "prod-013",
+        "quantity": 4,
+        "unitPriceBob": 5
+      },
+      {
+        "productId": "prod-014",
+        "quantity": 4,
+        "unitPriceBob": 45
+      }
+    ],
+    "totalBob": 725,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0162",
+    "date": "2026-06-04",
+    "customerId": "cli-004",
+    "items": [
+      {
+        "productId": "prod-007",
+        "quantity": 4,
+        "unitPriceBob": 670
+      },
+      {
+        "productId": "prod-013",
+        "quantity": 4,
+        "unitPriceBob": 5
+      }
+    ],
+    "totalBob": 2700,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0163",
+    "date": "2026-06-05",
+    "customerId": "cli-001",
+    "items": [
+      {
+        "productId": "prod-013",
+        "quantity": 4,
+        "unitPriceBob": 5
+      }
+    ],
+    "totalBob": 20,
+    "channel": "whatsapp"
+  },
+  {
+    "id": "vta-0164",
+    "date": "2026-06-05",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-008",
+        "quantity": 1,
+        "unitPriceBob": 405
+      },
+      {
+        "productId": "prod-006",
+        "quantity": 4,
+        "unitPriceBob": 140
+      },
+      {
+        "productId": "prod-010",
+        "quantity": 4,
+        "unitPriceBob": 25
+      }
+    ],
+    "totalBob": 1065,
+    "channel": "tiktok"
+  },
+  {
+    "id": "vta-0165",
+    "date": "2026-06-05",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-005",
+        "quantity": 2,
+        "unitPriceBob": 325
+      },
+      {
+        "productId": "prod-007",
+        "quantity": 2,
+        "unitPriceBob": 670
+      }
+    ],
+    "totalBob": 1990,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0166",
+    "date": "2026-06-05",
+    "customerId": "cli-004",
+    "items": [
+      {
+        "productId": "prod-002",
+        "quantity": 4,
+        "unitPriceBob": 430
+      },
+      {
+        "productId": "prod-005",
+        "quantity": 1,
+        "unitPriceBob": 325
+      }
+    ],
+    "totalBob": 2045,
+    "channel": "tienda"
+  },
+  {
+    "id": "vta-0167",
+    "date": "2026-06-06",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-012",
+        "quantity": 3,
+        "unitPriceBob": 830
+      },
+      {
+        "productId": "prod-004",
+        "quantity": 2,
+        "unitPriceBob": 35
+      },
+      {
+        "productId": "prod-013",
+        "quantity": 4,
+        "unitPriceBob": 5
+      }
+    ],
+    "totalBob": 2580,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0168",
+    "date": "2026-06-06",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-010",
+        "quantity": 3,
+        "unitPriceBob": 25
+      },
+      {
+        "productId": "prod-004",
+        "quantity": 1,
+        "unitPriceBob": 35
+      }
+    ],
+    "totalBob": 110,
+    "channel": "tiktok"
+  },
+  {
+    "id": "vta-0169",
+    "date": "2026-06-06",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-011",
+        "quantity": 3,
+        "unitPriceBob": 15
+      },
+      {
+        "productId": "prod-010",
+        "quantity": 2,
+        "unitPriceBob": 25
+      }
+    ],
+    "totalBob": 95,
+    "channel": "tienda"
+  },
+  {
+    "id": "vta-0170",
+    "date": "2026-06-06",
+    "customerId": "cli-007",
+    "items": [
+      {
+        "productId": "prod-006",
+        "quantity": 3,
+        "unitPriceBob": 140
+      }
+    ],
+    "totalBob": 420,
+    "channel": "facebook"
+  },
+  {
+    "id": "vta-0171",
+    "date": "2026-06-08",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-013",
+        "quantity": 4,
+        "unitPriceBob": 5
+      },
+      {
+        "productId": "prod-004",
+        "quantity": 1,
+        "unitPriceBob": 35
+      }
+    ],
+    "totalBob": 55,
+    "channel": "facebook"
+  },
+  {
+    "id": "vta-0172",
+    "date": "2026-06-08",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-009",
+        "quantity": 1,
+        "unitPriceBob": 245
+      },
+      {
+        "productId": "prod-004",
+        "quantity": 1,
+        "unitPriceBob": 35
+      }
+    ],
+    "totalBob": 280,
+    "channel": "whatsapp"
+  },
+  {
+    "id": "vta-0173",
+    "date": "2026-06-08",
+    "customerId": "cli-006",
+    "items": [
+      {
+        "productId": "prod-007",
+        "quantity": 4,
+        "unitPriceBob": 670
+      }
+    ],
+    "totalBob": 2680,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0174",
+    "date": "2026-06-09",
+    "customerId": "cli-001",
+    "items": [
+      {
+        "productId": "prod-003",
+        "quantity": 3,
+        "unitPriceBob": 140
+      },
+      {
+        "productId": "prod-012",
+        "quantity": 3,
+        "unitPriceBob": 830
+      }
+    ],
+    "totalBob": 2910,
+    "channel": "facebook"
+  },
+  {
+    "id": "vta-0175",
+    "date": "2026-06-09",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-012",
+        "quantity": 1,
+        "unitPriceBob": 830
+      }
+    ],
+    "totalBob": 830,
+    "channel": "tiktok"
+  },
+  {
+    "id": "vta-0176",
+    "date": "2026-06-09",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-005",
+        "quantity": 2,
+        "unitPriceBob": 325
+      }
+    ],
+    "totalBob": 650,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0177",
+    "date": "2026-06-09",
+    "customerId": "cli-006",
+    "items": [
+      {
+        "productId": "prod-006",
+        "quantity": 1,
+        "unitPriceBob": 140
+      },
+      {
+        "productId": "prod-001",
+        "quantity": 1,
+        "unitPriceBob": 175
+      },
+      {
+        "productId": "prod-014",
+        "quantity": 4,
+        "unitPriceBob": 45
+      }
+    ],
+    "totalBob": 495,
+    "channel": "whatsapp"
+  },
+  {
+    "id": "vta-0178",
+    "date": "2026-06-09",
+    "customerId": "cli-012",
+    "items": [
+      {
+        "productId": "prod-014",
+        "quantity": 1,
+        "unitPriceBob": 45
+      },
+      {
+        "productId": "prod-008",
+        "quantity": 4,
+        "unitPriceBob": 405
+      }
+    ],
+    "totalBob": 1665,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0179",
+    "date": "2026-06-10",
+    "customerId": "cli-012",
+    "items": [
+      {
+        "productId": "prod-004",
+        "quantity": 1,
+        "unitPriceBob": 35
+      }
+    ],
+    "totalBob": 35,
+    "channel": "facebook"
+  },
+  {
+    "id": "vta-0180",
+    "date": "2026-06-10",
+    "customerId": "cli-009",
+    "items": [
+      {
+        "productId": "prod-008",
+        "quantity": 2,
+        "unitPriceBob": 405
+      }
+    ],
+    "totalBob": 810,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0181",
+    "date": "2026-06-10",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-002",
+        "quantity": 2,
+        "unitPriceBob": 430
+      }
+    ],
+    "totalBob": 860,
+    "channel": "tiktok"
+  },
+  {
+    "id": "vta-0182",
+    "date": "2026-06-10",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-012",
+        "quantity": 1,
+        "unitPriceBob": 830
+      }
+    ],
+    "totalBob": 830,
+    "channel": "facebook"
+  },
+  {
+    "id": "vta-0183",
+    "date": "2026-06-10",
+    "customerId": "cli-012",
+    "items": [
+      {
+        "productId": "prod-009",
+        "quantity": 2,
+        "unitPriceBob": 245
+      },
+      {
+        "productId": "prod-002",
+        "quantity": 3,
+        "unitPriceBob": 430
+      }
+    ],
+    "totalBob": 1780,
+    "channel": "whatsapp"
+  },
+  {
+    "id": "vta-0184",
+    "date": "2026-06-11",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-010",
+        "quantity": 2,
+        "unitPriceBob": 25
+      },
+      {
+        "productId": "prod-007",
+        "quantity": 4,
+        "unitPriceBob": 670
+      }
+    ],
+    "totalBob": 2730,
+    "channel": "tienda"
+  },
+  {
+    "id": "vta-0185",
+    "date": "2026-06-11",
+    "customerId": "cli-008",
+    "items": [
+      {
+        "productId": "prod-011",
+        "quantity": 2,
+        "unitPriceBob": 15
+      },
+      {
+        "productId": "prod-010",
+        "quantity": 3,
+        "unitPriceBob": 25
+      }
+    ],
+    "totalBob": 105,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0186",
+    "date": "2026-06-12",
+    "customerId": "cli-001",
+    "items": [
+      {
+        "productId": "prod-008",
+        "quantity": 3,
+        "unitPriceBob": 405
+      },
+      {
+        "productId": "prod-013",
+        "quantity": 4,
+        "unitPriceBob": 5
+      },
+      {
+        "productId": "prod-005",
+        "quantity": 3,
+        "unitPriceBob": 325
+      }
+    ],
+    "totalBob": 2210,
+    "channel": "facebook"
+  },
+  {
+    "id": "vta-0187",
+    "date": "2026-06-13",
+    "customerId": "cli-002",
+    "items": [
+      {
+        "productId": "prod-009",
+        "quantity": 2,
+        "unitPriceBob": 245
+      },
+      {
+        "productId": "prod-006",
+        "quantity": 3,
+        "unitPriceBob": 140
+      }
+    ],
+    "totalBob": 910,
+    "channel": "tiktok"
+  },
+  {
+    "id": "vta-0188",
+    "date": "2026-06-13",
+    "customerId": "cli-007",
+    "items": [
+      {
+        "productId": "prod-013",
+        "quantity": 2,
+        "unitPriceBob": 5
+      },
+      {
+        "productId": "prod-002",
+        "quantity": 3,
+        "unitPriceBob": 430
+      }
+    ],
+    "totalBob": 1300,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0189",
+    "date": "2026-06-13",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-014",
+        "quantity": 1,
+        "unitPriceBob": 45
+      }
+    ],
+    "totalBob": 45,
+    "channel": "tienda"
+  },
+  {
+    "id": "vta-0190",
+    "date": "2026-06-13",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-004",
+        "quantity": 3,
+        "unitPriceBob": 35
+      },
+      {
+        "productId": "prod-013",
+        "quantity": 3,
+        "unitPriceBob": 5
+      }
+    ],
+    "totalBob": 120,
+    "channel": "whatsapp"
+  },
+  {
+    "id": "vta-0191",
+    "date": "2026-06-13",
+    "customerId": "cli-011",
+    "items": [
+      {
+        "productId": "prod-014",
+        "quantity": 1,
+        "unitPriceBob": 45
+      }
+    ],
+    "totalBob": 45,
+    "channel": "whatsapp"
+  },
+  {
+    "id": "vta-0192",
+    "date": "2026-06-15",
+    "customerId": "cli-009",
+    "items": [
+      {
+        "productId": "prod-011",
+        "quantity": 3,
+        "unitPriceBob": 15
+      }
+    ],
+    "totalBob": 45,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0193",
+    "date": "2026-06-15",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-012",
+        "quantity": 2,
+        "unitPriceBob": 830
+      }
+    ],
+    "totalBob": 1660,
+    "channel": "facebook"
+  },
+  {
+    "id": "vta-0194",
+    "date": "2026-06-16",
+    "customerId": "cli-012",
+    "items": [
+      {
+        "productId": "prod-014",
+        "quantity": 4,
+        "unitPriceBob": 45
+      },
+      {
+        "productId": "prod-010",
+        "quantity": 3,
+        "unitPriceBob": 25
+      }
+    ],
+    "totalBob": 255,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0195",
+    "date": "2026-06-17",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-012",
+        "quantity": 4,
+        "unitPriceBob": 830
+      }
+    ],
+    "totalBob": 3320,
+    "channel": "whatsapp"
+  },
+  {
+    "id": "vta-0196",
+    "date": "2026-06-17",
+    "customerId": "cli-004",
+    "items": [
+      {
+        "productId": "prod-003",
+        "quantity": 1,
+        "unitPriceBob": 140
+      },
+      {
+        "productId": "prod-005",
+        "quantity": 1,
+        "unitPriceBob": 325
+      },
+      {
+        "productId": "prod-014",
+        "quantity": 3,
+        "unitPriceBob": 45
+      }
+    ],
+    "totalBob": 600,
+    "channel": "tienda"
+  },
+  {
+    "id": "vta-0197",
+    "date": "2026-06-17",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-008",
+        "quantity": 3,
+        "unitPriceBob": 405
+      }
+    ],
+    "totalBob": 1215,
+    "channel": "facebook"
+  },
+  {
+    "id": "vta-0198",
+    "date": "2026-06-17",
+    "customerId": "cli-005",
+    "items": [
+      {
+        "productId": "prod-014",
+        "quantity": 4,
+        "unitPriceBob": 45
+      }
+    ],
+    "totalBob": 180,
+    "channel": "facebook"
+  },
+  {
+    "id": "vta-0199",
+    "date": "2026-06-17",
+    "customerId": "cli-006",
+    "items": [
+      {
+        "productId": "prod-005",
+        "quantity": 3,
+        "unitPriceBob": 325
+      }
+    ],
+    "totalBob": 975,
+    "channel": "whatsapp"
+  },
+  {
+    "id": "vta-0200",
+    "date": "2026-06-18",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-004",
+        "quantity": 2,
+        "unitPriceBob": 35
+      }
+    ],
+    "totalBob": 70,
+    "channel": "whatsapp"
+  },
+  {
+    "id": "vta-0201",
+    "date": "2026-06-18",
+    "customerId": "cli-006",
+    "items": [
+      {
+        "productId": "prod-013",
+        "quantity": 2,
+        "unitPriceBob": 5
+      },
+      {
+        "productId": "prod-007",
+        "quantity": 1,
+        "unitPriceBob": 670
+      }
+    ],
+    "totalBob": 680,
+    "channel": "tiktok"
+  },
+  {
+    "id": "vta-0202",
+    "date": "2026-06-18",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-008",
+        "quantity": 3,
+        "unitPriceBob": 405
+      }
+    ],
+    "totalBob": 1215,
+    "channel": "tiktok"
+  },
+  {
+    "id": "vta-0203",
+    "date": "2026-06-19",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-011",
+        "quantity": 3,
+        "unitPriceBob": 15
+      }
+    ],
+    "totalBob": 45,
+    "channel": "tiktok"
+  },
+  {
+    "id": "vta-0204",
+    "date": "2026-06-20",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-005",
+        "quantity": 2,
+        "unitPriceBob": 325
+      },
+      {
+        "productId": "prod-014",
+        "quantity": 4,
+        "unitPriceBob": 45
+      }
+    ],
+    "totalBob": 830,
+    "channel": "whatsapp"
+  },
+  {
+    "id": "vta-0205",
+    "date": "2026-06-20",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-013",
+        "quantity": 1,
+        "unitPriceBob": 5
+      }
+    ],
+    "totalBob": 5,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0206",
+    "date": "2026-06-20",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-006",
+        "quantity": 3,
+        "unitPriceBob": 140
+      },
+      {
+        "productId": "prod-013",
+        "quantity": 3,
+        "unitPriceBob": 5
+      }
+    ],
+    "totalBob": 435,
+    "channel": "facebook"
+  },
+  {
+    "id": "vta-0207",
+    "date": "2026-06-20",
+    "customerId": "cli-007",
+    "items": [
+      {
+        "productId": "prod-011",
+        "quantity": 3,
+        "unitPriceBob": 15
+      },
+      {
+        "productId": "prod-008",
+        "quantity": 4,
+        "unitPriceBob": 405
+      }
+    ],
+    "totalBob": 1665,
+    "channel": "facebook"
+  },
+  {
+    "id": "vta-0208",
+    "date": "2026-06-22",
+    "customerId": "cli-006",
+    "items": [
+      {
+        "productId": "prod-001",
+        "quantity": 4,
+        "unitPriceBob": 175
+      },
+      {
+        "productId": "prod-008",
+        "quantity": 3,
+        "unitPriceBob": 405
+      },
+      {
+        "productId": "prod-012",
+        "quantity": 2,
+        "unitPriceBob": 830
+      }
+    ],
+    "totalBob": 3575,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0209",
+    "date": "2026-06-22",
+    "customerId": "cli-012",
+    "items": [
+      {
+        "productId": "prod-002",
+        "quantity": 4,
+        "unitPriceBob": 430
+      },
+      {
+        "productId": "prod-013",
+        "quantity": 1,
+        "unitPriceBob": 5
+      }
+    ],
+    "totalBob": 1725,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0210",
+    "date": "2026-06-22",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-013",
+        "quantity": 4,
+        "unitPriceBob": 5
+      },
+      {
+        "productId": "prod-001",
+        "quantity": 3,
+        "unitPriceBob": 175
+      },
+      {
+        "productId": "prod-006",
+        "quantity": 3,
+        "unitPriceBob": 140
+      }
+    ],
+    "totalBob": 965,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0211",
+    "date": "2026-06-22",
+    "customerId": "cli-004",
+    "items": [
+      {
+        "productId": "prod-001",
+        "quantity": 4,
+        "unitPriceBob": 175
+      }
+    ],
+    "totalBob": 700,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0212",
+    "date": "2026-06-23",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-004",
+        "quantity": 3,
+        "unitPriceBob": 35
+      },
+      {
+        "productId": "prod-006",
+        "quantity": 1,
+        "unitPriceBob": 140
+      },
+      {
+        "productId": "prod-014",
+        "quantity": 3,
+        "unitPriceBob": 45
+      }
+    ],
+    "totalBob": 380,
+    "channel": "tiktok"
+  },
+  {
+    "id": "vta-0213",
+    "date": "2026-06-24",
+    "customerId": "cli-002",
+    "items": [
+      {
+        "productId": "prod-010",
+        "quantity": 3,
+        "unitPriceBob": 25
+      },
+      {
+        "productId": "prod-012",
+        "quantity": 3,
+        "unitPriceBob": 830
+      },
+      {
+        "productId": "prod-001",
+        "quantity": 3,
+        "unitPriceBob": 175
+      }
+    ],
+    "totalBob": 3090,
+    "channel": "facebook"
+  },
+  {
+    "id": "vta-0214",
+    "date": "2026-06-24",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-008",
+        "quantity": 3,
+        "unitPriceBob": 405
+      }
+    ],
+    "totalBob": 1215,
+    "channel": "tiktok"
+  },
+  {
+    "id": "vta-0215",
+    "date": "2026-06-24",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-003",
+        "quantity": 3,
+        "unitPriceBob": 140
+      }
+    ],
+    "totalBob": 420,
+    "channel": "whatsapp"
+  },
+  {
+    "id": "vta-0216",
+    "date": "2026-06-24",
+    "customerId": "cli-008",
+    "items": [
+      {
+        "productId": "prod-004",
+        "quantity": 3,
+        "unitPriceBob": 35
+      },
+      {
+        "productId": "prod-014",
+        "quantity": 3,
+        "unitPriceBob": 45
+      }
+    ],
+    "totalBob": 240,
+    "channel": "whatsapp"
+  },
+  {
+    "id": "vta-0217",
+    "date": "2026-06-24",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-009",
+        "quantity": 4,
+        "unitPriceBob": 245
+      }
+    ],
+    "totalBob": 980,
+    "channel": "tiktok"
+  },
+  {
+    "id": "vta-0218",
+    "date": "2026-06-25",
+    "customerId": "cli-001",
+    "items": [
+      {
+        "productId": "prod-011",
+        "quantity": 2,
+        "unitPriceBob": 15
+      }
+    ],
+    "totalBob": 30,
+    "channel": "whatsapp"
+  },
+  {
+    "id": "vta-0219",
+    "date": "2026-06-25",
+    "customerId": "cli-009",
+    "items": [
+      {
+        "productId": "prod-006",
+        "quantity": 1,
+        "unitPriceBob": 140
+      }
+    ],
+    "totalBob": 140,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0220",
+    "date": "2026-06-25",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-010",
+        "quantity": 1,
+        "unitPriceBob": 25
+      },
+      {
+        "productId": "prod-004",
+        "quantity": 2,
+        "unitPriceBob": 35
+      }
+    ],
+    "totalBob": 95,
+    "channel": "tienda"
+  },
+  {
+    "id": "vta-0221",
+    "date": "2026-06-25",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-010",
+        "quantity": 2,
+        "unitPriceBob": 25
+      },
+      {
+        "productId": "prod-014",
+        "quantity": 1,
+        "unitPriceBob": 45
+      }
+    ],
+    "totalBob": 95,
+    "channel": "facebook"
+  },
+  {
+    "id": "vta-0222",
+    "date": "2026-06-26",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-009",
+        "quantity": 4,
+        "unitPriceBob": 245
+      },
+      {
+        "productId": "prod-004",
+        "quantity": 4,
+        "unitPriceBob": 35
+      }
+    ],
+    "totalBob": 1120,
+    "channel": "tienda"
+  },
+  {
+    "id": "vta-0223",
+    "date": "2026-06-26",
+    "customerId": "cli-007",
+    "items": [
+      {
+        "productId": "prod-002",
+        "quantity": 2,
+        "unitPriceBob": 430
+      },
+      {
+        "productId": "prod-009",
+        "quantity": 3,
+        "unitPriceBob": 245
+      },
+      {
+        "productId": "prod-007",
+        "quantity": 1,
+        "unitPriceBob": 670
+      }
+    ],
+    "totalBob": 2265,
+    "channel": "facebook"
+  },
+  {
+    "id": "vta-0224",
+    "date": "2026-06-26",
+    "customerId": "cli-003",
+    "items": [
+      {
+        "productId": "prod-006",
+        "quantity": 4,
+        "unitPriceBob": 140
+      }
+    ],
+    "totalBob": 560,
+    "channel": "facebook"
+  },
+  {
+    "id": "vta-0225",
+    "date": "2026-06-26",
+    "customerId": "cli-007",
+    "items": [
+      {
+        "productId": "prod-007",
+        "quantity": 2,
+        "unitPriceBob": 670
+      }
+    ],
+    "totalBob": 1340,
+    "channel": "whatsapp"
+  },
+  {
+    "id": "vta-0226",
+    "date": "2026-06-27",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-012",
+        "quantity": 1,
+        "unitPriceBob": 830
+      },
+      {
+        "productId": "prod-008",
+        "quantity": 4,
+        "unitPriceBob": 405
+      },
+      {
+        "productId": "prod-004",
+        "quantity": 4,
+        "unitPriceBob": 35
+      }
+    ],
+    "totalBob": 2590,
+    "channel": "facebook"
+  },
+  {
+    "id": "vta-0227",
+    "date": "2026-06-27",
+    "customerId": "cli-006",
+    "items": [
+      {
+        "productId": "prod-005",
+        "quantity": 3,
+        "unitPriceBob": 325
+      },
+      {
+        "productId": "prod-010",
+        "quantity": 2,
+        "unitPriceBob": 25
+      },
+      {
+        "productId": "prod-008",
+        "quantity": 3,
+        "unitPriceBob": 405
+      }
+    ],
+    "totalBob": 2240,
+    "channel": "tiktok"
+  },
+  {
+    "id": "vta-0228",
+    "date": "2026-06-27",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-003",
+        "quantity": 2,
+        "unitPriceBob": 140
+      },
+      {
+        "productId": "prod-010",
+        "quantity": 4,
+        "unitPriceBob": 25
+      }
+    ],
+    "totalBob": 380,
+    "channel": "tienda"
+  },
+  {
+    "id": "vta-0229",
+    "date": "2026-06-27",
+    "customerId": "cli-011",
+    "items": [
+      {
+        "productId": "prod-006",
+        "quantity": 2,
+        "unitPriceBob": 140
+      },
+      {
+        "productId": "prod-001",
+        "quantity": 3,
+        "unitPriceBob": 175
+      }
+    ],
+    "totalBob": 805,
+    "channel": "facebook"
+  },
+  {
+    "id": "vta-0230",
+    "date": "2026-06-27",
+    "customerId": "cli-011",
+    "items": [
+      {
+        "productId": "prod-002",
+        "quantity": 1,
+        "unitPriceBob": 430
+      }
+    ],
+    "totalBob": 430,
+    "channel": "whatsapp"
+  },
+  {
+    "id": "vta-0231",
+    "date": "2026-06-28",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-001",
+        "quantity": 4,
+        "unitPriceBob": 175
+      },
+      {
+        "productId": "prod-002",
+        "quantity": 3,
+        "unitPriceBob": 430
+      }
+    ],
+    "totalBob": 1990,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0232",
+    "date": "2026-06-28",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-010",
+        "quantity": 2,
+        "unitPriceBob": 25
+      },
+      {
+        "productId": "prod-014",
+        "quantity": 1,
+        "unitPriceBob": 45
+      },
+      {
+        "productId": "prod-012",
+        "quantity": 2,
+        "unitPriceBob": 830
+      }
+    ],
+    "totalBob": 1755,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0233",
+    "date": "2026-06-29",
+    "customerId": "cli-010",
+    "items": [
+      {
+        "productId": "prod-002",
+        "quantity": 1,
+        "unitPriceBob": 430
+      }
+    ],
+    "totalBob": 430,
+    "channel": "whatsapp"
+  },
+  {
+    "id": "vta-0234",
+    "date": "2026-06-29",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-003",
+        "quantity": 2,
+        "unitPriceBob": 140
+      },
+      {
+        "productId": "prod-011",
+        "quantity": 3,
+        "unitPriceBob": 15
+      }
+    ],
+    "totalBob": 325,
+    "channel": "whatsapp"
+  },
+  {
+    "id": "vta-0235",
+    "date": "2026-06-30",
+    "customerId": "cli-006",
+    "items": [
+      {
+        "productId": "prod-001",
+        "quantity": 3,
+        "unitPriceBob": 175
+      },
+      {
+        "productId": "prod-005",
+        "quantity": 3,
+        "unitPriceBob": 325
+      },
+      {
+        "productId": "prod-004",
+        "quantity": 2,
+        "unitPriceBob": 35
+      }
+    ],
+    "totalBob": 1570,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0236",
+    "date": "2026-06-30",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-011",
+        "quantity": 3,
+        "unitPriceBob": 15
+      }
+    ],
+    "totalBob": 45,
+    "channel": "whatsapp"
+  },
+  {
+    "id": "vta-0237",
+    "date": "2026-06-30",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-002",
+        "quantity": 2,
+        "unitPriceBob": 430
+      },
+      {
+        "productId": "prod-001",
+        "quantity": 3,
+        "unitPriceBob": 175
+      },
+      {
+        "productId": "prod-003",
+        "quantity": 2,
+        "unitPriceBob": 140
+      }
+    ],
+    "totalBob": 1665,
+    "channel": "tienda"
+  },
+  {
+    "id": "vta-0238",
+    "date": "2026-06-30",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-014",
+        "quantity": 3,
+        "unitPriceBob": 45
+      },
+      {
+        "productId": "prod-004",
+        "quantity": 3,
+        "unitPriceBob": 35
+      }
+    ],
+    "totalBob": 240,
+    "channel": "whatsapp"
+  },
+  {
+    "id": "vta-0239",
+    "date": "2026-07-01",
+    "customerId": "cli-011",
+    "items": [
+      {
+        "productId": "prod-005",
+        "quantity": 2,
+        "unitPriceBob": 325
+      },
+      {
+        "productId": "prod-011",
+        "quantity": 3,
+        "unitPriceBob": 15
+      }
+    ],
+    "totalBob": 695,
+    "channel": "facebook"
+  },
+  {
+    "id": "vta-0240",
+    "date": "2026-07-01",
+    "customerId": "cli-006",
+    "items": [
+      {
+        "productId": "prod-009",
+        "quantity": 3,
+        "unitPriceBob": 245
+      },
+      {
+        "productId": "prod-003",
+        "quantity": 2,
+        "unitPriceBob": 140
+      },
+      {
+        "productId": "prod-010",
+        "quantity": 1,
+        "unitPriceBob": 25
+      }
+    ],
+    "totalBob": 1040,
+    "channel": "tiktok"
+  },
+  {
+    "id": "vta-0241",
+    "date": "2026-07-02",
+    "customerId": "cli-007",
+    "items": [
+      {
+        "productId": "prod-007",
+        "quantity": 1,
+        "unitPriceBob": 670
+      },
+      {
+        "productId": "prod-004",
+        "quantity": 1,
+        "unitPriceBob": 35
+      },
+      {
+        "productId": "prod-003",
+        "quantity": 1,
+        "unitPriceBob": 140
+      }
+    ],
+    "totalBob": 845,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0242",
+    "date": "2026-07-02",
+    "customerId": "cli-006",
+    "items": [
+      {
+        "productId": "prod-004",
+        "quantity": 1,
+        "unitPriceBob": 35
+      }
+    ],
+    "totalBob": 35,
+    "channel": "tiktok"
+  },
+  {
+    "id": "vta-0243",
+    "date": "2026-07-02",
+    "customerId": "cli-003",
+    "items": [
+      {
+        "productId": "prod-005",
+        "quantity": 1,
+        "unitPriceBob": 325
+      },
+      {
+        "productId": "prod-012",
+        "quantity": 2,
+        "unitPriceBob": 830
+      },
+      {
+        "productId": "prod-011",
+        "quantity": 4,
+        "unitPriceBob": 15
+      }
+    ],
+    "totalBob": 2045,
+    "channel": "tienda"
+  },
+  {
+    "id": "vta-0244",
+    "date": "2026-07-02",
+    "customerId": "cli-012",
+    "items": [
+      {
+        "productId": "prod-014",
+        "quantity": 1,
+        "unitPriceBob": 45
+      },
+      {
+        "productId": "prod-005",
+        "quantity": 4,
+        "unitPriceBob": 325
+      }
+    ],
+    "totalBob": 1345,
+    "channel": "whatsapp"
+  },
+  {
+    "id": "vta-0245",
+    "date": "2026-07-02",
+    "customerId": "cli-007",
+    "items": [
+      {
+        "productId": "prod-010",
+        "quantity": 3,
+        "unitPriceBob": 25
+      },
+      {
+        "productId": "prod-014",
+        "quantity": 2,
+        "unitPriceBob": 45
+      }
+    ],
+    "totalBob": 165,
+    "channel": "facebook"
+  },
+  {
+    "id": "vta-0246",
+    "date": "2026-07-02",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-001",
+        "quantity": 2,
+        "unitPriceBob": 175
+      },
+      {
+        "productId": "prod-002",
+        "quantity": 2,
+        "unitPriceBob": 430
+      },
+      {
+        "productId": "prod-008",
+        "quantity": 1,
+        "unitPriceBob": 405
+      }
+    ],
+    "totalBob": 1615,
+    "channel": "tiktok"
+  },
+  {
+    "id": "vta-0247",
+    "date": "2026-07-03",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-013",
+        "quantity": 1,
+        "unitPriceBob": 5
+      },
+      {
+        "productId": "prod-014",
+        "quantity": 3,
+        "unitPriceBob": 45
+      }
+    ],
+    "totalBob": 140,
+    "channel": "tienda"
+  },
+  {
+    "id": "vta-0248",
+    "date": "2026-07-03",
+    "customerId": "cli-001",
+    "items": [
+      {
+        "productId": "prod-003",
+        "quantity": 2,
+        "unitPriceBob": 140
+      },
+      {
+        "productId": "prod-007",
+        "quantity": 4,
+        "unitPriceBob": 670
+      }
+    ],
+    "totalBob": 2960,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0249",
+    "date": "2026-07-04",
+    "customerId": "cli-006",
+    "items": [
+      {
+        "productId": "prod-009",
+        "quantity": 2,
+        "unitPriceBob": 245
+      }
+    ],
+    "totalBob": 490,
+    "channel": "tiktok"
+  },
+  {
+    "id": "vta-0250",
+    "date": "2026-07-04",
+    "customerId": "cli-009",
+    "items": [
+      {
+        "productId": "prod-013",
+        "quantity": 3,
+        "unitPriceBob": 5
+      },
+      {
+        "productId": "prod-005",
+        "quantity": 1,
+        "unitPriceBob": 325
+      }
+    ],
+    "totalBob": 340,
+    "channel": "tiktok"
+  },
+  {
+    "id": "vta-0251",
+    "date": "2026-07-06",
+    "customerId": "cli-005",
+    "items": [
+      {
+        "productId": "prod-003",
+        "quantity": 1,
+        "unitPriceBob": 140
+      },
+      {
+        "productId": "prod-009",
+        "quantity": 1,
+        "unitPriceBob": 245
+      },
+      {
+        "productId": "prod-013",
+        "quantity": 4,
+        "unitPriceBob": 5
+      }
+    ],
+    "totalBob": 405,
+    "channel": "tiktok"
+  },
+  {
+    "id": "vta-0252",
+    "date": "2026-07-06",
+    "customerId": "cli-003",
+    "items": [
+      {
+        "productId": "prod-009",
+        "quantity": 1,
+        "unitPriceBob": 245
+      }
+    ],
+    "totalBob": 245,
+    "channel": "facebook"
+  },
+  {
+    "id": "vta-0253",
+    "date": "2026-07-06",
+    "customerId": "cli-011",
+    "items": [
+      {
+        "productId": "prod-003",
+        "quantity": 3,
+        "unitPriceBob": 140
+      }
+    ],
+    "totalBob": 420,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0254",
+    "date": "2026-07-06",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-001",
+        "quantity": 1,
+        "unitPriceBob": 175
+      },
+      {
+        "productId": "prod-002",
+        "quantity": 4,
+        "unitPriceBob": 430
+      }
+    ],
+    "totalBob": 1895,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0255",
+    "date": "2026-07-06",
+    "customerId": "cli-010",
+    "items": [
+      {
+        "productId": "prod-001",
+        "quantity": 3,
+        "unitPriceBob": 175
+      },
+      {
+        "productId": "prod-004",
+        "quantity": 4,
+        "unitPriceBob": 35
+      }
+    ],
+    "totalBob": 665,
+    "channel": "whatsapp"
+  },
+  {
+    "id": "vta-0256",
+    "date": "2026-07-07",
+    "customerId": "cli-012",
+    "items": [
+      {
+        "productId": "prod-009",
+        "quantity": 3,
+        "unitPriceBob": 245
+      },
+      {
+        "productId": "prod-005",
+        "quantity": 1,
+        "unitPriceBob": 325
+      },
+      {
+        "productId": "prod-007",
+        "quantity": 4,
+        "unitPriceBob": 670
+      }
+    ],
+    "totalBob": 3740,
+    "channel": "tiktok"
+  },
+  {
+    "id": "vta-0257",
+    "date": "2026-07-07",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-011",
+        "quantity": 3,
+        "unitPriceBob": 15
+      },
+      {
+        "productId": "prod-012",
+        "quantity": 3,
+        "unitPriceBob": 830
+      }
+    ],
+    "totalBob": 2535,
+    "channel": "whatsapp"
+  },
+  {
+    "id": "vta-0258",
+    "date": "2026-07-07",
+    "customerId": "cli-005",
+    "items": [
+      {
+        "productId": "prod-012",
+        "quantity": 3,
+        "unitPriceBob": 830
+      },
+      {
+        "productId": "prod-004",
+        "quantity": 1,
+        "unitPriceBob": 35
+      },
+      {
+        "productId": "prod-009",
+        "quantity": 4,
+        "unitPriceBob": 245
+      }
+    ],
+    "totalBob": 3505,
+    "channel": "tiktok"
+  },
+  {
+    "id": "vta-0259",
+    "date": "2026-07-08",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-013",
+        "quantity": 4,
+        "unitPriceBob": 5
+      },
+      {
+        "productId": "prod-014",
+        "quantity": 4,
+        "unitPriceBob": 45
+      }
+    ],
+    "totalBob": 200,
+    "channel": "whatsapp"
+  },
+  {
+    "id": "vta-0260",
+    "date": "2026-07-08",
+    "customerId": "cli-001",
+    "items": [
+      {
+        "productId": "prod-013",
+        "quantity": 4,
+        "unitPriceBob": 5
+      },
+      {
+        "productId": "prod-009",
+        "quantity": 1,
+        "unitPriceBob": 245
+      },
+      {
+        "productId": "prod-010",
+        "quantity": 1,
+        "unitPriceBob": 25
+      }
+    ],
+    "totalBob": 290,
+    "channel": "tiktok"
+  },
+  {
+    "id": "vta-0261",
+    "date": "2026-07-09",
+    "customerId": "cli-005",
+    "items": [
+      {
+        "productId": "prod-002",
+        "quantity": 3,
+        "unitPriceBob": 430
+      }
+    ],
+    "totalBob": 1290,
+    "channel": "whatsapp"
+  },
+  {
+    "id": "vta-0262",
+    "date": "2026-07-09",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-008",
+        "quantity": 2,
+        "unitPriceBob": 405
+      }
+    ],
+    "totalBob": 810,
+    "channel": "tienda"
+  },
+  {
+    "id": "vta-0263",
+    "date": "2026-07-10",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-006",
+        "quantity": 2,
+        "unitPriceBob": 140
+      }
+    ],
+    "totalBob": 280,
+    "channel": "tiktok"
+  },
+  {
+    "id": "vta-0264",
+    "date": "2026-07-10",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-005",
+        "quantity": 3,
+        "unitPriceBob": 325
+      },
+      {
+        "productId": "prod-014",
+        "quantity": 1,
+        "unitPriceBob": 45
+      },
+      {
+        "productId": "prod-004",
+        "quantity": 3,
+        "unitPriceBob": 35
+      }
+    ],
+    "totalBob": 1125,
+    "channel": "whatsapp"
+  },
+  {
+    "id": "vta-0265",
+    "date": "2026-07-11",
+    "customerId": "cli-004",
+    "items": [
+      {
+        "productId": "prod-002",
+        "quantity": 4,
+        "unitPriceBob": 430
+      },
+      {
+        "productId": "prod-006",
+        "quantity": 3,
+        "unitPriceBob": 140
+      },
+      {
+        "productId": "prod-012",
+        "quantity": 1,
+        "unitPriceBob": 830
+      }
+    ],
+    "totalBob": 2970,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0266",
+    "date": "2026-07-11",
+    "customerId": "cli-011",
+    "items": [
+      {
+        "productId": "prod-005",
+        "quantity": 3,
+        "unitPriceBob": 325
+      },
+      {
+        "productId": "prod-006",
+        "quantity": 3,
+        "unitPriceBob": 140
+      }
+    ],
+    "totalBob": 1395,
+    "channel": "tienda"
+  },
+  {
+    "id": "vta-0267",
+    "date": "2026-07-13",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-003",
+        "quantity": 2,
+        "unitPriceBob": 140
+      }
+    ],
+    "totalBob": 280,
+    "channel": "whatsapp"
+  },
+  {
+    "id": "vta-0268",
+    "date": "2026-07-13",
+    "customerId": "cli-010",
+    "items": [
+      {
+        "productId": "prod-002",
+        "quantity": 4,
+        "unitPriceBob": 430
+      },
+      {
+        "productId": "prod-004",
+        "quantity": 3,
+        "unitPriceBob": 35
+      },
+      {
+        "productId": "prod-014",
+        "quantity": 2,
+        "unitPriceBob": 45
+      }
+    ],
+    "totalBob": 1915,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0269",
+    "date": "2026-07-14",
+    "customerId": "cli-002",
+    "items": [
+      {
+        "productId": "prod-006",
+        "quantity": 4,
+        "unitPriceBob": 140
+      }
+    ],
+    "totalBob": 560,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0270",
+    "date": "2026-07-14",
+    "customerId": "cli-007",
+    "items": [
+      {
+        "productId": "prod-003",
+        "quantity": 3,
+        "unitPriceBob": 140
+      }
+    ],
+    "totalBob": 420,
+    "channel": "whatsapp"
+  },
+  {
+    "id": "vta-0271",
+    "date": "2026-07-14",
+    "customerId": "cli-003",
+    "items": [
+      {
+        "productId": "prod-014",
+        "quantity": 2,
+        "unitPriceBob": 45
+      },
+      {
+        "productId": "prod-011",
+        "quantity": 1,
+        "unitPriceBob": 15
+      }
+    ],
+    "totalBob": 105,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0272",
+    "date": "2026-07-14",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-014",
+        "quantity": 1,
+        "unitPriceBob": 45
+      },
+      {
+        "productId": "prod-010",
+        "quantity": 3,
+        "unitPriceBob": 25
+      }
+    ],
+    "totalBob": 120,
+    "channel": "whatsapp"
+  },
+  {
+    "id": "vta-0273",
+    "date": "2026-07-15",
+    "customerId": "cli-012",
+    "items": [
+      {
+        "productId": "prod-014",
+        "quantity": 1,
+        "unitPriceBob": 45
+      },
+      {
+        "productId": "prod-007",
+        "quantity": 2,
+        "unitPriceBob": 670
+      }
+    ],
+    "totalBob": 1385,
+    "channel": "facebook"
+  },
+  {
+    "id": "vta-0274",
+    "date": "2026-07-15",
+    "customerId": "cli-010",
+    "items": [
+      {
+        "productId": "prod-004",
+        "quantity": 4,
+        "unitPriceBob": 35
+      }
+    ],
+    "totalBob": 140,
+    "channel": "tienda"
+  },
+  {
+    "id": "vta-0275",
+    "date": "2026-07-15",
+    "customerId": "cli-008",
+    "items": [
+      {
+        "productId": "prod-002",
+        "quantity": 1,
+        "unitPriceBob": 430
+      }
+    ],
+    "totalBob": 430,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0276",
+    "date": "2026-07-15",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-010",
+        "quantity": 1,
+        "unitPriceBob": 25
+      }
+    ],
+    "totalBob": 25,
+    "channel": "tiktok"
+  },
+  {
+    "id": "vta-0277",
+    "date": "2026-07-16",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-011",
+        "quantity": 4,
+        "unitPriceBob": 15
+      }
+    ],
+    "totalBob": 60,
+    "channel": "facebook"
+  },
+  {
+    "id": "vta-0278",
+    "date": "2026-07-16",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-009",
+        "quantity": 2,
+        "unitPriceBob": 245
+      }
+    ],
+    "totalBob": 490,
+    "channel": "tienda"
+  },
+  {
+    "id": "vta-0279",
+    "date": "2026-07-16",
+    "customerId": "cli-008",
+    "items": [
+      {
+        "productId": "prod-010",
+        "quantity": 4,
+        "unitPriceBob": 25
+      },
+      {
+        "productId": "prod-012",
+        "quantity": 1,
+        "unitPriceBob": 830
+      }
+    ],
+    "totalBob": 930,
+    "channel": "tienda"
+  },
+  {
+    "id": "vta-0280",
+    "date": "2026-07-16",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-014",
+        "quantity": 2,
+        "unitPriceBob": 45
+      },
+      {
+        "productId": "prod-004",
+        "quantity": 3,
+        "unitPriceBob": 35
+      }
+    ],
+    "totalBob": 195,
+    "channel": "facebook"
+  },
+  {
+    "id": "vta-0281",
+    "date": "2026-07-16",
+    "customerId": "cli-012",
+    "items": [
+      {
+        "productId": "prod-008",
+        "quantity": 2,
+        "unitPriceBob": 405
+      },
+      {
+        "productId": "prod-005",
+        "quantity": 4,
+        "unitPriceBob": 325
+      }
+    ],
+    "totalBob": 2110,
+    "channel": "tienda"
+  },
+  {
+    "id": "vta-0282",
+    "date": "2026-07-16",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-003",
+        "quantity": 4,
+        "unitPriceBob": 140
+      },
+      {
+        "productId": "prod-012",
+        "quantity": 1,
+        "unitPriceBob": 830
+      },
+      {
+        "productId": "prod-004",
+        "quantity": 3,
+        "unitPriceBob": 35
+      }
+    ],
+    "totalBob": 1495,
+    "channel": "tienda"
+  },
+  {
+    "id": "vta-0283",
+    "date": "2026-07-17",
+    "customerId": "cli-006",
+    "items": [
+      {
+        "productId": "prod-004",
+        "quantity": 4,
+        "unitPriceBob": 35
+      },
+      {
+        "productId": "prod-014",
+        "quantity": 2,
+        "unitPriceBob": 45
+      },
+      {
+        "productId": "prod-002",
+        "quantity": 1,
+        "unitPriceBob": 430
+      }
+    ],
+    "totalBob": 660,
+    "channel": "tiktok"
+  },
+  {
+    "id": "vta-0284",
+    "date": "2026-07-17",
+    "customerId": "cli-004",
+    "items": [
+      {
+        "productId": "prod-007",
+        "quantity": 2,
+        "unitPriceBob": 670
+      },
+      {
+        "productId": "prod-009",
+        "quantity": 2,
+        "unitPriceBob": 245
+      }
+    ],
+    "totalBob": 1830,
+    "channel": "tienda"
+  },
+  {
+    "id": "vta-0285",
+    "date": "2026-07-17",
+    "customerId": "cli-007",
+    "items": [
+      {
+        "productId": "prod-014",
+        "quantity": 2,
+        "unitPriceBob": 45
+      }
+    ],
+    "totalBob": 90,
+    "channel": "tienda"
+  },
+  {
+    "id": "vta-0286",
+    "date": "2026-07-17",
+    "customerId": "cli-005",
+    "items": [
+      {
+        "productId": "prod-005",
+        "quantity": 3,
+        "unitPriceBob": 325
+      },
+      {
+        "productId": "prod-008",
+        "quantity": 1,
+        "unitPriceBob": 405
+      }
+    ],
+    "totalBob": 1380,
+    "channel": "tienda"
+  },
+  {
+    "id": "vta-0287",
+    "date": "2026-07-17",
+    "customerId": "cli-001",
+    "items": [
+      {
+        "productId": "prod-007",
+        "quantity": 1,
+        "unitPriceBob": 670
+      },
+      {
+        "productId": "prod-008",
+        "quantity": 3,
+        "unitPriceBob": 405
+      }
+    ],
+    "totalBob": 1885,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0288",
+    "date": "2026-07-17",
+    "customerId": "cli-001",
+    "items": [
+      {
+        "productId": "prod-014",
+        "quantity": 2,
+        "unitPriceBob": 45
+      }
+    ],
+    "totalBob": 90,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0289",
+    "date": "2026-07-18",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-005",
+        "quantity": 4,
+        "unitPriceBob": 325
+      }
+    ],
+    "totalBob": 1300,
+    "channel": "tiktok"
+  },
+  {
+    "id": "vta-0290",
+    "date": "2026-07-18",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-004",
+        "quantity": 1,
+        "unitPriceBob": 35
+      },
+      {
+        "productId": "prod-003",
+        "quantity": 3,
+        "unitPriceBob": 140
+      }
+    ],
+    "totalBob": 455,
+    "channel": "whatsapp"
+  },
+  {
+    "id": "vta-0291",
+    "date": "2026-07-18",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-006",
+        "quantity": 2,
+        "unitPriceBob": 140
+      },
+      {
+        "productId": "prod-008",
+        "quantity": 1,
+        "unitPriceBob": 405
+      },
+      {
+        "productId": "prod-001",
+        "quantity": 3,
+        "unitPriceBob": 175
+      }
+    ],
+    "totalBob": 1210,
+    "channel": "whatsapp"
+  },
+  {
+    "id": "vta-0292",
+    "date": "2026-07-18",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-013",
+        "quantity": 1,
+        "unitPriceBob": 5
+      },
+      {
+        "productId": "prod-002",
+        "quantity": 3,
+        "unitPriceBob": 430
+      }
+    ],
+    "totalBob": 1295,
+    "channel": "whatsapp"
+  },
+  {
+    "id": "vta-0293",
+    "date": "2026-07-18",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-008",
+        "quantity": 2,
+        "unitPriceBob": 405
+      }
+    ],
+    "totalBob": 810,
+    "channel": "tiktok"
+  },
+  {
+    "id": "vta-0294",
+    "date": "2026-07-18",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-009",
+        "quantity": 4,
+        "unitPriceBob": 245
+      },
+      {
+        "productId": "prod-004",
+        "quantity": 1,
+        "unitPriceBob": 35
+      },
+      {
+        "productId": "prod-006",
+        "quantity": 3,
+        "unitPriceBob": 140
+      }
+    ],
+    "totalBob": 1435,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0295",
+    "date": "2026-07-20",
+    "customerId": "cli-001",
+    "items": [
+      {
+        "productId": "prod-001",
+        "quantity": 3,
+        "unitPriceBob": 175
+      }
+    ],
+    "totalBob": 525,
+    "channel": "whatsapp"
+  },
+  {
+    "id": "vta-0296",
+    "date": "2026-07-20",
+    "customerId": "cli-003",
+    "items": [
+      {
+        "productId": "prod-002",
+        "quantity": 4,
+        "unitPriceBob": 430
+      },
+      {
+        "productId": "prod-011",
+        "quantity": 3,
+        "unitPriceBob": 15
+      },
+      {
+        "productId": "prod-008",
+        "quantity": 1,
+        "unitPriceBob": 405
+      }
+    ],
+    "totalBob": 2170,
+    "channel": "tiktok"
+  },
+  {
+    "id": "vta-0297",
+    "date": "2026-07-20",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-008",
+        "quantity": 1,
+        "unitPriceBob": 405
+      }
+    ],
+    "totalBob": 405,
+    "channel": "tienda"
+  },
+  {
+    "id": "vta-0298",
+    "date": "2026-07-21",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-002",
+        "quantity": 3,
+        "unitPriceBob": 430
+      }
+    ],
+    "totalBob": 1290,
+    "channel": "whatsapp"
+  },
+  {
+    "id": "vta-0299",
+    "date": "2026-07-21",
+    "customerId": "cli-001",
+    "items": [
+      {
+        "productId": "prod-003",
+        "quantity": 1,
+        "unitPriceBob": 140
+      },
+      {
+        "productId": "prod-014",
+        "quantity": 2,
+        "unitPriceBob": 45
+      },
+      {
+        "productId": "prod-011",
+        "quantity": 3,
+        "unitPriceBob": 15
+      }
+    ],
+    "totalBob": 275,
+    "channel": "whatsapp"
+  },
+  {
+    "id": "vta-0300",
+    "date": "2026-07-21",
+    "customerId": "cli-009",
+    "items": [
+      {
+        "productId": "prod-006",
+        "quantity": 4,
+        "unitPriceBob": 140
+      },
+      {
+        "productId": "prod-001",
+        "quantity": 4,
+        "unitPriceBob": 175
+      },
+      {
+        "productId": "prod-005",
+        "quantity": 2,
+        "unitPriceBob": 325
+      }
+    ],
+    "totalBob": 1910,
+    "channel": "tienda"
+  },
+  {
+    "id": "vta-0301",
+    "date": "2026-07-21",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-007",
+        "quantity": 4,
+        "unitPriceBob": 670
+      },
+      {
+        "productId": "prod-013",
+        "quantity": 4,
+        "unitPriceBob": 5
+      }
+    ],
+    "totalBob": 2700,
+    "channel": "whatsapp"
+  },
+  {
+    "id": "vta-0302",
+    "date": "2026-07-21",
+    "customerId": "cli-009",
+    "items": [
+      {
+        "productId": "prod-002",
+        "quantity": 1,
+        "unitPriceBob": 430
+      },
+      {
+        "productId": "prod-012",
+        "quantity": 4,
+        "unitPriceBob": 830
+      }
+    ],
+    "totalBob": 3750,
+    "channel": "facebook"
+  },
+  {
+    "id": "vta-0303",
+    "date": "2026-07-22",
+    "customerId": "cli-003",
+    "items": [
+      {
+        "productId": "prod-011",
+        "quantity": 4,
+        "unitPriceBob": 15
+      },
+      {
+        "productId": "prod-004",
+        "quantity": 2,
+        "unitPriceBob": 35
+      },
+      {
+        "productId": "prod-005",
+        "quantity": 4,
+        "unitPriceBob": 325
+      }
+    ],
+    "totalBob": 1430,
+    "channel": "whatsapp"
+  },
+  {
+    "id": "vta-0304",
+    "date": "2026-07-22",
+    "customerId": "cli-010",
+    "items": [
+      {
+        "productId": "prod-007",
+        "quantity": 2,
+        "unitPriceBob": 670
+      },
+      {
+        "productId": "prod-009",
+        "quantity": 2,
+        "unitPriceBob": 245
+      }
+    ],
+    "totalBob": 1830,
+    "channel": "whatsapp"
+  },
+  {
+    "id": "vta-0305",
+    "date": "2026-07-22",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-014",
+        "quantity": 2,
+        "unitPriceBob": 45
+      },
+      {
+        "productId": "prod-013",
+        "quantity": 1,
+        "unitPriceBob": 5
+      }
+    ],
+    "totalBob": 95,
+    "channel": "tiktok"
+  },
+  {
+    "id": "vta-0306",
+    "date": "2026-07-23",
+    "customerId": "cli-009",
+    "items": [
+      {
+        "productId": "prod-009",
+        "quantity": 3,
+        "unitPriceBob": 245
+      },
+      {
+        "productId": "prod-001",
+        "quantity": 2,
+        "unitPriceBob": 175
+      },
+      {
+        "productId": "prod-003",
+        "quantity": 3,
+        "unitPriceBob": 140
+      }
+    ],
+    "totalBob": 1505,
+    "channel": "facebook"
+  },
+  {
+    "id": "vta-0307",
+    "date": "2026-07-23",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-002",
+        "quantity": 1,
+        "unitPriceBob": 430
+      },
+      {
+        "productId": "prod-006",
+        "quantity": 1,
+        "unitPriceBob": 140
+      },
+      {
+        "productId": "prod-013",
+        "quantity": 4,
+        "unitPriceBob": 5
+      }
+    ],
+    "totalBob": 590,
+    "channel": "whatsapp"
+  },
+  {
+    "id": "vta-0308",
+    "date": "2026-07-23",
+    "customerId": "cli-012",
+    "items": [
+      {
+        "productId": "prod-008",
+        "quantity": 4,
+        "unitPriceBob": 405
+      },
+      {
+        "productId": "prod-007",
+        "quantity": 3,
+        "unitPriceBob": 670
+      }
+    ],
+    "totalBob": 3630,
+    "channel": "facebook"
+  },
+  {
+    "id": "vta-0309",
+    "date": "2026-07-23",
+    "customerId": "cli-009",
+    "items": [
+      {
+        "productId": "prod-005",
+        "quantity": 2,
+        "unitPriceBob": 325
+      }
+    ],
+    "totalBob": 650,
+    "channel": "tienda"
+  },
+  {
+    "id": "vta-0310",
+    "date": "2026-07-23",
+    "customerId": "cli-004",
+    "items": [
+      {
+        "productId": "prod-008",
+        "quantity": 4,
+        "unitPriceBob": 405
+      }
+    ],
+    "totalBob": 1620,
+    "channel": "tienda"
+  },
+  {
+    "id": "vta-0311",
+    "date": "2026-07-24",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-003",
+        "quantity": 2,
+        "unitPriceBob": 140
+      },
+      {
+        "productId": "prod-001",
+        "quantity": 2,
+        "unitPriceBob": 175
+      }
+    ],
+    "totalBob": 630,
+    "channel": "tienda"
+  },
+  {
+    "id": "vta-0312",
+    "date": "2026-07-24",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-011",
+        "quantity": 2,
+        "unitPriceBob": 15
+      }
+    ],
+    "totalBob": 30,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0313",
+    "date": "2026-07-25",
+    "customerId": "cli-003",
+    "items": [
+      {
+        "productId": "prod-002",
+        "quantity": 4,
+        "unitPriceBob": 430
+      },
+      {
+        "productId": "prod-001",
+        "quantity": 1,
+        "unitPriceBob": 175
+      }
+    ],
+    "totalBob": 1895,
+    "channel": "mayoreo"
+  },
+  {
+    "id": "vta-0314",
+    "date": "2026-07-25",
+    "customerId": null,
+    "items": [
+      {
+        "productId": "prod-005",
+        "quantity": 4,
+        "unitPriceBob": 325
+      },
+      {
+        "productId": "prod-007",
+        "quantity": 3,
+        "unitPriceBob": 670
+      }
+    ],
+    "totalBob": 3310,
+    "channel": "facebook"
+  }
+]
