@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { streamChat, type Agent, type ChatMessage } from '../lib/api';
+import FormattedMessage from './FormattedMessage';
 
 interface Trace {
   name: string;
@@ -116,30 +117,44 @@ export default function Chat({ agent, initialPrompt, onClearInitialPrompt }: Pro
             key={i}
             className={
               m.role === 'user'
-                ? 'ml-auto max-w-[85%] rounded-lg bg-[var(--color-accent)] px-3 py-2 text-sm text-black'
-                : 'max-w-[95%] whitespace-pre-wrap rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2 text-sm'
+                ? 'ml-auto max-w-[85%] rounded-lg bg-[var(--color-accent)] px-3 py-2 text-sm text-black font-medium'
+                : 'max-w-[95%] rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-3 text-sm'
             }
           >
-            {m.content}
+            {m.role === 'user' ? m.content : <FormattedMessage content={m.content} />}
           </div>
         ))}
 
         {traces.length > 0 && (
-          <div className="space-y-1 text-xs text-slate-400">
-            {traces.map((t, i) => (
-              <div key={`${t.name}-${i}`} className="flex items-center gap-2">
-                <span>
-                  {t.status === 'corriendo' ? '⏳' : t.status === 'error' ? '⚠️' : '✓'}
+          <div className="space-y-1.5 rounded-lg border border-slate-800 bg-slate-900/50 p-2.5 text-xs">
+            <div className="text-[10px] uppercase tracking-wider font-semibold text-slate-500">
+              Traza de Ejecución de Herramientas
+            </div>
+            <div className="flex flex-wrap gap-1.5">
+              {traces.map((t, i) => (
+                <span
+                  key={`${t.name}-${i}`}
+                  className={`inline-flex items-center gap-1 rounded px-2 py-0.5 font-mono text-[11px] border ${
+                    t.status === 'corriendo'
+                      ? 'border-yellow-500/40 bg-yellow-500/10 text-yellow-300 animate-pulse'
+                      : t.status === 'error'
+                        ? 'border-[var(--color-bad)]/40 bg-[var(--color-bad)]/10 text-[var(--color-bad)]'
+                        : 'border-[var(--color-good)]/40 bg-[var(--color-good)]/10 text-[var(--color-good)]'
+                  }`}
+                >
+                  <span>
+                    {t.status === 'corriendo' ? '⏳' : t.status === 'error' ? '⚠️' : '✓'}
+                  </span>
+                  {t.name}
                 </span>
-                <code className="font-mono">{t.name}</code>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         )}
 
         {partial && (
-          <div className="max-w-[95%] whitespace-pre-wrap rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2 text-sm">
-            {partial}
+          <div className="max-w-[95%] rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-3 text-sm">
+            <FormattedMessage content={partial} />
           </div>
         )}
 
@@ -147,6 +162,7 @@ export default function Chat({ agent, initialPrompt, onClearInitialPrompt }: Pro
           <div className="rounded-lg border border-[var(--color-bad)] px-3 py-2 text-sm text-[var(--color-bad)]">
             {error}
           </div>
+        )}
         )}
 
         <div ref={bottom} />

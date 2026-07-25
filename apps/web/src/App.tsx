@@ -8,10 +8,13 @@ export default function App() {
   const [active, setActive] = useState<Agent | null>(null);
   const [dashboard, setDashboard] = useState<Record<string, any> | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isSlowBoot, setIsSlowBoot] = useState(false);
   const [bootError, setBootError] = useState<string | null>(null);
   const [pendingPrompt, setPendingPrompt] = useState<string | null>(null);
 
   useEffect(() => {
+    const timer = setTimeout(() => setIsSlowBoot(true), 2500);
+
     (async () => {
       try {
         const [list, data] = await Promise.all([fetchAgents(), fetchDashboard()]);
@@ -21,9 +24,13 @@ export default function App() {
       } catch (e) {
         setBootError(e instanceof Error ? e.message : 'Error al iniciar');
       } finally {
+        clearTimeout(timer);
+        setIsSlowBoot(false);
         setLoading(false);
       }
     })();
+
+    return () => clearTimeout(timer);
   }, []);
 
   const handleAskAgent = (prompt: string, agentId?: string) => {
@@ -47,6 +54,18 @@ export default function App() {
             Tus agentes ya revisaron el negocio. Esto es lo que encontraron.
           </p>
         </header>
+
+        {loading && isSlowBoot && (
+          <div className="flex items-center gap-3 rounded-lg border border-yellow-500/40 bg-yellow-500/10 p-3 text-xs text-yellow-200 animate-pulse">
+            <span className="text-base">⚡</span>
+            <div>
+              <div className="font-semibold">Despertando el servidor backend en Render…</div>
+              <div className="text-[11px] text-yellow-300/80">
+                El arranque en frío del servidor gratuito puede tardar hasta 30 segundos. Por favor aguarde un instante.
+              </div>
+            </div>
+          </div>
+        )}
 
         {bootError && (
           <div className="rounded-lg border border-[var(--color-bad)] p-3 text-sm text-[var(--color-bad)]">
