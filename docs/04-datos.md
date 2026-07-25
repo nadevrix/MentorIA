@@ -89,9 +89,9 @@ El histórico de `data/seed/fx.json` es una serie de referencia generada para de
 citar fuentes, y el jurado lo va a preguntar.
 
 ```
-Fuente en vivo: ______________________  (completar al conectar el scraping)
-Método:         scraping con Firecrawl, caché 15 min, fallback a serie estática
-Capturado:      ______________________
+Fuente en vivo: https://boliviabolivar.com
+Método:         scraping con Firecrawl (FirecrawlFxProvider), caché 15 min, fallback automático a SeedFxProvider
+Capturado:      En tiempo real vía API de Firecrawl con respaldo estático en data/seed/fx.json
 ```
 
 ## Colaboración con el Bolivia Data Track

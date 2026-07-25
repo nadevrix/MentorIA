@@ -92,6 +92,10 @@ const analyzeMargins = defineTool({
         nombre: p.name,
         importado: p.imported,
         precioBob: p.priceBob,
+        // El costo en dólares es lo único que permite recalcular el margen a otro tipo de
+        // cambio. Sin él, un simulador tiene que estimarlo dividiendo el costo histórico por
+        // el paralelo de hoy — y eso da un costo hasta 30% menor que el real.
+        costUsd: p.costUsd,
         costoAlComprarBob: costoCompra,
         costoReposicionHoyBob: costoHoy,
         margenAlComprarPct: marginPct(p.priceBob, costoCompra),
@@ -479,6 +483,56 @@ const accountsPayable = defineTool({
 });
 
 // ---------------------------------------------------------------------------
+// CRM y Comunicaciones (WhatsApp)
+// ---------------------------------------------------------------------------
+
+const generateWhatsAppMessage = defineTool({
+  name: 'generate_whatsapp_message',
+  description:
+    'Genera un mensaje personalizado de WhatsApp listo para copiar o enviar a un cliente ' +
+    '(reactivación de compras, cobranza de deuda o promoción). Usala cuando el usuario pida ' +
+    'redactar un mensaje para un cliente, cobrarle o enviar una oferta.',
+  inputSchema: objectSchema({
+    clienteNombre: { type: 'string', description: 'Nombre del cliente destino.' },
+    tipo: {
+      type: 'string',
+      enum: ['reactivacion', 'cobranza', 'promocion'],
+      description: 'Tipo de mensaje a redactar.',
+    },
+    productoNombre: { type: 'string', description: 'Nombre del producto relacionado (opcional).' },
+    montoPendienteBob: { type: 'number', description: 'Monto pendiente de pago en Bs (para cobranza).' },
+  }),
+  parse: z.object({
+    clienteNombre: z.string(),
+    tipo: z.enum(['reactivacion', 'cobranza', 'promocion']),
+    productoNombre: z.string().optional(),
+    montoPendienteBob: z.number().optional(),
+  }),
+  async run(input) {
+    const name = input.clienteNombre.trim();
+    let text = '';
+
+    if (input.tipo === 'reactivacion') {
+      text = `Hola ${name}! 👋 Te escribimos de la tienda. Hace unos días que no nos visitas y queríamos contarte que llegaron novedades que te van a encantar${input.productoNombre ? ` (especialmente en ${input.productoNombre})` : ''}. ¡Pásate por el local o respóndenos este mensaje para enviarte los detalles! 📦✨`;
+    } else if (input.tipo === 'cobranza') {
+      const montoStr = input.montoPendienteBob ? ` por Bs ${input.montoPendienteBob}` : '';
+      text = `Estimado/a ${name}, le saludamos cordialmente. Le escribimos para recordarle el saldo pendiente${montoStr}. Agradecemos su confirmación de pago o que nos indique cuándo podrá realizar la transferencia. ¡Muchas gracias! 🙏`;
+    } else {
+      text = `¡Hola ${name}! 🔥 Queremos ofrecerte una oportunidad especial en ${input.productoNombre ?? 'nuestros productos de alta demanda'}. Mantén tu stock al mejor precio. ¡Escríbenos para coordinar tu pedido! 🚀`;
+    }
+
+    const encoded = encodeURIComponent(text);
+    return {
+      clienteNombre: name,
+      tipo: input.tipo,
+      mensajeTexto: text,
+      linkWaMe: `https://wa.me/?text=${encoded}`,
+      recomendacion: 'Copia el texto o usa el link wa.me para abrir WhatsApp directamente.',
+    };
+  },
+});
+
+// ---------------------------------------------------------------------------
 
 export const ALL_TOOLS: ToolDefinition<never>[] = [
   getFxRate,
@@ -490,6 +544,7 @@ export const ALL_TOOLS: ToolDefinition<never>[] = [
   customerInsights,
   financialSummary,
   accountsPayable,
+  generateWhatsAppMessage,
 ] as unknown as ToolDefinition<never>[];
 
 export const TOOLS_BY_NAME = new Map(ALL_TOOLS.map((t) => [t.name, t]));
@@ -501,3 +556,4 @@ export function toolsFor(names: readonly string[]): ToolDefinition<never>[] {
     return [tool];
   });
 }
+
