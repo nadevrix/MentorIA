@@ -60,6 +60,11 @@ export class OverlayDataSource implements DataSource {
 
   constructor(private readonly base: DataSource) {}
 
+  /** Qué fuente hay debajo de la superposición. Para /health y depuración. */
+  get baseName(): string {
+    return this.base.name;
+  }
+
   /**
    * Importa un CSV. Las filas inválidas no abortan la importación: se devuelven
    * con su número de fila y su motivo, porque un catálogo grande casi siempre

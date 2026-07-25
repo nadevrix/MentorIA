@@ -31,6 +31,9 @@ app.get('/health', (c) =>
   c.json({
     ok: true,
     dataSource: ctx.data.name,
+    // Sin esto, /health siempre dice "overlay" y esconde si abajo hay Postgres
+    // o los JSON de ejemplo — justo lo que uno necesita saber al depurar.
+    baseSource: overlayOf(ctx)?.baseName ?? ctx.data.name,
     fxSource: ctx.fx.name,
     hasApiKey: Boolean(process.env.ANTHROPIC_API_KEY),
     imageProvider: imageProviderConfigured(),

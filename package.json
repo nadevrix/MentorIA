@@ -16,7 +16,9 @@
     "dev:web": "npm run dev --workspace=@pyme/web",
     "build": "npm run build --workspace=@pyme/core && npm run build --workspace=@pyme/api && npm run build --workspace=@pyme/web",
     "build:web": "npm run build --workspace=@pyme/core && npm run build --workspace=@pyme/web",
-    "typecheck": "tsc -b packages/core apps/api"
+    "typecheck": "tsc -b packages/core apps/api",
+    "db:migrate": "node --env-file-if-exists=.env db/migrate.mjs",
+    "db:reset": "node --env-file-if-exists=.env db/migrate.mjs --reset"
   },
   "devDependencies": {
     "typescript": "^5.7.2"
