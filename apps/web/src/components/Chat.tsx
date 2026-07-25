@@ -117,7 +117,7 @@ export default function Chat({ agent, initialPrompt, onClearInitialPrompt }: Pro
             key={i}
             className={
               m.role === 'user'
-                ? 'ml-auto max-w-[85%] rounded-lg bg-[var(--color-accent)] px-3 py-2 text-sm text-black font-medium'
+                ? 'ml-auto max-w-[85%] rounded-lg bg-[var(--color-accent)] px-3 py-2 text-sm font-medium text-black'
                 : 'max-w-[95%] rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-3 text-sm'
             }
           >
@@ -127,7 +127,7 @@ export default function Chat({ agent, initialPrompt, onClearInitialPrompt }: Pro
 
         {traces.length > 0 && (
           <div className="space-y-1.5 rounded-lg border border-slate-800 bg-slate-900/50 p-2.5 text-xs">
-            <div className="text-[10px] uppercase tracking-wider font-semibold text-slate-500">
+            <div className="text-[10px] uppercase font-semibold text-slate-500 tracking-wider">
               Traza de Ejecución de Herramientas
             </div>
             <div className="flex flex-wrap gap-1.5">
@@ -162,7 +162,6 @@ export default function Chat({ agent, initialPrompt, onClearInitialPrompt }: Pro
           <div className="rounded-lg border border-[var(--color-bad)] px-3 py-2 text-sm text-[var(--color-bad)]">
             {error}
           </div>
-        )}
         )}
 
         <div ref={bottom} />

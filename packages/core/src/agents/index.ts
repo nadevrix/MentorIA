@@ -148,19 +148,18 @@ Reglas:
     name: 'Agente de Clientes (CRM)',
     icon: '👥',
     tagline: 'A quién contactar y con qué oferta',
-    tools: ['customer_insights', 'sales_summary', 'top_products'],
+    tools: ['customer_insights', 'sales_summary', 'top_products', 'generate_whatsapp_message'],
     examples: [
       '¿Qué clientes no me compran hace rato?',
       '¿Quiénes son mis mejores clientes?',
-      'Armame un mensaje para reactivar clientes',
+      'Armame un mensaje para reactivar a Don Beto',
     ],
     systemPrompt: prompt(`
 Sos el especialista en clientes.
 
 Reglas:
 - Priorizá por valor perdido: un cliente grande inactivo vale más que cinco chicos.
-- Cuando pidan un mensaje, escribilo listo para copiar y pegar en WhatsApp: corto, con el nombre
-  del cliente, una referencia a lo que compró antes, y una sola llamada a la acción.
+- Cuando pidan un mensaje o pedir cobranza, usá la herramienta generate_whatsapp_message para entregar el texto listo para copiar con el link wa.me.
 - No inventes promociones que el negocio no puede sostener: verificá el margen del producto que ofrecés.
 `),
   },
