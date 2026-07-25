@@ -391,6 +391,104 @@ const inventoryAlerts = defineTool({
 });
 
 // ---------------------------------------------------------------------------
+// Marketing
+// ---------------------------------------------------------------------------
+
+const marketingCandidates = defineTool({
+  name: 'marketing_candidates',
+  description:
+    'Devuelve qué productos conviene promocionar y por qué, con los datos que sostienen la decisión: ' +
+    'margen real, stock, rotación y capital inmovilizado. Clasifica cada uno en una razón ' +
+    '("liquidar" para lo que no rota, "empujar" para lo que deja buen margen y hay stock, ' +
+    '"estrella" para lo que ya se vende bien). ' +
+    'Usala SIEMPRE antes de proponer una campaña, un post o una promoción: sin esto estarías ' +
+    'inventando qué promocionar. Nunca recomiendes promocionar algo que no salga de acá.',
+  inputSchema: objectSchema({
+    limite: { type: 'number', description: 'Máximo de productos a devolver. Por defecto 6.' },
+    diasSinRotacion: { type: 'number', description: 'Umbral de días sin venta. Por defecto 60.' },
+  }),
+  parse: z.object({
+    limite: z.number().int().positive().optional(),
+    diasSinRotacion: z.number().int().positive().optional(),
+  }),
+  async run(input, ctx) {
+    const stale = input.diasSinRotacion ?? 60;
+    const [products, sales, fx] = await Promise.all([
+      ctx.data.products(),
+      ctx.data.sales(),
+      ctx.fx.current(),
+    ]);
+
+    const units = new Map<string, number>();
+    const lastSale = new Map<string, string>();
+    for (const sale of salesInPeriod(sales, '30d')) {
+      for (const item of sale.items) {
+        units.set(item.productId, (units.get(item.productId) ?? 0) + item.quantity);
+      }
+    }
+    for (const sale of sales) {
+      for (const item of sale.items) {
+        const prev = lastSale.get(item.productId);
+        if (!prev || sale.date > prev) lastSale.set(item.productId, sale.date);
+      }
+    }
+
+    const rows = products.map((p) => {
+      const costo = replacementCostBob(p, fx.rate);
+      const margen = marginPct(p.priceBob, costo);
+      const vendidas = units.get(p.id) ?? 0;
+      const ultima = lastSale.get(p.id);
+      const diasSinVender = ultima ? daysAgo(ultima) : null;
+      const dormido = p.stock > 0 && (diasSinVender === null || diasSinVender > stale);
+
+      // Un producto sin margen no se promociona: vender más de algo que pierde
+      // plata sólo acelera la descapitalización.
+      const razon = margen <= 0
+        ? 'no_promocionar'
+        : dormido
+          ? 'liquidar'
+          : vendidas >= 5 && margen >= 25
+            ? 'estrella'
+            : p.stock > 0 && margen >= 25
+              ? 'empujar'
+              : 'no_promocionar';
+
+      return {
+        id: p.id,
+        sku: p.sku,
+        nombre: p.name,
+        categoria: p.category,
+        razon,
+        precioBob: p.priceBob,
+        margenRealPct: margen,
+        stock: p.stock,
+        unidades30d: vendidas,
+        diasSinVender,
+        capitalInmovilizadoBob: dormido ? round(p.stock * costo) : 0,
+        // Cuánto se puede descontar sin quedar bajo costo de reposición.
+        descuentoMaximoPct: p.priceBob > 0 ? Math.max(0, round(((p.priceBob - costo) / p.priceBob) * 100)) : 0,
+      };
+    });
+
+    const promocionables = rows.filter((r) => r.razon !== 'no_promocionar');
+    const orden = { liquidar: 0, empujar: 1, estrella: 2 } as Record<string, number>;
+    promocionables.sort(
+      (a, b) => (orden[a.razon] ?? 9) - (orden[b.razon] ?? 9) || b.capitalInmovilizadoBob - a.capitalInmovilizadoBob,
+    );
+
+    return {
+      tipoCambioUsado: fx.rate,
+      totalProductos: rows.length,
+      promocionables: promocionables.length,
+      descartados: rows.length - promocionables.length,
+      notaDescartados:
+        'Los descartados no tienen margen suficiente: promocionarlos aceleraría la pérdida.',
+      candidatos: promocionables.slice(0, input.limite ?? 6),
+    };
+  },
+});
+
+// ---------------------------------------------------------------------------
 // Clientes (CRM)
 // ---------------------------------------------------------------------------
 
@@ -538,6 +636,7 @@ export const ALL_TOOLS: ToolDefinition<never>[] = [
   salesSummary,
   topProducts,
   inventoryAlerts,
+  marketingCandidates,
   customerInsights,
   financialSummary,
   accountsPayable,

@@ -121,7 +121,7 @@ export default function Shell({
                   >
                     {tab.label}
                     {tab.disabled && (
-                      <span className="ml-1.5 rounded bg-white/10 px-1.5 py-0.5 text-[10px] uppercase tracking-wide">
+                      <span className="ml-1.5 rounded bg-black/[0.06] px-1.5 py-0.5 text-[10px] uppercase tracking-wide">
                         pronto
                       </span>
                     )}
@@ -137,7 +137,7 @@ export default function Shell({
           </div>
         </main>
 
-        <aside className="flex w-full shrink-0 flex-col border-t border-[var(--color-line)] bg-white/[0.02] lg:h-auto lg:w-[400px] lg:border-l lg:border-t-0">
+        <aside className="flex w-full shrink-0 flex-col border-t border-[var(--color-line)] bg-white/40 lg:h-auto lg:w-[400px] lg:border-l lg:border-t-0">
           {aside}
         </aside>
       </div>

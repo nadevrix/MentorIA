@@ -44,7 +44,7 @@ export default function DailyBrief() {
   if (failed) return null;
 
   return (
-    <section className="rounded-[var(--radius-card)] bg-gradient-to-br from-[var(--color-raised)] to-[var(--color-surface)] p-5 ring-1 ring-[var(--color-accent)]/25">
+    <section className="rounded-[var(--radius-card)] glass p-5 ring-1 ring-[var(--color-accent)]/25">
       <div className="flex items-center gap-2">
         <span className="text-base">🧭</span>
         <h2 className="text-[11px] font-semibold uppercase tracking-wide text-[var(--color-accent)]">
@@ -52,13 +52,13 @@ export default function DailyBrief() {
         </h2>
       </div>
 
-      <p className="mt-2.5 min-h-[3rem] text-[15px] leading-relaxed text-white">
-        {text || <span className="text-slate-500">El Director está revisando el negocio…</span>}
+      <p className="mt-2.5 min-h-[3rem] text-[15px] leading-relaxed text-[var(--color-fg)]">
+        {text || <span className="text-[var(--color-faint)]">El Director está revisando el negocio…</span>}
         {text && !done && <span className="ml-0.5 animate-pulse text-[var(--color-accent)]">▌</span>}
       </p>
 
       {done && (
-        <p className="mt-2 text-[11px] text-slate-500">
+        <p className="mt-2 text-[11px] text-[var(--color-faint)]">
           Redactado por el Director sobre los hallazgos de abajo. Las cifras vienen del motor
           determinista, no del modelo.
         </p>

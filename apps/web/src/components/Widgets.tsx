@@ -12,10 +12,10 @@ import LineChart from './charts/LineChart';
  * ΔE 26,8 en el peor caso de daltonismo. El rojo y el ámbar de la marca quedan
  * para el cromo de la interfaz, no para codificar datos.
  */
-const SERIES = { azul: '#3987e5', naranja: '#d95926' };
+const SERIES = { azul: '#2a78d6', naranja: '#eb6834' };
 
 /** Paleta de estado, reservada: nunca se reutiliza como color de serie. */
-const ESTADO = { bueno: '#0ca30c', atencion: '#fab219', critico: '#d03b3b' };
+const ESTADO = { bueno: '#0ca30c', atencion: '#c2740a', critico: '#d03b3b' };
 
 interface Props {
   data: Record<string, any>;
@@ -114,13 +114,13 @@ export default function Widgets({ data }: Props) {
           />
         </div>
 
-        <div className="mt-4 rounded-xl bg-black/25 p-3">
+        <div className="mt-4 rounded-xl bg-[var(--color-raised)] p-3">
           <div className="flex items-baseline justify-between">
             <span className="text-[11px] text-[var(--color-muted)]">Utilidad neta</span>
             <span className="text-[11px] font-semibold text-[var(--color-muted)]">{margenPct}%</span>
           </div>
           <div className="mt-1 text-[17px] font-semibold">{bob(fin.utilidadNetaBob ?? 0)}</div>
-          <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-white/5">
+          <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-black/[0.07]">
             <div
               className="h-full rounded-full"
               style={{

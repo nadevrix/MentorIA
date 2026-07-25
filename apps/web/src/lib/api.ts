@@ -83,6 +83,53 @@ export interface ScenarioResult {
   productos: ScenarioProduct[];
 }
 
+export interface MarketingCandidate {
+  id: string;
+  nombre: string;
+  categoria: string;
+  razon: 'liquidar' | 'empujar' | 'estrella';
+  precioBob: number;
+  margenRealPct: number;
+  stock: number;
+  unidades30d: number;
+  diasSinVender: number | null;
+  capitalInmovilizadoBob: number;
+  descuentoMaximoPct: number;
+}
+
+export interface MarketingResponse {
+  totalProductos: number;
+  promocionables: number;
+  descartados: number;
+  notaDescartados: string;
+  candidatos: MarketingCandidate[];
+}
+
+export async function fetchMarketing(): Promise<MarketingResponse> {
+  const res = await fetch(`${API_URL}/api/marketing`);
+  if (!res.ok) throw new Error('No se pudo cargar el panel de marketing');
+  return res.json();
+}
+
+export interface ImageResult {
+  ok: boolean;
+  prompt: string;
+  dataUri?: string;
+  proveedor?: string;
+  motivo?: string;
+}
+
+export async function generateImage(prompt: string, signal?: AbortSignal): Promise<ImageResult> {
+  const res = await fetch(`${API_URL}/api/image`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ prompt }),
+    signal,
+  });
+  if (!res.ok) throw new Error('No se pudo generar la imagen');
+  return res.json();
+}
+
 export async function simulate(
   tipoCambioSimulado: number,
   signal?: AbortSignal,

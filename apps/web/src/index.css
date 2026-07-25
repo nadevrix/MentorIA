@@ -1,16 +1,16 @@
 @import 'tailwindcss';
 
 /*
- * Sistema de diseño — vidrio líquido.
+ * Sistema de diseño — vidrio líquido, modo claro.
  *
  * El vidrio no es un color: es una relación entre capas. Necesita algo detrás
  * que refractar, así que el lienzo lleva luces de color difusas y las
  * superficies son traslúcidas con desenfoque.
  *
- * El tinte del vidrio es OSCURO a propósito (rgba sobre un gris casi negro).
- * Un vidrio claro sobre fondo colorido tumba el contraste del texto por debajo
- * de AA; con tinte oscuro el texto mantiene la legibilidad de la versión sólida
- * y el fondo se sigue viendo.
+ * En claro el vidrio tiene que mantenerse BRILLANTE, y no es capricho: medido
+ * con el validador, sobre un vidrio agrisado (#E9EDF3) el naranja de las series
+ * cae a 2,72:1, por debajo del piso de 3:1. Sobre vidrio casi blanco (#F6F8FB)
+ * pasa todos los gates. Por eso el tinte es blanco con opacidad alta.
  *
  * Semántica de los acentos, que en un producto financiero no es decorativa:
  *   rojo   → marca, y también lo crítico (estás perdiendo plata)
@@ -19,26 +19,28 @@
  */
 @theme {
   /* Superficies base (el vidrio se apoya sobre estas) */
-  --color-canvas: #0e1318;
-  --color-ink: #121820;
-  --color-panel: #141b23;
-  --color-surface: #1a222b;
-  --color-raised: #212b35;
-  --color-line: #2b3641;
+  --color-canvas: #eaeff6;
+  --color-ink: #f4f7fb;
+  --color-panel: #f7f9fc;
+  --color-surface: #ffffff;
+  --color-raised: #f0f4f9;
+  --color-line: #dde4ed;
 
-  /* Acentos */
-  --color-accent: #fe3f39;
-  /* Texto blanco sobre el rojo de marca da 3,3:1 y no pasa AA. Este rojo más
-     profundo llega a ~4,6:1, así que es el que va detrás de texto blanco. */
-  --color-accent-strong: #d92b26;
-  --color-gold: #fcbf02;
-  --color-good: #22c55e;
-  --color-bad: #fe3f39;
+  /*
+   * Acentos. En claro, el rojo de marca #FE3F39 da 3,4:1 sobre blanco y no pasa
+   * AA como texto, así que el token de marca ES el rojo profundo: sirve como
+   * texto sobre claro (~5:1) y como fondo bajo texto blanco (~4,6:1).
+   */
+  --color-accent: #d92b26;
+  --color-accent-strong: #b91c1c;
+  --color-gold: #b45309;
+  --color-good: #15803d;
+  --color-bad: #b91c1c;
 
   /* Texto */
-  --color-fg: #ffffff;
-  --color-muted: #9aa4b2;
-  --color-faint: #6b7684;
+  --color-fg: #0f172a;
+  --color-muted: #55637a;
+  --color-faint: #8593a8;
 
   --radius-shell: 32px;
   --radius-card: 20px;
@@ -60,8 +62,8 @@ body {
 
 /*
  * Luces del fondo. Sin esto el vidrio no tiene nada que refractar y se ve como
- * un gris plano. Van en un pseudo-elemento fijo para no crear un contexto de
- * apilamiento que pelee con el backdrop-filter de las capas de arriba.
+ * un blanco plano. Opacidades bajas: en claro, un lienzo saturado se come el
+ * contraste del texto que va encima del vidrio.
  */
 body::before {
   content: '';
@@ -69,69 +71,53 @@ body::before {
   inset: 0;
   z-index: -1;
   background:
-    radial-gradient(60rem 40rem at 12% 8%, rgba(254, 63, 57, 0.18), transparent 60%),
-    radial-gradient(52rem 38rem at 88% 0%, rgba(252, 191, 2, 0.12), transparent 55%),
-    radial-gradient(48rem 44rem at 78% 92%, rgba(57, 135, 229, 0.16), transparent 60%),
-    radial-gradient(40rem 32rem at 20% 96%, rgba(34, 197, 94, 0.08), transparent 60%);
+    radial-gradient(60rem 40rem at 10% 5%, rgba(254, 63, 57, 0.14), transparent 60%),
+    radial-gradient(52rem 38rem at 90% 0%, rgba(252, 191, 2, 0.16), transparent 55%),
+    radial-gradient(48rem 44rem at 80% 95%, rgba(42, 120, 214, 0.16), transparent 60%),
+    radial-gradient(40rem 32rem at 15% 95%, rgba(21, 128, 61, 0.1), transparent 60%);
 }
 
 /*
  * Vidrio.
  *
  * Tres ingredientes, y los tres hacen falta:
- *  1. tinte traslúcido oscuro  → legibilidad
- *  2. backdrop-filter          → la refracción
- *  3. borde superior claro     → el reflejo especular que lo hace leer como vidrio
- *     (inset arriba claro, abajo oscuro: la luz viene de arriba)
+ *  1. tinte traslúcido claro    → mantiene el contraste de series y texto
+ *  2. backdrop-filter           → la refracción
+ *  3. borde superior blanco     → el reflejo especular que lo hace leer como
+ *     vidrio (arriba claro, abajo sombra: la luz viene de arriba)
  */
 .glass {
-  /*
-   * Tinte oscuro y opacidad alta, y no es una decisión estética.
-   * Con el vidrio más claro que probé, su zona más brillante llegaba a #2E3A47
-   * y ahí el naranja de las series cae a 2,98:1 — por debajo del piso de 3:1.
-   * Aclarar el naranja lo saca de la banda de luminosidad, así que la variable
-   * correcta era la superficie: el vidrio nunca debe pasar de ~#2A333F.
-   */
-  background: linear-gradient(
-    160deg,
-    rgba(30, 38, 48, 0.8) 0%,
-    rgba(18, 24, 31, 0.78) 100%
-  );
-  backdrop-filter: blur(22px) saturate(160%);
-  -webkit-backdrop-filter: blur(22px) saturate(160%);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.82) 0%, rgba(255, 255, 255, 0.66) 100%);
+  backdrop-filter: blur(22px) saturate(150%);
+  -webkit-backdrop-filter: blur(22px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, 0.9);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.16),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.28),
-    0 10px 34px rgba(0, 0, 0, 0.34);
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    0 8px 28px rgba(15, 23, 42, 0.08);
 }
 
-/* Capa contenedora: más grande, así que menos desenfoque y más profundidad. */
+/* Capa contenedora: más grande, así que más desenfoque y sombra más profunda. */
 .glass-shell {
-  background: linear-gradient(
-    160deg,
-    rgba(26, 34, 44, 0.78) 0%,
-    rgba(14, 19, 25, 0.86) 100%
-  );
-  backdrop-filter: blur(32px) saturate(150%);
-  -webkit-backdrop-filter: blur(32px) saturate(150%);
-  border: 1px solid rgba(255, 255, 255, 0.09);
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.76) 0%, rgba(255, 255, 255, 0.6) 100%);
+  backdrop-filter: blur(34px) saturate(140%);
+  -webkit-backdrop-filter: blur(34px) saturate(140%);
+  border: 1px solid rgba(255, 255, 255, 0.9);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.18),
-    0 30px 80px rgba(0, 0, 0, 0.5);
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    0 24px 70px rgba(15, 23, 42, 0.14);
 }
 
 /* Píldoras y controles: vidrio más liviano, sin tanto peso visual. */
 .glass-soft {
-  background: rgba(255, 255, 255, 0.06);
-  backdrop-filter: blur(14px) saturate(150%);
-  -webkit-backdrop-filter: blur(14px) saturate(150%);
-  border: 1px solid rgba(255, 255, 255, 0.09);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
 }
 
 .glass-soft:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.88);
 }
 
 /*
@@ -146,20 +132,13 @@ body::before {
   .glass-soft {
     background: var(--color-surface);
   }
-  .glass-shell {
-    background: var(--color-ink);
-  }
 }
 
 @media (prefers-reduced-transparency: reduce) {
   .glass,
+  .glass-shell,
   .glass-soft {
     background: var(--color-surface);
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-  }
-  .glass-shell {
-    background: var(--color-ink);
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
   }
@@ -171,14 +150,14 @@ body::before {
 /* La barra de scroll por defecto rompe el contenedor flotante. */
 .scroll-slim {
   scrollbar-width: thin;
-  scrollbar-color: rgba(255, 255, 255, 0.14) transparent;
+  scrollbar-color: rgba(15, 23, 42, 0.18) transparent;
 }
 .scroll-slim::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 .scroll-slim::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.14);
+  background: rgba(15, 23, 42, 0.18);
   border-radius: 999px;
 }
 .scroll-slim::-webkit-scrollbar-track {

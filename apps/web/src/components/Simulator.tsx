@@ -14,13 +14,13 @@ function Delta({ label, antes, despues, format }: {
   format?: 'bad-if-lower';
 }) {
   return (
-    <div className="rounded-xl bg-black/25 p-3">
+    <div className="rounded-xl bg-[var(--color-raised)] p-3">
       <div className="text-[11px] uppercase tracking-wide text-[var(--color-muted)]">{label}</div>
       <div className="mt-1 flex items-baseline gap-2">
         <span className="text-sm text-[var(--color-faint)] line-through">{antes}</span>
         <span
           className={`text-lg font-semibold tabular-nums ${
-            format === 'bad-if-lower' ? 'text-[var(--color-bad)]' : 'text-white'
+            format === 'bad-if-lower' ? 'text-[var(--color-bad)]' : 'text-[var(--color-fg)]'
           }`}
         >
           {despues}
@@ -105,7 +105,7 @@ export default function Simulator({ currentRate, onAsk }: Props) {
               despues={bob(result.utilidadMensualBob.despues)}
               format="bad-if-lower"
             />
-            <div className="rounded-xl bg-black/25 p-3">
+            <div className="rounded-xl bg-[var(--color-raised)] p-3">
               <div className="text-[11px] uppercase tracking-wide text-[var(--color-muted)]">
                 Capital extra para reponer
               </div>
@@ -116,7 +116,7 @@ export default function Simulator({ currentRate, onAsk }: Props) {
           </div>
 
           {isScenario && (
-            <p className="mt-3 text-sm leading-relaxed text-slate-300">
+            <p className="mt-3 text-sm leading-relaxed text-[var(--color-muted)]">
               Con el dólar a Bs {rate.toFixed(2)}, {result.productosBajoCosto.despues} de tus productos
               se venderían por debajo del costo de reposición y perderías{' '}
               <strong className="text-[var(--color-bad)]">
@@ -130,7 +130,7 @@ export default function Simulator({ currentRate, onAsk }: Props) {
           {isScenario && result.productos.length > 0 && (
             <div className="mt-3 overflow-x-auto">
               <table className="w-full min-w-[520px] text-sm">
-                <thead className="text-left text-xs uppercase text-slate-400">
+                <thead className="text-left text-xs uppercase text-[var(--color-muted)]">
                   <tr>
                     <th className="pb-2">Producto</th>
                     <th className="pb-2 text-right">Precio hoy</th>
@@ -147,14 +147,14 @@ export default function Simulator({ currentRate, onAsk }: Props) {
                       <td className="py-2 text-right tabular-nums">{bob(p.costoEscenarioBob)}</td>
                       <td
                         className={`py-2 text-right font-semibold tabular-nums ${
-                          p.bajoCostoEnEscenario ? 'text-[var(--color-bad)]' : 'text-slate-300'
+                          p.bajoCostoEnEscenario ? 'text-[var(--color-bad)]' : 'text-[var(--color-muted)]'
                         }`}
                       >
                         {p.margenEscenarioPct}%
                       </td>
                       <td className="py-2 text-right tabular-nums text-[var(--color-good)]">
                         {bob(p.precioSugeridoBob)}{' '}
-                        <span className="text-xs text-slate-500">
+                        <span className="text-xs text-[var(--color-faint)]">
                           (+{p.ajusteNecesarioPct}%)
                         </span>
                       </td>

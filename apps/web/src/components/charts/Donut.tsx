@@ -37,7 +37,7 @@ export default function Donut({ slices, centerValue, centerLabel, size = 132 }: 
             cy={size / 2}
             r={r}
             fill="none"
-            stroke="rgba(255,255,255,0.06)"
+            stroke="rgba(15,23,42,0.08)"
             strokeWidth={stroke}
           />
           {slices.map((s) => {
@@ -66,7 +66,7 @@ export default function Donut({ slices, centerValue, centerLabel, size = 132 }: 
           x="50%"
           y="47%"
           textAnchor="middle"
-          className="fill-white text-[20px] font-semibold"
+          className="fill-[#0f172a] text-[20px] font-semibold"
           dominantBaseline="middle"
         >
           {centerValue}
@@ -75,7 +75,7 @@ export default function Donut({ slices, centerValue, centerLabel, size = 132 }: 
           x="50%"
           y="63%"
           textAnchor="middle"
-          className="fill-[var(--color-faint)] text-[9px] uppercase"
+          className="fill-[#8593a8] text-[9px] uppercase"
           dominantBaseline="middle"
         >
           {centerLabel}
@@ -89,7 +89,7 @@ export default function Donut({ slices, centerValue, centerLabel, size = 132 }: 
               <span className="h-2 w-2 shrink-0 rounded-full" style={{ background: s.color }} aria-hidden />
               <span className="truncate">{s.label}</span>
             </span>
-            <span className="shrink-0 font-semibold text-white">{s.value}</span>
+            <span className="shrink-0 font-semibold text-[var(--color-fg)]">{s.value}</span>
           </li>
         ))}
       </ul>

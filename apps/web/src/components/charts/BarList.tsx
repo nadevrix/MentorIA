@@ -26,9 +26,9 @@ export default function BarList({ rows, format, color = '#3987e5', max }: Props)
         <li key={row.label}>
           <div className="flex items-baseline justify-between gap-3 text-xs">
             <span className="truncate text-[var(--color-muted)]">{row.label}</span>
-            <span className="shrink-0 font-semibold text-white">{format(row.value)}</span>
+            <span className="shrink-0 font-semibold text-[var(--color-fg)]">{format(row.value)}</span>
           </div>
-          <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-white/5">
+          <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-black/[0.07]">
             <div
               className="h-full rounded-full"
               style={{

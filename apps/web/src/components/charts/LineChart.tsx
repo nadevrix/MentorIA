@@ -118,7 +118,7 @@ export default function LineChart({
                 x2={width - PAD.right}
                 y1={PAD.top + innerH * t}
                 y2={PAD.top + innerH * t}
-                stroke="rgba(255,255,255,0.06)"
+                stroke="rgba(15,23,42,0.08)"
                 strokeWidth={1}
               />
             ))}
@@ -151,7 +151,7 @@ export default function LineChart({
                   x2={x(hover)}
                   y1={PAD.top}
                   y2={PAD.top + innerH}
-                  stroke="rgba(255,255,255,0.25)"
+                  stroke="rgba(15,23,42,0.28)"
                   strokeWidth={1}
                 />
                 {series.map((s) => {
@@ -165,7 +165,7 @@ export default function LineChart({
                       r={4.5}
                       fill={s.color}
                       /* Anillo del color de la superficie: separa el punto de la línea. */
-                      stroke="rgba(0,0,0,0.45)"
+                      stroke="#ffffff"
                       strokeWidth={2}
                     />
                   );
@@ -194,7 +194,7 @@ export default function LineChart({
                     {s.label}
                   </span>
                   {/* El valor va en tinta de texto, no en el color de la serie. */}
-                  <span className="font-semibold text-white">{format(v)}</span>
+                  <span className="font-semibold text-[var(--color-fg)]">{format(v)}</span>
                 </div>
               );
             })}

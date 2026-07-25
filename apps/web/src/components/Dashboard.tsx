@@ -8,7 +8,7 @@ interface Props {
 type Tone = 'neutral' | 'good' | 'bad' | 'gold';
 
 const TONE: Record<Tone, string> = {
-  neutral: 'text-white',
+  neutral: 'text-[var(--color-fg)]',
   good: 'text-[var(--color-good)]',
   bad: 'text-[var(--color-bad)]',
   gold: 'text-[var(--color-gold)]',
@@ -58,7 +58,7 @@ export default function Dashboard({ data, loading }: Props) {
         {Array.from({ length: 6 }).map((_, i) => (
           <div
             key={i}
-            className="h-[104px] animate-pulse rounded-[var(--radius-card)] bg-white/5"
+            className="h-[104px] animate-pulse rounded-[var(--radius-card)] bg-black/[0.05]"
           />
         ))}
       </div>

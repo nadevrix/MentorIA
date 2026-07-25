@@ -97,18 +97,18 @@ export default function Chat({ agent, initialQuestion }: Props) {
           <span className="text-xl">{agent.icon}</span>
           <h2 className="font-semibold">{agent.name}</h2>
         </div>
-        <p className="mt-1 text-xs text-slate-400">{agent.tagline}</p>
+        <p className="mt-1 text-xs text-[var(--color-muted)]">{agent.tagline}</p>
       </header>
 
       <div className="flex-1 space-y-3 overflow-y-auto p-4">
         {messages.length === 0 && !streaming && (
           <div className="space-y-2">
-            <p className="text-sm text-slate-400">Probá con una de estas:</p>
+            <p className="text-sm text-[var(--color-muted)]">Probá con una de estas:</p>
             {agent.examples.map((example) => (
               <button
                 key={example}
                 onClick={() => void send(example)}
-                className="block w-full rounded-xl glass-soft px-3.5 py-2.5 text-left text-sm text-[var(--color-muted)] transition hover:text-white"
+                className="block w-full rounded-xl glass-soft px-3.5 py-2.5 text-left text-sm text-[var(--color-muted)] transition hover:text-[var(--color-fg)]"
               >
                 {example}
               </button>
@@ -130,7 +130,7 @@ export default function Chat({ agent, initialQuestion }: Props) {
         ))}
 
         {traces.length > 0 && (
-          <div className="space-y-1 text-xs text-slate-400">
+          <div className="space-y-1 text-xs text-[var(--color-muted)]">
             {traces.map((t, i) => (
               <div key={`${t.name}-${i}`} className="flex items-center gap-2">
                 <span>

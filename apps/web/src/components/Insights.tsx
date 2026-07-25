@@ -27,13 +27,13 @@ const SEVERITY: Record<Severity, { label: string; text: string; bg: string; bar:
   media: {
     label: 'Media',
     text: 'text-[var(--color-muted)]',
-    bg: 'bg-white/5',
+    bg: 'bg-black/[0.06]',
     bar: 'bg-[var(--color-faint)]',
   },
   baja: {
     label: 'Baja',
     text: 'text-[var(--color-faint)]',
-    bg: 'bg-white/5',
+    bg: 'bg-black/[0.06]',
     bar: 'bg-[var(--color-line)]',
   },
 };
@@ -85,7 +85,7 @@ export default function Insights({ data, loading, onAsk }: Props) {
         {Array.from({ length: 3 }).map((_, i) => (
           <div
             key={i}
-            className="h-[148px] animate-pulse rounded-[var(--radius-card)] bg-white/5"
+            className="h-[148px] animate-pulse rounded-[var(--radius-card)] bg-black/[0.05]"
           />
         ))}
       </div>

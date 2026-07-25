@@ -4,9 +4,13 @@ import {
   buildDashboard,
   buildInsights,
   createContext,
+  generateImage,
+  imageProviderConfigured,
+  overlayOf,
   runAgent,
   simulateScenario,
   streamBrief,
+  TOOLS_BY_NAME,
 } from '@pyme/core';
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
@@ -28,9 +32,22 @@ app.get('/health', (c) =>
     dataSource: ctx.data.name,
     fxSource: ctx.fx.name,
     hasApiKey: Boolean(process.env.ANTHROPIC_API_KEY),
+    imageProvider: imageProviderConfigured(),
     agents: AGENTS.length,
   }),
 );
+
+/** Qué conviene promocionar, calculado sin modelo. */
+app.get('/api/marketing', async (c) => {
+  try {
+    const tool = TOOLS_BY_NAME.get('marketing_candidates');
+    if (!tool) throw new Error('Herramienta marketing_candidates no registrada');
+    return c.json(await tool.run(tool.parse.parse({ limite: 8 }) as never, ctx));
+  } catch (error) {
+    console.error('[marketing]', error);
+    return c.json({ error: error instanceof Error ? error.message : 'Error desconocido' }, 500);
+  }
+});
 
 app.get('/api/agents', (c) =>
   c.json(
@@ -116,6 +133,65 @@ app.get('/api/brief', async (c) => {
       });
     }
   });
+});
+
+const ENTIDADES = ['products', 'sales', 'customers', 'expenses'] as const;
+const overlay = overlayOf(ctx);
+
+/** Qué datos está usando el sistema: los del comercio o los de ejemplo. */
+app.get('/api/data', async (c) => {
+  if (!overlay) return c.json({ error: 'La fuente de datos no admite superposición' }, 400);
+  return c.json({ entidades: await overlay.status() });
+});
+
+/**
+ * Importa un CSV para una entidad. El cuerpo es el CSV crudo, no JSON:
+ * evita tener que escapar comillas y saltos de línea de un archivo real.
+ */
+app.post('/api/data/:entidad', async (c) => {
+  if (!overlay) return c.json({ error: 'La fuente de datos no admite superposición' }, 400);
+
+  const entidad = c.req.param('entidad');
+  if (!(ENTIDADES as readonly string[]).includes(entidad)) {
+    return c.json({ error: `Entidad desconocida. Válidas: ${ENTIDADES.join(', ')}` }, 400);
+  }
+
+  const csv = await c.req.text();
+  if (!csv.trim()) return c.json({ error: 'El archivo llegó vacío' }, 400);
+
+  try {
+    return c.json(overlay.importCsv(entidad as (typeof ENTIDADES)[number], csv));
+  } catch (error) {
+    console.error('[data]', error);
+    return c.json({ error: error instanceof Error ? error.message : 'Error al importar' }, 500);
+  }
+});
+
+/** Vuelve a los datos de ejemplo. */
+app.delete('/api/data/:entidad', async (c) => {
+  if (!overlay) return c.json({ error: 'La fuente de datos no admite superposición' }, 400);
+  const entidad = c.req.param('entidad');
+  overlay.reset(
+    entidad === 'todo' ? undefined : (entidad as (typeof ENTIDADES)[number]),
+  );
+  return c.json({ entidades: await overlay.status() });
+});
+
+const ImageRequest = z.object({ prompt: z.string().min(3).max(4000) });
+
+/**
+ * Convierte en imagen un prompt escrito por el agente.
+ *
+ * Devuelve 200 aunque no haya proveedor configurado: no tener generador no es
+ * un error del cliente, y el prompt por sí solo ya sirve. El frontend decide
+ * si muestra la imagen o el prompt para copiar.
+ */
+app.post('/api/image', async (c) => {
+  const parsed = ImageRequest.safeParse(await c.req.json().catch(() => null));
+  if (!parsed.success) {
+    return c.json({ error: 'Petición inválida', detalle: parsed.error.flatten() }, 400);
+  }
+  return c.json(await generateImage(parsed.data.prompt));
 });
 
 const ChatRequest = z.object({

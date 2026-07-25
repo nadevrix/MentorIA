@@ -2,9 +2,11 @@
 import Chat from './components/Chat';
 import DailyBrief from './components/DailyBrief';
 import Dashboard from './components/Dashboard';
+import DataPanel from './components/DataPanel';
+import FxPanel from './components/FxPanel';
 import Insights from './components/Insights';
+import MarketingPanel from './components/MarketingPanel';
 import Shell, { type Tab } from './components/Shell';
-import Simulator from './components/Simulator';
 import Widgets from './components/Widgets';
 import {
   fetchAgents,
@@ -45,9 +47,9 @@ interface Ask {
 
 const TABS: readonly Tab[] = [
   { id: 'resumen', label: 'Resumen' },
-  { id: 'dolar', label: 'Dólar', disabled: true },
-  { id: 'datos', label: 'Mis datos', disabled: true },
-  { id: 'marketing', label: 'Marketing', disabled: true },
+  { id: 'dolar', label: 'Dólar' },
+  { id: 'datos', label: 'Mis datos' },
+  { id: 'marketing', label: 'Marketing' },
 ];
 
 export default function App() {
@@ -120,7 +122,7 @@ export default function App() {
                     className={`flex shrink-0 items-center gap-2 rounded-full px-3 py-2 text-xs transition ${
                       on
                         ? 'bg-[var(--color-accent-strong)] font-semibold text-white'
-                        : 'glass-soft text-[var(--color-muted)] hover:text-white'
+                        : 'glass-soft text-[var(--color-muted)] hover:text-[var(--color-fg)]'
                     }`}
                   >
                     <span className="text-sm">{agent.icon}</span>
@@ -158,11 +160,11 @@ export default function App() {
             ) : (
               // Clases estáticas a propósito: Tailwind no genera `col-span-${n}` dinámico.
               <div className="grid gap-3 lg:grid-cols-12">
-                <div className="h-[220px] animate-pulse rounded-[var(--radius-card)] bg-white/5 lg:col-span-3" />
-                <div className="h-[220px] animate-pulse rounded-[var(--radius-card)] bg-white/5 lg:col-span-3" />
-                <div className="h-[220px] animate-pulse rounded-[var(--radius-card)] bg-white/5 lg:col-span-6" />
-                <div className="h-[240px] animate-pulse rounded-[var(--radius-card)] bg-white/5 lg:col-span-7" />
-                <div className="h-[240px] animate-pulse rounded-[var(--radius-card)] bg-white/5 lg:col-span-5" />
+                <div className="h-[220px] animate-pulse rounded-[var(--radius-card)] bg-black/[0.05] lg:col-span-3" />
+                <div className="h-[220px] animate-pulse rounded-[var(--radius-card)] bg-black/[0.05] lg:col-span-3" />
+                <div className="h-[220px] animate-pulse rounded-[var(--radius-card)] bg-black/[0.05] lg:col-span-6" />
+                <div className="h-[240px] animate-pulse rounded-[var(--radius-card)] bg-black/[0.05] lg:col-span-7" />
+                <div className="h-[240px] animate-pulse rounded-[var(--radius-card)] bg-black/[0.05] lg:col-span-5" />
               </div>
             )}
           </Section>
@@ -175,14 +177,25 @@ export default function App() {
           <Section title="Indicadores" hint="Recalculados al costo de reposición de hoy">
             <Dashboard data={dashboard} loading={loading} />
           </Section>
-
-          {fx?.tipoCambio !== undefined && (
-            <Section title="Simulador" hint="Qué pasa si el dólar se mueve">
-              <Simulator currentRate={fx.tipoCambio} onAsk={handleAsk} />
-            </Section>
-          )}
         </div>
       )}
+
+      {/* El simulador vive en Dólar, no acá: es una herramienta de ese tema. */}
+      {tab === 'dolar' && <FxPanel data={dashboard} onAsk={handleAsk} />}
+
+      {tab === 'datos' && (
+        <DataPanel
+          // Importar cambia los números de todo el panel: hay que recalcularlos.
+          onChanged={() => {
+            void Promise.all([fetchDashboard(), fetchInsights()]).then(([d, i]) => {
+              setDashboard(d);
+              setInsights(i);
+            });
+          }}
+        />
+      )}
+
+      {tab === 'marketing' && <MarketingPanel onAsk={handleAsk} />}
     </Shell>
   );
 }
