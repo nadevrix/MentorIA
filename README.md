@@ -95,7 +95,11 @@ docs/              Visión, arquitectura, división del equipo, deploy, guion de
 | [04 — Datos](docs/04-datos.md)                | Modelo de datos y cómo conectar datos reales |
 | [05 — Deploy](docs/05-deploy.md)              | Netlify + Render paso a paso                |
 | [06 — Demo y pitch](docs/06-demo-pitch.md)    | Guion de 4 minutos y plan B                 |
-| [07 — Convenciones](docs/07-convenciones.md)  | Git, estilo, cómo no pisarse                |
+| [07 — Git y comunicación](docs/07-convenciones.md) | **Flujo de 4 ramas con comandos, qué avisar** |
+| [08 — Estrategia](docs/08-estrategia.md)      | Dónde invertir las horas y por qué          |
+| [09 — Onboarding](docs/09-onboarding.md)      | **Prompt para pegarle a tu IA al empezar**  |
+
+`CLAUDE.md` en la raíz tiene las reglas del proyecto y lo lee Claude Code automáticamente.
 
 ## Créditos y datos
 
