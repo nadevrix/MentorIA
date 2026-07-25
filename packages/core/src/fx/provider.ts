@@ -50,7 +50,7 @@ export class FirecrawlFxProvider implements FxProvider {
     this.fallback = new SeedFxProvider(data);
   }
 
-  private async fetchLiveParallelRate(): Promise<number | null> {
+  private async fetchLiveRate(): Promise<number | null> {
     if (!this.apiKey) {
       throw new Error('FIRECRAWL_API_KEY no está configurada');
     }
@@ -96,19 +96,20 @@ export class FirecrawlFxProvider implements FxProvider {
     }
 
     try {
-      const liveParallel = await this.fetchLiveParallelRate();
+      const liveParallel = await this.fetchLiveRate();
       if (liveParallel !== null) {
         const fallbackRate = await this.fallback.current();
         const todayIso = new Date().toISOString().slice(0, 10);
 
         this.cachedRate = {
-          official: fallbackRate.official || 6.96,
-          parallel: liveParallel,
+          rate: liveParallel,
+          // Desde el 29/06/2026 el régimen es flexible: un solo tipo que flota.
+          regimen: 'flexible',
           date: todayIso,
           source: 'firecrawl (boliviabolivar.com)',
         };
         this.lastFetch = now;
-        console.log(`[fx] Dólar paralelo actualizado vía Firecrawl: ${liveParallel} Bs`);
+        console.log(`[fx] Tipo de cambio actualizado vía Firecrawl: ${liveParallel} Bs`);
         return this.cachedRate;
       }
     } catch (e) {

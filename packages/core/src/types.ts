@@ -71,12 +71,24 @@ export const ExpenseSchema = z.object({
 });
 export type Expense = z.infer<typeof ExpenseSchema>;
 
+/**
+ * Régimen cambiario del punto.
+ *
+ * Hasta el 28/06/2026 Bolivia tenía un tipo oficial intervenido y un paralelo
+ * que se movía aparte. Desde el 29/06/2026 el BCB unificó el régimen: hay un
+ * solo tipo y flota. Guardamos la marca para que el gráfico muestre el quiebre
+ * y para no comparar peras con manzanas al calcular variaciones.
+ */
+export const RegimenSchema = z.enum(['fijo', 'flexible']);
+export type Regimen = z.infer<typeof RegimenSchema>;
+
 export const FxRateSchema = z.object({
   date: z.string(),
-  /** Tipo de cambio oficial del BCB (históricamente fijo en 6.96). */
-  official: z.number().positive(),
-  /** Dólar paralelo/blue: el que realmente paga un importador. */
-  parallel: z.number().positive(),
+  /** Bs por USD vigente. Único tipo desde la unificación. */
+  rate: z.number().positive(),
+  /* Sin default a propósito: que el dato lo diga explícitamente evita que un
+     punto del régimen viejo se cuele marcado como flexible. */
+  regimen: RegimenSchema,
   source: z.string(),
 });
 export type FxRate = z.infer<typeof FxRateSchema>;

@@ -1,4 +1,4 @@
-# PyME AI
+﻿# Mentor IA
 
 **Agentes de IA que protegen el margen de las PyMEs bolivianas cuando se mueve el dólar.**
 
@@ -7,7 +7,7 @@ Un comercio importador compró su mercadería con el dólar a 11 y hoy repone a 
 al mismo precio, ve movimiento en caja y cree que gana — pero ya no puede reponer lo que vende.
 Nadie le avisa. Su Excel no sabe de tipo de cambio.
 
-PyME AI sí. Cinco agentes especializados leen las ventas, el inventario, los clientes y el tipo de
+Mentor IA sí. Cinco agentes especializados leen las ventas, el inventario, los clientes y el tipo de
 cambio del negocio, **recalculan el margen real al costo de reposición de hoy** y devuelven acciones
 concretas: qué precio subir, a cuánto, qué cliente contactar, qué pago vence.
 
@@ -18,9 +18,9 @@ concretas: qué precio subir, a cuánto, qué cliente contactar, qué pago vence
 ## Correr en local (4 pasos)
 
 ```bash
-git clone https://github.com/nadevrix/MentorIA.git && cd MentorIA
+git clone <URL-DEL-REPO> && cd buildathoncursor
 npm install
-cp .env.example .env        # y pegá tu GEMINI_API_KEY
+cp .env.example .env        # y pegá tu ANTHROPIC_API_KEY
 npm run dev                 # API en :8787 · Web en :5173
 ```
 
@@ -39,18 +39,22 @@ frescas: `node data/generate.mjs`.
 
 ## Qué hace, concretamente
 
+- **Hallazgos proactivos** — ocho detectores deterministas revisan márgenes, stock, rotación, cobros,
+  clientes y tipo de cambio, y devuelven qué resolver hoy ordenado por urgencia y por bolivianos en
+  juego. Cada hallazgo trae la pregunta lista para el agente que puede resolverlo. Esto es lo que
+  separa al producto de un chatbot: no espera la pregunta, la trae.
+- **Resumen del día** — el Director toma esos hallazgos y los redacta en tres frases, en streaming.
+  Corre sin herramientas a propósito: sólo puede narrar los números que le pasó el motor
+  determinista, así que no hay forma de que invente una cifra.
 - **Panel determinista** — los mismos cálculos que usan los agentes, corridos sin modelo. Carga
   instantánea y sin costo de tokens: márgenes en riesgo, ventas vs. mes anterior, utilidad neta,
   capital inmovilizado, cuentas vencidas.
-- **Dólar paralelo en vivo** — scraping con Firecrawl, caché de 15 minutos y fallback a una serie
-  estática si la fuente falla: la demo nunca se cae por un scraping caído.
 - **5 agentes con herramientas reales** — cada uno ve solo las herramientas de su dominio y decide
   cuáles llamar y en qué orden. No es un prompt largo: es un loop de percepción → decisión → ejecución.
-- **Simulación cambiaria** — "¿qué pasa si el dólar llega a 15?" recalcula todo el catálogo y
-  devuelve el precio sugerido producto por producto.
+- **Simulación cambiaria** — "¿qué pasa si el dólar llega a 15?" recalcula el catálogo completo y
+  devuelve el impacto sobre el negocio: cuántos productos quedan bajo costo, cuánta utilidad mensual
+  se evapora, cuánto capital extra hace falta para reponer y qué precio corresponde a cada producto.
 - **Trazabilidad en vivo** — la UI muestra qué herramienta está corriendo el agente mientras piensa.
-- **Motor intercambiable** — Gemini o Claude detrás de la misma interfaz. Si un proveedor falla en
-  vivo, se cambia una variable de entorno y el producto sigue andando.
 
 ### Los agentes
 
@@ -66,7 +70,7 @@ frescas: `node data/generate.mjs`.
 
 | Capa       | Tecnología                                | Por qué                                             |
 | ---------- | ----------------------------------------- | --------------------------------------------------- |
-| Agentes    | Gemini 2.5 Flash (Claude como alternativa) | Function calling nativo; el motor se cambia con una variable |
+| Agentes    | Claude Opus 5 (`@anthropic-ai/sdk`)       | Tool use nativo, decide qué consultar                |
 | Backend    | Node 20 + Hono, SSE                       | Streaming sin límite de 10s de las funciones edge    |
 | Frontend   | React 19 + Vite + Tailwind v4             | Build de <1s, despliegue directo en Netlify          |
 | Tipos      | TypeScript + Zod, compartidos vía workspace | Un solo modelo de dominio para todo el equipo       |
@@ -78,15 +82,18 @@ frescas: `node data/generate.mjs`.
 packages/core/     Núcleo: modelo de dominio, herramientas, agentes, loop de ejecución
   src/types.ts       Esquemas Zod del negocio (productos, ventas, clientes, gastos, FX)
   src/data/          Contrato DataSource + implementación con datos semilla
-  src/fx/            Tipo de cambio: serie estática o Firecrawl en vivo
-  src/llm/           Capa de proveedor: adaptadores de Gemini y de Claude
+  src/fx/            Proveedor de tipo de cambio (paralelo)
   src/tools/         Las 10 herramientas que pueden invocar los agentes
   src/agents/        Definición de cada agente: rol, herramientas, prompt
   src/runtime.ts     Loop: modelo → herramienta → resultado → modelo
-apps/api/          Servidor Hono: /health, /api/agents, /api/dashboard, /api/chat (SSE)
+  src/insights.ts    Motor de hallazgos: detección determinista ordenada por impacto en Bs
+  src/simulate.ts    Simulador de escenario cambiario sobre el catálogo completo
+  src/brief.ts       Resumen del día: el Director redacta los hallazgos, sin herramientas
+apps/api/          Servidor Hono: /health, /api/agents, /api/dashboard, /api/insights,
+                   /api/simulate, /api/brief (SSE), /api/chat (SSE)
 apps/web/          Interfaz React: panel + chat con agentes
 data/              Generador y datos semilla del negocio piloto
-docs/              Visión, arquitectura, backlog, datos, deploy, pitch, git y onboarding
+docs/              Visión, arquitectura, división del equipo, deploy, guion del pitch
 ```
 
 ## Documentación
@@ -95,16 +102,14 @@ docs/              Visión, arquitectura, backlog, datos, deploy, pitch, git y o
 | --------------------------------------------- | ------------------------------------------- |
 | [00 — Visión](docs/00-vision.md)              | Problema, usuario, propuesta de valor       |
 | [01 — Arquitectura](docs/01-arquitectura.md)  | Cómo funciona el loop de agentes            |
-| [02 — Backlog de trabajo](docs/02-equipo.md)   | **Qué falta hacer, ordenado por impacto**   |
+| [02 — División del equipo](docs/02-equipo.md) | **Quién hace qué durante las 24h**          |
 | [03 — Agentes](docs/03-agentes.md)            | Cómo agregar o modificar un agente          |
 | [04 — Datos](docs/04-datos.md)                | Modelo de datos y cómo conectar datos reales |
 | [05 — Deploy](docs/05-deploy.md)              | Netlify + Render paso a paso                |
 | [06 — Demo y pitch](docs/06-demo-pitch.md)    | Guion de 4 minutos y plan B                 |
-| [07 — Git y comunicación](docs/07-convenciones.md) | **Rama por persona, comandos, qué avisar** |
-| [08 — Estrategia](docs/08-estrategia.md)      | Dónde invertir las horas y por qué          |
-| [09 — Onboarding](docs/09-onboarding.md)      | **El prompt para arrancar (uno, para todos)** |
-
-`CLAUDE.md` en la raíz tiene las reglas del proyecto y lo lee Claude Code automáticamente.
+| [07 — Convenciones](docs/07-convenciones.md)  | Git, estilo, cómo no pisarse                |
+| [08 — Hallazgos y simulador](docs/08-insights.md) | **Cómo funciona el motor proactivo y cómo agregar un detector** |
+| [09 — Estrategia](docs/09-estrategia.md)      | ICP, competencia, precios, go-to-market, métricas |
 
 ## Créditos y datos
 

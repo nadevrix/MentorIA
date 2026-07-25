@@ -1,4 +1,4 @@
-import { z } from 'zod';
+﻿import { z } from 'zod';
 import { PeriodSchema } from '../types.js';
 import {
   daysAgo,
@@ -10,6 +10,7 @@ import {
   withinPeriod,
 } from './helpers.js';
 import { defineTool, objectSchema, type ToolDefinition } from './registry.js';
+import { simulateScenario } from '../simulate.js';
 
 export * from './registry.js';
 export * from './helpers.js';
@@ -27,25 +28,38 @@ const periodJson = {
 const getFxRate = defineTool({
   name: 'get_fx_rate',
   description:
-    'Devuelve el tipo de cambio oficial (BCB) y paralelo vigente, más su variación reciente. ' +
+    'Devuelve el tipo de cambio vigente del BCB y su variación reciente. ' +
     'Llamá a esta herramienta SIEMPRE antes de hablar de costos, precios o márgenes de productos importados: ' +
-    'el costo de reposición real depende del paralelo, no del oficial.',
+    'desde la unificación de junio de 2026 hay un solo tipo de cambio y flota, así que el costo de ' +
+    'reposición se mueve con él.',
   inputSchema: objectSchema({}),
   parse: z.object({}).passthrough(),
   async run(_input, ctx) {
     const history = await ctx.fx.history();
     const current = await ctx.fx.current();
     const monthAgo = history.find((r) => daysAgo(r.date) <= 30) ?? history[0];
-    const change = monthAgo ? round(((current.parallel - monthAgo.parallel) / monthAgo.parallel) * 100) : 0;
+    const change = monthAgo ? round(((current.rate - monthAgo.rate) / monthAgo.rate) * 100) : 0;
+
+    // El tramo de régimen fijo no es comparable con el flexible: lo marcamos
+    // para que el agente no lea una "subida" que en realidad es un cambio de régimen.
+    const flexible = history.filter((r) => r.regimen === 'flexible');
+    const desdeUnificacion =
+      flexible.length >= 2
+        ? round(((current.rate - flexible[0]!.rate) / flexible[0]!.rate) * 100)
+        : null;
 
     return {
       fecha: current.date,
-      oficial: current.official,
-      paralelo: current.parallel,
-      brechaPct: round(((current.parallel - current.official) / current.official) * 100),
+      tipoCambio: current.rate,
+      regimen: current.regimen,
       variacion30dPct: change,
+      unificacionDesde: flexible[0]?.date ?? null,
+      variacionDesdeUnificacionPct: desdeUnificacion,
       fuente: current.source,
-      historial: history.slice(-10).map((r) => ({ fecha: r.date, paralelo: r.parallel })),
+      historial: history.slice(-10).map((r) => ({ fecha: r.date, tipoCambio: r.rate })),
+      nota:
+        'Desde el 29/06/2026 el BCB unificó el régimen: hay un solo tipo de cambio y flota. ' +
+        'Ya no existe la brecha oficial/paralelo.',
     };
   },
 });
@@ -58,7 +72,8 @@ const analyzeMargins = defineTool({
   name: 'analyze_margins',
   description:
     'Recalcula el margen REAL de cada producto usando el costo de reposición al tipo de cambio de hoy ' +
-    '(paralelo para importados, oficial para nacionales) y lo compara con el margen que tenía al comprar. ' +
+    '(los importados se revalúan con el dólar; los nacionales quedan al costo de su compra) ' +
+    'y lo compara con el margen que tenía al comprar. ' +
     'Usala cuando el usuario pregunte si está ganando, qué producto conviene, o si debe subir precios. ' +
     'Devuelve los productos ordenados de peor a mejor margen.',
   inputSchema: objectSchema({
@@ -83,7 +98,7 @@ const analyzeMargins = defineTool({
     const [products, fx] = await Promise.all([ctx.data.products(), ctx.fx.current()]);
 
     const rows = products.map((p) => {
-      const costoHoy = replacementCostBob(p.costUsd, p.imported, fx);
+      const costoHoy = replacementCostBob(p, fx.rate);
       const costoCompra = round(p.costUsd * p.purchaseFxRate);
       const margenHoy = marginPct(p.priceBob, costoHoy);
       return {
@@ -110,8 +125,9 @@ const analyzeMargins = defineTool({
     filtered.sort((a, b) => a.margenRealHoyPct - b.margenRealHoyPct);
 
     return {
-      tipoCambioUsado: { oficial: fx.official, paralelo: fx.parallel, fecha: fx.date },
+      tipoCambioUsado: { tipoCambio: fx.rate, fecha: fx.date, regimen: fx.regimen },
       margenMinimoPct: min,
+      totalProductos: rows.length,
       totalEnRiesgo: rows.filter((r) => r.enRiesgo).length,
       totalPerdiendoDinero: rows.filter((r) => r.pierdeDinero).length,
       productos: filtered.slice(0, limit),
@@ -138,7 +154,7 @@ const suggestPrice = defineTool({
       },
       tipoCambioSimulado: {
         type: 'number',
-        description: 'Bs por USD a usar en la simulación. Si se omite, usa el paralelo actual.',
+        description: 'Bs por USD a usar en la simulación. Si se omite, usa el tipo de cambio vigente.',
       },
     },
     ['margenObjetivoPct'],
@@ -150,22 +166,23 @@ const suggestPrice = defineTool({
   }),
   async run(input, ctx) {
     const [products, fx] = await Promise.all([ctx.data.products(), ctx.fx.current()]);
-    const rate = input.tipoCambioSimulado ?? fx.parallel;
+    const rate = input.tipoCambioSimulado ?? fx.rate;
 
     const ids = new Set(input.productIds ?? []);
     const target = ids.size
       ? products.filter((p) => ids.has(p.id) || ids.has(p.sku))
-      : products.filter((p) => marginPct(p.priceBob, replacementCostBob(p.costUsd, p.imported, fx)) < 20);
+      : products.filter((p) => marginPct(p.priceBob, replacementCostBob(p, fx.rate)) < 20);
 
     return {
       escenario: {
         tipoCambioUsado: rate,
         esSimulacion: input.tipoCambioSimulado !== undefined,
-        paraleloActual: fx.parallel,
+        tipoCambioActual: fx.rate,
       },
       margenObjetivoPct: input.margenObjetivoPct,
       recomendaciones: target.map((p) => {
-        const costo = round(p.costUsd * (p.imported ? rate : fx.official));
+        // Sólo los importados se revalúan con el escenario; los nacionales no.
+        const costo = round(p.costUsd * (p.imported ? rate : p.purchaseFxRate));
         const sugerido = priceForMargin(costo, input.margenObjetivoPct);
         return {
           id: p.id,
@@ -180,6 +197,39 @@ const suggestPrice = defineTool({
         };
       }),
     };
+  },
+});
+
+const simulateScenarioTool = defineTool({
+  name: 'simulate_scenario',
+  description:
+    'Simula qué le pasa al negocio completo si el dólar llega a un valor dado: cuántos productos quedan ' +
+    'bajo costo, cómo cae el margen promedio y la utilidad mensual, cuánto capital extra hace falta para ' +
+    'reponer el inventario y qué aumento de precios se necesita. ' +
+    'Usala para preguntas de escenario ("¿y si sube a 15?", "¿aguanto si el dólar se dispara?") o para ' +
+    'decidir si conviene comprar mercadería por adelantado. Para ajustar precios producto por producto ' +
+    'al tipo de cambio de HOY, usá suggest_price en su lugar.',
+  inputSchema: objectSchema(
+    {
+      tipoCambioSimulado: {
+        type: 'number',
+        description: 'Bs por USD del escenario a evaluar. Ejemplo: 15.',
+      },
+      margenObjetivoPct: {
+        type: 'number',
+        description: 'Margen que el negocio quiere sostener, en porcentaje. Por defecto 35.',
+      },
+      limite: { type: 'number', description: 'Máximo de productos en el detalle. Por defecto 25.' },
+    },
+    ['tipoCambioSimulado'],
+  ),
+  parse: z.object({
+    tipoCambioSimulado: z.number().positive(),
+    margenObjetivoPct: z.number().optional(),
+    limite: z.number().int().positive().optional(),
+  }),
+  async run(input, ctx) {
+    return simulateScenario(ctx, input);
   },
 });
 
@@ -256,7 +306,7 @@ const topProducts = defineTool({
       for (const item of sale.items) {
         const product = byId.get(item.productId);
         if (!product) continue;
-        const costo = replacementCostBob(product.costUsd, product.imported, fx);
+        const costo = replacementCostBob(product, fx.rate);
         const row = agg.get(item.productId) ?? { unidades: 0, ingresos: 0, utilidad: 0 };
         row.unidades += item.quantity;
         row.ingresos = round(row.ingresos + item.quantity * item.unitPriceBob);
@@ -314,7 +364,7 @@ const inventoryAlerts = defineTool({
         nombre: p.name,
         stock: p.stock,
         puntoReorden: p.reorderPoint,
-        costoReposicionUnitarioBob: replacementCostBob(p.costUsd, p.imported, fx),
+        costoReposicionUnitarioBob: replacementCostBob(p, fx.rate),
         importado: p.imported,
       }));
 
@@ -328,11 +378,11 @@ const inventoryAlerts = defineTool({
         nombre: p.name,
         stock: p.stock,
         diasSinVenta: lastSale.has(p.id) ? daysAgo(lastSale.get(p.id)!) : null,
-        capitalInmovilizadoBob: round(p.stock * replacementCostBob(p.costUsd, p.imported, fx)),
+        capitalInmovilizadoBob: round(p.stock * replacementCostBob(p, fx.rate)),
       }));
 
     const capitalTotal = round(
-      products.reduce((s, p) => s + p.stock * replacementCostBob(p.costUsd, p.imported, fx), 0),
+      products.reduce((s, p) => s + p.stock * replacementCostBob(p, fx.rate), 0),
     );
 
     return {
@@ -340,6 +390,104 @@ const inventoryAlerts = defineTool({
       porAgotarse,
       sinRotacion,
       resumen: `${porAgotarse.length} productos por agotarse, ${sinRotacion.length} sin rotación en ${stale} días.`,
+    };
+  },
+});
+
+// ---------------------------------------------------------------------------
+// Marketing
+// ---------------------------------------------------------------------------
+
+const marketingCandidates = defineTool({
+  name: 'marketing_candidates',
+  description:
+    'Devuelve qué productos conviene promocionar y por qué, con los datos que sostienen la decisión: ' +
+    'margen real, stock, rotación y capital inmovilizado. Clasifica cada uno en una razón ' +
+    '("liquidar" para lo que no rota, "empujar" para lo que deja buen margen y hay stock, ' +
+    '"estrella" para lo que ya se vende bien). ' +
+    'Usala SIEMPRE antes de proponer una campaña, un post o una promoción: sin esto estarías ' +
+    'inventando qué promocionar. Nunca recomiendes promocionar algo que no salga de acá.',
+  inputSchema: objectSchema({
+    limite: { type: 'number', description: 'Máximo de productos a devolver. Por defecto 6.' },
+    diasSinRotacion: { type: 'number', description: 'Umbral de días sin venta. Por defecto 60.' },
+  }),
+  parse: z.object({
+    limite: z.number().int().positive().optional(),
+    diasSinRotacion: z.number().int().positive().optional(),
+  }),
+  async run(input, ctx) {
+    const stale = input.diasSinRotacion ?? 60;
+    const [products, sales, fx] = await Promise.all([
+      ctx.data.products(),
+      ctx.data.sales(),
+      ctx.fx.current(),
+    ]);
+
+    const units = new Map<string, number>();
+    const lastSale = new Map<string, string>();
+    for (const sale of salesInPeriod(sales, '30d')) {
+      for (const item of sale.items) {
+        units.set(item.productId, (units.get(item.productId) ?? 0) + item.quantity);
+      }
+    }
+    for (const sale of sales) {
+      for (const item of sale.items) {
+        const prev = lastSale.get(item.productId);
+        if (!prev || sale.date > prev) lastSale.set(item.productId, sale.date);
+      }
+    }
+
+    const rows = products.map((p) => {
+      const costo = replacementCostBob(p, fx.rate);
+      const margen = marginPct(p.priceBob, costo);
+      const vendidas = units.get(p.id) ?? 0;
+      const ultima = lastSale.get(p.id);
+      const diasSinVender = ultima ? daysAgo(ultima) : null;
+      const dormido = p.stock > 0 && (diasSinVender === null || diasSinVender > stale);
+
+      // Un producto sin margen no se promociona: vender más de algo que pierde
+      // plata sólo acelera la descapitalización.
+      const razon = margen <= 0
+        ? 'no_promocionar'
+        : dormido
+          ? 'liquidar'
+          : vendidas >= 5 && margen >= 25
+            ? 'estrella'
+            : p.stock > 0 && margen >= 25
+              ? 'empujar'
+              : 'no_promocionar';
+
+      return {
+        id: p.id,
+        sku: p.sku,
+        nombre: p.name,
+        categoria: p.category,
+        razon,
+        precioBob: p.priceBob,
+        margenRealPct: margen,
+        stock: p.stock,
+        unidades30d: vendidas,
+        diasSinVender,
+        capitalInmovilizadoBob: dormido ? round(p.stock * costo) : 0,
+        // Cuánto se puede descontar sin quedar bajo costo de reposición.
+        descuentoMaximoPct: p.priceBob > 0 ? Math.max(0, round(((p.priceBob - costo) / p.priceBob) * 100)) : 0,
+      };
+    });
+
+    const promocionables = rows.filter((r) => r.razon !== 'no_promocionar');
+    const orden = { liquidar: 0, empujar: 1, estrella: 2 } as Record<string, number>;
+    promocionables.sort(
+      (a, b) => (orden[a.razon] ?? 9) - (orden[b.razon] ?? 9) || b.capitalInmovilizadoBob - a.capitalInmovilizadoBob,
+    );
+
+    return {
+      tipoCambioUsado: fx.rate,
+      totalProductos: rows.length,
+      promocionables: promocionables.length,
+      descartados: rows.length - promocionables.length,
+      notaDescartados:
+        'Los descartados no tienen margen suficiente: promocionarlos aceleraría la pérdida.',
+      candidatos: promocionables.slice(0, input.limite ?? 6),
     };
   },
 });
@@ -418,7 +566,7 @@ const financialSummary = defineTool({
     for (const sale of periodSales) {
       for (const item of sale.items) {
         const p = byId.get(item.productId);
-        if (p) cmv += item.quantity * replacementCostBob(p.costUsd, p.imported, fx);
+        if (p) cmv += item.quantity * replacementCostBob(p, fx.rate);
       }
     }
     cmv = round(cmv);
@@ -538,9 +686,11 @@ export const ALL_TOOLS: ToolDefinition<never>[] = [
   getFxRate,
   analyzeMargins,
   suggestPrice,
+  simulateScenarioTool,
   salesSummary,
   topProducts,
   inventoryAlerts,
+  marketingCandidates,
   customerInsights,
   financialSummary,
   accountsPayable,

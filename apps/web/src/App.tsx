@@ -1,114 +1,221 @@
-import { useEffect, useState } from 'react';
+﻿import { useEffect, useState } from 'react';
 import Chat from './components/Chat';
+import DailyBrief from './components/DailyBrief';
 import Dashboard from './components/Dashboard';
-import { fetchAgents, fetchDashboard, type Agent } from './lib/api';
+import DataPanel from './components/DataPanel';
+import FormalizacionPanel from './components/FormalizacionPanel';
+import FxPanel from './components/FxPanel';
+import Icon from './components/Icon';
+import Insights from './components/Insights';
+import MarketingPanel from './components/MarketingPanel';
+import Shell, { type Tab } from './components/Shell';
+import TaxPanel from './components/TaxPanel';
+import Widgets from './components/Widgets';
+import {
+  fetchAgents,
+  fetchDashboard,
+  fetchInsights,
+  fetchPendientesFormalizacion,
+  type Agent,
+  type InsightsResponse,
+} from './lib/api';
+
+/** Apartado del panel: un título que orienta y el bloque de contenido. */
+function Section({
+  title,
+  hint,
+  children,
+}: {
+  title: string;
+  hint?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <section className="space-y-3">
+      <div className="flex flex-wrap items-baseline justify-between gap-2">
+        <h2 className="text-[15px] font-semibold">{title}</h2>
+        {hint && <span className="text-xs text-[var(--color-muted)]">{hint}</span>}
+      </div>
+      {children}
+    </section>
+  );
+}
+
+/** Pregunta enviada desde un hallazgo o el simulador hacia el chat. */
+interface Ask {
+  agentId: string;
+  question: string;
+  /** Cambia en cada clic para forzar el remontaje del chat. */
+  nonce: number;
+}
 
 export default function App() {
   const [agents, setAgents] = useState<Agent[]>([]);
   const [active, setActive] = useState<Agent | null>(null);
   const [dashboard, setDashboard] = useState<Record<string, any> | null>(null);
+  const [insights, setInsights] = useState<InsightsResponse | null>(null);
   const [loading, setLoading] = useState(true);
-  const [isSlowBoot, setIsSlowBoot] = useState(false);
   const [bootError, setBootError] = useState<string | null>(null);
-  const [pendingPrompt, setPendingPrompt] = useState<string | null>(null);
+  const [ask, setAsk] = useState<Ask | null>(null);
+  const [tab, setTab] = useState('resumen');
+  const [tramitesPendientes, setTramitesPendientes] = useState(0);
 
   useEffect(() => {
-    const timer = setTimeout(() => setIsSlowBoot(true), 2500);
-
     (async () => {
       try {
-        const [list, data] = await Promise.all([fetchAgents(), fetchDashboard()]);
+        const [list, data, found] = await Promise.all([
+          fetchAgents(),
+          fetchDashboard(),
+          fetchInsights(),
+          // Falla en silencio: que no haya base para el avance de trámites no
+          // puede impedir que arranque el panel.
+          fetchPendientesFormalizacion()
+            .then(setTramitesPendientes)
+            .catch(() => {}),
+        ]);
         setAgents(list);
         setActive(list[0] ?? null);
         setDashboard(data);
+        setInsights(found);
       } catch (e) {
         setBootError(e instanceof Error ? e.message : 'Error al iniciar');
       } finally {
-        clearTimeout(timer);
-        setIsSlowBoot(false);
         setLoading(false);
       }
     })();
-
-    return () => clearTimeout(timer);
   }, []);
 
-  const handleAskAgent = (prompt: string, agentId?: string) => {
-    if (agentId) {
-      const targetAgent = agents.find((a) => a.id === agentId || a.id.includes(agentId));
-      if (targetAgent) {
-        setActive(targetAgent);
-      }
-    }
-    setPendingPrompt(prompt);
-  };
+  /** Un hallazgo lleva directo al agente que lo puede resolver, con la pregunta ya hecha. */
+  function handleAsk(agentId: string, question: string) {
+    const agent = agents.find((a) => a.id === agentId);
+    if (agent) setActive(agent);
+    setAsk({ agentId, question, nonce: Date.now() });
+  }
+
+  function handlePickAgent(agent: Agent) {
+    setActive(agent);
+    setAsk(null);
+  }
+
+  const fx = dashboard?.fx;
+  const askIsForActive = ask !== null && ask.agentId === active?.id;
+
+  // El contador de trámites va en la pestaña: si no se ve desde afuera, nadie
+  // entra a mirarlo y la lista deja de servir para lo que existe.
+  const tabs: readonly Tab[] = [
+    { id: 'resumen', label: 'Resumen' },
+    { id: 'dolar', label: 'Dólar' },
+    { id: 'impuestos', label: 'Impuestos' },
+    { id: 'tramites', label: 'Trámites', badge: tramitesPendientes },
+    { id: 'datos', label: 'Mis datos' },
+    { id: 'marketing', label: 'Marketing' },
+  ];
 
   return (
-    <div className="mx-auto flex min-h-full max-w-7xl flex-col gap-4 p-4 lg:h-screen lg:flex-row">
-      <main className="flex-1 space-y-4 overflow-y-auto">
-        <header>
-          <h1 className="text-xl font-bold">
-            PyME <span className="text-[var(--color-accent)]">AI</span>
-          </h1>
-          <p className="text-sm text-slate-400">
-            Tus agentes ya revisaron el negocio. Esto es lo que encontraron.
-          </p>
-        </header>
-
-        {loading && isSlowBoot && (
-          <div className="flex items-center gap-3 rounded-lg border border-yellow-500/40 bg-yellow-500/10 p-3 text-xs text-yellow-200 animate-pulse">
-            <span className="text-base">⚡</span>
-            <div>
-              <div className="font-semibold">Despertando el servidor backend en Render…</div>
-              <div className="text-[11px] text-yellow-300/80">
-                El arranque en frío del servidor gratuito puede tardar hasta 30 segundos. Por favor aguarde un instante.
-              </div>
+    <Shell
+      tabs={tabs}
+      activeTab={tab}
+      onTab={setTab}
+      title="Panel principal"
+      subtitle="Tus agentes ya revisaron el negocio. Esto es lo que encontraron."
+      rate={fx ? { valor: fx.tipoCambio, variacionPct: fx.variacion30dPct } : null}
+      aside={
+        <>
+          <div className="shrink-0 border-b border-[var(--color-line)] p-4">
+            <p className="text-[11px] font-semibold uppercase tracking-wide text-[var(--color-muted)]">
+              Agentes
+            </p>
+            <div className="scroll-slim mt-2.5 flex gap-2 overflow-x-auto pb-1">
+              {agents.map((agent) => {
+                const on = active?.id === agent.id;
+                return (
+                  <button
+                    key={agent.id}
+                    onClick={() => handlePickAgent(agent)}
+                    title={agent.tagline}
+                    className={`flex shrink-0 items-center gap-2 rounded-full px-3 py-2 text-xs transition ${
+                      on
+                        ? 'bg-[var(--color-accent-strong)] font-semibold text-white'
+                        : 'glass-soft text-[var(--color-muted)] hover:text-[var(--color-fg)]'
+                    }`}
+                  >
+                    <Icon name={agent.icon} size={14} />
+                    {agent.name.replace(/^Agente (Cambiario y )?de |^Agente /, '')}
+                  </button>
+                );
+              })}
             </div>
           </div>
-        )}
 
-        {bootError && (
-          <div className="rounded-lg border border-[var(--color-bad)] p-3 text-sm text-[var(--color-bad)]">
-            {bootError}
-          </div>
-        )}
+          {active ? (
+            <Chat
+              // Remontar en cada pregunta entrante: estado limpio, sin closures viejos.
+              key={askIsForActive ? `${active.id}:${ask.nonce}` : active.id}
+              agent={active}
+              initialQuestion={askIsForActive ? ask.question : undefined}
+            />
+          ) : (
+            <div className="p-4 text-sm text-[var(--color-muted)]">Cargando agentes…</div>
+          )}
+        </>
+      }
+    >
+      {bootError && (
+        <div className="rounded-[var(--radius-card)] border border-[var(--color-bad)] p-4 text-sm text-[var(--color-bad)]">
+          {bootError}
+        </div>
+      )}
 
-        <Dashboard data={dashboard} loading={loading} onAskAgent={handleAskAgent} />
+      {tab === 'resumen' && (
+        <div className="space-y-8">
+          <Section title="Tablero" hint="Tu negocio de un vistazo">
+            {dashboard ? (
+              <Widgets data={dashboard} />
+            ) : (
+              // Clases estáticas a propósito: Tailwind no genera `col-span-${n}` dinámico.
+              <div className="grid gap-3 lg:grid-cols-12">
+                <div className="h-[220px] animate-pulse rounded-[var(--radius-card)] bg-black/[0.05] lg:col-span-3" />
+                <div className="h-[220px] animate-pulse rounded-[var(--radius-card)] bg-black/[0.05] lg:col-span-3" />
+                <div className="h-[220px] animate-pulse rounded-[var(--radius-card)] bg-black/[0.05] lg:col-span-6" />
+                <div className="h-[240px] animate-pulse rounded-[var(--radius-card)] bg-black/[0.05] lg:col-span-7" />
+                <div className="h-[240px] animate-pulse rounded-[var(--radius-card)] bg-black/[0.05] lg:col-span-5" />
+              </div>
+            )}
+          </Section>
 
-        <section>
-          <h2 className="mb-2 text-sm font-semibold uppercase tracking-wide text-slate-400">Agentes</h2>
-          <div className="grid grid-cols-2 gap-2 lg:grid-cols-3">
-            {agents.map((agent) => (
-              <button
-                key={agent.id}
-                onClick={() => setActive(agent)}
-                className={`rounded-xl border p-3 text-left transition ${
-                  active?.id === agent.id
-                    ? 'border-[var(--color-accent)] bg-[var(--color-surface)]'
-                    : 'border-[var(--color-line)] bg-[var(--color-surface)] hover:border-slate-500'
-                }`}
-              >
-                <div className="text-lg">{agent.icon}</div>
-                <div className="mt-1 text-sm font-semibold">{agent.name}</div>
-                <div className="mt-0.5 text-xs text-slate-400">{agent.tagline}</div>
-              </button>
-            ))}
-          </div>
-        </section>
-      </main>
+          <Section title="Qué resolver hoy" hint="Ordenado por urgencia e impacto en bolivianos">
+            {!loading && <DailyBrief />}
+            <Insights data={insights} loading={loading} onAsk={handleAsk} />
+          </Section>
 
-      <aside className="flex h-[70vh] w-full flex-col rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] lg:h-auto lg:w-[420px]">
-        {active ? (
-          <Chat
-            agent={active}
-            initialPrompt={pendingPrompt}
-            onClearInitialPrompt={() => setPendingPrompt(null)}
-          />
-        ) : (
-          <div className="p-4 text-sm text-slate-400">Cargando agentes…</div>
-        )}
-      </aside>
-    </div>
+          <Section title="Indicadores" hint="Recalculados al costo de reposición de hoy">
+            <Dashboard data={dashboard} loading={loading} />
+          </Section>
+        </div>
+      )}
+
+      {/* El simulador vive en Dólar, no acá: es una herramienta de ese tema. */}
+      {tab === 'dolar' && <FxPanel data={dashboard} onAsk={handleAsk} />}
+
+      {tab === 'impuestos' && <TaxPanel onAsk={handleAsk} />}
+
+      {tab === 'tramites' && (
+        <FormalizacionPanel onAsk={handleAsk} onPendientes={setTramitesPendientes} />
+      )}
+
+      {tab === 'datos' && (
+        <DataPanel
+          // Importar cambia los números de todo el panel: hay que recalcularlos.
+          onChanged={() => {
+            void Promise.all([fetchDashboard(), fetchInsights()]).then(([d, i]) => {
+              setDashboard(d);
+              setInsights(i);
+            });
+          }}
+        />
+      )}
+
+      {tab === 'marketing' && <MarketingPanel onAsk={handleAsk} />}
+    </Shell>
   );
 }
-

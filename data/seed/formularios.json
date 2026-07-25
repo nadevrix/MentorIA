@@ -1,0 +1,597 @@
+{
+  "fuente": "https://www.impuestos.gob.bo/index.php/formularios/",
+  "obtenidoEn": "2026-07-25T22:29:04.426Z",
+  "nota": "Catálogo informativo publicado por el SIN. Para fines legales hay que remitirse a las disposiciones oficiales. Las versiones de formulario cambian por resolución.",
+  "impuestos": [
+    {
+      "impuesto": "IVA",
+      "grava": "Las ventas habituales de bienes muebles, contratos de obra e Importaciones definitivas.",
+      "alcance": "Personas Naturales Jurídicas (Empresas comerciales, industriales, etc.)",
+      "formularios": [
+        {
+          "numero": "200",
+          "nombre": "Form 200 V5 Resumido (nuevo)",
+          "version": "V5",
+          "esBoleta": false,
+          "periodicidad": "mensual",
+          "url": "https://www.impuestos.gob.bo/wp-content/uploads/2025/10/200v5.pdf",
+          "esTutorial": false
+        },
+        {
+          "numero": "200",
+          "nombre": "Form 200 V5 Extendido (nuevo)",
+          "version": "V5",
+          "esBoleta": false,
+          "periodicidad": "mensual",
+          "url": "https://www.impuestos.gob.bo/wp-content/uploads/2025/10/200v5-extendido.pdf",
+          "esTutorial": false
+        },
+        {
+          "numero": "1000",
+          "nombre": "Boleta de Pago 1000 V2",
+          "version": "V2",
+          "esBoleta": true,
+          "periodicidad": "cuando corresponda",
+          "url": "https://www.impuestos.gob.bo/wp-content/uploads/2025/10/boleta-de-pago-1000.jpg",
+          "esTutorial": false
+        },
+        {
+          "numero": "210",
+          "nombre": "Form 210 V2",
+          "version": "V2",
+          "esBoleta": false,
+          "periodicidad": "mensual",
+          "url": "https://www.impuestos.gob.bo/wp-content/uploads/2025/10/form-210v2.jpg",
+          "esTutorial": false
+        }
+      ]
+    },
+    {
+      "impuesto": "IT",
+      "grava": "Los Ingresos brutos devengados, obtenidos por el ejercicio de la actividad lucrativa o no.",
+      "alcance": "Personas Naturales o Jurídicas (Empresas públicas y privadas, sociedades con o sin personería jurídica)",
+      "formularios": [
+        {
+          "numero": "400",
+          "nombre": "Form 400 V5 Resumido",
+          "version": "V5",
+          "esBoleta": false,
+          "periodicidad": "mensual",
+          "url": "https://www.impuestos.gob.bo/wp-content/uploads/2025/10/form400v5resumido.pdf",
+          "esTutorial": false
+        },
+        {
+          "numero": "400",
+          "nombre": "Form 400 V5 Extendido",
+          "version": "V5",
+          "esBoleta": false,
+          "periodicidad": "mensual",
+          "url": "https://www.impuestos.gob.bo/wp-content/uploads/2025/10/form400v5extendido.pdf",
+          "esTutorial": false
+        },
+        {
+          "numero": "1000",
+          "nombre": "Boleta de pago 1000 V2",
+          "version": "V2",
+          "esBoleta": true,
+          "periodicidad": "cuando corresponda",
+          "url": "https://www.impuestos.gob.bo/wp-content/uploads/2025/10/boleta-de-pago-1000-v.jpg",
+          "esTutorial": false
+        },
+        {
+          "numero": "430",
+          "nombre": "Form 430",
+          "version": null,
+          "esBoleta": false,
+          "periodicidad": "mensual cuando corresponda",
+          "url": "https://www.impuestos.gob.bo/wp-content/uploads/2025/10/form430.jpg",
+          "esTutorial": false
+        },
+        {
+          "numero": "410",
+          "nombre": "Form 410 V2",
+          "version": "V2",
+          "esBoleta": false,
+          "periodicidad": "mensual cuando corresponda",
+          "url": "https://www.impuestos.gob.bo/wp-content/uploads/2025/10/form-410v2.pdf",
+          "esTutorial": false
+        },
+        {
+          "numero": "440",
+          "nombre": "Form 440 V2",
+          "version": "V2",
+          "esBoleta": false,
+          "periodicidad": "hasta el 10 de cada mes",
+          "url": "https://www.impuestos.gob.bo/wp-content/uploads/2025/10/form-440-v2.jpg",
+          "esTutorial": false
+        }
+      ]
+    },
+    {
+      "impuesto": "RC-IVA",
+      "grava": "Los sueldos, alquiler, subalquiler de inmuebles o muebles, colocación de capitales y honorarios.",
+      "alcance": "Personas Naturales y Sucesiones indivisas (obtienen ingresos por las actividades gravadas)",
+      "formularios": [
+        {
+          "numero": "608",
+          "nombre": "Form 608 V3",
+          "version": "V3",
+          "esBoleta": false,
+          "periodicidad": "mensual",
+          "url": "https://www.impuestos.gob.bo/wp-content/uploads/2025/10/form608v2.jpg",
+          "esTutorial": false
+        },
+        {
+          "numero": "1000",
+          "nombre": "Boleta de pago 1000 V2",
+          "version": "V2",
+          "esBoleta": true,
+          "periodicidad": "cuando corresponda",
+          "url": "https://www.impuestos.gob.bo/wp-content/uploads/2025/10/boleta-de-pago-1000v2-rc-iva.jpg",
+          "esTutorial": false
+        },
+        {
+          "numero": "610",
+          "nombre": "Form 610 V2",
+          "version": "V2",
+          "esBoleta": false,
+          "periodicidad": "trimestral",
+          "url": "https://www.impuestos.gob.bo/wp-content/uploads/2025/10/form-610v2.jpg",
+          "esTutorial": false
+        },
+        {
+          "numero": "110",
+          "nombre": "Form 110 V3",
+          "version": "V3",
+          "esBoleta": false,
+          "periodicidad": "trimestral",
+          "url": "https://www.impuestos.gob.bo/wp-content/uploads/2025/10/f110v3-scaled.jpg",
+          "esTutorial": false
+        },
+        {
+          "numero": "604",
+          "nombre": "Form 604 V3 (nuevo)",
+          "version": "V3",
+          "esBoleta": false,
+          "periodicidad": "mensual cuando corresponda",
+          "url": "https://www.impuestos.gob.bo/wp-content/uploads/2025/10/f604v3.jpg",
+          "esTutorial": false
+        }
+      ]
+    },
+    {
+      "impuesto": "IUE",
+      "grava": "La utilidad neta (Utilidad bruta menos gastos deducibles.",
+      "alcance": "Personas Naturales o Jurídicas (Empresas públicas, privadas, mixtas)",
+      "formularios": [
+        {
+          "numero": "500",
+          "nombre": "Form 500 V2",
+          "version": "V2",
+          "esBoleta": false,
+          "periodicidad": "anual",
+          "url": "https://www.impuestos.gob.bo/wp-content/uploads/2025/10/F500V2.jpg",
+          "esTutorial": false
+        },
+        {
+          "numero": "510",
+          "nombre": "Form 510",
+          "version": null,
+          "esBoleta": false,
+          "periodicidad": "anual",
+          "url": "https://www.impuestos.gob.bo/wp-content/uploads/2025/10/F510.jpg",
+          "esTutorial": false
+        },
+        {
+          "numero": "1000",
+          "nombre": "Boleta de pago 1000 V2",
+          "version": "V2",
+          "esBoleta": true,
+          "periodicidad": "cuando corresponda",
+          "url": "https://www.impuestos.gob.bo/wp-content/uploads/2025/10/BOLETA-1000V2.jpg",
+          "esTutorial": false
+        },
+        {
+          "numero": "520",
+          "nombre": "Form 520 V2",
+          "version": "V2",
+          "esBoleta": false,
+          "periodicidad": "anual",
+          "url": "https://www.impuestos.gob.bo/wp-content/uploads/2025/10/F520V2.jpg",
+          "esTutorial": false
+        },
+        {
+          "numero": "585",
+          "nombre": "Form 585 v2",
+          "version": "V2",
+          "esBoleta": false,
+          "periodicidad": "anual",
+          "url": "https://www.impuestos.gob.bo/wp-content/uploads/2025/10/F585V2.jpg",
+          "esTutorial": false
+        },
+        {
+          "numero": "588",
+          "nombre": "Form 588 V2",
+          "version": "V2",
+          "esBoleta": false,
+          "periodicidad": "anual",
+          "url": "https://www.impuestos.gob.bo/wp-content/uploads/2025/10/F588V2.jpg",
+          "esTutorial": false
+        },
+        {
+          "numero": "587",
+          "nombre": "Form 587 V2",
+          "version": "V2",
+          "esBoleta": false,
+          "periodicidad": "mensual",
+          "url": "https://www.impuestos.gob.bo/wp-content/uploads/2025/10/F587V2.jpg",
+          "esTutorial": false
+        },
+        {
+          "numero": "3007",
+          "nombre": "Boleta de pago 3007 V2",
+          "version": "V2",
+          "esBoleta": true,
+          "periodicidad": "cuando corresponda",
+          "url": "https://www.impuestos.gob.bo/wp-content/uploads/2025/10/B3007V2.jpg",
+          "esTutorial": false
+        },
+        {
+          "numero": "3009",
+          "nombre": "Boleta de pago 3009 V2",
+          "version": "V2",
+          "esBoleta": true,
+          "periodicidad": "cuando corresponda",
+          "url": "https://www.impuestos.gob.bo/wp-content/uploads/2025/10/F3009V2.jpg",
+          "esTutorial": false
+        },
+        {
+          "numero": "515",
+          "nombre": "Form.515 V2",
+          "version": "V2",
+          "esBoleta": false,
+          "periodicidad": "anual",
+          "url": "https://www.impuestos.gob.bo/wp-content/uploads/2025/10/F515V2.jpg",
+          "esTutorial": false
+        },
+        {
+          "numero": "501",
+          "nombre": "Form 501 V2",
+          "version": "V2",
+          "esBoleta": false,
+          "periodicidad": "anual",
+          "url": "https://www.impuestos.gob.bo/wp-content/uploads/2025/10/F501V2.jpg",
+          "esTutorial": false
+        },
+        {
+          "numero": "570",
+          "nombre": "Form 570 V2 (nuevo)",
+          "version": "V2",
+          "esBoleta": false,
+          "periodicidad": "mensual cuando corresponda",
+          "url": "https://www.impuestos.gob.bo/wp-content/uploads/2025/10/F570V2.pdf",
+          "esTutorial": false
+        },
+        {
+          "numero": "530",
+          "nombre": "Form 530 V3 (nuevo)",
+          "version": "V3",
+          "esBoleta": false,
+          "periodicidad": "mensual cuando corresponda",
+          "url": "https://www.impuestos.gob.bo/wp-content/uploads/2025/10/F530.pdf",
+          "esTutorial": false
+        },
+        {
+          "numero": "3050",
+          "nombre": "Boleta de pago 3050 V2",
+          "version": "V2",
+          "esBoleta": true,
+          "periodicidad": "cuando corresponda",
+          "url": "https://www.impuestos.gob.bo/wp-content/uploads/2025/10/BOLETA3050V2.jpg",
+          "esTutorial": false
+        },
+        {
+          "numero": "541",
+          "nombre": "Form 541 V3",
+          "version": "V3",
+          "esBoleta": false,
+          "periodicidad": "mensual",
+          "url": "https://www.impuestos.gob.bo/wp-content/uploads/2025/10/F541.jpg",
+          "esTutorial": false
+        },
+        {
+          "numero": "550",
+          "nombre": "Form 550 V3",
+          "version": "V3",
+          "esBoleta": false,
+          "periodicidad": "mensual",
+          "url": "https://www.impuestos.gob.bo/wp-content/uploads/2025/10/F550.jpg",
+          "esTutorial": false
+        },
+        {
+          "numero": "3051",
+          "nombre": "Boleta de pago 3051 V2",
+          "version": "V2",
+          "esBoleta": true,
+          "periodicidad": "cuando corresponda",
+          "url": "https://www.impuestos.gob.bo/wp-content/uploads/2025/10/BOLETA3051.jpg",
+          "esTutorial": false
+        }
+      ]
+    },
+    {
+      "impuesto": "ICE",
+      "grava": "Las ventas en el mercado interno e importaciones de cigarrillos y tabacos, bebidas refrescantes, bebidas alcohólicas, alcoholes sin desnaturalizar, vehículos automóviles.",
+      "alcance": "Personas Naturales, Jurídicas (fabricantes comercializadores y/o distribuidores y/o encomendadores al por mayor e importadores)Alícuotas Porcentuales (Sobre el precio neto de ventas)",
+      "formularios": [
+        {
+          "numero": "651",
+          "nombre": "Form 651 V3",
+          "version": "V3",
+          "esBoleta": false,
+          "periodicidad": "mensual",
+          "url": "https://www.impuestos.gob.bo/wp-content/uploads/2025/10/F651.jpg",
+          "esTutorial": false
+        },
+        {
+          "numero": "650",
+          "nombre": "Form 650 V3",
+          "version": "V3",
+          "esBoleta": false,
+          "periodicidad": "mensual",
+          "url": "https://www.impuestos.gob.bo/wp-content/uploads/2025/10/F650.jpg",
+          "esTutorial": false
+        },
+        {
+          "numero": "652",
+          "nombre": "Form 652 V3",
+          "version": "V3",
+          "esBoleta": false,
+          "periodicidad": "mensual",
+          "url": "https://www.impuestos.gob.bo/wp-content/uploads/2025/10/F652.jpg",
+          "esTutorial": false
+        },
+        {
+          "numero": "1000",
+          "nombre": "Boleta de pago 1000 V2",
+          "version": "V2",
+          "esBoleta": true,
+          "periodicidad": "cuando corresponda",
+          "url": "https://www.impuestos.gob.bo/wp-content/uploads/2025/10/BOLETA-1000.jpg",
+          "esTutorial": false
+        },
+        {
+          "numero": "1050",
+          "nombre": "Boleta de pago 1050 V2",
+          "version": "V2",
+          "esBoleta": true,
+          "periodicidad": "cuando corresponda",
+          "url": "https://www.impuestos.gob.bo/wp-content/uploads/2025/10/BOLETA-1050.jpg",
+          "esTutorial": false
+        }
+      ]
+    },
+    {
+      "impuesto": "ISAE",
+      "grava": "Las salidas al exterior vía aérea, siempre que los pasajeros originen su viaje desde territorio nacional.",
+      "alcance": "Personas Naturales (Bolivianas y extrajeras residentes en el país)",
+      "formularios": [
+        {
+          "numero": "272",
+          "nombre": "Form 272 V1",
+          "version": "V1",
+          "esBoleta": false,
+          "periodicidad": "mensual",
+          "url": "https://www.impuestos.gob.bo/wp-content/uploads/2025/10/F272V1.pdf",
+          "esTutorial": false
+        },
+        {
+          "numero": "1000",
+          "nombre": "Boleta de pago 1000 V2",
+          "version": "V2",
+          "esBoleta": true,
+          "periodicidad": "cuando corresponda",
+          "url": "https://www.impuestos.gob.bo/wp-content/uploads/2025/10/BOLETA-1000-1.jpg",
+          "esTutorial": false
+        }
+      ]
+    },
+    {
+      "impuesto": "IEHD",
+      "grava": "La importación o producción interna, tasas específicas de hidrocarburos o sus derivados para la comercialización en el mercado interno.",
+      "alcance": "Personas Naturales o Jurídicas (Comercialicen internamente hidrocarburos)Form 920 V3",
+      "formularios": [
+        {
+          "numero": "920",
+          "nombre": "Form 920 V3",
+          "version": "V3",
+          "esBoleta": false,
+          "periodicidad": "mensual",
+          "url": "https://www.impuestos.gob.bo/wp-content/uploads/2025/10/F920.jpg",
+          "esTutorial": false
+        },
+        {
+          "numero": "9050",
+          "nombre": "Boleta de pago 9050 V3",
+          "version": "V3",
+          "esBoleta": true,
+          "periodicidad": "cuando corresponda",
+          "url": "https://www.impuestos.gob.bo/wp-content/uploads/2025/10/BOLETA-9050.jpg",
+          "esTutorial": false
+        }
+      ]
+    },
+    {
+      "impuesto": "IDH",
+      "grava": "La producción de hidrocarburos en todo el territorio nacional.",
+      "alcance": "Personas Naturales o Jurídica (Pública o privada, que produzca hidrocarburos en cualquier punto del territorio nacional)Form 8130 V1Form 8131 V3Form 8132 V3Form 8133 V3Form 8134 V3Form 8135 V3Form 8136 V3Form 8137 V3Form 8138 V3Form 8139 V3",
+      "formularios": [
+        {
+          "numero": "8130",
+          "nombre": "Form 8130 V1",
+          "version": "V1",
+          "esBoleta": false,
+          "periodicidad": "mensual",
+          "url": "https://www.impuestos.gob.bo/wp-content/uploads/2025/10/F8130.jpg",
+          "esTutorial": false
+        },
+        {
+          "numero": "8133",
+          "nombre": "Form 8133 V3",
+          "version": "V3",
+          "esBoleta": false,
+          "periodicidad": "mensual",
+          "url": "https://www.impuestos.gob.bo/wp-content/uploads/2025/10/F8133.jpg",
+          "esTutorial": false
+        },
+        {
+          "numero": "8134",
+          "nombre": "Form 8134 V3",
+          "version": "V3",
+          "esBoleta": false,
+          "periodicidad": "mensual",
+          "url": "https://www.impuestos.gob.bo/wp-content/uploads/2025/10/F8134.jpg",
+          "esTutorial": false
+        },
+        {
+          "numero": "8135",
+          "nombre": "Form 8135 V3",
+          "version": "V3",
+          "esBoleta": false,
+          "periodicidad": "mensual",
+          "url": "https://www.impuestos.gob.bo/wp-content/uploads/2025/10/F8135.jpg",
+          "esTutorial": false
+        },
+        {
+          "numero": "8136",
+          "nombre": "Form 8136 V3",
+          "version": "V3",
+          "esBoleta": false,
+          "periodicidad": "mensual",
+          "url": "https://www.impuestos.gob.bo/wp-content/uploads/2025/10/F8136.jpg",
+          "esTutorial": false
+        },
+        {
+          "numero": "8137",
+          "nombre": "Form 8137 V3",
+          "version": "V3",
+          "esBoleta": false,
+          "periodicidad": "mensual",
+          "url": "https://www.impuestos.gob.bo/wp-content/uploads/2025/10/F8137.jpg",
+          "esTutorial": false
+        },
+        {
+          "numero": "8138",
+          "nombre": "Form 8138 V3",
+          "version": "V3",
+          "esBoleta": false,
+          "periodicidad": "mensual",
+          "url": "https://www.impuestos.gob.bo/wp-content/uploads/2025/10/F8138.jpg",
+          "esTutorial": false
+        },
+        {
+          "numero": "8139",
+          "nombre": "Form 8139 V3",
+          "version": "V3",
+          "esBoleta": false,
+          "periodicidad": "mensual",
+          "url": "https://www.impuestos.gob.bo/wp-content/uploads/2025/10/F8139.jpg",
+          "esTutorial": false
+        }
+      ]
+    },
+    {
+      "impuesto": "ITF",
+      "grava": "Las transacciones en moneda extranjera o moneda nacional con mantenimiento de valor.",
+      "alcance": "Personas naturales o jurídicas (Titulares de cuentas corrientes o de ahorro)Form 165 V2Form 166 V2Form 167 V2",
+      "formularios": [
+        {
+          "numero": "165",
+          "nombre": "Form 165 V2",
+          "version": "V2",
+          "esBoleta": false,
+          "periodicidad": "hasta el 2 día hábil a cada quincena finalizada",
+          "url": "https://www.impuestos.gob.bo/wp-content/uploads/2025/10/F165V2.jpg",
+          "esTutorial": false
+        },
+        {
+          "numero": "166",
+          "nombre": "Form 166 V2",
+          "version": "V2",
+          "esBoleta": false,
+          "periodicidad": "hasta el 2 día hábil a cada quincena finalizada",
+          "url": "https://www.impuestos.gob.bo/wp-content/uploads/2025/10/F166V2.jpg",
+          "esTutorial": false
+        },
+        {
+          "numero": "1200",
+          "nombre": "Boleta de pago 1200 V2",
+          "version": "V2",
+          "esBoleta": true,
+          "periodicidad": "cuando corresponda",
+          "url": "https://www.impuestos.gob.bo/wp-content/uploads/2025/10/BOLETA-1200V2.jpg",
+          "esTutorial": false
+        }
+      ]
+    },
+    {
+      "impuesto": "IJ",
+      "grava": "Los juegos de azar y sorteos, promociones empresariales.",
+      "alcance": "Personas Jurídicas (Privadas o públicas que realicen la actividad directamente o a través de terceros)Form 770 V2 Form 772 V2",
+      "formularios": [
+        {
+          "numero": "770",
+          "nombre": "Form 770 V2",
+          "version": "V2",
+          "esBoleta": false,
+          "periodicidad": "mensual",
+          "url": "https://www.impuestos.gob.bo/wp-content/uploads/2025/10/F770V2.jpg",
+          "esTutorial": false
+        },
+        {
+          "numero": "772",
+          "nombre": "Form 772 V2",
+          "version": "V2",
+          "esBoleta": false,
+          "periodicidad": "mensual",
+          "url": "https://www.impuestos.gob.bo/wp-content/uploads/2025/10/F772V2.jpg",
+          "esTutorial": false
+        },
+        {
+          "numero": "1070",
+          "nombre": "Boleta de pago 1070 V2",
+          "version": "V2",
+          "esBoleta": true,
+          "periodicidad": "cuando corresponda",
+          "url": "https://www.impuestos.gob.bo/wp-content/uploads/2025/10/BOLETA1070.jpg",
+          "esTutorial": false
+        }
+      ]
+    },
+    {
+      "impuesto": "IPJ",
+      "grava": "La participación de personas naturales en juegos de azar y sorteos.",
+      "alcance": "Personas Naturales (Que participan en juegos de azar y sorteos que compren fichas, tickets, boletos, rifas y otros)",
+      "formularios": [
+        {
+          "numero": "771",
+          "nombre": "Form 771 V2",
+          "version": "V2",
+          "esBoleta": false,
+          "periodicidad": "mensual",
+          "url": "https://www.impuestos.gob.bo/wp-content/uploads/2025/10/F771.jpg",
+          "esTutorial": false
+        },
+        {
+          "numero": "1071",
+          "nombre": "Boleta de pago 1071 V2",
+          "version": "V2",
+          "esBoleta": true,
+          "periodicidad": "cuando corresponda",
+          "url": "https://www.impuestos.gob.bo/wp-content/uploads/2025/10/BOLETA1071.jpg",
+          "esTutorial": false
+        }
+      ]
+    }
+  ]
+}

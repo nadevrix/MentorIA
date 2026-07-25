@@ -1,4 +1,4 @@
-# 06 — Demo y pitch
+﻿# 06 — Demo y pitch
 
 **Formato:** 4 minutos de pitch + 2 de preguntas. Demo en vivo obligatoria; el video solo complementa.
 
@@ -25,7 +25,7 @@
 
 ### 0:40 – 1:00 · Qué construimos
 
-> "PyME AI: cinco agentes que leen las ventas, el inventario y el tipo de cambio del negocio, y
+> "Mentor IA: cinco agentes que leen las ventas, el inventario y el tipo de cambio del negocio, y
 > devuelven qué hacer. No es un dashboard: es un equipo que decide."
 
 Abrir la URL pública, ya cargada. Señalar la tarjeta roja: **"2 productos se venden bajo costo."**
@@ -64,7 +64,7 @@ Leer la salida: producto, precio actual, precio sugerido, ajuste porcentual.
 
 ### 3:30 – 3:50 · Cierre
 
-> "PyME AI: agentes que protegen el margen de las PyMEs bolivianas cuando se mueve el dólar.
+> "Mentor IA: agentes que protegen el margen de las PyMEs bolivianas cuando se mueve el dólar.
 > Está desplegado, la URL está en el repo, pueden probarlo desde su celular ahora mismo."
 
 ## Preparación (30 min antes)

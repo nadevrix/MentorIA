@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState } from 'react';
+﻿import { useEffect, useRef, useState } from 'react';
 import { streamChat, type Agent, type ChatMessage } from '../lib/api';
 import FormattedMessage from './FormattedMessage';
+import Icon from './Icon';
 
 interface Trace {
   name: string;
@@ -9,11 +10,14 @@ interface Trace {
 
 interface Props {
   agent: Agent;
-  initialPrompt?: string | null;
-  onClearInitialPrompt?: () => void;
+  /**
+   * Pregunta que se manda sola al montar. App remonta el componente (via `key`)
+   * cada vez que el usuario toca un hallazgo, así que el estado siempre arranca limpio.
+   */
+  initialQuestion?: string;
 }
 
-export default function Chat({ agent, initialPrompt, onClearInitialPrompt }: Props) {
+export default function Chat({ agent, initialQuestion }: Props) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [draft, setDraft] = useState('');
   const [streaming, setStreaming] = useState(false);
@@ -31,15 +35,17 @@ export default function Chat({ agent, initialPrompt, onClearInitialPrompt }: Pro
   }, [agent.id]);
 
   useEffect(() => {
-    if (initialPrompt && !streaming) {
-      void send(initialPrompt);
-      onClearInitialPrompt?.();
-    }
-  }, [initialPrompt, agent.id]);
-
-  useEffect(() => {
     bottom.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, partial, traces]);
+
+  // Se dispara una sola vez por montaje; el guard evita un doble envío en StrictMode.
+  const autoSent = useRef(false);
+  useEffect(() => {
+    if (!initialQuestion || autoSent.current) return;
+    autoSent.current = true;
+    void send(initialQuestion);
+
+  }, [initialQuestion]);
 
   async function send(text: string) {
     if (!text.trim() || streaming) return;
@@ -90,21 +96,21 @@ export default function Chat({ agent, initialPrompt, onClearInitialPrompt }: Pro
     <div className="flex h-full flex-col">
       <header className="border-b border-[var(--color-line)] p-4">
         <div className="flex items-center gap-2">
-          <span className="text-xl">{agent.icon}</span>
+          <Icon name={agent.icon} size={18} className="text-[var(--color-accent)]" />
           <h2 className="font-semibold">{agent.name}</h2>
         </div>
-        <p className="mt-1 text-xs text-slate-400">{agent.tagline}</p>
+        <p className="mt-1 text-xs text-[var(--color-muted)]">{agent.tagline}</p>
       </header>
 
       <div className="flex-1 space-y-3 overflow-y-auto p-4">
         {messages.length === 0 && !streaming && (
           <div className="space-y-2">
-            <p className="text-sm text-slate-400">Probá con una de estas:</p>
+            <p className="text-sm text-[var(--color-muted)]">Probá con una de estas:</p>
             {agent.examples.map((example) => (
               <button
                 key={example}
                 onClick={() => void send(example)}
-                className="block w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2 text-left text-sm hover:border-[var(--color-accent)]"
+                className="block w-full rounded-xl glass-soft px-3.5 py-2.5 text-left text-sm text-[var(--color-muted)] transition hover:text-[var(--color-fg)]"
               >
                 {example}
               </button>
@@ -117,8 +123,8 @@ export default function Chat({ agent, initialPrompt, onClearInitialPrompt }: Pro
             key={i}
             className={
               m.role === 'user'
-                ? 'ml-auto max-w-[85%] rounded-lg bg-[var(--color-accent)] px-3 py-2 text-sm font-medium text-black'
-                : 'max-w-[95%] rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-3 text-sm'
+                ? 'ml-auto max-w-[85%] rounded-2xl rounded-br-md bg-[var(--color-accent-strong)] px-3.5 py-2.5 text-sm text-white'
+                : 'max-w-[95%] rounded-2xl rounded-bl-md glass px-3.5 py-2.5 text-sm'
             }
           >
             {m.role === 'user' ? m.content : <FormattedMessage content={m.content} />}
@@ -126,34 +132,24 @@ export default function Chat({ agent, initialPrompt, onClearInitialPrompt }: Pro
         ))}
 
         {traces.length > 0 && (
-          <div className="space-y-1.5 rounded-lg border border-slate-800 bg-slate-900/50 p-2.5 text-xs">
-            <div className="text-[10px] uppercase font-semibold text-slate-500 tracking-wider">
-              Traza de Ejecución de Herramientas
-            </div>
-            <div className="flex flex-wrap gap-1.5">
-              {traces.map((t, i) => (
-                <span
-                  key={`${t.name}-${i}`}
-                  className={`inline-flex items-center gap-1 rounded px-2 py-0.5 font-mono text-[11px] border ${
-                    t.status === 'corriendo'
-                      ? 'border-yellow-500/40 bg-yellow-500/10 text-yellow-300 animate-pulse'
-                      : t.status === 'error'
-                        ? 'border-[var(--color-bad)]/40 bg-[var(--color-bad)]/10 text-[var(--color-bad)]'
-                        : 'border-[var(--color-good)]/40 bg-[var(--color-good)]/10 text-[var(--color-good)]'
-                  }`}
-                >
-                  <span>
-                    {t.status === 'corriendo' ? '⏳' : t.status === 'error' ? '⚠️' : '✓'}
-                  </span>
-                  {t.name}
-                </span>
-              ))}
-            </div>
+          <div className="space-y-1 text-xs text-[var(--color-muted)]">
+            {traces.map((t, i) => (
+              <div key={`${t.name}-${i}`} className="flex items-center gap-2">
+                {t.status === 'corriendo' ? (
+                  <Icon name="loading" size={13} spin />
+                ) : t.status === 'error' ? (
+                  <Icon name="warning" size={13} className="text-[var(--color-bad)]" />
+                ) : (
+                  <Icon name="check" size={13} className="text-[var(--color-good)]" />
+                )}
+                <code className="font-mono">{t.name}</code>
+              </div>
+            ))}
           </div>
         )}
 
         {partial && (
-          <div className="max-w-[95%] rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-3 text-sm">
+          <div className="max-w-[95%] rounded-2xl rounded-bl-md glass px-3.5 py-2.5 text-sm">
             <FormattedMessage content={partial} />
           </div>
         )}
@@ -179,12 +175,12 @@ export default function Chat({ agent, initialPrompt, onClearInitialPrompt }: Pro
           onChange={(e) => setDraft(e.target.value)}
           placeholder={streaming ? 'El agente está trabajando…' : 'Preguntá algo sobre tu negocio'}
           disabled={streaming}
-          className="flex-1 rounded-lg border border-[var(--color-line)] bg-[var(--color-ink)] px-3 py-2 text-sm outline-none focus:border-[var(--color-accent)] disabled:opacity-50"
+          className="flex-1 rounded-full glass-soft px-4 py-2.5 text-sm outline-none placeholder:text-[var(--color-faint)] focus:ring-2 focus:ring-[var(--color-accent)] disabled:opacity-50"
         />
         <button
           type="submit"
           disabled={streaming || !draft.trim()}
-          className="rounded-lg bg-[var(--color-accent)] px-4 py-2 text-sm font-semibold text-black disabled:opacity-40"
+          className="rounded-full bg-[var(--color-accent-strong)] px-4 py-2.5 text-sm font-semibold text-white transition hover:brightness-110 disabled:opacity-40"
         >
           Enviar
         </button>

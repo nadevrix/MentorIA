@@ -1,0 +1,189 @@
+{
+  "nota": "Guía de formalización para una empresa en Bolivia. Es una lista para no olvidarse de un trámite, NO asesoría legal ni contable. Los requisitos, montos y plazos cambian por normativa y por municipio: confirmá cada uno con la entidad antes de actuar.",
+  "revisadoEn": "2026-07-25",
+  "fases": [
+    {
+      "id": "legal",
+      "nombre": "Constitución legal",
+      "descripcion": "Darle existencia jurídica a la empresa. Es lo primero: casi todo lo demás pide la matrícula.",
+      "items": [
+        {
+          "id": "homonimia",
+          "titulo": "Control de homonimia",
+          "entidad": "SEPREC",
+          "obligatorio": true,
+          "aplicaA": ["unipersonal", "srl", "sa"],
+          "descripcion": "Reservar el nombre comercial verificando que no exista otro igual. Sin esto no se puede tramitar la matrícula.",
+          "fuente": "https://www.seprec.gob.bo/"
+        },
+        {
+          "id": "escritura",
+          "titulo": "Escritura de constitución ante notaría",
+          "entidad": "Notaría de Fe Pública",
+          "obligatorio": true,
+          "aplicaA": ["srl", "sa"],
+          "descripcion": "Documento con socios, aportes de capital, objeto social y administración. La empresa unipersonal no lo necesita.",
+          "fuente": "https://www.seprec.gob.bo/"
+        },
+        {
+          "id": "matricula",
+          "titulo": "Matrícula de Comercio",
+          "entidad": "SEPREC",
+          "obligatorio": true,
+          "aplicaA": ["unipersonal", "srl", "sa"],
+          "descripcion": "Inscripción en el Registro de Comercio. SEPREC reemplazó a FUNDEMPRESA en 2022. Se renueva cada año.",
+          "renovacion": "anual",
+          "fuente": "https://www.seprec.gob.bo/"
+        }
+      ]
+    },
+    {
+      "id": "tributario",
+      "nombre": "Tributario",
+      "descripcion": "Sin NIT no se puede facturar, y sin factura no se puede vender formalmente ni descontar crédito fiscal.",
+      "items": [
+        {
+          "id": "nit",
+          "titulo": "NIT — Padrón Biométrico Digital",
+          "entidad": "SIN",
+          "obligatorio": true,
+          "aplicaA": ["unipersonal", "srl", "sa"],
+          "descripcion": "Número de Identificación Tributaria. El registro es biométrico y presencial para el representante legal.",
+          "fuente": "https://www.impuestos.gob.bo/"
+        },
+        {
+          "id": "regimen",
+          "titulo": "Elegir régimen tributario",
+          "entidad": "SIN",
+          "obligatorio": true,
+          "aplicaA": ["unipersonal", "srl", "sa"],
+          "descripcion": "General (IVA, IT, IUE con declaraciones mensuales y anuales) o Simplificado (cuota fija bimestral, con topes de capital y ventas). La elección define todo lo demás: si importás para revender, casi siempre es General.",
+          "fuente": "https://www.impuestos.gob.bo/"
+        },
+        {
+          "id": "facturacion",
+          "titulo": "Modalidad de facturación",
+          "entidad": "SIN",
+          "obligatorio": true,
+          "aplicaA": ["unipersonal", "srl", "sa"],
+          "descripcion": "Habilitar la modalidad que corresponda (en línea, portal web, computarizada). El SIN viene migrando a facturación electrónica por grupos según resolución.",
+          "fuente": "https://www.impuestos.gob.bo/index.php/formularios/"
+        }
+      ]
+    },
+    {
+      "id": "municipal",
+      "nombre": "Municipal",
+      "descripcion": "Permite operar en el local. Lo controla el municipio, así que requisitos y montos cambian de ciudad a ciudad.",
+      "items": [
+        {
+          "id": "licencia",
+          "titulo": "Licencia de funcionamiento",
+          "entidad": "Gobierno Autónomo Municipal",
+          "obligatorio": true,
+          "aplicaA": ["unipersonal", "srl", "sa"],
+          "descripcion": "Autoriza la actividad en una dirección concreta. Suele pedir NIT, matrícula, croquis y contrato o título del local. Se renueva cada año.",
+          "renovacion": "anual",
+          "fuente": null
+        },
+        {
+          "id": "publicidad",
+          "titulo": "Permiso de publicidad exterior",
+          "entidad": "Gobierno Autónomo Municipal",
+          "obligatorio": false,
+          "aplicaA": ["unipersonal", "srl", "sa"],
+          "descripcion": "Necesario si ponés letrero, toldo o cualquier cartel visible desde la vía pública.",
+          "fuente": null
+        }
+      ]
+    },
+    {
+      "id": "laboral",
+      "nombre": "Laboral",
+      "descripcion": "Obligatorio desde el primer empleado. Tener personal sin registrar expone a multas y a juicios laborales.",
+      "items": [
+        {
+          "id": "roe",
+          "titulo": "Registro Obligatorio de Empleadores (ROE)",
+          "entidad": "Ministerio de Trabajo",
+          "obligatorio": true,
+          "aplicaA": ["con_empleados"],
+          "descripcion": "Inscripción del empleador. Se actualiza cada año junto con la planilla trimestral.",
+          "renovacion": "anual",
+          "fuente": "https://www.mintrabajo.gob.bo/"
+        },
+        {
+          "id": "salud",
+          "titulo": "Afiliación a Caja de Salud",
+          "entidad": "CNS u otra caja",
+          "obligatorio": true,
+          "aplicaA": ["con_empleados"],
+          "descripcion": "Seguro de corto plazo. El aporte patronal es un porcentaje sobre el total ganado; confirmá la alícuota vigente.",
+          "fuente": "https://www.cns.gob.bo/"
+        },
+        {
+          "id": "jubilacion",
+          "titulo": "Registro en la Gestora Pública",
+          "entidad": "Gestora Pública de la Seguridad Social de Largo Plazo",
+          "obligatorio": true,
+          "aplicaA": ["con_empleados"],
+          "descripcion": "Seguro de largo plazo. La Gestora reemplazó a las AFP; los aportes se retienen del sueldo y se pagan mensualmente.",
+          "fuente": "https://www.gestora.bo/"
+        },
+        {
+          "id": "planillas",
+          "titulo": "Planilla trimestral y salario mínimo",
+          "entidad": "Ministerio de Trabajo",
+          "obligatorio": true,
+          "aplicaA": ["con_empleados"],
+          "descripcion": "Presentación periódica de planillas. Ningún sueldo puede estar por debajo del salario mínimo nacional vigente.",
+          "renovacion": "trimestral",
+          "fuente": "https://www.mintrabajo.gob.bo/"
+        }
+      ]
+    },
+    {
+      "id": "sectorial",
+      "nombre": "Según tu rubro",
+      "descripcion": "Sólo aplican a ciertas actividades, pero cuando aplican son obligatorios y su ausencia puede clausurar el local.",
+      "items": [
+        {
+          "id": "senasag",
+          "titulo": "Registro sanitario SENASAG",
+          "entidad": "SENASAG",
+          "obligatorio": false,
+          "aplicaA": ["alimentos"],
+          "descripcion": "Obligatorio para producir, importar o comercializar alimentos y bebidas.",
+          "fuente": "https://www.senasag.gob.bo/"
+        },
+        {
+          "id": "ambiental",
+          "titulo": "Licencia ambiental",
+          "entidad": "Autoridad ambiental competente",
+          "obligatorio": false,
+          "aplicaA": ["industria", "manufactura"],
+          "descripcion": "Según el impacto de la actividad. Manufactura y procesos industriales suelen requerirla.",
+          "fuente": null
+        },
+        {
+          "id": "marca",
+          "titulo": "Registro de marca",
+          "entidad": "SENAPI",
+          "obligatorio": false,
+          "aplicaA": ["unipersonal", "srl", "sa"],
+          "descripcion": "No es obligatorio, pero sin registro cualquiera puede inscribir tu nombre y obligarte a dejar de usarlo.",
+          "fuente": "https://www.senapi.gob.bo/"
+        },
+        {
+          "id": "importador",
+          "titulo": "Registro de importador",
+          "entidad": "Aduana Nacional",
+          "obligatorio": false,
+          "aplicaA": ["importador"],
+          "descripcion": "Necesario para importar a nombre de la empresa. Sin esto tenés que importar por medio de terceros, que encarece cada operación.",
+          "fuente": "https://www.aduana.gob.bo/"
+        }
+      ]
+    }
+  ]
+}

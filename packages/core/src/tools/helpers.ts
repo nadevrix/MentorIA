@@ -38,14 +38,20 @@ export function round(n: number, decimals = 2): number {
 
 /**
  * Costo de reposición HOY, en bolivianos.
- * Un producto importado se repone al dólar paralelo; uno nacional, al oficial.
+ *
+ * Con el régimen unificado hay un solo tipo de cambio, así que la distinción ya
+ * no es "oficial vs paralelo" sino si el producto está expuesto al dólar:
+ *  - importado → su costo en Bs se mueve con el tipo de cambio de hoy.
+ *  - nacional  → su costo en Bs no depende del dólar; queda al tipo de su compra.
+ *
+ * Esa es la razón por la que `imported` sigue importando: no cambia qué tipo se
+ * usa, cambia si el costo se revalúa o no.
  */
 export function replacementCostBob(
-  costUsd: number,
-  imported: boolean,
-  fx: { official: number; parallel: number },
+  product: { costUsd: number; imported: boolean; purchaseFxRate: number },
+  rate: number,
 ): number {
-  return round(costUsd * (imported ? fx.parallel : fx.official));
+  return round(product.costUsd * (product.imported ? rate : product.purchaseFxRate));
 }
 
 export function marginPct(priceBob: number, costBob: number): number {
