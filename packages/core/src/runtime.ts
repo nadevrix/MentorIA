@@ -1,137 +1,137 @@
-import Anthropic from '@anthropic-ai/sdk';
 import { getAgent } from './agents/index.js';
+import {
+  createLlmProvider,
+  type LlmMessage,
+  type LlmProvider,
+  type LlmToolResult,
+  type LlmTurn,
+} from './llm/index.js';
 import { toolsFor, type ToolContext } from './tools/index.js';
 import type { AgentEvent } from './types.js';
-
-/**
- * Modelo por defecto. Opus 5 razona por defecto (adaptive thinking) y es el más
- * capaz para decidir qué herramienta llamar y en qué orden.
- */
-export const DEFAULT_MODEL = 'claude-opus-5';
-
-/**
- * Nivel de esfuerzo. `medium` mantiene la demo ágil sin perder calidad de decisión;
- * subilo a `high` si notás que el agente se salta herramientas.
- */
-export const DEFAULT_EFFORT = 'medium';
 
 /** Tope de vueltas del loop de herramientas: evita que un agente se cuelgue en vivo. */
 const MAX_ITERATIONS = 8;
 
+/** Techo de salida por turno. Deja lugar al razonamiento más la respuesta. */
+const MAX_TOKENS = 8000;
+
+/** Mensaje de entrada del usuario, tal como lo manda la API. */
+export interface ChatMessage {
+  role: 'user' | 'assistant';
+  content: string;
+}
+
 export interface RunAgentOptions {
   agentId: string;
-  messages: Anthropic.MessageParam[];
+  messages: ChatMessage[];
   ctx: ToolContext;
-  client?: Anthropic;
-  model?: string;
+  /** Proveedor a usar. Si se omite, se resuelve desde el entorno. */
+  provider?: LlmProvider;
   signal?: AbortSignal;
 }
 
 /**
- * Loop de agente: el modelo percibe (herramientas), decide (qué llamar), ejecuta
- * y produce un resultado accionable. Emite eventos para que la UI muestre el
- * razonamiento en vivo en lugar de una barra de carga.
+ * Loop de agente: el modelo percibe (herramientas), decide (cuáles llamar),
+ * ejecuta y produce un resultado accionable. Emite eventos para que la UI
+ * muestre el razonamiento en vivo en lugar de una barra de carga.
+ *
+ * Es agnóstico del proveedor: habla con la interfaz `LlmProvider`, así que
+ * funciona igual con Gemini o con Claude.
  */
 export async function* runAgent(options: RunAgentOptions): AsyncGenerator<AgentEvent> {
   const { agentId, ctx, signal } = options;
-  const client = options.client ?? new Anthropic();
   const agent = getAgent(agentId);
   const tools = toolsFor(agent.tools);
 
-  const apiTools: Anthropic.ToolUnion[] = tools.map((t) => ({
+  const toolSchemas = tools.map((t) => ({
     name: t.name,
     description: t.description,
-    input_schema: t.inputSchema as Anthropic.Tool.InputSchema,
+    inputSchema: t.inputSchema,
   }));
 
-  const messages: Anthropic.MessageParam[] = [...options.messages];
+  const messages: LlmMessage[] = options.messages.map((m) =>
+    m.role === 'user'
+      ? { role: 'user' as const, text: m.content }
+      : { role: 'assistant' as const, text: m.content, toolCalls: [] },
+  );
+
   let usageIn = 0;
   let usageOut = 0;
 
   yield { type: 'start', agentId };
 
   try {
+    const provider = options.provider ?? createLlmProvider();
+
     for (let iteration = 0; iteration < MAX_ITERATIONS; iteration++) {
       if (signal?.aborted) throw new Error('Solicitud cancelada');
 
-      const params = {
-        model: options.model ?? DEFAULT_MODEL,
-        max_tokens: 8000,
-        system: [
-          {
-            type: 'text' as const,
-            text: agent.systemPrompt,
-            // El prompt de sistema y las tools son idénticos entre turnos:
-            // cachearlos abarata mucho una conversación larga.
-            cache_control: { type: 'ephemeral' as const },
-          },
-        ],
-        tools: apiTools,
+      let turn: LlmTurn | null = null;
+
+      for await (const event of provider.stream({
+        system: agent.systemPrompt,
         messages,
-        output_config: { effort: DEFAULT_EFFORT },
-      } as unknown as Anthropic.MessageCreateParamsStreaming;
-
-      const stream = client.messages.stream(params, { signal });
-
-      for await (const event of stream) {
-        if (event.type === 'content_block_delta' && event.delta.type === 'text_delta') {
-          yield { type: 'text', text: event.delta.text };
+        tools: toolSchemas,
+        maxTokens: MAX_TOKENS,
+        signal,
+      })) {
+        if (event.type === 'text') {
+          yield { type: 'text', text: event.text };
+        } else {
+          turn = event.turn;
         }
       }
 
-      const message = await stream.finalMessage();
-      usageIn += message.usage.input_tokens;
-      usageOut += message.usage.output_tokens;
-      messages.push({ role: 'assistant', content: message.content });
+      if (!turn) throw new Error(`El proveedor ${provider.name} no devolvió un turno completo.`);
 
-      const toolUses = message.content.filter(
-        (b): b is Anthropic.ToolUseBlock => b.type === 'tool_use',
-      );
+      usageIn += turn.usage.input;
+      usageOut += turn.usage.output;
+      messages.push({ role: 'assistant', text: turn.text, toolCalls: turn.toolCalls });
 
-      if (toolUses.length === 0) {
+      if (turn.toolCalls.length === 0) {
         yield {
           type: 'done',
-          stopReason: message.stop_reason,
+          stopReason: turn.stopReason,
           usage: { input: usageIn, output: usageOut },
         };
         return;
       }
 
-      // Ejecutar todas las herramientas del turno en paralelo y devolver
-      // TODOS los resultados en un solo mensaje de usuario.
-      const results: Anthropic.ToolResultBlockParam[] = [];
-      for (const use of toolUses) {
-        yield { type: 'tool_use', id: use.id, name: use.name, input: use.input };
+      for (const call of turn.toolCalls) {
+        yield { type: 'tool_use', id: call.id, name: call.name, input: call.input };
       }
 
+      // Todas las herramientas del turno se ejecutan en paralelo y sus
+      // resultados vuelven juntos en un solo mensaje.
       const executed = await Promise.all(
-        toolUses.map(async (use) => {
-          const tool = tools.find((t) => t.name === use.name);
+        turn.toolCalls.map(async (call) => {
+          const tool = tools.find((t) => t.name === call.name);
           if (!tool) {
-            return { use, output: `Herramienta no disponible: ${use.name}`, isError: true };
+            return { call, output: `Herramienta no disponible: ${call.name}`, isError: true };
           }
           try {
-            const input = tool.parse.parse(use.input);
+            const input = tool.parse.parse(call.input);
             const output = await tool.run(input as never, ctx);
-            return { use, output, isError: false };
+            return { call, output, isError: false };
           } catch (error) {
-            const message = error instanceof Error ? error.message : String(error);
-            return { use, output: `Error ejecutando ${use.name}: ${message}`, isError: true };
+            const detail = error instanceof Error ? error.message : String(error);
+            return { call, output: `Error ejecutando ${call.name}: ${detail}`, isError: true };
           }
         }),
       );
 
-      for (const { use, output, isError } of executed) {
-        yield { type: 'tool_result', id: use.id, name: use.name, output, isError };
+      const results: LlmToolResult[] = [];
+      for (const { call, output, isError } of executed) {
+        yield { type: 'tool_result', id: call.id, name: call.name, output, isError };
         results.push({
-          type: 'tool_result',
-          tool_use_id: use.id,
+          id: call.id,
+          name: call.name,
           content: typeof output === 'string' ? output : JSON.stringify(output),
-          is_error: isError,
+          isError,
         });
       }
 
-      messages.push({ role: 'user', content: results });
+      messages.push({ role: 'tool', results });
     }
 
     yield {

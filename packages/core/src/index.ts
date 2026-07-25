@@ -4,6 +4,7 @@ export * from './data/seed-source.js';
 export * from './fx/provider.js';
 export * from './tools/index.js';
 export * from './agents/index.js';
+export * from './llm/index.js';
 export * from './runtime.js';
 export * from './dashboard.js';
 

@@ -1,5 +1,5 @@
 import { serve } from '@hono/node-server';
-import { AGENTS, buildDashboard, createContext, runAgent } from '@pyme/core';
+import { AGENTS, buildDashboard, createContext, createLlmProvider, runAgent } from '@pyme/core';
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { streamSSE } from 'hono/streaming';
@@ -14,15 +14,25 @@ app.use(
   cors({ origin: origin === '*' ? '*' : origin.split(',').map((o) => o.trim()) }),
 );
 
-app.get('/health', (c) =>
-  c.json({
+app.get('/health', (c) => {
+  // Se resuelve el proveedor acá, no al arrancar: /health tiene que responder
+  // igual aunque falte la clave, para poder diagnosticar el problema.
+  let llm: { provider: string; model: string } | { error: string };
+  try {
+    const p = createLlmProvider();
+    llm = { provider: p.name, model: p.model };
+  } catch (e) {
+    llm = { error: e instanceof Error ? e.message : 'proveedor no disponible' };
+  }
+
+  return c.json({
     ok: true,
     dataSource: ctx.data.name,
     fxSource: ctx.fx.name,
-    hasApiKey: Boolean(process.env.ANTHROPIC_API_KEY),
+    llm,
     agents: AGENTS.length,
-  }),
-);
+  });
+});
 
 app.get('/api/agents', (c) =>
   c.json(
@@ -64,8 +74,8 @@ const ChatRequest = z.object({
  * (texto, uso de herramienta, resultado) llega al frontend en vivo.
  */
 app.post('/api/chat', async (c) => {
-  if (!process.env.ANTHROPIC_API_KEY) {
-    return c.json({ error: 'Falta ANTHROPIC_API_KEY en el servidor.' }, 500);
+  if (!process.env.GEMINI_API_KEY && !process.env.ANTHROPIC_API_KEY) {
+    return c.json({ error: 'El servidor no tiene ninguna API key de modelo configurada.' }, 500);
   }
 
   const parsed = ChatRequest.safeParse(await c.req.json().catch(() => null));
@@ -103,7 +113,10 @@ const port = Number(process.env.PORT ?? 8787);
 serve({ fetch: app.fetch, port }, (info) => {
   console.log(`PyME AI API escuchando en http://localhost:${info.port}`);
   console.log(`  datos: ${ctx.data.name} · tipo de cambio: ${ctx.fx.name}`);
-  if (!process.env.ANTHROPIC_API_KEY) {
-    console.warn('  ⚠ ANTHROPIC_API_KEY no está configurada: /api/chat devolverá 500.');
+  try {
+    const p = createLlmProvider();
+    console.log(`  modelo: ${p.name} · ${p.model}`);
+  } catch (e) {
+    console.warn(`  ⚠ ${e instanceof Error ? e.message : e}: /api/chat devolverá 500.`);
   }
 });
