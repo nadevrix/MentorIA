@@ -18,7 +18,7 @@ concretas: qué precio subir, a cuánto, qué cliente contactar, qué pago vence
 ## Correr en local (4 pasos)
 
 ```bash
-git clone <URL-DEL-REPO> && cd buildathoncursor
+git clone https://github.com/nadevrix/MentorIA.git && cd MentorIA
 npm install
 cp .env.example .env        # y pegá tu ANTHROPIC_API_KEY
 npm run dev                 # API en :8787 · Web en :5173
@@ -81,7 +81,7 @@ packages/core/     Núcleo: modelo de dominio, herramientas, agentes, loop de ej
 apps/api/          Servidor Hono: /health, /api/agents, /api/dashboard, /api/chat (SSE)
 apps/web/          Interfaz React: panel + chat con agentes
 data/              Generador y datos semilla del negocio piloto
-docs/              Visión, arquitectura, división del equipo, deploy, guion del pitch
+docs/              Visión, arquitectura, backlog, datos, deploy, pitch, git y onboarding
 ```
 
 ## Documentación
@@ -90,14 +90,14 @@ docs/              Visión, arquitectura, división del equipo, deploy, guion de
 | --------------------------------------------- | ------------------------------------------- |
 | [00 — Visión](docs/00-vision.md)              | Problema, usuario, propuesta de valor       |
 | [01 — Arquitectura](docs/01-arquitectura.md)  | Cómo funciona el loop de agentes            |
-| [02 — División del equipo](docs/02-equipo.md) | **Quién hace qué durante las 24h**          |
+| [02 — Backlog de trabajo](docs/02-equipo.md)   | **Qué falta hacer, ordenado por impacto**   |
 | [03 — Agentes](docs/03-agentes.md)            | Cómo agregar o modificar un agente          |
 | [04 — Datos](docs/04-datos.md)                | Modelo de datos y cómo conectar datos reales |
 | [05 — Deploy](docs/05-deploy.md)              | Netlify + Render paso a paso                |
 | [06 — Demo y pitch](docs/06-demo-pitch.md)    | Guion de 4 minutos y plan B                 |
-| [07 — Git y comunicación](docs/07-convenciones.md) | **Flujo de 4 ramas con comandos, qué avisar** |
+| [07 — Git y comunicación](docs/07-convenciones.md) | **Rama por persona, comandos, qué avisar** |
 | [08 — Estrategia](docs/08-estrategia.md)      | Dónde invertir las horas y por qué          |
-| [09 — Onboarding](docs/09-onboarding.md)      | **Prompt para pegarle a tu IA al empezar**  |
+| [09 — Onboarding](docs/09-onboarding.md)      | **El prompt para arrancar (uno, para todos)** |
 
 `CLAUDE.md` en la raíz tiene las reglas del proyecto y lo lee Claude Code automáticamente.
 

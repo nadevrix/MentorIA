@@ -96,8 +96,8 @@ mostrar capturas o código impacta la puntuación pero no descalifica.
 > Cada herramienta ejecuta lógica de negocio sobre los datos, no texto.
 
 **"¿Funciona con datos reales o solo con los suyos?"**
-> Enseñar la interfaz `DataSource` y decir con qué comercio se probó. *(De ahí que la tarea #1 de la
-> Persona 2 sea conseguir datos reales.)*
+> Enseñar la interfaz `DataSource` y decir con qué comercio se probó. *(De ahí que conseguir datos
+> reales sea la prioridad #2 del backlog.)*
 
 **"¿De dónde sacan el dólar paralelo?"**
 > Responder con la fuente exacta documentada en `docs/04-datos.md`, y explicar el fallback si el

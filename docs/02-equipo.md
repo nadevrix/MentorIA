@@ -1,142 +1,118 @@
-# 02 — División del equipo (4 personas, 24 horas)
+# 02 — Backlog de trabajo
 
-La división está hecha por **frontera de archivos**, no por tema. Cada persona es dueña de carpetas
-que nadie más edita: así se puede trabajar en paralelo sin conflictos de merge a las 3 de la mañana.
+**Cómo trabajamos:** cada persona construye lo que ve que le falta al producto, en su propia rama.
+Una persona integra: revisa las ramas, elige qué sirve y lo mergea a `main`. No hay carpetas
+asignadas. Flujo de git y las dos reglas en `docs/07-convenciones.md`; el prompt para arrancar en
+`docs/09-onboarding.md`.
 
-| # | Rol                          | Es dueño de                                       | Depende de       |
-| - | ---------------------------- | ------------------------------------------------- | ---------------- |
-| 1 | Núcleo de agentes            | `packages/core/src/{tools,agents,runtime.ts}`      | contratos de P2  |
-| 2 | Datos e integraciones        | `packages/core/src/{data,fx}`, `data/`             | nadie            |
-| 3 | Producto y frontend          | `apps/web/`                                        | contrato de API  |
-| 4 | Plataforma, demo y pitch     | `apps/api/`, deploy, `docs/06`, slides             | que 1–3 compilen |
+Este documento no reparte tareas: es el **menú de lo que hace falta**, ordenado por lo que más
+suma al puntaje. Si no sabés por dónde empezar, empezá por arriba. Antes de agarrar algo grande,
+avisá en el grupo para que no lo hagan dos personas a la vez.
 
-**Regla de oro:** si necesitás cambiar un archivo que no es tuyo, avisá en el grupo antes. Los
-contratos compartidos (`packages/core/src/types.ts`, `data/source.ts`) se cambian **de a dos**.
+Razonamiento completo de las prioridades en `docs/08-estrategia.md`.
 
 ---
 
-## Persona 1 — Núcleo de agentes
+## 🔴 Crítico — sin esto no competimos
 
-> Sos el dueño de que el agente *decida bien*. Si el jurado pregunta "¿esto es un agente o un
-> chatbot?", tu trabajo es la respuesta.
+### 1. Deploy en Netlify + Render
 
-**Archivos:** `packages/core/src/tools/`, `packages/core/src/agents/`, `packages/core/src/runtime.ts`
+Un producto perfecto sin URL pública no compite. La configuración ya está escrita
+(`netlify.toml`, `render.yaml`); el paso a paso está en `docs/05-deploy.md`. **Hacelo hoy, aunque
+el producto esté a medias**, y después iterá encima.
 
-**Tareas en orden:**
-1. Probá los 5 agentes con las preguntas de ejemplo y anotá dónde fallan. *(1 h)*
-2. Ajustá las descripciones de las herramientas donde el agente no las llame o las llame de más.
-   Es más efectivo que tocar el prompt de sistema. *(2 h)*
-3. Agregá lo que falte para el guion de la demo. Candidatos:
-   - `simulate_purchase(monto, tipoCambio)` — "¿me conviene comprar ahora o esperar?"
-   - `generate_whatsapp_message(clienteId)` — texto listo para copiar y pegar
-   - `sales_forecast(dias)` — proyección simple con la tendencia de 90 días
-4. Afiná el manejo de errores del loop: que un fallo de herramienta nunca deje al usuario sin respuesta.
-5. Medí latencia por agente y decidí `effort` (`medium` vs `high`) en `runtime.ts`.
+*Listo cuando:* las dos URLs responden y están en el README.
 
-**Listo cuando:** las 15 preguntas de ejemplo del catálogo de agentes responden con cifras correctas
-y una acción concreta, en menos de 25 segundos cada una.
+### 2. Datos reales de un comercio
 
-**No toques:** `apps/web/`, `apps/api/`, `data/`.
+El track descalifica demos que solo corren con datos hardcodeados. Un export de Excel de ventas e
+inventario de una tienda conocida alcanza: convertirlo al formato de `data/seed/` o escribir un
+`ExcelDataSource` que implemente la interfaz `DataSource`.
 
----
+Es el salto más grande de toda la lista: cruza de "demo" a "producto".
 
-## Persona 2 — Datos e integraciones
+*Listo cuando:* el panel muestra números de un negocio de verdad.
 
-> Sos el dueño de que los datos sean **reales**. El track descalifica demos que solo funcionan con
-> datos hardcodeados; vos sos quien evita eso.
+### 3. Probar `/api/chat` contra la API real
 
-**Archivos:** `packages/core/src/data/`, `packages/core/src/fx/`, `data/`
-
-**Tareas en orden:**
-1. **Prioridad máxima: conseguir datos reales de un comercio.** Un export de Excel de ventas e
-   inventario de una tienda conocida alcanza. Escribí un `ExcelDataSource` o un script de conversión
-   a `data/seed/`. Esto vale más puntos que cualquier feature. *(4 h)*
-2. **Dólar paralelo en vivo** con Firecrawl (sponsor). Implementá `FirecrawlFxProvider` cumpliendo la
-   interfaz `FxProvider`, con caché en memoria de ~15 min y **fallback a `SeedFxProvider` si falla**.
-   Nunca dejes que un scraping caído rompa la demo. *(3 h)*
-3. Documentá en `docs/04-datos.md` la fuente exacta del tipo de cambio y de dónde salió el dataset:
-   el track pide citar las fuentes.
-4. Si sobra tiempo: `SupabaseDataSource` (Postgres free tier) para persistencia real y multiusuario.
-5. Si sobra más tiempo: leer un catálogo desde la API REST de Odoo, aunque sea de solo lectura —
-   demuestra que la plataforma se enchufa al ERP que ya usa el comercio.
-
-**Listo cuando:** `DATA_SOURCE=<real>` y `FX_SOURCE=firecrawl` funcionan de punta a punta, y el panel
-muestra números de un negocio de verdad.
-
-**No toques:** `tools/`, `agents/`, `runtime.ts`. Si necesitás un campo nuevo en el modelo,
-coordinalo con P1 y cambien `types.ts` juntos.
+El loop de agentes compila y los tipos cierran, pero nunca se ejecutó contra la API de Claude.
+Con la `ANTHROPIC_API_KEY` puesta son 2 minutos. **Antes que cualquier feature nueva.**
 
 ---
 
-## Persona 3 — Producto y frontend
+## 🟡 Alto impacto
 
-> Sos el dueño de que se entienda sin explicación. La demo vale 15% del puntaje y se juega acá.
+### 4. Dólar paralelo en vivo (Firecrawl, sponsor)
 
-**Archivos:** `apps/web/`
+Implementar `FirecrawlFxProvider` cumpliendo la interfaz `FxProvider`, con caché en memoria de
+~15 min y **fallback a `SeedFxProvider` si falla**. Un scraping caído nunca debe romper la demo.
 
-**Tareas en orden:**
-1. Pulí el panel: jerarquía visual clara — lo que está en rojo tiene que saltar a la vista. *(2 h)*
-2. **Vista de simulación cambiaria**: un slider de tipo de cambio (12 → 18 Bs) que recalcula la tabla
-   de precios sugeridos en vivo. Es el momento "wow" del pitch. Consumí `suggest_price` vía un
-   endpoint nuevo que le pedís a P4, o hacé el cálculo en el cliente con los datos del panel. *(3 h)*
-3. Mejorá el render del chat: markdown básico (listas y negritas), tablas de precios como tabla real.
-4. Responsive de verdad: el jurado puede abrirlo en el celular.
-5. Estado vacío y de error decentes: si la API está fría, mostrar "despertando el servidor…" en lugar
-   de una pantalla rota.
+Documentar la fuente exacta y la fecha de captura en `docs/04-datos.md`: el track exige citar
+fuentes y el jurado lo va a preguntar.
 
-**Listo cuando:** alguien que nunca vio el producto entra, entiende el problema en 10 segundos y
-consigue una recomendación de precio sin que le expliques nada.
+### 5. Simulador cambiario en la interfaz
 
-**No toques:** `packages/core/`, `apps/api/`. Si necesitás un endpoint, pedíselo a P4.
+Un slider de tipo de cambio (12 → 18 Bs) que recalcula la tabla de precios sugeridos en vivo.
+Es el momento "wow" del pitch.
 
----
+### 6. Alertas automáticas (reto Zavu, USD 500)
 
-## Persona 4 — Plataforma, demo y pitch
+Un cron que corre `analyze_margins` y dispara una alerta por Telegram o email cuando un producto
+cae bajo su margen mínimo. Encaja natural con el producto y es un premio adicional.
 
-> Sos el dueño de que exista algo que mostrar. Empezá por el deploy: un producto perfecto sin URL
-> pública no compite.
+### 7. Que alguien externo lo use antes del pitch
 
-**Archivos:** `apps/api/`, configuración de deploy, `docs/06-demo-pitch.md`, slides
-
-**Tareas en orden:**
-1. **Desplegá HOY, con el esqueleto vacío.** Netlify + Render funcionando y URLs en el README antes
-   de que nadie termine su feature. Desplegar a las 7 a.m. del domingo es cómo se pierden hackathons. *(2 h)*
-2. Endpoints que pidan P1 y P3, más el manejo de errores y los límites del servidor.
-3. **Reto Zavu (USD 500, opcional pero al alcance):** alerta automática por Telegram o email cuando un
-   producto cae bajo su margen mínimo. Es un cron que corre `analyze_margins` y dispara Zavu si hay
-   productos en riesgo. Encaja perfecto con el producto y es un premio adicional. *(3 h)*
-4. Escribí y **ensayá** el pitch de 4 minutos. Cronometrado, tres veces, en voz alta.
-5. Plan B: capturas de pantalla y un GIF de la demo funcionando, por si el WiFi del venue falla.
-6. Formulario de entrega antes de las 09:00 del domingo. Marcá "Zavu" y "Mejor impacto social"
-   (PyMEs es un ámbito explícito de la mención) si aplican.
-
-**Listo cuando:** hay URL pública, el pitch dura 3:50 cronometrado, y existe un plan B en imágenes.
-
-**No toques:** `packages/core/src/{tools,agents}`, `apps/web/src/components/`.
+Aunque sea un comerciante conocido por WhatsApp. Poder decir *"lo probó Don X y encontró dos
+productos que vendía perdiendo plata"* vale más que cualquier funcionalidad.
 
 ---
 
-## Cronograma sugerido
+## 🟢 Mejoras
 
-| Franja                | P1                      | P2                        | P3                     | P4                        |
-| --------------------- | ----------------------- | ------------------------- | ---------------------- | ------------------------- |
-| **09:00 – 13:00**     | Probar y afinar agentes | Conseguir datos reales    | Pulir panel            | **Deploy end-to-end**     |
-| **13:00 – 19:00**     | Herramientas nuevas     | Firecrawl + FX en vivo    | Vista de simulación    | Endpoints + reto Zavu     |
-| **19:00 – 00:00**     | Calidad de respuestas   | Integrar datos reales     | Chat y responsive      | Escribir pitch            |
-| **00:00 – 04:00**     | **Congelar features**   | **Congelar features**     | Últimos detalles       | Slides + ensayo 1         |
-| **04:00 – 07:00**     | Probar el guion completo, los 4 juntos                                                     |
-| **07:00 – 09:00**     | Solo bugs críticos · Ensayos 2 y 3 · **Entregar 08:30**                                    |
+- **Calidad de los agentes** — probar los 5 con sus preguntas de ejemplo y ajustar las
+  descripciones de las herramientas donde no las llamen o las llamen de más. Rinde más que tocar
+  el prompt de sistema. Ver `docs/03-agentes.md`.
+- **Herramientas nuevas** — candidatas: `simulate_purchase` ("¿compro ahora o espero?"),
+  `generate_whatsapp_message`, `sales_forecast`.
+- **Pulido de la demo** — jerarquía visual (lo rojo tiene que saltar a la vista), markdown en el
+  chat, tablas de precios como tabla real, responsive, y un estado "despertando el servidor…"
+  para el arranque en frío de Render.
+- **Base de datos** (Neon o Supabase) — una clase de ~60 líneas que implemente `DataSource`. Solo
+  vale la pena **con datos reales adentro**; ver `docs/04-datos.md`.
+- **Pitch** — escribirlo y ensayarlo cronometrado, tres veces, en voz alta. Guion en
+  `docs/06-demo-pitch.md`.
 
-**Congelamiento de código: 04:00.** Después de esa hora solo se arreglan cosas rotas. Lo que no está
-listo, no entra. Corte oficial de código: **domingo 09:00 en punto, sin extensiones.**
+## ⛔ Lo que no conviene hacer
 
-## Checklist de entrega (del track Bolivia Agents)
+- **Agregar agentes nuevos.** Cinco ya son más de los que se pueden mostrar en 4 minutos. Cada
+  agente extra diluye el pitch y no suma puntos.
+- **Construir la plataforma amplia** (ocho módulos de negocio). El track penaliza explícitamente
+  las ideas genéricas. Profundidad sobre superficie.
+- **Cambiar de base de datos por prolijidad.** Los agentes solo leen; nada escribe.
 
-- [ ] Producto desplegado con URL funcional accesible sin cuenta ni instalación
+---
+
+## Cronograma
+
+| Franja | Foco del equipo |
+| --- | --- |
+| **09:00 – 13:00** | Deploy funcionando · conseguir datos reales · probar el chat con la API |
+| **13:00 – 19:00** | Features de alto impacto: FX en vivo, simulador, alertas |
+| **19:00 – 00:00** | Integrar todo a `main` · calidad de respuestas · escribir el pitch |
+| **00:00 – 04:00** | **Congelamiento de features.** Solo se arregla lo roto. Slides y ensayo |
+| **04:00 – 07:00** | Prueba del guion completo, todos juntos |
+| **07:00 – 09:00** | Solo bugs críticos · ensayos finales · **entregar 08:30** |
+
+**Congelamiento de código a las 00:00.** Lo que no está listo, no entra. Corte oficial del evento:
+**domingo 09:00 en punto, sin extensiones.**
+
+## Checklist de entrega (track Bolivia Agents)
+
+- [ ] Producto desplegado con URL funcional, accesible sin cuenta ni instalación
 - [ ] Demo en vivo durante el pitch (los videos solo complementan)
 - [ ] Repositorio público con README claro, setup en menos de 5 pasos
 - [ ] Caso de uso definido: quién lo usa, qué resuelve, por qué en Bolivia
 - [ ] Slides de máximo 4 minutos
 - [ ] Formulario del portal enviado antes de las 09:00
 - [ ] Fuentes de datos citadas
-- [ ] Ningún secreto commiteado (revisar con `git log -p | grep -i "sk-ant"`)
+- [ ] Ningún secreto commiteado (`git log -p | grep -i "sk-ant"`)

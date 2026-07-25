@@ -48,8 +48,8 @@ reposición y 7 con margen erosionado**, más una cuenta vencida y tres producto
 Para una demo con fecha fija: `DEMO_TODAY=2026-07-26` en el entorno.
 
 > ⚠️ **Estos datos son de referencia, no de un comercio real.** El track descalifica demos que solo
-> funcionan con datos hardcodeados. Antes del pitch hay que apuntar a datos reales — es la tarea #1
-> de la Persona 2 (`docs/02-equipo.md`).
+> funcionan con datos hardcodeados. Antes del pitch hay que apuntar a datos reales — es la
+> prioridad #2 del backlog (`docs/02-equipo.md`).
 
 ## Conectar datos reales
 
@@ -89,7 +89,7 @@ El histórico de `data/seed/fx.json` es una serie de referencia generada para de
 citar fuentes, y el jurado lo va a preguntar.
 
 ```
-Fuente en vivo: ______________________  (completar — Persona 2)
+Fuente en vivo: ______________________  (completar al conectar el scraping)
 Método:         scraping con Firecrawl, caché 15 min, fallback a serie estática
 Capturado:      ______________________
 ```

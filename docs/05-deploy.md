@@ -1,7 +1,7 @@
 # 05 — Deploy
 
 > **Hacé esto primero, con el esqueleto vacío.** Un producto perfecto sin URL pública no compite.
-> Es la tarea #1 de la Persona 4.
+> Es la prioridad #1 del backlog (`docs/02-equipo.md`).
 
 Dos servicios, ambos free tier y accesibles para el jurado sin cuenta ni instalación:
 
@@ -47,7 +47,7 @@ Mitigaciones, en orden de preferencia:
 
 1. **Abrí `<API>/health` cinco minutos antes de subir al escenario.** Suficiente y gratis.
 2. Un ping cada 10 minutos durante el Demo Day desde cualquier servicio de uptime.
-3. En el frontend, mostrar "despertando el servidor…" en lugar de un error (tarea de la Persona 3).
+3. En el frontend, mostrar "despertando el servidor…" en lugar de un error.
 
 ## Checklist previo al pitch
 

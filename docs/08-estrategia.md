@@ -37,8 +37,8 @@ inventados. **Un dueño de tienda diciendo "esto me sirve" mueve tres criterios.
 
 ## La escalera, en orden de retorno
 
-1. **URL pública que funciona sin explicación.** Sin esto no compiten. Es la tarea #1 de P4 y va
-   primero que cualquier feature.
+1. **URL pública que funciona sin explicación.** Sin esto no compiten. Va primero que
+   cualquier feature.
 2. **Datos de un comercio real.** Es el salto más grande de toda la lista: cruza de "demo" a
    "producto", y el track descalifica explícitamente demos que solo corren con datos hardcodeados.
 3. **Que alguien externo lo use antes del pitch.** Aunque sea un comerciante conocido por WhatsApp.

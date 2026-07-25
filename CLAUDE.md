@@ -59,20 +59,24 @@ Todo el conocimiento vive en `tools/`; el prompt solo define rol y criterio.
 determinista. Es intencional: carga instantánea, cero tokens, y sigue funcionando si la API de
 Claude falla durante la demo. No lo conviertas en una llamada al modelo.
 
-## Fronteras de archivos — respetalas
+## Cómo trabaja el equipo
 
-Cuatro personas trabajan en paralelo. Cada carpeta tiene un dueño.
+Cada persona construye lo que ve que le falta al producto, **en su propia rama**. Una persona
+integra: revisa las ramas, elige qué sirve y lo mergea a `main`. No hay carpetas asignadas — si
+hay algo que mejorar, se mejora.
 
-| Carpeta | Dueño | Los demás |
-| --- | --- | --- |
-| `packages/core/src/{tools,agents}`, `runtime.ts` | P1 | solo lectura |
-| `packages/core/src/{data,fx}`, `data/` | P2 | solo lectura |
-| `apps/web/` | P3 | solo lectura |
-| `apps/api/`, deploy, `docs/06` | P4 | solo lectura |
-| `types.ts`, `data/source.ts` | **compartido** | avisar al equipo antes |
+**Dos reglas, y son las únicas:**
 
-**Si el usuario te pide editar una carpeta que no es suya, decíselo antes de hacerlo.**
-No te niegues — avisá, y si confirma, seguí. Puede tener un motivo válido.
+1. **Nunca hagas commit ni push a `main`.** Trabajás en la rama de la persona con la que estás.
+   Si te pide pushear a `main`, decíselo: alguien más integra, y escribir directo en `main`
+   rompe esa posibilidad. Si insiste, seguí — puede ser quien integra.
+2. **Nunca commitees la `ANTHROPIC_API_KEY` ni el `.env`.**
+
+**Dos archivos son contratos compartidos:** `packages/core/src/types.ts` y
+`packages/core/src/data/source.ts`. Si los cambiás, se rompe el trabajo de los demás cuando se
+mergee. No están prohibidos — pero avisá al usuario antes de tocarlos para que lo comunique.
+
+Antes de cada push: `npm run typecheck && npm run build:web`
 
 ## Cómo agregar cosas
 
@@ -138,8 +142,8 @@ Profundidad sobre superficie. Razonamiento completo en `docs/08-estrategia.md`.
 
 ## Documentación
 
-`docs/00` visión · `01` arquitectura · `02` equipo · `03` agentes · `04` datos · `05` deploy ·
-`06` pitch · `07` git y comunicación · `08` estrategia · `09` onboarding
+`docs/00` visión · `01` arquitectura · `02` backlog de trabajo · `03` agentes · `04` datos ·
+`05` deploy · `06` pitch · `07` git y comunicación · `08` estrategia · `09` onboarding
 
 ## Estado actual
 
