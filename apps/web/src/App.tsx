@@ -5,6 +5,7 @@ import Dashboard from './components/Dashboard';
 import Insights from './components/Insights';
 import Shell, { type Tab } from './components/Shell';
 import Simulator from './components/Simulator';
+import Widgets from './components/Widgets';
 import {
   fetchAgents,
   fetchDashboard,
@@ -133,6 +134,7 @@ export default function App() {
           {!loading && <DailyBrief />}
           <Insights data={insights} loading={loading} onAsk={handleAsk} />
           <Dashboard data={dashboard} loading={loading} />
+          {dashboard && <Widgets data={dashboard} />}
           {fx?.paralelo !== undefined && <Simulator currentRate={fx.paralelo} onAsk={handleAsk} />}
         </>
       )}
