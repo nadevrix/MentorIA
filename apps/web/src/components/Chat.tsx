@@ -8,9 +8,11 @@ interface Trace {
 
 interface Props {
   agent: Agent;
+  initialPrompt?: string | null;
+  onClearInitialPrompt?: () => void;
 }
 
-export default function Chat({ agent }: Props) {
+export default function Chat({ agent, initialPrompt, onClearInitialPrompt }: Props) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [draft, setDraft] = useState('');
   const [streaming, setStreaming] = useState(false);
@@ -26,6 +28,13 @@ export default function Chat({ agent }: Props) {
     setTraces([]);
     setError(null);
   }, [agent.id]);
+
+  useEffect(() => {
+    if (initialPrompt && !streaming) {
+      void send(initialPrompt);
+      onClearInitialPrompt?.();
+    }
+  }, [initialPrompt, agent.id]);
 
   useEffect(() => {
     bottom.current?.scrollIntoView({ behavior: 'smooth' });

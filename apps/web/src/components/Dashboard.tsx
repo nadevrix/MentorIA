@@ -1,8 +1,10 @@
 import { bob } from '../lib/api';
+import FxSimulator from './FxSimulator';
 
 interface Props {
   data: Record<string, any> | null;
   loading: boolean;
+  onAskAgent?: (prompt: string, agentId?: string) => void;
 }
 
 function Card({
@@ -27,7 +29,7 @@ function Card({
   );
 }
 
-export default function Dashboard({ data, loading }: Props) {
+export default function Dashboard({ data, loading, onAskAgent }: Props) {
   if (loading) {
     return <div className="p-4 text-sm text-slate-400">Cargando indicadores…</div>;
   }
@@ -84,6 +86,16 @@ export default function Dashboard({ data, loading }: Props) {
           tone={pagos.vencidas.length > 0 ? 'bad' : 'neutral'}
         />
       </div>
+
+      {/* Simulador Cambiario Interactivo */}
+      {margenes.productos && margenes.productos.length > 0 && (
+        <FxSimulator
+          products={margenes.productos}
+          currentParallelFx={fx.paralelo}
+          officialFx={fx.oficial}
+          onAskAgent={onAskAgent}
+        />
+      )}
 
       {margenes.productos.length > 0 && (
         <div className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4">
@@ -146,3 +158,4 @@ export default function Dashboard({ data, loading }: Props) {
     </div>
   );
 }
+

@@ -9,6 +9,7 @@ export default function App() {
   const [dashboard, setDashboard] = useState<Record<string, any> | null>(null);
   const [loading, setLoading] = useState(true);
   const [bootError, setBootError] = useState<string | null>(null);
+  const [pendingPrompt, setPendingPrompt] = useState<string | null>(null);
 
   useEffect(() => {
     (async () => {
@@ -24,6 +25,16 @@ export default function App() {
       }
     })();
   }, []);
+
+  const handleAskAgent = (prompt: string, agentId?: string) => {
+    if (agentId) {
+      const targetAgent = agents.find((a) => a.id === agentId || a.id.includes(agentId));
+      if (targetAgent) {
+        setActive(targetAgent);
+      }
+    }
+    setPendingPrompt(prompt);
+  };
 
   return (
     <div className="mx-auto flex min-h-full max-w-7xl flex-col gap-4 p-4 lg:h-screen lg:flex-row">
@@ -43,7 +54,7 @@ export default function App() {
           </div>
         )}
 
-        <Dashboard data={dashboard} loading={loading} />
+        <Dashboard data={dashboard} loading={loading} onAskAgent={handleAskAgent} />
 
         <section>
           <h2 className="mb-2 text-sm font-semibold uppercase tracking-wide text-slate-400">Agentes</h2>
@@ -69,7 +80,11 @@ export default function App() {
 
       <aside className="flex h-[70vh] w-full flex-col rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] lg:h-auto lg:w-[420px]">
         {active ? (
-          <Chat agent={active} />
+          <Chat
+            agent={active}
+            initialPrompt={pendingPrompt}
+            onClearInitialPrompt={() => setPendingPrompt(null)}
+          />
         ) : (
           <div className="p-4 text-sm text-slate-400">Cargando agentes…</div>
         )}
@@ -77,3 +92,4 @@ export default function App() {
     </div>
   );
 }
+
