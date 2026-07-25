@@ -8,9 +8,14 @@ interface Trace {
 
 interface Props {
   agent: Agent;
+  /**
+   * Pregunta que se manda sola al montar. App remonta el componente (via `key`)
+   * cada vez que el usuario toca un hallazgo, así que el estado siempre arranca limpio.
+   */
+  initialQuestion?: string;
 }
 
-export default function Chat({ agent }: Props) {
+export default function Chat({ agent, initialQuestion }: Props) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [draft, setDraft] = useState('');
   const [streaming, setStreaming] = useState(false);
@@ -30,6 +35,15 @@ export default function Chat({ agent }: Props) {
   useEffect(() => {
     bottom.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, partial, traces]);
+
+  // Se dispara una sola vez por montaje; el guard evita un doble envío en StrictMode.
+  const autoSent = useRef(false);
+  useEffect(() => {
+    if (!initialQuestion || autoSent.current) return;
+    autoSent.current = true;
+    void send(initialQuestion);
+
+  }, [initialQuestion]);
 
   async function send(text: string) {
     if (!text.trim() || streaming) return;

@@ -10,6 +10,7 @@ import {
   withinPeriod,
 } from './helpers.js';
 import { defineTool, objectSchema, type ToolDefinition } from './registry.js';
+import { simulateScenario } from '../simulate.js';
 
 export * from './registry.js';
 export * from './helpers.js';
@@ -176,6 +177,39 @@ const suggestPrice = defineTool({
         };
       }),
     };
+  },
+});
+
+const simulateScenarioTool = defineTool({
+  name: 'simulate_scenario',
+  description:
+    'Simula qué le pasa al negocio completo si el dólar llega a un valor dado: cuántos productos quedan ' +
+    'bajo costo, cómo cae el margen promedio y la utilidad mensual, cuánto capital extra hace falta para ' +
+    'reponer el inventario y qué aumento de precios se necesita. ' +
+    'Usala para preguntas de escenario ("¿y si sube a 15?", "¿aguanto si el dólar se dispara?") o para ' +
+    'decidir si conviene comprar mercadería por adelantado. Para ajustar precios producto por producto ' +
+    'al tipo de cambio de HOY, usá suggest_price en su lugar.',
+  inputSchema: objectSchema(
+    {
+      tipoCambioSimulado: {
+        type: 'number',
+        description: 'Bs por USD del escenario a evaluar. Ejemplo: 15.',
+      },
+      margenObjetivoPct: {
+        type: 'number',
+        description: 'Margen que el negocio quiere sostener, en porcentaje. Por defecto 35.',
+      },
+      limite: { type: 'number', description: 'Máximo de productos en el detalle. Por defecto 25.' },
+    },
+    ['tipoCambioSimulado'],
+  ),
+  parse: z.object({
+    tipoCambioSimulado: z.number().positive(),
+    margenObjetivoPct: z.number().optional(),
+    limite: z.number().int().positive().optional(),
+  }),
+  async run(input, ctx) {
+    return simulateScenario(ctx, input);
   },
 });
 
@@ -484,6 +518,7 @@ export const ALL_TOOLS: ToolDefinition<never>[] = [
   getFxRate,
   analyzeMargins,
   suggestPrice,
+  simulateScenarioTool,
   salesSummary,
   topProducts,
   inventoryAlerts,

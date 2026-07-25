@@ -34,6 +34,69 @@ export async function fetchDashboard(): Promise<Record<string, any>> {
   return res.json();
 }
 
+export type Severity = 'critica' | 'alta' | 'media' | 'baja';
+
+export interface Insight {
+  id: string;
+  tipo: string;
+  severidad: Severity;
+  titulo: string;
+  detalle: string;
+  impactoBob: number;
+  impactoNota: string;
+  agenteId: string;
+  pregunta: string;
+  entidades?: { productos?: string[]; clientes?: string[] };
+}
+
+export interface InsightsResponse {
+  generadoEn: string;
+  totalImpactoBob: number;
+  insights: Insight[];
+}
+
+export async function fetchInsights(): Promise<InsightsResponse> {
+  const res = await fetch(`${API_URL}/api/insights`);
+  if (!res.ok) throw new Error('No se pudieron cargar los hallazgos');
+  return res.json();
+}
+
+export interface ScenarioProduct {
+  id: string;
+  nombre: string;
+  precioActualBob: number;
+  costoEscenarioBob: number;
+  margenEscenarioPct: number;
+  precioSugeridoBob: number;
+  ajusteNecesarioPct: number;
+  bajoCostoEnEscenario: boolean;
+}
+
+export interface ScenarioResult {
+  escenario: { tipoCambioActual: number; tipoCambioSimulado: number; variacionPct: number };
+  margenObjetivoPct: number;
+  productosBajoCosto: { antes: number; despues: number };
+  margenPromedioPct: { antes: number; despues: number };
+  utilidadMensualBob: { antes: number; despues: number; delta: number };
+  capitalAdicionalBob: number;
+  ajustePromedioNecesarioPct: number;
+  productos: ScenarioProduct[];
+}
+
+export async function simulate(
+  tipoCambioSimulado: number,
+  signal?: AbortSignal,
+): Promise<ScenarioResult> {
+  const res = await fetch(`${API_URL}/api/simulate`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ tipoCambioSimulado }),
+    signal,
+  });
+  if (!res.ok) throw new Error('No se pudo simular el escenario');
+  return res.json();
+}
+
 /**
  * Consume el stream SSE de /api/chat y entrega cada evento del agente.
  * Usamos fetch + ReadableStream (no EventSource) porque el endpoint es POST.
@@ -49,7 +112,16 @@ export async function* streamChat(
     body: JSON.stringify({ agentId, messages }),
     signal,
   });
+  yield* readSSE(res);
+}
 
+/** Resumen del día: los hallazgos deterministas, redactados por el Director. */
+export async function* streamBrief(signal?: AbortSignal): AsyncGenerator<AgentEvent> {
+  const res = await fetch(`${API_URL}/api/brief`, { signal });
+  yield* readSSE(res);
+}
+
+async function* readSSE(res: Response): AsyncGenerator<AgentEvent> {
   if (!res.ok || !res.body) {
     const detail = await res.text().catch(() => '');
     throw new Error(`El servidor respondió ${res.status}. ${detail}`);

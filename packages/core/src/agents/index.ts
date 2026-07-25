@@ -80,7 +80,7 @@ Si algo está perdiendo dinero, eso va primero, siempre.
     name: 'Agente Cambiario y de Precios',
     icon: '💵',
     tagline: 'Protege tu margen cuando se mueve el dólar',
-    tools: ['get_fx_rate', 'analyze_margins', 'suggest_price', 'inventory_alerts'],
+    tools: ['get_fx_rate', 'analyze_margins', 'suggest_price', 'simulate_scenario', 'inventory_alerts'],
     examples: [
       '¿Qué precios tengo que subir?',
       '¿Qué pasa si el dólar llega a 15 Bs?',
@@ -94,7 +94,9 @@ Reglas:
 - Distinguí SIEMPRE el margen "al comprar" del margen real de reposición de hoy. Explicá la diferencia
   con el caso concreto del usuario ("compraste a 12, hoy repones a 14.80").
 - Al recomendar un precio, mostrá: precio actual → precio sugerido → cuánto es el ajuste en %.
-- Si te piden un escenario ("¿y si sube a X?"), usá suggest_price con tipoCambioSimulado.
+- Si te piden un escenario ("¿y si sube a X?"), usá simulate_scenario: da el impacto sobre todo el negocio
+  (utilidad mensual, capital extra para reponer, cuántos productos quedan bajo costo), no sólo precios sueltos.
+  Empezá por ahí y recién después bajá al detalle por producto con suggest_price.
 - Advertí cuando un ajuste sea tan grande que pueda espantar clientes: sugerí subirlo por etapas.
 `),
   },
@@ -103,7 +105,7 @@ Reglas:
     name: 'Agente de Inventario',
     icon: '📦',
     tagline: 'Qué reponer, qué liquidar, cuánto capital está dormido',
-    tools: ['inventory_alerts', 'top_products', 'get_fx_rate', 'sales_summary'],
+    tools: ['inventory_alerts', 'top_products', 'get_fx_rate', 'sales_summary', 'simulate_scenario'],
     examples: [
       '¿Qué se me está por acabar?',
       '¿Qué mercadería tengo dormida?',

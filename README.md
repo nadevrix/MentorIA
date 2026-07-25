@@ -39,13 +39,21 @@ frescas: `node data/generate.mjs`.
 
 ## Qué hace, concretamente
 
+- **Hallazgos proactivos** — ocho detectores deterministas revisan márgenes, stock, rotación, cobros,
+  clientes y tipo de cambio, y devuelven qué resolver hoy ordenado por urgencia y por bolivianos en
+  juego. Cada hallazgo trae la pregunta lista para el agente que puede resolverlo. Esto es lo que
+  separa al producto de un chatbot: no espera la pregunta, la trae.
+- **Resumen del día** — el Director toma esos hallazgos y los redacta en tres frases, en streaming.
+  Corre sin herramientas a propósito: sólo puede narrar los números que le pasó el motor
+  determinista, así que no hay forma de que invente una cifra.
 - **Panel determinista** — los mismos cálculos que usan los agentes, corridos sin modelo. Carga
   instantánea y sin costo de tokens: márgenes en riesgo, ventas vs. mes anterior, utilidad neta,
   capital inmovilizado, cuentas vencidas.
 - **5 agentes con herramientas reales** — cada uno ve solo las herramientas de su dominio y decide
   cuáles llamar y en qué orden. No es un prompt largo: es un loop de percepción → decisión → ejecución.
-- **Simulación cambiaria** — "¿qué pasa si el dólar llega a 15?" recalcula todo el catálogo y
-  devuelve el precio sugerido producto por producto.
+- **Simulación cambiaria** — "¿qué pasa si el dólar llega a 15?" recalcula el catálogo completo y
+  devuelve el impacto sobre el negocio: cuántos productos quedan bajo costo, cuánta utilidad mensual
+  se evapora, cuánto capital extra hace falta para reponer y qué precio corresponde a cada producto.
 - **Trazabilidad en vivo** — la UI muestra qué herramienta está corriendo el agente mientras piensa.
 
 ### Los agentes
@@ -75,10 +83,14 @@ packages/core/     Núcleo: modelo de dominio, herramientas, agentes, loop de ej
   src/types.ts       Esquemas Zod del negocio (productos, ventas, clientes, gastos, FX)
   src/data/          Contrato DataSource + implementación con datos semilla
   src/fx/            Proveedor de tipo de cambio (paralelo)
-  src/tools/         Las 9 herramientas que pueden invocar los agentes
+  src/tools/         Las 10 herramientas que pueden invocar los agentes
   src/agents/        Definición de cada agente: rol, herramientas, prompt
   src/runtime.ts     Loop: modelo → herramienta → resultado → modelo
-apps/api/          Servidor Hono: /health, /api/agents, /api/dashboard, /api/chat (SSE)
+  src/insights.ts    Motor de hallazgos: detección determinista ordenada por impacto en Bs
+  src/simulate.ts    Simulador de escenario cambiario sobre el catálogo completo
+  src/brief.ts       Resumen del día: el Director redacta los hallazgos, sin herramientas
+apps/api/          Servidor Hono: /health, /api/agents, /api/dashboard, /api/insights,
+                   /api/simulate, /api/brief (SSE), /api/chat (SSE)
 apps/web/          Interfaz React: panel + chat con agentes
 data/              Generador y datos semilla del negocio piloto
 docs/              Visión, arquitectura, división del equipo, deploy, guion del pitch
@@ -96,6 +108,8 @@ docs/              Visión, arquitectura, división del equipo, deploy, guion de
 | [05 — Deploy](docs/05-deploy.md)              | Netlify + Render paso a paso                |
 | [06 — Demo y pitch](docs/06-demo-pitch.md)    | Guion de 4 minutos y plan B                 |
 | [07 — Convenciones](docs/07-convenciones.md)  | Git, estilo, cómo no pisarse                |
+| [08 — Hallazgos y simulador](docs/08-insights.md) | **Cómo funciona el motor proactivo y cómo agregar un detector** |
+| [09 — Estrategia](docs/09-estrategia.md)      | ICP, competencia, precios, go-to-market, métricas |
 
 ## Créditos y datos
 

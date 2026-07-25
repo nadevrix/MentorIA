@@ -6,6 +6,9 @@ export * from './tools/index.js';
 export * from './agents/index.js';
 export * from './runtime.js';
 export * from './dashboard.js';
+export * from './insights.js';
+export * from './simulate.js';
+export * from './brief.js';
 
 import { SeedDataSource } from './data/seed-source.js';
 import { createFxProvider } from './fx/provider.js';
