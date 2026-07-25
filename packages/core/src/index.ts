@@ -12,6 +12,7 @@ export * from './brief.js';
 export * from './image.js';
 export * from './taxes.js';
 export * from './tax-forms.js';
+export * from './formalizacion.js';
 
 import { SeedDataSource } from './data/seed-source.js';
 import { OverlayDataSource } from './data/overlay-source.js';

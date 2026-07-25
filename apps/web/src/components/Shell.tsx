@@ -15,6 +15,8 @@ export interface Tab {
   label: string;
   /** Las pestañas cuya funcionalidad todavía no existe se muestran apagadas. */
   disabled?: boolean;
+  /** Cuántas cosas esperan acción. Se muestra sólo si es mayor que cero. */
+  badge?: number;
 }
 
 interface Props {
@@ -122,6 +124,14 @@ export default function Shell({
                     }`}
                   >
                     {tab.label}
+                    {!tab.disabled && tab.badge != null && tab.badge > 0 && (
+                      <span
+                        title={`${tab.badge} pendiente(s)`}
+                        className="ml-1.5 rounded-full bg-[var(--color-gold)]/15 px-1.5 py-0.5 text-[10px] font-semibold text-[var(--color-gold)]"
+                      >
+                        {tab.badge}
+                      </span>
+                    )}
                     {tab.disabled && (
                       <span className="ml-1.5 rounded bg-black/[0.06] px-1.5 py-0.5 text-[10px] uppercase tracking-wide">
                         pronto

@@ -4,6 +4,8 @@ import {
   buildDashboard,
   buildInsights,
   buildTaxes,
+  ComplianceStore,
+  resumenFormalizacion,
   createContext,
   generateImage,
   imageProviderConfigured,
@@ -160,6 +162,50 @@ app.get('/api/taxes', async (c) => {
   } catch (error) {
     console.error('[taxes]', error);
     return c.json({ error: error instanceof Error ? error.message : 'Error desconocido' }, 500);
+  }
+});
+
+const compliance = new ComplianceStore();
+
+/** Qué trámites necesita la empresa y cuáles ya tiene resueltos. */
+app.get('/api/formalizacion', async (c) => {
+  try {
+    return c.json(
+      await resumenFormalizacion(compliance, {
+        tipo: c.req.query('tipo') ?? 'srl',
+        conEmpleados: c.req.query('empleados') === 'true',
+        rubros: (c.req.query('rubros') ?? '').split(',').filter(Boolean),
+      }),
+    );
+  } catch (error) {
+    console.error('[formalizacion]', error);
+    return c.json({ error: error instanceof Error ? error.message : 'Error desconocido' }, 500);
+  }
+});
+
+const ComplianceRequest = z.object({
+  estado: z.enum(['pendiente', 'hecho', 'no_aplica']),
+  nota: z.string().max(500).nullable().optional(),
+  vence: z.string().max(10).nullable().optional(),
+});
+
+/** Marca un trámite como hecho, pendiente o no aplicable. */
+app.put('/api/formalizacion/:itemId', async (c) => {
+  const parsed = ComplianceRequest.safeParse(await c.req.json().catch(() => null));
+  if (!parsed.success) {
+    return c.json({ error: 'Petición inválida', detalle: parsed.error.flatten() }, 400);
+  }
+  try {
+    await compliance.guardar({
+      itemId: c.req.param('itemId'),
+      estado: parsed.data.estado,
+      nota: parsed.data.nota ?? null,
+      vence: parsed.data.vence ?? null,
+    });
+    return c.json({ ok: true });
+  } catch (error) {
+    console.error('[formalizacion]', error);
+    return c.json({ error: error instanceof Error ? error.message : 'Error al guardar' }, 500);
   }
 });
 

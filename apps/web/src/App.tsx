@@ -3,6 +3,7 @@ import Chat from './components/Chat';
 import DailyBrief from './components/DailyBrief';
 import Dashboard from './components/Dashboard';
 import DataPanel from './components/DataPanel';
+import FormalizacionPanel from './components/FormalizacionPanel';
 import FxPanel from './components/FxPanel';
 import Icon from './components/Icon';
 import Insights from './components/Insights';
@@ -14,6 +15,7 @@ import {
   fetchAgents,
   fetchDashboard,
   fetchInsights,
+  fetchPendientesFormalizacion,
   type Agent,
   type InsightsResponse,
 } from './lib/api';
@@ -47,14 +49,6 @@ interface Ask {
   nonce: number;
 }
 
-const TABS: readonly Tab[] = [
-  { id: 'resumen', label: 'Resumen' },
-  { id: 'dolar', label: 'Dólar' },
-  { id: 'impuestos', label: 'Impuestos' },
-  { id: 'datos', label: 'Mis datos' },
-  { id: 'marketing', label: 'Marketing' },
-];
-
 export default function App() {
   const [agents, setAgents] = useState<Agent[]>([]);
   const [active, setActive] = useState<Agent | null>(null);
@@ -64,6 +58,7 @@ export default function App() {
   const [bootError, setBootError] = useState<string | null>(null);
   const [ask, setAsk] = useState<Ask | null>(null);
   const [tab, setTab] = useState('resumen');
+  const [tramitesPendientes, setTramitesPendientes] = useState(0);
 
   useEffect(() => {
     (async () => {
@@ -72,6 +67,11 @@ export default function App() {
           fetchAgents(),
           fetchDashboard(),
           fetchInsights(),
+          // Falla en silencio: que no haya base para el avance de trámites no
+          // puede impedir que arranque el panel.
+          fetchPendientesFormalizacion()
+            .then(setTramitesPendientes)
+            .catch(() => {}),
         ]);
         setAgents(list);
         setActive(list[0] ?? null);
@@ -100,9 +100,20 @@ export default function App() {
   const fx = dashboard?.fx;
   const askIsForActive = ask !== null && ask.agentId === active?.id;
 
+  // El contador de trámites va en la pestaña: si no se ve desde afuera, nadie
+  // entra a mirarlo y la lista deja de servir para lo que existe.
+  const tabs: readonly Tab[] = [
+    { id: 'resumen', label: 'Resumen' },
+    { id: 'dolar', label: 'Dólar' },
+    { id: 'impuestos', label: 'Impuestos' },
+    { id: 'tramites', label: 'Trámites', badge: tramitesPendientes },
+    { id: 'datos', label: 'Mis datos' },
+    { id: 'marketing', label: 'Marketing' },
+  ];
+
   return (
     <Shell
-      tabs={TABS}
+      tabs={tabs}
       activeTab={tab}
       onTab={setTab}
       title="Panel principal"
@@ -187,6 +198,10 @@ export default function App() {
       {tab === 'dolar' && <FxPanel data={dashboard} onAsk={handleAsk} />}
 
       {tab === 'impuestos' && <TaxPanel onAsk={handleAsk} />}
+
+      {tab === 'tramites' && (
+        <FormalizacionPanel onAsk={handleAsk} onPendientes={setTramitesPendientes} />
+      )}
 
       {tab === 'datos' && (
         <DataPanel

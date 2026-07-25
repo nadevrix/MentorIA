@@ -261,5 +261,18 @@ async function* readSSE(res: Response): AsyncGenerator<AgentEvent> {
   }
 }
 
+/**
+ * Cuántos trámites obligatorios faltan, para el aviso de la pestaña.
+ *
+ * Usa el perfil por defecto (S.R.L., sin empleados): es el mismo con el que
+ * abre el panel, así el número de la pestaña coincide con lo que se ve dentro.
+ */
+export async function fetchPendientesFormalizacion(): Promise<number> {
+  const res = await fetch(`${API_URL}/api/formalizacion`);
+  if (!res.ok) throw new Error('No se pudo consultar los trámites');
+  const json = (await res.json()) as { faltantes: unknown[] };
+  return json.faltantes.length;
+}
+
 export const bob = (n: number): string =>
   `Bs ${n.toLocaleString('es-BO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
