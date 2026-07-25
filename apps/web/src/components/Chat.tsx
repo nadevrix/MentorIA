@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+﻿import { useEffect, useRef, useState } from 'react';
 import { streamChat, type Agent, type ChatMessage } from '../lib/api';
 
 interface Trace {
@@ -108,7 +108,7 @@ export default function Chat({ agent, initialQuestion }: Props) {
               <button
                 key={example}
                 onClick={() => void send(example)}
-                className="block w-full rounded-xl bg-[var(--color-surface)] px-3.5 py-2.5 text-left text-sm text-[var(--color-muted)] transition hover:text-white"
+                className="block w-full rounded-xl glass-soft px-3.5 py-2.5 text-left text-sm text-[var(--color-muted)] transition hover:text-white"
               >
                 {example}
               </button>
@@ -122,7 +122,7 @@ export default function Chat({ agent, initialQuestion }: Props) {
             className={
               m.role === 'user'
                 ? 'ml-auto max-w-[85%] rounded-2xl rounded-br-md bg-[var(--color-accent-strong)] px-3.5 py-2.5 text-sm text-white'
-                : 'max-w-[95%] whitespace-pre-wrap rounded-2xl rounded-bl-md bg-[var(--color-surface)] px-3.5 py-2.5 text-sm'
+                : 'max-w-[95%] whitespace-pre-wrap rounded-2xl rounded-bl-md glass px-3.5 py-2.5 text-sm'
             }
           >
             {m.content}
@@ -143,7 +143,7 @@ export default function Chat({ agent, initialQuestion }: Props) {
         )}
 
         {partial && (
-          <div className="max-w-[95%] whitespace-pre-wrap rounded-2xl rounded-bl-md bg-[var(--color-surface)] px-3.5 py-2.5 text-sm">
+          <div className="max-w-[95%] whitespace-pre-wrap rounded-2xl rounded-bl-md glass px-3.5 py-2.5 text-sm">
             {partial}
           </div>
         )}
@@ -169,7 +169,7 @@ export default function Chat({ agent, initialQuestion }: Props) {
           onChange={(e) => setDraft(e.target.value)}
           placeholder={streaming ? 'El agente está trabajando…' : 'Preguntá algo sobre tu negocio'}
           disabled={streaming}
-          className="flex-1 rounded-full bg-[var(--color-surface)] px-4 py-2.5 text-sm outline-none placeholder:text-[var(--color-faint)] focus:ring-2 focus:ring-[var(--color-accent)] disabled:opacity-50"
+          className="flex-1 rounded-full glass-soft px-4 py-2.5 text-sm outline-none placeholder:text-[var(--color-faint)] focus:ring-2 focus:ring-[var(--color-accent)] disabled:opacity-50"
         />
         <button
           type="submit"

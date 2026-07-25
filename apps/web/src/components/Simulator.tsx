@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
+﻿import { useEffect, useState } from 'react';
 import { bob, simulate, type ScenarioResult } from '../lib/api';
 
 interface Props {
-  /** Paralelo vigente, punto de partida del deslizador. */
+  /** Tipo de cambio vigente, punto de partida del deslizador. */
   currentRate: number;
   onAsk: (agentId: string, question: string) => void;
 }
@@ -14,7 +14,7 @@ function Delta({ label, antes, despues, format }: {
   format?: 'bad-if-lower';
 }) {
   return (
-    <div className="rounded-xl bg-[var(--color-ink)] p-3">
+    <div className="rounded-xl bg-black/25 p-3">
       <div className="text-[11px] uppercase tracking-wide text-[var(--color-muted)]">{label}</div>
       <div className="mt-1 flex items-baseline gap-2">
         <span className="text-sm text-[var(--color-faint)] line-through">{antes}</span>
@@ -60,10 +60,10 @@ export default function Simulator({ currentRate, onAsk }: Props) {
   const isScenario = Math.abs(rate - currentRate) > 0.01;
 
   return (
-    <section className="rounded-[var(--radius-card)] bg-[var(--color-surface)] p-5">
+    <section className="rounded-[var(--radius-card)] glass p-5">
       <div className="flex flex-wrap items-baseline justify-between gap-2">
         <h2 className="text-sm font-semibold">¿Y si el dólar llega a…?</h2>
-        <span className="text-xs text-[var(--color-muted)]">Paralelo hoy: Bs {currentRate}</span>
+        <span className="text-xs text-[var(--color-muted)]">Tipo de cambio hoy: Bs {currentRate}</span>
       </div>
 
       <div className="mt-3 flex items-center gap-3">
@@ -105,7 +105,7 @@ export default function Simulator({ currentRate, onAsk }: Props) {
               despues={bob(result.utilidadMensualBob.despues)}
               format="bad-if-lower"
             />
-            <div className="rounded-xl bg-[var(--color-ink)] p-3">
+            <div className="rounded-xl bg-black/25 p-3">
               <div className="text-[11px] uppercase tracking-wide text-[var(--color-muted)]">
                 Capital extra para reponer
               </div>

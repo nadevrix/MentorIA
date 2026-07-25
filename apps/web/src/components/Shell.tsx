@@ -1,11 +1,12 @@
-import type { ReactNode } from 'react';
+﻿import type { ReactNode } from 'react';
 import BrainMark from './BrainMark';
 
 /**
  * Cromo de la aplicación: contenedor flotante, navegación superior y pestañas.
  *
- * Sigue la referencia de dashboard oscuro: un lienzo gris azulado, y encima un
- * contenedor muy oscuro con esquinas redondeadas grandes que contiene todo.
+ * El contenedor es una lámina de vidrio sobre el lienzo con luces de color:
+ * de ahí sale la refracción. Nada en esta cadena puede llevar fondo opaco,
+ * porque taparía la luz que el vidrio necesita.
  */
 
 export interface Tab {
@@ -50,9 +51,11 @@ export default function Shell({
   children,
   aside,
 }: Props) {
+  // Sin fondo propio en el contenedor exterior: un color opaco acá taparía las
+  // luces del lienzo y el vidrio se quedaría sin nada que refractar.
   return (
-    <div className="min-h-full bg-[var(--color-canvas)] p-3 lg:p-6">
-      <div className="mx-auto flex h-[calc(100vh-1.5rem)] w-full max-w-[1440px] flex-col overflow-hidden rounded-[var(--radius-shell)] bg-[var(--color-ink)] shadow-2xl lg:h-[calc(100vh-3rem)] lg:flex-row">
+    <div className="min-h-full p-3 lg:p-6">
+      <div className="mx-auto flex h-[calc(100vh-1.5rem)] w-full max-w-[1440px] flex-col overflow-hidden rounded-[var(--radius-shell)] glass-shell lg:h-[calc(100vh-3rem)] lg:flex-row">
         <main className="flex min-w-0 flex-1 flex-col">
           <header className="flex shrink-0 items-center gap-6 px-6 py-5">
             <Logo />
@@ -65,7 +68,7 @@ export default function Shell({
 
             <div className="ml-auto flex items-center gap-3">
               {rate && (
-                <div className="flex items-center gap-2.5 rounded-full bg-[var(--color-surface)] px-4 py-2">
+                <div className="flex items-center gap-2.5 rounded-full glass-soft px-4 py-2">
                   <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-good)]" aria-hidden />
                   <span className="text-xs text-[var(--color-muted)]">Dólar</span>
                   <span className="text-sm font-semibold">Bs {rate.valor}</span>
@@ -118,7 +121,7 @@ export default function Shell({
                   >
                     {tab.label}
                     {tab.disabled && (
-                      <span className="ml-1.5 rounded bg-[var(--color-surface)] px-1.5 py-0.5 text-[10px] uppercase tracking-wide">
+                      <span className="ml-1.5 rounded bg-white/10 px-1.5 py-0.5 text-[10px] uppercase tracking-wide">
                         pronto
                       </span>
                     )}
@@ -134,7 +137,7 @@ export default function Shell({
           </div>
         </main>
 
-        <aside className="flex w-full shrink-0 flex-col border-t border-[var(--color-line)] bg-[var(--color-panel)] lg:h-auto lg:w-[400px] lg:border-l lg:border-t-0">
+        <aside className="flex w-full shrink-0 flex-col border-t border-[var(--color-line)] bg-white/[0.02] lg:h-auto lg:w-[400px] lg:border-l lg:border-t-0">
           {aside}
         </aside>
       </div>

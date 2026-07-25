@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+﻿import type { ReactNode } from 'react';
 import { bob } from '../lib/api';
 import BarList from './charts/BarList';
 import Donut from './charts/Donut';
@@ -33,7 +33,7 @@ function Card({
   children: ReactNode;
 }) {
   return (
-    <div className={`rounded-[var(--radius-card)] bg-[var(--color-surface)] p-5 ${className}`}>
+    <div className={`rounded-[var(--radius-card)] glass p-5 ${className}`}>
       {title && (
         <div className="mb-4 flex items-baseline justify-between gap-3">
           <h3 className="text-sm font-semibold">{title}</h3>
@@ -114,7 +114,7 @@ export default function Widgets({ data }: Props) {
           />
         </div>
 
-        <div className="mt-4 rounded-xl bg-[var(--color-ink)] p-3">
+        <div className="mt-4 rounded-xl bg-black/25 p-3">
           <div className="flex items-baseline justify-between">
             <span className="text-[11px] text-[var(--color-muted)]">Utilidad neta</span>
             <span className="text-[11px] font-semibold text-[var(--color-muted)]">{margenPct}%</span>

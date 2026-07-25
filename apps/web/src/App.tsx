@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+﻿import { useEffect, useState } from 'react';
 import Chat from './components/Chat';
 import DailyBrief from './components/DailyBrief';
 import Dashboard from './components/Dashboard';
@@ -120,7 +120,7 @@ export default function App() {
                     className={`flex shrink-0 items-center gap-2 rounded-full px-3 py-2 text-xs transition ${
                       on
                         ? 'bg-[var(--color-accent-strong)] font-semibold text-white'
-                        : 'bg-[var(--color-surface)] text-[var(--color-muted)] hover:text-white'
+                        : 'glass-soft text-[var(--color-muted)] hover:text-white'
                     }`}
                   >
                     <span className="text-sm">{agent.icon}</span>
@@ -158,11 +158,11 @@ export default function App() {
             ) : (
               // Clases estáticas a propósito: Tailwind no genera `col-span-${n}` dinámico.
               <div className="grid gap-3 lg:grid-cols-12">
-                <div className="h-[220px] animate-pulse rounded-[var(--radius-card)] bg-[var(--color-surface)] lg:col-span-3" />
-                <div className="h-[220px] animate-pulse rounded-[var(--radius-card)] bg-[var(--color-surface)] lg:col-span-3" />
-                <div className="h-[220px] animate-pulse rounded-[var(--radius-card)] bg-[var(--color-surface)] lg:col-span-6" />
-                <div className="h-[240px] animate-pulse rounded-[var(--radius-card)] bg-[var(--color-surface)] lg:col-span-7" />
-                <div className="h-[240px] animate-pulse rounded-[var(--radius-card)] bg-[var(--color-surface)] lg:col-span-5" />
+                <div className="h-[220px] animate-pulse rounded-[var(--radius-card)] bg-white/5 lg:col-span-3" />
+                <div className="h-[220px] animate-pulse rounded-[var(--radius-card)] bg-white/5 lg:col-span-3" />
+                <div className="h-[220px] animate-pulse rounded-[var(--radius-card)] bg-white/5 lg:col-span-6" />
+                <div className="h-[240px] animate-pulse rounded-[var(--radius-card)] bg-white/5 lg:col-span-7" />
+                <div className="h-[240px] animate-pulse rounded-[var(--radius-card)] bg-white/5 lg:col-span-5" />
               </div>
             )}
           </Section>

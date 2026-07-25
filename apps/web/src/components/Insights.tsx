@@ -1,4 +1,4 @@
-import { bob, type Insight, type InsightsResponse, type Severity } from '../lib/api';
+﻿import { bob, type Insight, type InsightsResponse, type Severity } from '../lib/api';
 
 interface Props {
   data: InsightsResponse | null;
@@ -41,7 +41,7 @@ const SEVERITY: Record<Severity, { label: string; text: string; bg: string; bar:
 function Row({ insight, onAsk }: { insight: Insight; onAsk: Props['onAsk'] }) {
   const s = SEVERITY[insight.severidad];
   return (
-    <article className="relative overflow-hidden rounded-[var(--radius-card)] bg-[var(--color-surface)] p-5 pl-6">
+    <article className="relative overflow-hidden rounded-[var(--radius-card)] glass p-5 pl-6">
       <span className={`absolute inset-y-0 left-0 w-1 ${s.bar}`} aria-hidden />
 
       <div className="flex flex-wrap items-start justify-between gap-3">
@@ -85,7 +85,7 @@ export default function Insights({ data, loading, onAsk }: Props) {
         {Array.from({ length: 3 }).map((_, i) => (
           <div
             key={i}
-            className="h-[148px] animate-pulse rounded-[var(--radius-card)] bg-[var(--color-surface)]"
+            className="h-[148px] animate-pulse rounded-[var(--radius-card)] bg-white/5"
           />
         ))}
       </div>
@@ -95,7 +95,7 @@ export default function Insights({ data, loading, onAsk }: Props) {
 
   if (data.insights.length === 0) {
     return (
-      <div className="rounded-[var(--radius-card)] bg-[var(--color-surface)] p-5 text-sm text-[var(--color-good)]">
+      <div className="rounded-[var(--radius-card)] glass p-5 text-sm text-[var(--color-good)]">
         Sin hallazgos urgentes. Márgenes, stock, cobros y clientes están dentro de lo esperado.
       </div>
     );

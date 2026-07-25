@@ -1,14 +1,14 @@
-import { useEffect, useRef, useState } from 'react';
+﻿import { useEffect, useRef, useState } from 'react';
 
 /**
  * Gráfico de líneas con capa de hover.
  *
  * Un solo eje siempre: si dos medidas no comparten escala, van en dos gráficos.
- * Acá conviven porque oficial y paralelo son la misma unidad (Bs por USD).
  *
  * Colores: no usamos el rojo y el ámbar de la marca para codificar series.
  * Ese par mide ΔE 4,8 en deuteranopia — un daltónico no distingue las líneas.
- * Los hues de acá están validados contra la superficie real (#242A2F).
+ * Los hues están validados contra el vidrio compuesto, incluida su zona más
+ * clara: por eso el tinte del vidrio tiene un techo de brillo (ver index.css).
  */
 
 export interface Series {
@@ -165,7 +165,7 @@ export default function LineChart({
                       r={4.5}
                       fill={s.color}
                       /* Anillo del color de la superficie: separa el punto de la línea. */
-                      stroke="#242A2F"
+                      stroke="rgba(0,0,0,0.45)"
                       strokeWidth={2}
                     />
                   );
@@ -177,7 +177,7 @@ export default function LineChart({
 
         {hover !== null && labels[hover] && (
           <div
-            className="pointer-events-none absolute top-0 z-10 rounded-lg bg-[var(--color-ink)] px-2.5 py-1.5 text-[11px] shadow-lg ring-1 ring-white/10"
+            className="pointer-events-none absolute top-0 z-10 rounded-lg glass px-2.5 py-1.5 text-[11px]"
             style={{
               left: Math.min(Math.max(x(hover) - 60, 0), Math.max(0, width - 120)),
               minWidth: 110,

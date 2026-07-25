@@ -1,4 +1,4 @@
-import { bob } from '../lib/api';
+﻿import { bob } from '../lib/api';
 
 interface Props {
   data: Record<string, any> | null;
@@ -29,7 +29,7 @@ function Metric({
   tone?: Tone;
 }) {
   return (
-    <div className="rounded-[var(--radius-card)] bg-[var(--color-surface)] p-4">
+    <div className="rounded-[var(--radius-card)] glass p-4">
       <div className="flex items-start justify-between gap-2">
         <span className="text-[11px] uppercase tracking-wide text-[var(--color-muted)]">{label}</span>
         {delta !== undefined && delta !== null && (
@@ -58,7 +58,7 @@ export default function Dashboard({ data, loading }: Props) {
         {Array.from({ length: 6 }).map((_, i) => (
           <div
             key={i}
-            className="h-[104px] animate-pulse rounded-[var(--radius-card)] bg-[var(--color-surface)]"
+            className="h-[104px] animate-pulse rounded-[var(--radius-card)] bg-white/5"
           />
         ))}
       </div>
@@ -66,7 +66,7 @@ export default function Dashboard({ data, loading }: Props) {
   }
   if (!data) {
     return (
-      <div className="rounded-[var(--radius-card)] bg-[var(--color-surface)] p-4 text-sm text-[var(--color-bad)]">
+      <div className="rounded-[var(--radius-card)] glass p-4 text-sm text-[var(--color-bad)]">
         No se pudo cargar el panel. ¿Está corriendo el backend?
       </div>
     );
@@ -121,7 +121,7 @@ export default function Dashboard({ data, loading }: Props) {
       </div>
 
       {margenes.productos.length > 0 && (
-        <div className="rounded-[var(--radius-card)] bg-[var(--color-surface)] p-5">
+        <div className="rounded-[var(--radius-card)] glass p-5">
           <h3 className="text-sm font-semibold">Márgenes bajo presión</h3>
           <p className="mt-1 text-xs text-[var(--color-muted)]">
             Recalculado al costo de reposición de hoy (Bs {fx.tipoCambio}/USD), no al de compra.
@@ -166,7 +166,7 @@ export default function Dashboard({ data, loading }: Props) {
       )}
 
       {clientes.inactivos.length > 0 && (
-        <div className="rounded-[var(--radius-card)] bg-[var(--color-surface)] p-5">
+        <div className="rounded-[var(--radius-card)] glass p-5">
           <h3 className="text-sm font-semibold">Clientes que dejaron de comprar</h3>
           <ul className="mt-3 space-y-2.5 text-sm">
             {clientes.inactivos.slice(0, 4).map((c: any) => (
