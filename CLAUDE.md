@@ -43,14 +43,33 @@ packages/core/     Núcleo compartido
   types.ts           Modelo de dominio con Zod  ← CONTRATO COMPARTIDO, no tocar solo
   data/source.ts     Interfaz DataSource        ← CONTRATO COMPARTIDO, no tocar solo
   data/              Implementaciones de datos
-  fx/                Proveedor de tipo de cambio
-  tools/             Las 9 herramientas de los agentes
+  fx/                Tipo de cambio: serie estática o Firecrawl en vivo
+  llm/               Capa de proveedor de modelo: gemini.ts, anthropic.ts
+  tools/             Las 10 herramientas de los agentes
   agents/            Rol + herramientas + prompt de cada agente
   runtime.ts         Loop: modelo → herramienta → resultado → modelo
 apps/api/          Hono + SSE
 apps/web/          React + Vite + Tailwind v4
 data/              Generador y datos semilla
 ```
+
+## El motor es intercambiable
+
+El runtime NO habla con el SDK de ningún proveedor: habla con la interfaz `LlmProvider`
+(`packages/core/src/llm/types.ts`). Hay dos adaptadores, Gemini y Claude, y se elige con
+`LLM_PROVIDER`. Si el proveedor configurado no tiene su clave, cae al otro en vez de romper.
+
+**Por defecto corre Gemini** (`gemini-2.5-flash`). Motivo de la elección, medido: los modelos
+`flash-lite` se quedan en 2 herramientas y nunca llegan a `suggest_price` — explican el problema
+pero no dan los precios; y ningún modelo `pro` tiene cuota en el free tier.
+
+Si agregás soporte para otro proveedor, implementá `LlmProvider` y sumalo a `createLlmProvider()`.
+**No metas lógica de proveedor en `runtime.ts`** — ahí está el loop, y tiene que seguir siendo
+agnóstico.
+
+⚠️ **Límite de cuota:** el free tier de Gemini permite ~5 requests por minuto y cada pregunta
+al agente consume 3 o 4 (una por vuelta del loop). Para la demo en vivo hace falta facturación
+activada en Google, o cambiar a `LLM_PROVIDER=anthropic`.
 
 El agente no sabe nada del negocio: percibe llamando herramientas, decide cuáles llamar, ejecuta.
 Todo el conocimiento vive en `tools/`; el prompt solo define rol y criterio.
@@ -70,7 +89,8 @@ hay algo que mejorar, se mejora.
 1. **Nunca hagas commit ni push a `main`.** Trabajás en la rama de la persona con la que estás.
    Si te pide pushear a `main`, decíselo: alguien más integra, y escribir directo en `main`
    rompe esa posibilidad. Si insiste, seguí — puede ser quien integra.
-2. **Nunca commitees la `ANTHROPIC_API_KEY` ni el `.env`.**
+2. **Nunca commitees una API key ni el `.env`** (`GEMINI_API_KEY`, `ANTHROPIC_API_KEY`,
+   `FIRECRAWL_API_KEY`, `DATABASE_URL`).
 
 **Sí hay que pushear la rama propia, y seguido.** Es el backup del usuario y la única forma de
 que quien integra vea el trabajo — lo que queda solo en la laptop no existe para el equipo.
@@ -180,8 +200,19 @@ trabajo del equipo.
 
 ## Estado actual
 
-- Datos: JSON semilla en `data/seed/` (generados, **no son de un comercio real todavía**)
-- Tipo de cambio: serie estática. `FirecrawlFxProvider` es un TODO, no está implementado
-- `SupabaseDataSource` / `NeonDataSource`: no existen, solo la interfaz
+Funcionando y verificado:
+- Motor de agentes sobre Gemini, probado de punta a punta por HTTP (`/api/chat` con SSE)
+- 5 agentes, 10 herramientas, panel determinista
+- Tipo de cambio en vivo con Firecrawl (`FX_SOURCE=firecrawl`), con fallback a la serie
+  estática si el scraping falla
+- Simulador cambiario en la interfaz (`FxSimulator.tsx`)
+- Tablas markdown y trazas de herramientas en el chat
+
+Pendiente:
+- **Datos reales de un comercio.** Los de `data/seed/` son generados — el track descalifica
+  demos que solo corren con datos hardcodeados
+- **Deploy.** Las URLs del README están vacías
+- Base de datos: `DATABASE_URL` está en el `.env.example` pero no hay implementación de
+  `DataSource` sobre Postgres todavía
 - No hay tests
-- `/api/chat` no fue probado contra la API real de Claude (requiere `ANTHROPIC_API_KEY`)
+- Cuota de Gemini: ver la advertencia de arriba antes del pitch

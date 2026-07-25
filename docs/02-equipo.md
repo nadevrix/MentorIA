@@ -33,27 +33,29 @@ Es el salto más grande de toda la lista: cruza de "demo" a "producto".
 
 *Listo cuando:* el panel muestra números de un negocio de verdad.
 
-### 3. Probar `/api/chat` contra la API real
+### 3. Cuota del modelo para la demo ✅ probado / ⚠️ pendiente
 
-El loop de agentes compila y los tipos cierran, pero nunca se ejecutó contra la API de Claude.
-Con la `ANTHROPIC_API_KEY` puesta son 2 minutos. **Antes que cualquier feature nueva.**
+El loop de agentes ya está probado de punta a punta contra Gemini. Lo que falta es la cuota:
+el free tier permite ~5 requests por minuto y cada pregunta consume 3 o 4, así que **dos
+preguntas seguidas en el pitch fallan**. Hay que activar facturación en Google (centavos para
+todo el evento) o dejar `LLM_PROVIDER=anthropic` para el escenario.
 
 ---
 
 ## 🟡 Alto impacto
 
-### 4. Dólar paralelo en vivo (Firecrawl, sponsor)
+### 4. Dólar paralelo en vivo (Firecrawl, sponsor) — ✅ HECHO
 
-Implementar `FirecrawlFxProvider` cumpliendo la interfaz `FxProvider`, con caché en memoria de
-~15 min y **fallback a `SeedFxProvider` si falla**. Un scraping caído nunca debe romper la demo.
+`FirecrawlFxProvider` está implementado, con caché de 15 min y fallback a la serie estática.
+Lo que queda: **verificar el día del pitch** que la extracción sigue funcionando (depende del
+maquetado de la fuente) y anotar la fecha en `docs/04-datos.md`.
 
-Documentar la fuente exacta y la fecha de captura en `docs/04-datos.md`: el track exige citar
-fuentes y el jurado lo va a preguntar.
+### 5. Simulador cambiario en la interfaz — ✅ HECHO
 
-### 5. Simulador cambiario en la interfaz
-
-Un slider de tipo de cambio (12 → 18 Bs) que recalcula la tabla de precios sugeridos en vivo.
-Es el momento "wow" del pitch.
+`FxSimulator.tsx` recalcula la tabla de precios contra un tipo de cambio simulado. Es el momento
+"wow" del pitch. Ojo con una lección aprendida: **usa `costUsd` directo, nunca lo estimes** — la
+primera versión lo derivaba del costo histórico y mostraba márgenes sanos en productos que pierden
+plata, contradiciendo al panel en la misma pantalla.
 
 ### 6. Alertas automáticas (reto Zavu, USD 500)
 

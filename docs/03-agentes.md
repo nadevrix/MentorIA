@@ -80,7 +80,7 @@ El frontend lo levanta solo: `/api/agents` devuelve el catálogo y la UI dibuja 
 | 💵 Cambiario y de Precios | `precios` | fx, márgenes, sugerir precio, inventario |
 | 📦 Inventario | `inventario` | inventario, top productos, fx, ventas |
 | 📊 Financiero | `finanzas` | finanzas, ventas, pagos, top productos, fx |
-| 👥 Clientes | `clientes` | clientes, ventas, top productos |
+| 👥 Clientes | `clientes` | clientes, ventas, top productos, mensaje de WhatsApp |
 
 ## Herramientas disponibles
 
@@ -95,12 +95,15 @@ El frontend lo levanta solo: `/api/agents` devuelve el catálogo y la UI dibuja 
 | `customer_insights` | Inactivos, mejores clientes, ticket promedio por cliente |
 | `financial_summary` | Ingresos, CMV a reposición, gastos por categoría, utilidad y margen neto |
 | `accounts_payable` | Pendientes, vencidas, próximas a vencer |
+| `generate_whatsapp_message` | Mensaje listo para copiar + link `wa.me` (reactivación, cobranza o promoción) |
 
 ## Depuración
 
 **El agente no llama la herramienta que debería.**
 Reescribí la descripción empezando por el disparador: *"Usala cuando el usuario pregunte por…"*.
-Si sigue sin llamarla, subí `effort` a `"high"` en `runtime.ts`.
+Si eso no alcanza, escribí la secuencia esperada en el prompt del agente — con Gemini fue lo que
+hizo falta para que el agente de precios cerrara siempre con `suggest_price` en vez de quedarse
+en el diagnóstico. Como último recurso, probá un modelo más capaz con `GEMINI_MODEL`.
 
 **El agente inventa cifras.**
 Casi siempre es una herramienta que devolvió vacío y el modelo rellenó. Verificá primero los datos;

@@ -70,6 +70,8 @@ Leer la salida: producto, precio actual, precio sugerido, ajuste porcentual.
 ## Preparación (30 min antes)
 
 - [ ] Abrir `<API>/health` para despertar Render — **crítico**
+- [ ] Confirmar que `llm` en `/health` trae `provider` y `model`
+- [ ] Probar **dos preguntas seguidas**: si la segunda da 429, falta facturación en Gemini
 - [ ] Cargar la URL pública en el navegador y hacer una consulta completa de prueba
 - [ ] Correr `node data/generate.mjs` si el dataset debe verse fresco, y **anotar los números nuevos**
 - [ ] Cerrar Slack, notificaciones y demás pestañas
@@ -82,7 +84,7 @@ Leer la salida: producto, precio actual, precio sugerido, ajuste porcentual.
 | Falla | Respuesta |
 | ----- | --------- |
 | Sin WiFi | Correr en local contra `localhost` y decirlo: "esto corre en Render, acá va local por la red" |
-| API de Claude caída | Mostrar el panel (es determinista y funciona sin modelo) + capturas de una conversación real |
+| Modelo caído o con 429 | Cambiar `LLM_PROVIDER` al otro proveedor. Si tampoco, mostrar el panel (es determinista, funciona sin modelo) + capturas de una conversación real |
 | Render frío en escena | Seguir hablando del problema mientras despierta; hay 40 segundos de guion antes de la demo |
 | Un agente responde mal en vivo | No repetir la misma pregunta. Pasar a la siguiente del guion y seguir |
 

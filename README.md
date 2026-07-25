@@ -20,7 +20,7 @@ concretas: qué precio subir, a cuánto, qué cliente contactar, qué pago vence
 ```bash
 git clone https://github.com/nadevrix/MentorIA.git && cd MentorIA
 npm install
-cp .env.example .env        # y pegá tu ANTHROPIC_API_KEY
+cp .env.example .env        # y pegá tu GEMINI_API_KEY
 npm run dev                 # API en :8787 · Web en :5173
 ```
 
@@ -42,11 +42,15 @@ frescas: `node data/generate.mjs`.
 - **Panel determinista** — los mismos cálculos que usan los agentes, corridos sin modelo. Carga
   instantánea y sin costo de tokens: márgenes en riesgo, ventas vs. mes anterior, utilidad neta,
   capital inmovilizado, cuentas vencidas.
+- **Dólar paralelo en vivo** — scraping con Firecrawl, caché de 15 minutos y fallback a una serie
+  estática si la fuente falla: la demo nunca se cae por un scraping caído.
 - **5 agentes con herramientas reales** — cada uno ve solo las herramientas de su dominio y decide
   cuáles llamar y en qué orden. No es un prompt largo: es un loop de percepción → decisión → ejecución.
 - **Simulación cambiaria** — "¿qué pasa si el dólar llega a 15?" recalcula todo el catálogo y
   devuelve el precio sugerido producto por producto.
 - **Trazabilidad en vivo** — la UI muestra qué herramienta está corriendo el agente mientras piensa.
+- **Motor intercambiable** — Gemini o Claude detrás de la misma interfaz. Si un proveedor falla en
+  vivo, se cambia una variable de entorno y el producto sigue andando.
 
 ### Los agentes
 
@@ -62,7 +66,7 @@ frescas: `node data/generate.mjs`.
 
 | Capa       | Tecnología                                | Por qué                                             |
 | ---------- | ----------------------------------------- | --------------------------------------------------- |
-| Agentes    | Claude Opus 5 (`@anthropic-ai/sdk`)       | Tool use nativo, decide qué consultar                |
+| Agentes    | Gemini 2.5 Flash (Claude como alternativa) | Function calling nativo; el motor se cambia con una variable |
 | Backend    | Node 20 + Hono, SSE                       | Streaming sin límite de 10s de las funciones edge    |
 | Frontend   | React 19 + Vite + Tailwind v4             | Build de <1s, despliegue directo en Netlify          |
 | Tipos      | TypeScript + Zod, compartidos vía workspace | Un solo modelo de dominio para todo el equipo       |
@@ -74,8 +78,9 @@ frescas: `node data/generate.mjs`.
 packages/core/     Núcleo: modelo de dominio, herramientas, agentes, loop de ejecución
   src/types.ts       Esquemas Zod del negocio (productos, ventas, clientes, gastos, FX)
   src/data/          Contrato DataSource + implementación con datos semilla
-  src/fx/            Proveedor de tipo de cambio (paralelo)
-  src/tools/         Las 9 herramientas que pueden invocar los agentes
+  src/fx/            Tipo de cambio: serie estática o Firecrawl en vivo
+  src/llm/           Capa de proveedor: adaptadores de Gemini y de Claude
+  src/tools/         Las 10 herramientas que pueden invocar los agentes
   src/agents/        Definición de cada agente: rol, herramientas, prompt
   src/runtime.ts     Loop: modelo → herramienta → resultado → modelo
 apps/api/          Servidor Hono: /health, /api/agents, /api/dashboard, /api/chat (SSE)

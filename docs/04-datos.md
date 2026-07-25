@@ -72,7 +72,7 @@ export class MiFuente implements DataSource {
 | Fuente | Esfuerzo | Cuándo |
 | ------ | -------- | ------ |
 | Export de Excel/CSV de un comercio → convertir a `data/seed/` | 2 h | **Hacé esto primero.** Datos reales con el mínimo de código |
-| Supabase (Postgres free tier) | 4 h | Si se quiere persistencia y multiusuario |
+| Postgres (Neon, Render o Supabase) | 4 h | Si se quiere persistencia y multiusuario. La cadena va en `DATABASE_URL` |
 | API REST de Odoo (solo lectura) | 6 h | Demuestra integración con el ERP que ya usa el comercio |
 
 Si un campo no existe en la fuente real (típicamente `purchaseFxRate`), **no lo inventes**: hacelo

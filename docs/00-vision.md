@@ -54,7 +54,7 @@ Nos paramos **encima** de los datos que el negocio ya tiene y aportamos la capa 
 
 **Dentro (24 h):**
 - Panel determinista con los indicadores críticos.
-- Los 5 agentes con sus 9 herramientas sobre datos reales de un comercio piloto.
+- Los 5 agentes con sus 10 herramientas sobre datos reales de un comercio piloto.
 - Simulación de escenarios cambiarios.
 - Deploy público accesible sin instalar nada.
 

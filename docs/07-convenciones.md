@@ -38,7 +38,7 @@ Con una rama por persona, lo que no funciona simplemente **no se mergea**. Cero 
 git clone https://github.com/nadevrix/MentorIA.git
 cd MentorIA
 npm install
-cp .env.example .env      # pegar la ANTHROPIC_API_KEY
+cp .env.example .env      # pegar la GEMINI_API_KEY
 
 git switch -c MI-NOMBRE   # tu rama, con tu nombre
 ```

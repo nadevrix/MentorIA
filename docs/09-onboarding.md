@@ -14,8 +14,8 @@ Las dos únicas reglas existen para que la integración sea posible:
 1. **Nadie pushea a `main`.** Si todos escriben en `main`, no hay nada que revisar ni forma de
    corregir; hay que apagar incendios. Con una rama por persona, lo que no sirve simplemente no
    se mergea.
-2. **Nunca subir la `ANTHROPIC_API_KEY` ni el `.env`.** Si pasa, hay que rotar la clave en la
-   consola de Anthropic de inmediato.
+2. **Nunca subir las claves de API ni el `.env`.** Si pasa, hay que rotar la clave afectada
+   (`GEMINI_API_KEY`, `ANTHROPIC_API_KEY`, `FIRECRAWL_API_KEY`, `DATABASE_URL`) de inmediato.
 
 Lo demás es libre.
 
@@ -35,7 +35,7 @@ PASO 1 — Ponéme al día. Ejecutá esto y mostrame la salida:
   git switch main && git pull origin main
   git switch MI-NOMBRE 2>/dev/null || git switch -c MI-NOMBRE   # ← tu nombre. Tu rama, solo tuya
   npm install
-  cp .env.example .env                   # pegá la ANTHROPIC_API_KEY del equipo
+  cp .env.example .env                   # pegá la GEMINI_API_KEY del equipo
   npm run dev                            # API en :8787, web en :5173
 
 PASO 2 — Leé CLAUDE.md en la raíz del repo antes de proponerme nada. Ahí está la
@@ -56,7 +56,7 @@ DOS REGLAS, EL RESTO ES LIBRE:
 1. Trabajo SOLO en mi rama. Nunca hagas commit ni push a main — otra persona revisa
    y mergea todo. Para guardar mi trabajo: git add -A && git commit -m "..." &&
    git push origin MI-NOMBRE
-2. Nunca commitees la ANTHROPIC_API_KEY ni el archivo .env.
+2. Nunca commitees ninguna API key ni el archivo .env.
 
 Antes de cada push corré: npm run typecheck && npm run build:web
 

@@ -22,12 +22,23 @@ Dos servicios, ambos free tier y accesibles para el jurado sin cuenta ni instala
 
    | Variable            | Valor                                         |
    | ------------------- | --------------------------------------------- |
-   | `ANTHROPIC_API_KEY` | tu clave — **nunca en el repo**               |
+   | `LLM_PROVIDER`      | `gemini` (o `anthropic`)                      |
+   | `GEMINI_API_KEY`    | tu clave — **nunca en el repo**               |
+   | `GEMINI_MODEL`      | `gemini-2.5-flash`                            |
+   | `ANTHROPIC_API_KEY` | opcional, respaldo si Gemini falla en vivo    |
    | `CORS_ORIGIN`       | la URL de Netlify (dejalo en `*` mientras probás) |
    | `DATA_SOURCE`       | `seed`                                        |
-   | `FX_SOURCE`         | `static`                                      |
+   | `FX_SOURCE`         | `firecrawl` si hay clave, si no `static`      |
+   | `FIRECRAWL_API_KEY` | opcional, para el dólar en vivo               |
 
-4. Verificá: `curl https://TU-API.onrender.com/health` debe devolver `"hasApiKey": true`.
+4. Verificá: `curl https://TU-API.onrender.com/health` debe devolver el proveedor y el modelo:
+
+   ```json
+   {"ok":true,"dataSource":"seed","fxSource":"firecrawl",
+    "llm":{"provider":"gemini","model":"gemini-2.5-flash"},"agents":5}
+   ```
+
+   Si `llm` trae un `error` en vez de `provider`, falta la clave del modelo.
 
 ## 2. Frontend en Netlify
 
@@ -51,7 +62,8 @@ Mitigaciones, en orden de preferencia:
 
 ## Checklist previo al pitch
 
-- [ ] `<API>/health` responde `ok: true` y `hasApiKey: true`
+- [ ] `<API>/health` responde `ok: true` y `llm` trae `provider` y `model`
+- [ ] Dos preguntas seguidas al agente funcionan sin 429 (si no, falta facturación en Gemini)
 - [ ] `<API>/api/dashboard` devuelve datos
 - [ ] La URL de Netlify carga el panel con números
 - [ ] Un chat completo con un agente funciona de punta a punta desde la URL pública
@@ -64,8 +76,12 @@ Mitigaciones, en orden de preferencia:
 **CORS bloqueado.** `CORS_ORIGIN` en Render tiene que ser la URL exacta de Netlify, sin barra final.
 Mientras depurás, `*` funciona.
 
-**`ANTHROPIC_API_KEY` no configurada.** `/health` lo dice: `hasApiKey: false`. El panel funciona igual
-(es determinista) pero `/api/chat` devuelve 500.
+**Falta la clave del modelo.** `/health` lo dice en el campo `llm`. El panel funciona igual (es
+determinista) pero `/api/chat` devuelve 500.
+
+**429 de Gemini en medio de la demo.** El free tier permite ~5 requests por minuto y cada pregunta
+consume 3 o 4. Activá facturación en Google antes del pitch, o cambiá `LLM_PROVIDER=anthropic` en
+Render — el cambio no requiere redeploy del frontend.
 
 **El build de Netlify falla con "cannot find module @pyme/core".** El build tiene que compilar el core
 primero — para eso `npm run build:web` corre ambos. No lo cambies por `vite build` pelado.
