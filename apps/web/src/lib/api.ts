@@ -22,6 +22,24 @@ export interface ChatMessage {
   content: string;
 }
 
+export interface Health {
+  ok: boolean;
+  dataSource: string;
+  /** Qué hay debajo de la superposición: Postgres o los datos de ejemplo. */
+  baseSource: string;
+  fxSource: string;
+  hasApiKey: boolean;
+  imageProvider: string | null;
+  agents: number;
+}
+
+/** Estado real del servidor, para que Ajustes no tenga que adivinarlo. */
+export async function fetchHealth(): Promise<Health> {
+  const res = await fetch(`${API_URL}/health`);
+  if (!res.ok) throw new Error('El servidor no responde');
+  return res.json();
+}
+
 export async function fetchAgents(): Promise<Agent[]> {
   const res = await fetch(`${API_URL}/api/agents`);
   if (!res.ok) throw new Error('No se pudieron cargar los agentes');
