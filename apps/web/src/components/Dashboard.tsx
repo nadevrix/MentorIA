@@ -78,9 +78,13 @@ export default function Dashboard({ data, loading }: Props) {
     <div className="space-y-4">
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-3">
         <Metric
-          label="Dólar paralelo"
-          value={`Bs ${fx.paralelo}`}
-          detail={`Oficial Bs ${fx.oficial} · brecha ${fx.brechaPct}%`}
+          label="Tipo de cambio"
+          value={`Bs ${fx.tipoCambio}`}
+          detail={
+            fx.variacionDesdeUnificacionPct != null
+              ? `${fx.variacionDesdeUnificacionPct > 0 ? '+' : ''}${fx.variacionDesdeUnificacionPct}% desde la unificación`
+              : `Régimen ${fx.regimen}`
+          }
           delta={fx.variacion30dPct}
           tone={fx.variacion30dPct > 3 ? 'gold' : 'neutral'}
         />
@@ -120,7 +124,7 @@ export default function Dashboard({ data, loading }: Props) {
         <div className="rounded-[var(--radius-card)] bg-[var(--color-surface)] p-5">
           <h3 className="text-sm font-semibold">Márgenes bajo presión</h3>
           <p className="mt-1 text-xs text-[var(--color-muted)]">
-            Recalculado al costo de reposición de hoy (Bs {fx.paralelo}/USD), no al de compra.
+            Recalculado al costo de reposición de hoy (Bs {fx.tipoCambio}/USD), no al de compra.
           </p>
           <div className="scroll-slim mt-4 overflow-x-auto">
             <table className="w-full min-w-[520px] text-sm">

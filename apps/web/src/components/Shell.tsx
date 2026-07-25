@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import BrainMark from './BrainMark';
 
 /**
  * Cromo de la aplicación: contenedor flotante, navegación superior y pestañas.
@@ -20,8 +21,8 @@ interface Props {
   onTab: (id: string) => void;
   title: string;
   subtitle?: string;
-  /** Chip de la barra superior: el tipo de cambio vigente. */
-  rate?: { paralelo: number; oficial: number } | null;
+  /** Chip de la barra superior: el tipo de cambio vigente (único desde la unificación). */
+  rate?: { valor: number; variacionPct?: number | null } | null;
   headerRight?: ReactNode;
   children: ReactNode;
   aside: ReactNode;
@@ -30,10 +31,7 @@ interface Props {
 function Logo() {
   return (
     <div className="flex items-center gap-2.5">
-      {/* Disco partido: mitad plena, mitad vacía — la marca en 24px. */}
-      <span className="relative grid h-9 w-9 place-items-center rounded-full bg-white">
-        <span className="absolute left-0 top-0 h-9 w-[18px] rounded-l-full bg-[var(--color-accent)]" />
-      </span>
+      <BrainMark size={30} className="text-[var(--color-accent)]" />
       <span className="text-[15px] font-bold tracking-tight">
         Mentor <span className="text-[var(--color-accent)]">IA</span>
       </span>
@@ -70,8 +68,19 @@ export default function Shell({
                 <div className="flex items-center gap-2.5 rounded-full bg-[var(--color-surface)] px-4 py-2">
                   <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-good)]" aria-hidden />
                   <span className="text-xs text-[var(--color-muted)]">Dólar</span>
-                  <span className="text-sm font-semibold">Bs {rate.paralelo}</span>
-                  <span className="text-xs text-[var(--color-faint)]">of. {rate.oficial}</span>
+                  <span className="text-sm font-semibold">Bs {rate.valor}</span>
+                  {rate.variacionPct != null && (
+                    <span
+                      className={`text-xs font-semibold ${
+                        rate.variacionPct >= 0
+                          ? 'text-[var(--color-bad)]'
+                          : 'text-[var(--color-good)]'
+                      }`}
+                    >
+                      {/* Que suba es malo para el importador: rojo hacia arriba. */}
+                      {rate.variacionPct >= 0 ? '▲' : '▼'} {Math.abs(rate.variacionPct)}%
+                    </span>
+                  )}
                 </div>
               )}
               {headerRight}

@@ -81,7 +81,8 @@ function FlowRow({
 }
 
 export default function Widgets({ data }: Props) {
-  const serieFx: { fecha: string; oficial: number; paralelo: number }[] = data.series?.fx ?? [];
+  const serieFx: { fecha: string; tipoCambio: number; regimen: 'fijo' | 'flexible' }[] =
+    data.series?.fx ?? [];
   const serieVentas: { fecha: string; totalBob: number }[] = data.series?.ventas ?? [];
   const gastos: Record<string, number> = data.finanzas?.gastosPorCategoria ?? {};
   const top: any[] = data.topProductos?.productos ?? [];
@@ -146,14 +147,34 @@ export default function Widgets({ data }: Props) {
       )}
 
       {serieFx.length > 1 && (
-        <Card title="Tipo de cambio" hint={`${serieFx.length} días`} className="lg:col-span-6">
+        <Card
+          title="Tipo de cambio"
+          hint={
+            // Sólo se compara dentro del mismo régimen: mezclarlos daría una
+            // "subida" que en realidad es el cambio de reglas del 29/06/2026.
+            (() => {
+              const flex = serieFx.filter((r) => r.regimen === 'flexible');
+              if (flex.length < 2) return `${serieFx.length} días`;
+              const a = flex[0]!.tipoCambio;
+              const b = flex.at(-1)!.tipoCambio;
+              const pct = (((b - a) / a) * 100).toFixed(1);
+              return `${Number(pct) > 0 ? '+' : ''}${pct}% desde la unificación`;
+            })()
+          }
+          className="lg:col-span-6"
+        >
           <LineChart
             labels={serieFx.map((r) => shortDate(r.fecha))}
             format={(v) => `Bs ${v.toFixed(2)}`}
             height={160}
+            area
             series={[
-              { id: 'oficial', label: 'Oficial', color: SERIES.azul, values: serieFx.map((r) => r.oficial) },
-              { id: 'paralelo', label: 'Paralelo', color: SERIES.naranja, values: serieFx.map((r) => r.paralelo) },
+              {
+                id: 'tc',
+                label: 'Bs por USD',
+                color: SERIES.naranja,
+                values: serieFx.map((r) => r.tipoCambio),
+              },
             ]}
           />
         </Card>

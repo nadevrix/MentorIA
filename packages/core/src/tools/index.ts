@@ -1,4 +1,4 @@
-import { z } from 'zod';
+﻿import { z } from 'zod';
 import { PeriodSchema } from '../types.js';
 import {
   daysAgo,
@@ -28,25 +28,38 @@ const periodJson = {
 const getFxRate = defineTool({
   name: 'get_fx_rate',
   description:
-    'Devuelve el tipo de cambio oficial (BCB) y paralelo vigente, más su variación reciente. ' +
+    'Devuelve el tipo de cambio vigente del BCB y su variación reciente. ' +
     'Llamá a esta herramienta SIEMPRE antes de hablar de costos, precios o márgenes de productos importados: ' +
-    'el costo de reposición real depende del paralelo, no del oficial.',
+    'desde la unificación de junio de 2026 hay un solo tipo de cambio y flota, así que el costo de ' +
+    'reposición se mueve con él.',
   inputSchema: objectSchema({}),
   parse: z.object({}).passthrough(),
   async run(_input, ctx) {
     const history = await ctx.fx.history();
     const current = await ctx.fx.current();
     const monthAgo = history.find((r) => daysAgo(r.date) <= 30) ?? history[0];
-    const change = monthAgo ? round(((current.parallel - monthAgo.parallel) / monthAgo.parallel) * 100) : 0;
+    const change = monthAgo ? round(((current.rate - monthAgo.rate) / monthAgo.rate) * 100) : 0;
+
+    // El tramo de régimen fijo no es comparable con el flexible: lo marcamos
+    // para que el agente no lea una "subida" que en realidad es un cambio de régimen.
+    const flexible = history.filter((r) => r.regimen === 'flexible');
+    const desdeUnificacion =
+      flexible.length >= 2
+        ? round(((current.rate - flexible[0]!.rate) / flexible[0]!.rate) * 100)
+        : null;
 
     return {
       fecha: current.date,
-      oficial: current.official,
-      paralelo: current.parallel,
-      brechaPct: round(((current.parallel - current.official) / current.official) * 100),
+      tipoCambio: current.rate,
+      regimen: current.regimen,
       variacion30dPct: change,
+      unificacionDesde: flexible[0]?.date ?? null,
+      variacionDesdeUnificacionPct: desdeUnificacion,
       fuente: current.source,
-      historial: history.slice(-10).map((r) => ({ fecha: r.date, paralelo: r.parallel })),
+      historial: history.slice(-10).map((r) => ({ fecha: r.date, tipoCambio: r.rate })),
+      nota:
+        'Desde el 29/06/2026 el BCB unificó el régimen: hay un solo tipo de cambio y flota. ' +
+        'Ya no existe la brecha oficial/paralelo.',
     };
   },
 });
@@ -59,7 +72,8 @@ const analyzeMargins = defineTool({
   name: 'analyze_margins',
   description:
     'Recalcula el margen REAL de cada producto usando el costo de reposición al tipo de cambio de hoy ' +
-    '(paralelo para importados, oficial para nacionales) y lo compara con el margen que tenía al comprar. ' +
+    '(los importados se revalúan con el dólar; los nacionales quedan al costo de su compra) ' +
+    'y lo compara con el margen que tenía al comprar. ' +
     'Usala cuando el usuario pregunte si está ganando, qué producto conviene, o si debe subir precios. ' +
     'Devuelve los productos ordenados de peor a mejor margen.',
   inputSchema: objectSchema({
@@ -84,7 +98,7 @@ const analyzeMargins = defineTool({
     const [products, fx] = await Promise.all([ctx.data.products(), ctx.fx.current()]);
 
     const rows = products.map((p) => {
-      const costoHoy = replacementCostBob(p.costUsd, p.imported, fx);
+      const costoHoy = replacementCostBob(p, fx.rate);
       const costoCompra = round(p.costUsd * p.purchaseFxRate);
       const margenHoy = marginPct(p.priceBob, costoHoy);
       return {
@@ -107,7 +121,7 @@ const analyzeMargins = defineTool({
     filtered.sort((a, b) => a.margenRealHoyPct - b.margenRealHoyPct);
 
     return {
-      tipoCambioUsado: { oficial: fx.official, paralelo: fx.parallel, fecha: fx.date },
+      tipoCambioUsado: { tipoCambio: fx.rate, fecha: fx.date, regimen: fx.regimen },
       margenMinimoPct: min,
       totalProductos: rows.length,
       totalEnRiesgo: rows.filter((r) => r.enRiesgo).length,
@@ -136,7 +150,7 @@ const suggestPrice = defineTool({
       },
       tipoCambioSimulado: {
         type: 'number',
-        description: 'Bs por USD a usar en la simulación. Si se omite, usa el paralelo actual.',
+        description: 'Bs por USD a usar en la simulación. Si se omite, usa el tipo de cambio vigente.',
       },
     },
     ['margenObjetivoPct'],
@@ -148,22 +162,23 @@ const suggestPrice = defineTool({
   }),
   async run(input, ctx) {
     const [products, fx] = await Promise.all([ctx.data.products(), ctx.fx.current()]);
-    const rate = input.tipoCambioSimulado ?? fx.parallel;
+    const rate = input.tipoCambioSimulado ?? fx.rate;
 
     const ids = new Set(input.productIds ?? []);
     const target = ids.size
       ? products.filter((p) => ids.has(p.id) || ids.has(p.sku))
-      : products.filter((p) => marginPct(p.priceBob, replacementCostBob(p.costUsd, p.imported, fx)) < 20);
+      : products.filter((p) => marginPct(p.priceBob, replacementCostBob(p, fx.rate)) < 20);
 
     return {
       escenario: {
         tipoCambioUsado: rate,
         esSimulacion: input.tipoCambioSimulado !== undefined,
-        paraleloActual: fx.parallel,
+        tipoCambioActual: fx.rate,
       },
       margenObjetivoPct: input.margenObjetivoPct,
       recomendaciones: target.map((p) => {
-        const costo = round(p.costUsd * (p.imported ? rate : fx.official));
+        // Sólo los importados se revalúan con el escenario; los nacionales no.
+        const costo = round(p.costUsd * (p.imported ? rate : p.purchaseFxRate));
         const sugerido = priceForMargin(costo, input.margenObjetivoPct);
         return {
           id: p.id,
@@ -287,7 +302,7 @@ const topProducts = defineTool({
       for (const item of sale.items) {
         const product = byId.get(item.productId);
         if (!product) continue;
-        const costo = replacementCostBob(product.costUsd, product.imported, fx);
+        const costo = replacementCostBob(product, fx.rate);
         const row = agg.get(item.productId) ?? { unidades: 0, ingresos: 0, utilidad: 0 };
         row.unidades += item.quantity;
         row.ingresos = round(row.ingresos + item.quantity * item.unitPriceBob);
@@ -345,7 +360,7 @@ const inventoryAlerts = defineTool({
         nombre: p.name,
         stock: p.stock,
         puntoReorden: p.reorderPoint,
-        costoReposicionUnitarioBob: replacementCostBob(p.costUsd, p.imported, fx),
+        costoReposicionUnitarioBob: replacementCostBob(p, fx.rate),
         importado: p.imported,
       }));
 
@@ -359,11 +374,11 @@ const inventoryAlerts = defineTool({
         nombre: p.name,
         stock: p.stock,
         diasSinVenta: lastSale.has(p.id) ? daysAgo(lastSale.get(p.id)!) : null,
-        capitalInmovilizadoBob: round(p.stock * replacementCostBob(p.costUsd, p.imported, fx)),
+        capitalInmovilizadoBob: round(p.stock * replacementCostBob(p, fx.rate)),
       }));
 
     const capitalTotal = round(
-      products.reduce((s, p) => s + p.stock * replacementCostBob(p.costUsd, p.imported, fx), 0),
+      products.reduce((s, p) => s + p.stock * replacementCostBob(p, fx.rate), 0),
     );
 
     return {
@@ -449,7 +464,7 @@ const financialSummary = defineTool({
     for (const sale of periodSales) {
       for (const item of sale.items) {
         const p = byId.get(item.productId);
-        if (p) cmv += item.quantity * replacementCostBob(p.costUsd, p.imported, fx);
+        if (p) cmv += item.quantity * replacementCostBob(p, fx.rate);
       }
     }
     cmv = round(cmv);

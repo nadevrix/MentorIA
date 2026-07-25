@@ -21,12 +21,15 @@ async function salesSeries(ctx: ToolContext, days: number) {
   return out;
 }
 
-/** Serie de tipo de cambio: oficial y paralelo sobre el mismo eje. */
+/**
+ * Serie del tipo de cambio. Un solo valor por punto desde la unificación;
+ * `regimen` permite marcar el quiebre del 29/06/2026 en el gráfico.
+ */
 async function fxSeries(ctx: ToolContext, days: number) {
   const history = await ctx.fx.history();
   return history
     .filter((r) => daysAgo(r.date) < days)
-    .map((r) => ({ fecha: r.date.slice(0, 10), oficial: r.official, paralelo: r.parallel }));
+    .map((r) => ({ fecha: r.date.slice(0, 10), tipoCambio: r.rate, regimen: r.regimen }));
 }
 
 /**

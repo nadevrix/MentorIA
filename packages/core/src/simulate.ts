@@ -1,4 +1,4 @@
-import type { FxRate, Product, Sale } from './types.js';
+﻿import type { FxRate, Product, Sale } from './types.js';
 import { marginPct, priceForMargin, round, salesInPeriod } from './tools/helpers.js';
 import type { ToolContext } from './tools/registry.js';
 
@@ -32,7 +32,12 @@ export interface ScenarioProduct {
 }
 
 export interface ScenarioResult {
-  escenario: { tipoCambioActual: number; tipoCambioSimulado: number; variacionPct: number; oficial: number };
+  escenario: {
+    tipoCambioActual: number;
+    tipoCambioSimulado: number;
+    variacionPct: number;
+    regimen: 'fijo' | 'flexible';
+  };
   margenObjetivoPct: number;
   productosBajoCosto: { antes: number; despues: number };
   margenPromedioPct: { antes: number; despues: number };
@@ -45,9 +50,12 @@ export interface ScenarioResult {
   productos: ScenarioProduct[];
 }
 
-/** Costo de reposición a un tipo de cambio arbitrario. */
-function costAt(p: Product, rate: number, oficial: number): number {
-  return round(p.costUsd * (p.imported ? rate : oficial));
+/**
+ * Costo de reposición a un tipo de cambio arbitrario.
+ * Sólo los importados se revalúan: el costo en Bs de un nacional no depende del dólar.
+ */
+function costAt(p: Product, rate: number): number {
+  return round(p.costUsd * (p.imported ? rate : p.purchaseFxRate));
 }
 
 function unitsSold30d(sales: Sale[]): Map<string, number> {
@@ -91,8 +99,8 @@ export async function simulateScenario(
   const units = unitsSold30d(sales);
 
   const rows: ScenarioProduct[] = products.map((p) => {
-    const costoActual = costAt(p, fx.parallel, fx.official);
-    const costoEscenario = costAt(p, rate, fx.official);
+    const costoActual = costAt(p, fx.rate);
+    const costoEscenario = costAt(p, rate);
     const sugerido = priceForMargin(costoEscenario, objetivo);
     return {
       id: p.id,
@@ -122,7 +130,7 @@ export async function simulateScenario(
   const capitalAdicional = round(
     products
       .filter((p) => p.imported)
-      .reduce((s, p) => s + p.stock * p.costUsd * (rate - fx.parallel), 0),
+      .reduce((s, p) => s + p.stock * p.costUsd * (rate - fx.rate), 0),
   );
 
   // Sólo los que necesitan subir cuentan en el promedio: los sanos no diluyen.
@@ -135,10 +143,10 @@ export async function simulateScenario(
 
   return {
     escenario: {
-      tipoCambioActual: fx.parallel,
+      tipoCambioActual: fx.rate,
       tipoCambioSimulado: rate,
-      variacionPct: fx.parallel > 0 ? round(((rate - fx.parallel) / fx.parallel) * 100) : 0,
-      oficial: fx.official,
+      variacionPct: fx.rate > 0 ? round(((rate - fx.rate) / fx.rate) * 100) : 0,
+      regimen: fx.regimen,
     },
     margenObjetivoPct: objetivo,
     productosBajoCosto: {

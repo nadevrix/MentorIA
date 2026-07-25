@@ -1,4 +1,4 @@
-import type { Customer, Expense, FxRate, Product, Sale } from './types.js';
+﻿import type { Customer, Expense, FxRate, Product, Sale } from './types.js';
 import {
   daysAgo,
   marginPct,
@@ -62,7 +62,7 @@ export interface InsightThresholds {
   diasInactividadCliente: number;
   /** Caída de ventas contra el periodo anterior que dispara alerta (%). */
   caidaVentasPct: number;
-  /** Movimiento del paralelo en 30 días que dispara alerta (%). */
+  /** Movimiento del tipo de cambio en 30 días que dispara alerta (%). */
   fxDeltaPct: number;
 }
 
@@ -121,7 +121,7 @@ function detectSellingBelowCost({ products, sales, fx, t }: World): Insight[] {
   const units = unitsSold(sales, 30);
   const afectados = products
     .map((p) => {
-      const costo = replacementCostBob(p.costUsd, p.imported, fx);
+      const costo = replacementCostBob(p, fx.rate);
       return { p, costo, perdidaUnitaria: round(costo - p.priceBob), vendidas: units.get(p.id) ?? 0 };
     })
     .filter((r) => r.perdidaUnitaria > 0);
@@ -139,7 +139,7 @@ function detectSellingBelowCost({ products, sales, fx, t }: World): Insight[] {
       severidad: 'critica',
       titulo: `${afectados.length} ${afectados.length === 1 ? 'producto se vende' : 'productos se venden'} por debajo del costo de reposición`,
       detalle:
-        `Con el dólar a Bs ${fx.parallel}, reponer estos productos cuesta más de lo que cobrás por ellos. ` +
+        `Con el dólar a Bs ${fx.rate}, reponer estos productos cuesta más de lo que cobrás por ellos. ` +
         `El peor es ${peor.p.name}: lo vendés a Bs ${peor.p.priceBob} y reponerlo cuesta Bs ${peor.costo} ` +
         `(perdés Bs ${peor.perdidaUnitaria} por unidad). Cada venta te descapitaliza.`,
       impactoBob: impacto,
@@ -156,7 +156,7 @@ function detectErodedMargin({ products, sales, fx, t }: World): Insight[] {
   const units = unitsSold(sales, 30);
   const afectados = products
     .map((p) => {
-      const costo = replacementCostBob(p.costUsd, p.imported, fx);
+      const costo = replacementCostBob(p, fx.rate);
       return { p, costo, margen: marginPct(p.priceBob, costo), vendidas: units.get(p.id) ?? 0 };
     })
     .filter((r) => r.margen >= 0 && r.margen < t.margenMinimoPct && r.p.priceBob >= r.costo);
@@ -233,13 +233,13 @@ function detectDeadStock({ products, sales, fx, t }: World): Insight[] {
       const l = last.get(p.id);
       return p.stock > 0 && (!l || daysAgo(l) > t.diasSinRotacion);
     })
-    .map((p) => ({ p, capital: round(p.stock * replacementCostBob(p.costUsd, p.imported, fx)) }));
+    .map((p) => ({ p, capital: round(p.stock * replacementCostBob(p, fx.rate)) }));
 
   if (dormidos.length === 0) return [];
 
   const capital = round(dormidos.reduce((s, r) => s + r.capital, 0));
   const total = round(
-    products.reduce((s, p) => s + p.stock * replacementCostBob(p.costUsd, p.imported, fx), 0),
+    products.reduce((s, p) => s + p.stock * replacementCostBob(p, fx.rate), 0),
   );
   const pct = total ? round((capital / total) * 100) : 0;
 
@@ -373,18 +373,23 @@ function detectSalesDrop({ sales, t }: World): Insight[] {
   ];
 }
 
-/** Movimiento del paralelo que obliga a revisar precios. */
+/** Movimiento del tipo de cambio que obliga a revisar precios. */
 function detectFxMove({ products, fx, fxHistory, t }: World): Insight[] {
-  const monthAgo = fxHistory.find((r) => daysAgo(r.date) <= 30) ?? fxHistory[0];
-  if (!monthAgo || monthAgo.parallel <= 0) return [];
+  // Comparar contra el régimen fijo daría una "subida" que en realidad es el
+  // cambio de régimen del 29/06/2026. Sólo se compara flexible contra flexible.
+  const comparables = fxHistory.filter((r) => r.regimen === fx.regimen);
+  const antes = comparables.find((r) => daysAgo(r.date) <= 30) ?? comparables[0];
+  if (!antes || antes.rate <= 0 || antes.date === fx.date) return [];
 
-  const delta = round(((fx.parallel - monthAgo.parallel) / monthAgo.parallel) * 100);
+  const delta = round(((fx.rate - antes.rate) / antes.rate) * 100);
   if (delta < t.fxDeltaPct) return [];
 
-  // Cuánto más caro es reponer el inventario importado que hace un mes.
-  const importado = products.filter((p) => p.imported);
+  const dias = daysAgo(antes.date);
+  // Cuánto más caro es reponer el inventario importado que en aquel momento.
   const encarecimiento = round(
-    importado.reduce((s, p) => s + p.stock * p.costUsd * (fx.parallel - monthAgo.parallel), 0),
+    products
+      .filter((p) => p.imported)
+      .reduce((s, p) => s + p.stock * p.costUsd * (fx.rate - antes.rate), 0),
   );
 
   return [
@@ -392,13 +397,14 @@ function detectFxMove({ products, fx, fxHistory, t }: World): Insight[] {
       id: `fx-subio:${delta}`,
       tipo: 'dolar_subio',
       severidad: 'alta',
-      titulo: `El dólar paralelo subió ${delta}% en 30 días`,
+      titulo: `El dólar subió ${delta}% en ${dias} días`,
       detalle:
-        `Pasó de Bs ${monthAgo.parallel} a Bs ${fx.parallel}. Reponer tu inventario importado cuesta ` +
-        `Bs ${encarecimiento.toLocaleString('es-BO')} más que hace un mes. Si no ajustaste precios en ese ` +
+        `Pasó de Bs ${antes.rate} a Bs ${fx.rate}. Desde que el tipo de cambio flota, cada movimiento ` +
+        `te encarece la reposición: reponer tu inventario importado cuesta hoy ` +
+        `Bs ${encarecimiento.toLocaleString('es-BO')} más que entonces. Si no ajustaste precios en ese ` +
         `plazo, tu margen real ya no es el que muestra tu lista.`,
       impactoBob: encarecimiento,
-      impactoNota: 'Cuánto más caro es reponer el stock importado actual respecto de hace 30 días.',
+      impactoNota: `Cuánto más caro es reponer el stock importado actual respecto de hace ${dias} días.`,
       agenteId: 'precios',
       pregunta: '¿Cómo me afectó la subida del dólar y qué precios ajusto?',
     },

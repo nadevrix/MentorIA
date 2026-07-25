@@ -102,7 +102,7 @@ export default function App() {
       onTab={setTab}
       title="Panel principal"
       subtitle="Tus agentes ya revisaron el negocio. Esto es lo que encontraron."
-      rate={fx ? { paralelo: fx.paralelo, oficial: fx.oficial } : null}
+      rate={fx ? { valor: fx.tipoCambio, variacionPct: fx.variacion30dPct } : null}
       aside={
         <>
           <div className="shrink-0 border-b border-[var(--color-line)] p-4">
@@ -176,9 +176,9 @@ export default function App() {
             <Dashboard data={dashboard} loading={loading} />
           </Section>
 
-          {fx?.paralelo !== undefined && (
+          {fx?.tipoCambio !== undefined && (
             <Section title="Simulador" hint="Qué pasa si el dólar se mueve">
-              <Simulator currentRate={fx.paralelo} onAsk={handleAsk} />
+              <Simulator currentRate={fx.tipoCambio} onAsk={handleAsk} />
             </Section>
           )}
         </div>
