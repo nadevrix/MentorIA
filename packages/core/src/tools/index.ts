@@ -92,6 +92,10 @@ const analyzeMargins = defineTool({
         nombre: p.name,
         importado: p.imported,
         precioBob: p.priceBob,
+        // El costo en dólares es lo único que permite recalcular el margen a otro tipo de
+        // cambio. Sin él, un simulador tiene que estimarlo dividiendo el costo histórico por
+        // el paralelo de hoy — y eso da un costo hasta 30% menor que el real.
+        costUsd: p.costUsd,
         costoAlComprarBob: costoCompra,
         costoReposicionHoyBob: costoHoy,
         margenAlComprarPct: marginPct(p.priceBob, costoCompra),
