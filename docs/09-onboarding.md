@@ -33,7 +33,7 @@ PASO 1 — Ponéme al día. Ejecutá esto y mostrame la salida:
   cd MentorIA
   git fetch origin
   git switch main && git pull origin main
-  git switch -c MI-NOMBRE                # ← poné tu nombre. Tu rama, solo tuya
+  git switch MI-NOMBRE 2>/dev/null || git switch -c MI-NOMBRE   # ← tu nombre. Tu rama, solo tuya
   npm install
   cp .env.example .env                   # pegá la ANTHROPIC_API_KEY del equipo
   npm run dev                            # API en :8787, web en :5173
