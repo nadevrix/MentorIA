@@ -1,6 +1,7 @@
 ﻿import type { ReactNode } from 'react';
 import { bob } from '../lib/api';
 import BarList from './charts/BarList';
+import Icon from './Icon';
 import Donut from './charts/Donut';
 import LineChart from './charts/LineChart';
 
@@ -68,9 +69,8 @@ function FlowRow({
         className={`grid h-8 w-8 shrink-0 place-items-center rounded-full text-sm ${
           out ? 'bg-[var(--color-bad)]/15 text-[var(--color-bad)]' : 'bg-[var(--color-good)]/15 text-[var(--color-good)]'
         }`}
-        aria-hidden
       >
-        {out ? '↑' : '↓'}
+        <Icon name={out ? 'up' : 'down'} size={15} />
       </span>
       <div className="min-w-0">
         <div className="text-[17px] font-semibold leading-tight">{bob(amount)}</div>

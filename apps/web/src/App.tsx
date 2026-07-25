@@ -4,6 +4,7 @@ import DailyBrief from './components/DailyBrief';
 import Dashboard from './components/Dashboard';
 import DataPanel from './components/DataPanel';
 import FxPanel from './components/FxPanel';
+import Icon from './components/Icon';
 import Insights from './components/Insights';
 import MarketingPanel from './components/MarketingPanel';
 import Shell, { type Tab } from './components/Shell';
@@ -125,7 +126,7 @@ export default function App() {
                         : 'glass-soft text-[var(--color-muted)] hover:text-[var(--color-fg)]'
                     }`}
                   >
-                    <span className="text-sm">{agent.icon}</span>
+                    <Icon name={agent.icon} size={14} />
                     {agent.name.replace(/^Agente (Cambiario y )?de |^Agente /, '')}
                   </button>
                 );

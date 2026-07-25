@@ -1,4 +1,5 @@
 ﻿import { bob } from '../lib/api';
+import Icon from './Icon';
 
 interface Props {
   data: Record<string, any> | null;
@@ -41,7 +42,8 @@ function Metric({
             }`}
           >
             {/* Flecha además del color: el color solo no es accesible. */}
-            {delta >= 0 ? '▲' : '▼'} {Math.abs(delta)}%
+            <Icon name={delta >= 0 ? 'up' : 'down'} size={11} />
+            {Math.abs(delta)}%
           </span>
         )}
       </div>

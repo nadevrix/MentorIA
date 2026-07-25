@@ -9,7 +9,12 @@
 export interface AgentDefinition {
   id: string;
   name: string;
-  /** Emoji para la tarjeta del dashboard. */
+  /**
+   * Nombre del icono, no un emoji: el frontend lo mapea a un SVG.
+   * Los emojis se ven distinto en cada sistema operativo y no toman el color
+   * de la interfaz; un SVG hereda `currentColor` y se ve igual en todas partes.
+   * Valores válidos en apps/web/src/components/Icon.tsx.
+   */
   icon: string;
   /** Una línea, visible al usuario. */
   tagline: string;
@@ -50,7 +55,7 @@ export const AGENTS: readonly AgentDefinition[] = [
   {
     id: 'director',
     name: 'Director de Negocio',
-    icon: '🧭',
+    icon: 'compass',
     tagline: 'Vista general del negocio y qué hacer hoy',
     tools: [
       'get_fx_rate',
@@ -82,7 +87,7 @@ Si algo está perdiendo dinero, eso va primero, siempre.
   {
     id: 'precios',
     name: 'Agente Cambiario y de Precios',
-    icon: '💵',
+    icon: 'banknote',
     tagline: 'Protege tu margen cuando se mueve el dólar',
     tools: ['get_fx_rate', 'analyze_margins', 'suggest_price', 'simulate_scenario', 'inventory_alerts'],
     examples: [
@@ -107,7 +112,7 @@ Reglas:
   {
     id: 'inventario',
     name: 'Agente de Inventario',
-    icon: '📦',
+    icon: 'package',
     tagline: 'Qué reponer, qué liquidar, cuánto capital está dormido',
     tools: ['inventory_alerts', 'top_products', 'get_fx_rate', 'sales_summary', 'simulate_scenario'],
     examples: [
@@ -130,7 +135,7 @@ Reglas:
   {
     id: 'finanzas',
     name: 'Agente Financiero',
-    icon: '📊',
+    icon: 'chart',
     tagline: 'Ingresos, gastos, utilidad y cuentas por pagar',
     tools: ['financial_summary', 'sales_summary', 'accounts_payable', 'top_products', 'get_fx_rate'],
     examples: [
@@ -152,7 +157,7 @@ Reglas:
   {
     id: 'clientes',
     name: 'Agente de Clientes y Marketing',
-    icon: '👥',
+    icon: 'users',
     tagline: 'A quién contactar, qué promocionar y con qué contenido',
     tools: ['customer_insights', 'sales_summary', 'top_products', 'marketing_candidates'],
     examples: [

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { streamBrief } from '../lib/api';
+import Icon from './Icon';
 
 /**
  * Las tres frases con las que abre la app.
@@ -46,7 +47,7 @@ export default function DailyBrief() {
   return (
     <section className="rounded-[var(--radius-card)] glass p-5 ring-1 ring-[var(--color-accent)]/25">
       <div className="flex items-center gap-2">
-        <span className="text-base">🧭</span>
+        <Icon name="compass" size={15} className="text-[var(--color-accent)]" />
         <h2 className="text-[11px] font-semibold uppercase tracking-wide text-[var(--color-accent)]">
           Tu día en una frase
         </h2>

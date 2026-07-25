@@ -1,4 +1,5 @@
 import LineChart from './charts/LineChart';
+import Icon from './Icon';
 import Simulator from './Simulator';
 
 /**
@@ -57,10 +58,11 @@ export default function FxPanel({ data, onAsk }: Props) {
 
           <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm">
             <span
-              className={`font-semibold ${sube ? 'text-[var(--color-bad)]' : 'text-[var(--color-good)]'}`}
+              className={`flex items-center gap-1 font-semibold ${sube ? 'text-[var(--color-bad)]' : 'text-[var(--color-good)]'}`}
             >
               {/* Que suba es malo para el importador: por eso sube = rojo. */}
-              {sube ? '▲' : '▼'} {Math.abs(fx.variacion30dPct ?? 0)}% en 30 días
+              <Icon name={sube ? 'up' : 'down'} size={14} />
+              {Math.abs(fx.variacion30dPct ?? 0)}% en 30 días
             </span>
             {fx.variacionDesdeUnificacionPct != null && (
               <span className="text-[var(--color-muted)]">
@@ -144,7 +146,7 @@ export default function FxPanel({ data, onAsk }: Props) {
                         <td className="py-2.5">{shortDate(r.fecha)}</td>
                         <td className="py-2.5 text-right font-semibold">Bs {r.tipoCambio}</td>
                         <td
-                          className={`py-2.5 text-right ${
+                          className={`py-2.5 ${
                             delta == null
                               ? 'text-[var(--color-faint)]'
                               : delta > 0
@@ -154,9 +156,16 @@ export default function FxPanel({ data, onAsk }: Props) {
                                   : 'text-[var(--color-faint)]'
                           }`}
                         >
-                          {delta == null
-                            ? '—'
-                            : `${delta > 0 ? '▲' : delta < 0 ? '▼' : ''} ${Math.abs(delta).toFixed(2)}%`}
+                          <span className="flex items-center justify-end gap-1">
+                            {delta == null ? (
+                              '—'
+                            ) : (
+                              <>
+                                {delta !== 0 && <Icon name={delta > 0 ? 'up' : 'down'} size={12} />}
+                                {Math.abs(delta).toFixed(2)}%
+                              </>
+                            )}
+                          </span>
                         </td>
                         <td className="py-2.5 text-right text-[var(--color-muted)]">{r.regimen}</td>
                       </tr>

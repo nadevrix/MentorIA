@@ -1,5 +1,6 @@
 ﻿import type { ReactNode } from 'react';
 import BrainMark from './BrainMark';
+import Icon from './Icon';
 
 /**
  * Cromo de la aplicación: contenedor flotante, navegación superior y pestañas.
@@ -74,14 +75,15 @@ export default function Shell({
                   <span className="text-sm font-semibold">Bs {rate.valor}</span>
                   {rate.variacionPct != null && (
                     <span
-                      className={`text-xs font-semibold ${
+                      className={`flex items-center gap-0.5 text-xs font-semibold ${
                         rate.variacionPct >= 0
                           ? 'text-[var(--color-bad)]'
                           : 'text-[var(--color-good)]'
                       }`}
                     >
                       {/* Que suba es malo para el importador: rojo hacia arriba. */}
-                      {rate.variacionPct >= 0 ? '▲' : '▼'} {Math.abs(rate.variacionPct)}%
+                      <Icon name={rate.variacionPct >= 0 ? 'up' : 'down'} size={11} />
+                      {Math.abs(rate.variacionPct)}%
                     </span>
                   )}
                 </div>

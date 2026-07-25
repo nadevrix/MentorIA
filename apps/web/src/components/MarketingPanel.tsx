@@ -7,6 +7,7 @@ import {
   type MarketingCandidate,
   type MarketingResponse,
 } from '../lib/api';
+import Icon from './Icon';
 
 /**
  * Apartado de marketing.
@@ -161,9 +162,10 @@ function ImageWorkshop() {
         <button
           onClick={() => void copy()}
           disabled={!prompt.trim()}
-          className="rounded-full glass-soft px-4 py-2 text-xs font-semibold transition disabled:opacity-40"
+          className="flex items-center gap-1.5 rounded-full glass-soft px-4 py-2 text-xs font-semibold transition disabled:opacity-40"
         >
-          {copied ? 'Copiado ✓' : 'Copiar prompt'}
+          {copied && <Icon name="check" size={13} className="text-[var(--color-good)]" />}
+          {copied ? 'Copiado' : 'Copiar prompt'}
         </button>
       </div>
 

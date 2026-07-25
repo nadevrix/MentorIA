@@ -1,5 +1,6 @@
 ﻿import { useEffect, useRef, useState } from 'react';
 import { streamChat, type Agent, type ChatMessage } from '../lib/api';
+import Icon from './Icon';
 
 interface Trace {
   name: string;
@@ -94,7 +95,7 @@ export default function Chat({ agent, initialQuestion }: Props) {
     <div className="flex h-full flex-col">
       <header className="border-b border-[var(--color-line)] p-4">
         <div className="flex items-center gap-2">
-          <span className="text-xl">{agent.icon}</span>
+          <Icon name={agent.icon} size={18} className="text-[var(--color-accent)]" />
           <h2 className="font-semibold">{agent.name}</h2>
         </div>
         <p className="mt-1 text-xs text-[var(--color-muted)]">{agent.tagline}</p>
@@ -133,9 +134,13 @@ export default function Chat({ agent, initialQuestion }: Props) {
           <div className="space-y-1 text-xs text-[var(--color-muted)]">
             {traces.map((t, i) => (
               <div key={`${t.name}-${i}`} className="flex items-center gap-2">
-                <span>
-                  {t.status === 'corriendo' ? '⏳' : t.status === 'error' ? '⚠️' : '✓'}
-                </span>
+                {t.status === 'corriendo' ? (
+                  <Icon name="loading" size={13} spin />
+                ) : t.status === 'error' ? (
+                  <Icon name="warning" size={13} className="text-[var(--color-bad)]" />
+                ) : (
+                  <Icon name="check" size={13} className="text-[var(--color-good)]" />
+                )}
                 <code className="font-mono">{t.name}</code>
               </div>
             ))}
