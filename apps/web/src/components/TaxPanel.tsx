@@ -1,5 +1,12 @@
-import { useEffect, useState } from 'react';
-import { bob, fetchTaxes, type Obligacion, type TaxSummary } from '../lib/api';
+import { useEffect, useMemo, useState } from 'react';
+import {
+  bob,
+  fetchFormularios,
+  fetchTaxes,
+  type CatalogoSin,
+  type Obligacion,
+  type TaxSummary,
+} from '../lib/api';
 import Icon from './Icon';
 
 /**
@@ -81,6 +88,122 @@ function Fila({ o }: { o: Obligacion }) {
         </p>
       )}
     </article>
+  );
+}
+
+/**
+ * Catálogo de formularios del SIN.
+ *
+ * Los tres que le tocan al comercio (200, 400, 500) se marcan, para que no
+ * tenga que leer 57 formularios buscando los suyos.
+ */
+function Catalogo({ propios }: { propios: Set<string> }) {
+  const [cat, setCat] = useState<CatalogoSin | null>(null);
+  const [q, setQ] = useState('');
+
+  useEffect(() => {
+    fetchFormularios()
+      .then(setCat)
+      .catch(() => setCat(null));
+  }, []);
+
+  const filtrado = useMemo(() => {
+    if (!cat) return [];
+    const t = q.trim().toLowerCase();
+    if (!t) return cat.impuestos;
+    return cat.impuestos
+      .map((i) => ({
+        ...i,
+        formularios: i.formularios.filter(
+          (f) =>
+            f.numero.includes(t) ||
+            f.nombre.toLowerCase().includes(t) ||
+            i.impuesto.toLowerCase().includes(t),
+        ),
+      }))
+      .filter((i) => i.formularios.length > 0);
+  }, [cat, q]);
+
+  if (!cat || cat.impuestos.length === 0) return null;
+
+  const total = cat.impuestos.reduce((n, i) => n + i.formularios.length, 0);
+
+  return (
+    <section className="rounded-[var(--radius-card)] glass p-5">
+      <div className="flex flex-wrap items-baseline justify-between gap-3">
+        <h3 className="text-[15px] font-semibold">Formularios del SIN</h3>
+        <span className="text-xs text-[var(--color-muted)]">
+          {total} formularios · {cat.impuestos.length} impuestos
+        </span>
+      </div>
+
+      <input
+        value={q}
+        onChange={(e) => setQ(e.target.value)}
+        placeholder="Buscar por número, nombre o impuesto…"
+        className="mt-3 w-full rounded-full glass-soft px-4 py-2.5 text-sm outline-none placeholder:text-[var(--color-faint)] focus:ring-2 focus:ring-[var(--color-accent)]"
+      />
+
+      <div className="mt-4 space-y-5">
+        {filtrado.map((i) => (
+          <div key={i.impuesto}>
+            <div className="flex items-baseline gap-2">
+              <h4 className="text-sm font-semibold">{i.impuesto}</h4>
+              {i.grava && (
+                <span className="min-w-0 truncate text-[11px] text-[var(--color-muted)]">
+                  {i.grava}
+                </span>
+              )}
+            </div>
+            <ul className="mt-2 grid gap-1.5 sm:grid-cols-2">
+              {i.formularios.map((f, idx) => {
+                const mio = propios.has(f.numero);
+                return (
+                  <li key={`${f.numero}-${idx}`}>
+                    <a
+                      href={f.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`flex items-baseline justify-between gap-2 rounded-xl px-3 py-2 text-xs transition ${
+                        mio
+                          ? 'bg-[var(--color-accent)]/10 ring-1 ring-[var(--color-accent)]/30'
+                          : 'glass-soft'
+                      }`}
+                    >
+                      <span className="min-w-0">
+                        <span className="font-semibold">{f.numero}</span>
+                        {f.version && (
+                          <span className="ml-1 text-[var(--color-faint)]">{f.version}</span>
+                        )}
+                        {mio && (
+                          <span className="ml-1.5 text-[10px] font-semibold uppercase text-[var(--color-accent)]">
+                            te toca
+                          </span>
+                        )}
+                        <span className="ml-1.5 text-[var(--color-muted)]">{f.nombre}</span>
+                      </span>
+                      {f.periodicidad && (
+                        <span className="shrink-0 text-[10px] uppercase tracking-wide text-[var(--color-faint)]">
+                          {f.periodicidad}
+                        </span>
+                      )}
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        ))}
+      </div>
+
+      <p className="mt-4 border-t border-[var(--color-line)] pt-3 text-[11px] leading-relaxed text-[var(--color-faint)]">
+        {cat.nota} Fuente:{' '}
+        <a href={cat.fuente} target="_blank" rel="noopener noreferrer" className="underline">
+          impuestos.gob.bo
+        </a>
+        {cat.obtenidoEn && ` · actualizado ${cat.obtenidoEn.slice(0, 10)}`}
+      </p>
+    </section>
   );
 }
 
@@ -227,6 +350,9 @@ export default function TaxPanel({ onAsk }: { onAsk: (a: string, q: string) => v
           >
             ¿Me alcanza la caja para pagarlos?
           </button>
+
+          {/* Marca los formularios que corresponden a las obligaciones calculadas. */}
+          <Catalogo propios={new Set(data.obligaciones.map((o) => o.nombre.match(/\d{3,4}/)?.[0] ?? ''))} />
         </>
       )}
     </div>

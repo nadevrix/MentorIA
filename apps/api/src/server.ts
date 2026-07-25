@@ -11,6 +11,8 @@ import {
   runAgent,
   simulateScenario,
   streamBrief,
+  taxForms,
+  formulariosDelRegimen,
   TOOLS_BY_NAME,
 } from '@pyme/core';
 import { Hono } from 'hono';
@@ -159,6 +161,16 @@ app.get('/api/taxes', async (c) => {
     console.error('[taxes]', error);
     return c.json({ error: error instanceof Error ? error.message : 'Error desconocido' }, 500);
   }
+});
+
+/** Catálogo de formularios del SIN, raspado de la página oficial. */
+app.get('/api/taxes/formularios', async (c) => {
+  const cat = await taxForms();
+  const regimen = c.req.query('regimen');
+  if (regimen === 'general' || regimen === 'simplificado') {
+    return c.json({ ...cat, impuestos: await formulariosDelRegimen(regimen) });
+  }
+  return c.json(cat);
 });
 
 const ENTIDADES = ['products', 'sales', 'customers', 'expenses'] as const;

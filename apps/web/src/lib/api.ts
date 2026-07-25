@@ -147,6 +147,33 @@ export async function fetchTaxes(
   return res.json();
 }
 
+export interface FormularioSin {
+  numero: string;
+  nombre: string;
+  version: string | null;
+  esBoleta: boolean;
+  periodicidad: string | null;
+  url: string;
+}
+
+export interface CatalogoSin {
+  fuente: string;
+  obtenidoEn: string;
+  nota: string;
+  impuestos: {
+    impuesto: string;
+    grava: string | null;
+    alcance: string | null;
+    formularios: FormularioSin[];
+  }[];
+}
+
+export async function fetchFormularios(): Promise<CatalogoSin> {
+  const res = await fetch(`${API_URL}/api/taxes/formularios`);
+  if (!res.ok) throw new Error('No se pudo cargar el catálogo de formularios');
+  return res.json();
+}
+
 export interface ImageResult {
   ok: boolean;
   prompt: string;
