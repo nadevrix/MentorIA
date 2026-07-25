@@ -14,10 +14,10 @@ function Delta({ label, antes, despues, format }: {
   format?: 'bad-if-lower';
 }) {
   return (
-    <div className="rounded-lg border border-[var(--color-line)] bg-[var(--color-ink)] p-3">
-      <div className="text-[11px] uppercase tracking-wide text-slate-500">{label}</div>
+    <div className="rounded-xl bg-[var(--color-ink)] p-3">
+      <div className="text-[11px] uppercase tracking-wide text-[var(--color-muted)]">{label}</div>
       <div className="mt-1 flex items-baseline gap-2">
-        <span className="text-sm text-slate-500 line-through tabular-nums">{antes}</span>
+        <span className="text-sm text-[var(--color-faint)] line-through">{antes}</span>
         <span
           className={`text-lg font-semibold tabular-nums ${
             format === 'bad-if-lower' ? 'text-[var(--color-bad)]' : 'text-white'
@@ -60,10 +60,10 @@ export default function Simulator({ currentRate, onAsk }: Props) {
   const isScenario = Math.abs(rate - currentRate) > 0.01;
 
   return (
-    <section className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4">
+    <section className="rounded-[var(--radius-card)] bg-[var(--color-surface)] p-5">
       <div className="flex flex-wrap items-baseline justify-between gap-2">
         <h2 className="text-sm font-semibold">¿Y si el dólar llega a…?</h2>
-        <span className="text-xs text-slate-500">Paralelo hoy: Bs {currentRate}</span>
+        <span className="text-xs text-[var(--color-muted)]">Paralelo hoy: Bs {currentRate}</span>
       </div>
 
       <div className="mt-3 flex items-center gap-3">
@@ -105,8 +105,8 @@ export default function Simulator({ currentRate, onAsk }: Props) {
               despues={bob(result.utilidadMensualBob.despues)}
               format="bad-if-lower"
             />
-            <div className="rounded-lg border border-[var(--color-line)] bg-[var(--color-ink)] p-3">
-              <div className="text-[11px] uppercase tracking-wide text-slate-500">
+            <div className="rounded-xl bg-[var(--color-ink)] p-3">
+              <div className="text-[11px] uppercase tracking-wide text-[var(--color-muted)]">
                 Capital extra para reponer
               </div>
               <div className="mt-1 text-lg font-semibold tabular-nums text-[var(--color-bad)]">
@@ -169,7 +169,7 @@ export default function Simulator({ currentRate, onAsk }: Props) {
             onClick={() =>
               onAsk('precios', `¿Qué hago si el dólar llega a ${rate.toFixed(2)} Bs?`)
             }
-            className="mt-3 rounded-lg border border-[var(--color-accent)] px-3 py-1.5 text-xs font-semibold text-[var(--color-accent)] hover:bg-[var(--color-accent)] hover:text-black"
+            className="mt-4 rounded-full bg-[var(--color-accent-strong)] px-4 py-2 text-xs font-semibold text-white transition hover:brightness-110"
           >
             Preguntarle al agente qué hacer con este escenario
           </button>

@@ -5,35 +5,68 @@ interface Props {
   loading: boolean;
 }
 
-function Card({
+type Tone = 'neutral' | 'good' | 'bad' | 'gold';
+
+const TONE: Record<Tone, string> = {
+  neutral: 'text-white',
+  good: 'text-[var(--color-good)]',
+  bad: 'text-[var(--color-bad)]',
+  gold: 'text-[var(--color-gold)]',
+};
+
+function Metric({
   label,
   value,
   detail,
+  delta,
   tone = 'neutral',
 }: {
   label: string;
   value: string;
   detail?: string;
-  tone?: 'neutral' | 'good' | 'bad';
+  /** Variación porcentual; dibuja flecha y color por sí sola. */
+  delta?: number | null;
+  tone?: Tone;
 }) {
-  const toneClass =
-    tone === 'bad' ? 'text-[var(--color-bad)]' : tone === 'good' ? 'text-[var(--color-good)]' : 'text-white';
   return (
-    <div className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4">
-      <div className="text-xs uppercase tracking-wide text-slate-400">{label}</div>
-      <div className={`mt-1 text-2xl font-semibold tabular-nums ${toneClass}`}>{value}</div>
-      {detail && <div className="mt-1 text-xs text-slate-400">{detail}</div>}
+    <div className="rounded-[var(--radius-card)] bg-[var(--color-surface)] p-4">
+      <div className="flex items-start justify-between gap-2">
+        <span className="text-[11px] uppercase tracking-wide text-[var(--color-muted)]">{label}</span>
+        {delta !== undefined && delta !== null && (
+          <span
+            className={`flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-semibold ${
+              delta >= 0
+                ? 'bg-[var(--color-good)]/15 text-[var(--color-good)]'
+                : 'bg-[var(--color-bad)]/15 text-[var(--color-bad)]'
+            }`}
+          >
+            {/* Flecha además del color: el color solo no es accesible. */}
+            {delta >= 0 ? '▲' : '▼'} {Math.abs(delta)}%
+          </span>
+        )}
+      </div>
+      <div className={`mt-2 text-[26px] font-semibold leading-none ${TONE[tone]}`}>{value}</div>
+      {detail && <div className="mt-1.5 text-xs text-[var(--color-muted)]">{detail}</div>}
     </div>
   );
 }
 
 export default function Dashboard({ data, loading }: Props) {
   if (loading) {
-    return <div className="p-4 text-sm text-slate-400">Cargando indicadores…</div>;
+    return (
+      <div className="grid grid-cols-2 gap-3 lg:grid-cols-3">
+        {Array.from({ length: 6 }).map((_, i) => (
+          <div
+            key={i}
+            className="h-[104px] animate-pulse rounded-[var(--radius-card)] bg-[var(--color-surface)]"
+          />
+        ))}
+      </div>
+    );
   }
   if (!data) {
     return (
-      <div className="p-4 text-sm text-[var(--color-bad)]">
+      <div className="rounded-[var(--radius-card)] bg-[var(--color-surface)] p-4 text-sm text-[var(--color-bad)]">
         No se pudo cargar el panel. ¿Está corriendo el backend?
       </div>
     );
@@ -44,40 +77,38 @@ export default function Dashboard({ data, loading }: Props) {
   return (
     <div className="space-y-4">
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-3">
-        <Card
+        <Metric
           label="Dólar paralelo"
-          value={`${fx.paralelo} Bs`}
-          detail={`Oficial ${fx.oficial} · ${fx.variacion30dPct > 0 ? '+' : ''}${fx.variacion30dPct}% en 30d`}
-          tone={fx.variacion30dPct > 3 ? 'bad' : 'neutral'}
+          value={`Bs ${fx.paralelo}`}
+          detail={`Oficial Bs ${fx.oficial} · brecha ${fx.brechaPct}%`}
+          delta={fx.variacion30dPct}
+          tone={fx.variacion30dPct > 3 ? 'gold' : 'neutral'}
         />
-        <Card
+        <Metric
           label="Ventas 30 días"
           value={bob(ventas.totalBob)}
-          detail={
-            ventas.variacionPct === null
-              ? `${ventas.cantidadVentas} ventas`
-              : `${ventas.variacionPct > 0 ? '+' : ''}${ventas.variacionPct}% vs. mes anterior`
-          }
-          tone={ventas.variacionPct !== null && ventas.variacionPct < 0 ? 'bad' : 'good'}
+          detail={`${ventas.cantidadVentas} ventas · ticket ${bob(ventas.ticketPromedioBob)}`}
+          delta={ventas.variacionPct}
         />
-        <Card
+        <Metric
           label="Utilidad neta 30d"
           value={bob(finanzas.utilidadNetaBob)}
           detail={`Margen neto ${finanzas.margenNetoPct}%`}
           tone={finanzas.utilidadNetaBob < 0 ? 'bad' : 'good'}
         />
-        <Card
+        <Metric
           label="Productos en riesgo"
           value={String(margenes.totalEnRiesgo)}
-          detail={`${margenes.totalPerdiendoDinero} ya se venden bajo costo de reposición`}
-          tone={margenes.totalEnRiesgo > 0 ? 'bad' : 'good'}
+          detail={`${margenes.totalPerdiendoDinero} ya se venden bajo costo`}
+          tone={margenes.totalPerdiendoDinero > 0 ? 'bad' : 'good'}
         />
-        <Card
+        <Metric
           label="Por agotarse"
           value={String(inventario.porAgotarse.length)}
-          detail={`${bob(inventario.capitalInmovilizadoTotalBob)} inmovilizados en stock`}
+          detail={`${bob(inventario.capitalInmovilizadoTotalBob)} en inventario`}
+          tone={inventario.porAgotarse.length > 0 ? 'gold' : 'neutral'}
         />
-        <Card
+        <Metric
           label="Por pagar"
           value={bob(pagos.totalPendienteBob)}
           detail={`${pagos.vencidas.length} vencidas · ${pagos.proximas.length} esta semana`}
@@ -86,35 +117,37 @@ export default function Dashboard({ data, loading }: Props) {
       </div>
 
       {margenes.productos.length > 0 && (
-        <div className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4">
+        <div className="rounded-[var(--radius-card)] bg-[var(--color-surface)] p-5">
           <h3 className="text-sm font-semibold">Márgenes bajo presión</h3>
-          <p className="mt-1 text-xs text-slate-400">
-            Recalculado al costo de reposición de hoy ({fx.paralelo} Bs/USD), no al de compra.
+          <p className="mt-1 text-xs text-[var(--color-muted)]">
+            Recalculado al costo de reposición de hoy (Bs {fx.paralelo}/USD), no al de compra.
           </p>
-          <div className="mt-3 overflow-x-auto">
+          <div className="scroll-slim mt-4 overflow-x-auto">
             <table className="w-full min-w-[520px] text-sm">
-              <thead className="text-left text-xs uppercase text-slate-400">
+              <thead className="text-left text-[11px] uppercase tracking-wide text-[var(--color-muted)]">
                 <tr>
-                  <th className="pb-2">Producto</th>
-                  <th className="pb-2 text-right">Precio</th>
-                  <th className="pb-2 text-right">Costo hoy</th>
-                  <th className="pb-2 text-right">Margen al comprar</th>
-                  <th className="pb-2 text-right">Margen real</th>
+                  <th className="pb-2 font-medium">Producto</th>
+                  <th className="pb-2 text-right font-medium">Precio</th>
+                  <th className="pb-2 text-right font-medium">Costo hoy</th>
+                  <th className="pb-2 text-right font-medium">Al comprar</th>
+                  <th className="pb-2 text-right font-medium">Margen real</th>
                 </tr>
               </thead>
               <tbody>
                 {margenes.productos.map((p: any) => (
                   <tr key={p.id} className="border-t border-[var(--color-line)]">
-                    <td className="py-2 pr-2">{p.nombre}</td>
-                    <td className="py-2 text-right tabular-nums">{bob(p.precioBob)}</td>
-                    <td className="py-2 text-right tabular-nums">{bob(p.costoReposicionHoyBob)}</td>
-                    <td className="py-2 text-right tabular-nums text-slate-400">{p.margenAlComprarPct}%</td>
+                    <td className="py-2.5 pr-2">{p.nombre}</td>
+                    <td className="py-2.5 text-right">{bob(p.precioBob)}</td>
+                    <td className="py-2.5 text-right">{bob(p.costoReposicionHoyBob)}</td>
+                    <td className="py-2.5 text-right text-[var(--color-faint)]">
+                      {p.margenAlComprarPct}%
+                    </td>
                     <td
-                      className={`py-2 text-right font-semibold tabular-nums ${
+                      className={`py-2.5 text-right font-semibold ${
                         p.pierdeDinero
                           ? 'text-[var(--color-bad)]'
                           : p.enRiesgo
-                            ? 'text-[var(--color-accent)]'
+                            ? 'text-[var(--color-gold)]'
                             : 'text-[var(--color-good)]'
                       }`}
                     >
@@ -129,13 +162,13 @@ export default function Dashboard({ data, loading }: Props) {
       )}
 
       {clientes.inactivos.length > 0 && (
-        <div className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4">
+        <div className="rounded-[var(--radius-card)] bg-[var(--color-surface)] p-5">
           <h3 className="text-sm font-semibold">Clientes que dejaron de comprar</h3>
-          <ul className="mt-2 space-y-1 text-sm">
+          <ul className="mt-3 space-y-2.5 text-sm">
             {clientes.inactivos.slice(0, 4).map((c: any) => (
-              <li key={c.id} className="flex justify-between gap-4">
+              <li key={c.id} className="flex items-center justify-between gap-4">
                 <span>{c.nombre}</span>
-                <span className="text-slate-400">
+                <span className="text-xs text-[var(--color-muted)]">
                   {c.diasSinComprar} días · {bob(c.totalGastadoBob)} histórico
                 </span>
               </li>

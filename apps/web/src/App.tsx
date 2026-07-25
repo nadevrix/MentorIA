@@ -3,6 +3,7 @@ import Chat from './components/Chat';
 import DailyBrief from './components/DailyBrief';
 import Dashboard from './components/Dashboard';
 import Insights from './components/Insights';
+import Shell, { type Tab } from './components/Shell';
 import Simulator from './components/Simulator';
 import {
   fetchAgents,
@@ -20,6 +21,13 @@ interface Ask {
   nonce: number;
 }
 
+const TABS: readonly Tab[] = [
+  { id: 'resumen', label: 'Resumen' },
+  { id: 'dolar', label: 'Dólar', disabled: true },
+  { id: 'datos', label: 'Mis datos', disabled: true },
+  { id: 'marketing', label: 'Marketing', disabled: true },
+];
+
 export default function App() {
   const [agents, setAgents] = useState<Agent[]>([]);
   const [active, setActive] = useState<Agent | null>(null);
@@ -28,6 +36,7 @@ export default function App() {
   const [loading, setLoading] = useState(true);
   const [bootError, setBootError] = useState<string | null>(null);
   const [ask, setAsk] = useState<Ask | null>(null);
+  const [tab, setTab] = useState('resumen');
 
   useEffect(() => {
     (async () => {
@@ -61,69 +70,72 @@ export default function App() {
     setAsk(null);
   }
 
-  const paralelo: number | undefined = dashboard?.fx?.paralelo;
+  const fx = dashboard?.fx;
   const askIsForActive = ask !== null && ask.agentId === active?.id;
 
   return (
-    <div className="mx-auto flex min-h-full max-w-7xl flex-col gap-4 p-4 lg:h-screen lg:flex-row">
-      <main className="flex-1 space-y-4 overflow-y-auto">
-        <header>
-          <h1 className="text-xl font-bold">
-            Mentor <span className="text-[var(--color-accent)]">IA</span>
-          </h1>
-          <p className="text-sm text-slate-400">
-            Tus agentes ya revisaron el negocio. Esto es lo que encontraron.
-          </p>
-        </header>
-
-        {bootError && (
-          <div className="rounded-lg border border-[var(--color-bad)] p-3 text-sm text-[var(--color-bad)]">
-            {bootError}
+    <Shell
+      tabs={TABS}
+      activeTab={tab}
+      onTab={setTab}
+      title="Panel principal"
+      subtitle="Tus agentes ya revisaron el negocio. Esto es lo que encontraron."
+      rate={fx ? { paralelo: fx.paralelo, oficial: fx.oficial } : null}
+      aside={
+        <>
+          <div className="shrink-0 border-b border-[var(--color-line)] p-4">
+            <p className="text-[11px] font-semibold uppercase tracking-wide text-[var(--color-muted)]">
+              Agentes
+            </p>
+            <div className="scroll-slim mt-2.5 flex gap-2 overflow-x-auto pb-1">
+              {agents.map((agent) => {
+                const on = active?.id === agent.id;
+                return (
+                  <button
+                    key={agent.id}
+                    onClick={() => handlePickAgent(agent)}
+                    title={agent.tagline}
+                    className={`flex shrink-0 items-center gap-2 rounded-full px-3 py-2 text-xs transition ${
+                      on
+                        ? 'bg-[var(--color-accent-strong)] font-semibold text-white'
+                        : 'bg-[var(--color-surface)] text-[var(--color-muted)] hover:text-white'
+                    }`}
+                  >
+                    <span className="text-sm">{agent.icon}</span>
+                    {agent.name.replace(/^Agente (Cambiario y )?de |^Agente /, '')}
+                  </button>
+                );
+              })}
+            </div>
           </div>
-        )}
 
-        {!loading && <DailyBrief />}
+          {active ? (
+            <Chat
+              // Remontar en cada pregunta entrante: estado limpio, sin closures viejos.
+              key={askIsForActive ? `${active.id}:${ask.nonce}` : active.id}
+              agent={active}
+              initialQuestion={askIsForActive ? ask.question : undefined}
+            />
+          ) : (
+            <div className="p-4 text-sm text-[var(--color-muted)]">Cargando agentes…</div>
+          )}
+        </>
+      }
+    >
+      {bootError && (
+        <div className="rounded-[var(--radius-card)] border border-[var(--color-bad)] p-4 text-sm text-[var(--color-bad)]">
+          {bootError}
+        </div>
+      )}
 
-        <Insights data={insights} loading={loading} onAsk={handleAsk} />
-
-        <Dashboard data={dashboard} loading={loading} />
-
-        {paralelo !== undefined && <Simulator currentRate={paralelo} onAsk={handleAsk} />}
-
-        <section>
-          <h2 className="mb-2 text-sm font-semibold uppercase tracking-wide text-slate-400">Agentes</h2>
-          <div className="grid grid-cols-2 gap-2 lg:grid-cols-3">
-            {agents.map((agent) => (
-              <button
-                key={agent.id}
-                onClick={() => handlePickAgent(agent)}
-                className={`rounded-xl border p-3 text-left transition ${
-                  active?.id === agent.id
-                    ? 'border-[var(--color-accent)] bg-[var(--color-surface)]'
-                    : 'border-[var(--color-line)] bg-[var(--color-surface)] hover:border-slate-500'
-                }`}
-              >
-                <div className="text-lg">{agent.icon}</div>
-                <div className="mt-1 text-sm font-semibold">{agent.name}</div>
-                <div className="mt-0.5 text-xs text-slate-400">{agent.tagline}</div>
-              </button>
-            ))}
-          </div>
-        </section>
-      </main>
-
-      <aside className="flex h-[70vh] w-full flex-col rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] lg:h-auto lg:w-[420px]">
-        {active ? (
-          <Chat
-            // Remontar en cada pregunta entrante: estado limpio, sin closures viejos.
-            key={askIsForActive ? `${active.id}:${ask.nonce}` : active.id}
-            agent={active}
-            initialQuestion={askIsForActive ? ask.question : undefined}
-          />
-        ) : (
-          <div className="p-4 text-sm text-slate-400">Cargando agentes…</div>
-        )}
-      </aside>
-    </div>
+      {tab === 'resumen' && (
+        <>
+          {!loading && <DailyBrief />}
+          <Insights data={insights} loading={loading} onAsk={handleAsk} />
+          <Dashboard data={dashboard} loading={loading} />
+          {fx?.paralelo !== undefined && <Simulator currentRate={fx.paralelo} onAsk={handleAsk} />}
+        </>
+      )}
+    </Shell>
   );
 }

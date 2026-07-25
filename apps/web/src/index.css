@@ -1,12 +1,43 @@
 @import 'tailwindcss';
 
+/*
+ * Sistema de diseño.
+ *
+ * Paleta tomada de la referencia de dashboard oscuro: un lienzo gris azulado
+ * afuera, un contenedor flotante muy oscuro adentro, y dos acentos —rojo y
+ * ámbar— sobre superficies neutras.
+ *
+ * Semántica de los acentos, que en un producto financiero no es decorativa:
+ *   rojo   → marca, y también lo crítico (estás perdiendo plata)
+ *   ámbar  → atención, algo que se está deteriorando pero todavía no duele
+ *   verde  → sano
+ * Rojo hace doble función a propósito: la identidad del producto es la alarma.
+ */
 @theme {
-  --color-ink: #0d1117;
-  --color-surface: #151b23;
-  --color-line: #232c38;
-  --color-accent: #f0b429;
-  --color-good: #3fb950;
-  --color-bad: #f85149;
+  /* Superficies, de afuera hacia adentro */
+  --color-canvas: #39424c;
+  --color-ink: #192026;
+  --color-panel: #20272a;
+  --color-surface: #242a2f;
+  --color-raised: #2b3238;
+  --color-line: #2e353b;
+
+  /* Acentos */
+  --color-accent: #fe3f39;
+  /* Texto blanco sobre el rojo de marca da 3,3:1 y no pasa AA. Este rojo más
+     profundo llega a ~4,6:1, así que es el que va detrás de texto blanco. */
+  --color-accent-strong: #d92b26;
+  --color-gold: #fcbf02;
+  --color-good: #22c55e;
+  --color-bad: #fe3f39;
+
+  /* Texto */
+  --color-fg: #ffffff;
+  --color-muted: #8a93a0;
+  --color-faint: #5d6672;
+
+  --radius-shell: 28px;
+  --radius-card: 18px;
 }
 
 html,
@@ -16,7 +47,35 @@ body,
 }
 
 body {
-  background: var(--color-ink);
-  color: #e6edf3;
+  background: var(--color-canvas);
+  color: var(--color-fg);
   font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  /* Las cifras son el contenido principal: que no bailen entre renders. */
+  font-variant-numeric: tabular-nums;
+}
+
+/* La barra de scroll por defecto rompe el contenedor flotante. */
+.scroll-slim {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-line) transparent;
+}
+.scroll-slim::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.scroll-slim::-webkit-scrollbar-thumb {
+  background: var(--color-line);
+  border-radius: 999px;
+}
+.scroll-slim::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }

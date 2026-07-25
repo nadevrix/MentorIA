@@ -108,7 +108,7 @@ export default function Chat({ agent, initialQuestion }: Props) {
               <button
                 key={example}
                 onClick={() => void send(example)}
-                className="block w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2 text-left text-sm hover:border-[var(--color-accent)]"
+                className="block w-full rounded-xl bg-[var(--color-surface)] px-3.5 py-2.5 text-left text-sm text-[var(--color-muted)] transition hover:text-white"
               >
                 {example}
               </button>
@@ -121,8 +121,8 @@ export default function Chat({ agent, initialQuestion }: Props) {
             key={i}
             className={
               m.role === 'user'
-                ? 'ml-auto max-w-[85%] rounded-lg bg-[var(--color-accent)] px-3 py-2 text-sm text-black'
-                : 'max-w-[95%] whitespace-pre-wrap rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2 text-sm'
+                ? 'ml-auto max-w-[85%] rounded-2xl rounded-br-md bg-[var(--color-accent-strong)] px-3.5 py-2.5 text-sm text-white'
+                : 'max-w-[95%] whitespace-pre-wrap rounded-2xl rounded-bl-md bg-[var(--color-surface)] px-3.5 py-2.5 text-sm'
             }
           >
             {m.content}
@@ -143,7 +143,7 @@ export default function Chat({ agent, initialQuestion }: Props) {
         )}
 
         {partial && (
-          <div className="max-w-[95%] whitespace-pre-wrap rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2 text-sm">
+          <div className="max-w-[95%] whitespace-pre-wrap rounded-2xl rounded-bl-md bg-[var(--color-surface)] px-3.5 py-2.5 text-sm">
             {partial}
           </div>
         )}
@@ -169,12 +169,12 @@ export default function Chat({ agent, initialQuestion }: Props) {
           onChange={(e) => setDraft(e.target.value)}
           placeholder={streaming ? 'El agente está trabajando…' : 'Preguntá algo sobre tu negocio'}
           disabled={streaming}
-          className="flex-1 rounded-lg border border-[var(--color-line)] bg-[var(--color-ink)] px-3 py-2 text-sm outline-none focus:border-[var(--color-accent)] disabled:opacity-50"
+          className="flex-1 rounded-full bg-[var(--color-surface)] px-4 py-2.5 text-sm outline-none placeholder:text-[var(--color-faint)] focus:ring-2 focus:ring-[var(--color-accent)] disabled:opacity-50"
         />
         <button
           type="submit"
           disabled={streaming || !draft.trim()}
-          className="rounded-lg bg-[var(--color-accent)] px-4 py-2 text-sm font-semibold text-black disabled:opacity-40"
+          className="rounded-full bg-[var(--color-accent-strong)] px-4 py-2.5 text-sm font-semibold text-white transition hover:brightness-110 disabled:opacity-40"
         >
           Enviar
         </button>
