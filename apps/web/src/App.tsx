@@ -14,6 +14,27 @@ import {
   type InsightsResponse,
 } from './lib/api';
 
+/** Apartado del panel: un título que orienta y el bloque de contenido. */
+function Section({
+  title,
+  hint,
+  children,
+}: {
+  title: string;
+  hint?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <section className="space-y-3">
+      <div className="flex flex-wrap items-baseline justify-between gap-2">
+        <h2 className="text-[15px] font-semibold">{title}</h2>
+        {hint && <span className="text-xs text-[var(--color-muted)]">{hint}</span>}
+      </div>
+      {children}
+    </section>
+  );
+}
+
 /** Pregunta enviada desde un hallazgo o el simulador hacia el chat. */
 interface Ask {
   agentId: string;
@@ -130,13 +151,37 @@ export default function App() {
       )}
 
       {tab === 'resumen' && (
-        <>
-          {!loading && <DailyBrief />}
-          <Insights data={insights} loading={loading} onAsk={handleAsk} />
-          <Dashboard data={dashboard} loading={loading} />
-          {dashboard && <Widgets data={dashboard} />}
-          {fx?.paralelo !== undefined && <Simulator currentRate={fx.paralelo} onAsk={handleAsk} />}
-        </>
+        <div className="space-y-8">
+          <Section title="Tablero" hint="Tu negocio de un vistazo">
+            {dashboard ? (
+              <Widgets data={dashboard} />
+            ) : (
+              // Clases estáticas a propósito: Tailwind no genera `col-span-${n}` dinámico.
+              <div className="grid gap-3 lg:grid-cols-12">
+                <div className="h-[220px] animate-pulse rounded-[var(--radius-card)] bg-[var(--color-surface)] lg:col-span-3" />
+                <div className="h-[220px] animate-pulse rounded-[var(--radius-card)] bg-[var(--color-surface)] lg:col-span-3" />
+                <div className="h-[220px] animate-pulse rounded-[var(--radius-card)] bg-[var(--color-surface)] lg:col-span-6" />
+                <div className="h-[240px] animate-pulse rounded-[var(--radius-card)] bg-[var(--color-surface)] lg:col-span-7" />
+                <div className="h-[240px] animate-pulse rounded-[var(--radius-card)] bg-[var(--color-surface)] lg:col-span-5" />
+              </div>
+            )}
+          </Section>
+
+          <Section title="Qué resolver hoy" hint="Ordenado por urgencia e impacto en bolivianos">
+            {!loading && <DailyBrief />}
+            <Insights data={insights} loading={loading} onAsk={handleAsk} />
+          </Section>
+
+          <Section title="Indicadores" hint="Recalculados al costo de reposición de hoy">
+            <Dashboard data={dashboard} loading={loading} />
+          </Section>
+
+          {fx?.paralelo !== undefined && (
+            <Section title="Simulador" hint="Qué pasa si el dólar se mueve">
+              <Simulator currentRate={fx.paralelo} onAsk={handleAsk} />
+            </Section>
+          )}
+        </div>
       )}
     </Shell>
   );

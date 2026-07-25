@@ -109,6 +109,7 @@ const analyzeMargins = defineTool({
     return {
       tipoCambioUsado: { oficial: fx.official, paralelo: fx.parallel, fecha: fx.date },
       margenMinimoPct: min,
+      totalProductos: rows.length,
       totalEnRiesgo: rows.filter((r) => r.enRiesgo).length,
       totalPerdiendoDinero: rows.filter((r) => r.pierdeDinero).length,
       productos: filtered.slice(0, limit),

@@ -1,18 +1,21 @@
+import type { ReactNode } from 'react';
 import { bob } from '../lib/api';
 import BarList from './charts/BarList';
+import Donut from './charts/Donut';
 import LineChart from './charts/LineChart';
 
 /**
- * Fila de widgets del panel principal.
+ * Grilla de widgets del panel principal, con la composición de la referencia:
+ * fila 1 → tarjeta compacta + dona + gráfico ancho; fila 2 → ancho + medio.
  *
  * Paleta de series validada contra la superficie #242A2F: azul y naranja miden
  * ΔE 26,8 en el peor caso de daltonismo. El rojo y el ámbar de la marca quedan
  * para el cromo de la interfaz, no para codificar datos.
  */
-const SERIES = {
-  azul: '#3987e5',
-  naranja: '#d95926',
-};
+const SERIES = { azul: '#3987e5', naranja: '#d95926' };
+
+/** Paleta de estado, reservada: nunca se reutiliza como color de serie. */
+const ESTADO = { bueno: '#0ca30c', atencion: '#fab219', critico: '#d03b3b' };
 
 interface Props {
   data: Record<string, any>;
@@ -21,19 +24,23 @@ interface Props {
 function Card({
   title,
   hint,
+  className = '',
   children,
 }: {
-  title: string;
+  title?: string;
   hint?: string;
-  children: React.ReactNode;
+  className?: string;
+  children: ReactNode;
 }) {
   return (
-    <div className="rounded-[var(--radius-card)] bg-[var(--color-surface)] p-5">
-      <div className="flex items-baseline justify-between gap-3">
-        <h3 className="text-sm font-semibold">{title}</h3>
-        {hint && <span className="text-[11px] text-[var(--color-muted)]">{hint}</span>}
-      </div>
-      <div className="mt-4">{children}</div>
+    <div className={`rounded-[var(--radius-card)] bg-[var(--color-surface)] p-5 ${className}`}>
+      {title && (
+        <div className="mb-4 flex items-baseline justify-between gap-3">
+          <h3 className="text-sm font-semibold">{title}</h3>
+          {hint && <span className="text-[11px] text-[var(--color-muted)]">{hint}</span>}
+        </div>
+      )}
+      {children}
     </div>
   );
 }
@@ -45,75 +52,144 @@ function shortDate(iso: string): string {
   return `${Number(d)} ${meses[Number(m) - 1] ?? ''}`;
 }
 
+function FlowRow({
+  label,
+  amount,
+  direction,
+}: {
+  label: string;
+  amount: number;
+  direction: 'in' | 'out';
+}) {
+  const out = direction === 'out';
+  return (
+    <div className="flex items-center gap-3">
+      <span
+        className={`grid h-8 w-8 shrink-0 place-items-center rounded-full text-sm ${
+          out ? 'bg-[var(--color-bad)]/15 text-[var(--color-bad)]' : 'bg-[var(--color-good)]/15 text-[var(--color-good)]'
+        }`}
+        aria-hidden
+      >
+        {out ? '↑' : '↓'}
+      </span>
+      <div className="min-w-0">
+        <div className="text-[17px] font-semibold leading-tight">{bob(amount)}</div>
+        <div className="text-[11px] text-[var(--color-muted)]">{label}</div>
+      </div>
+    </div>
+  );
+}
+
 export default function Widgets({ data }: Props) {
   const serieFx: { fecha: string; oficial: number; paralelo: number }[] = data.series?.fx ?? [];
   const serieVentas: { fecha: string; totalBob: number }[] = data.series?.ventas ?? [];
   const gastos: Record<string, number> = data.finanzas?.gastosPorCategoria ?? {};
   const top: any[] = data.topProductos?.productos ?? [];
+  const fin = data.finanzas ?? {};
+  const m = data.margenes ?? {};
 
   const gastosRows = Object.entries(gastos)
     .map(([label, value]) => ({ label, value }))
     .sort((a, b) => b.value - a.value);
 
+  const total = m.totalProductos ?? 0;
+  const criticos = m.totalPerdiendoDinero ?? 0;
+  // "En riesgo" ya incluye a los que pierden dinero: restamos para no contarlos dos veces.
+  const erosionados = Math.max(0, (m.totalEnRiesgo ?? 0) - criticos);
+  const sanos = Math.max(0, total - criticos - erosionados);
+
+  const margenPct = fin.margenNetoPct ?? 0;
+
   return (
-    <div className="grid gap-3 lg:grid-cols-2">
+    <div className="grid grid-cols-1 gap-3 lg:grid-cols-12">
+      {/* Fila 1 — compacta / dona / gráfico ancho */}
+      <Card className="lg:col-span-3" >
+        <div className="space-y-4">
+          <FlowRow label="Ingresos 30 días" amount={fin.ingresosBob ?? 0} direction="in" />
+          <FlowRow
+            label="Costos y gastos"
+            amount={(fin.costoMercaderiaVendidaBob ?? 0) + (fin.gastosOperativosBob ?? 0)}
+            direction="out"
+          />
+        </div>
+
+        <div className="mt-4 rounded-xl bg-[var(--color-ink)] p-3">
+          <div className="flex items-baseline justify-between">
+            <span className="text-[11px] text-[var(--color-muted)]">Utilidad neta</span>
+            <span className="text-[11px] font-semibold text-[var(--color-muted)]">{margenPct}%</span>
+          </div>
+          <div className="mt-1 text-[17px] font-semibold">{bob(fin.utilidadNetaBob ?? 0)}</div>
+          <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-white/5">
+            <div
+              className="h-full rounded-full"
+              style={{
+                width: `${Math.min(100, Math.max(2, Math.abs(margenPct)))}%`,
+                background: margenPct >= 0 ? ESTADO.bueno : ESTADO.critico,
+              }}
+            />
+          </div>
+        </div>
+      </Card>
+
+      {total > 0 && (
+        <Card title="Salud del margen" className="lg:col-span-3">
+          <Donut
+            centerValue={String(total)}
+            centerLabel="productos"
+            slices={[
+              { label: 'Margen sano', value: sanos, color: ESTADO.bueno },
+              { label: 'Erosionado', value: erosionados, color: ESTADO.atencion },
+              { label: 'Bajo costo', value: criticos, color: ESTADO.critico },
+            ]}
+          />
+        </Card>
+      )}
+
       {serieFx.length > 1 && (
-        <Card title="Tipo de cambio" hint={`${serieFx.length} días`}>
+        <Card title="Tipo de cambio" hint={`${serieFx.length} días`} className="lg:col-span-6">
           <LineChart
             labels={serieFx.map((r) => shortDate(r.fecha))}
             format={(v) => `Bs ${v.toFixed(2)}`}
-            height={150}
+            height={160}
             series={[
-              {
-                id: 'oficial',
-                label: 'Oficial',
-                color: SERIES.azul,
-                values: serieFx.map((r) => r.oficial),
-              },
-              {
-                id: 'paralelo',
-                label: 'Paralelo',
-                color: SERIES.naranja,
-                values: serieFx.map((r) => r.paralelo),
-              },
+              { id: 'oficial', label: 'Oficial', color: SERIES.azul, values: serieFx.map((r) => r.oficial) },
+              { id: 'paralelo', label: 'Paralelo', color: SERIES.naranja, values: serieFx.map((r) => r.paralelo) },
             ]}
           />
         </Card>
       )}
 
+      {/* Fila 2 — gráfico ancho / lista */}
       {serieVentas.length > 1 && (
-        <Card title="Ventas por día" hint="últimos 30 días">
+        <Card title="Ventas por día" hint="últimos 30 días" className="lg:col-span-7">
           <LineChart
             labels={serieVentas.map((r) => shortDate(r.fecha))}
             format={bob}
-            height={150}
+            height={170}
             area
             zeroBased
             series={[
-              {
-                id: 'ventas',
-                label: 'Ventas',
-                color: SERIES.azul,
-                values: serieVentas.map((r) => r.totalBob),
-              },
+              { id: 'ventas', label: 'Ventas', color: SERIES.azul, values: serieVentas.map((r) => r.totalBob) },
             ]}
           />
         </Card>
       )}
 
-      {gastosRows.length > 0 && (
-        <Card title="Gastos por categoría" hint="últimos 30 días">
+      {(gastosRows.length > 0 || top.length > 0) && (
+        <Card title="Gastos por categoría" hint="30 días" className="lg:col-span-5">
           <BarList rows={gastosRows} format={bob} color={SERIES.naranja} />
-        </Card>
-      )}
-
-      {top.length > 0 && (
-        <Card title="Productos que más dejan" hint="utilidad, 30 días">
-          <BarList
-            rows={top.map((p) => ({ label: p.nombre, value: p.utilidadEstimadaBob }))}
-            format={bob}
-            color={SERIES.azul}
-          />
+          {top.length > 0 && (
+            <>
+              <h4 className="mb-3 mt-5 text-[11px] font-semibold uppercase tracking-wide text-[var(--color-muted)]">
+                Productos que más dejan
+              </h4>
+              <BarList
+                rows={top.slice(0, 4).map((p) => ({ label: p.nombre, value: p.utilidadEstimadaBob }))}
+                format={bob}
+                color={SERIES.azul}
+              />
+            </>
+          )}
         </Card>
       )}
     </div>

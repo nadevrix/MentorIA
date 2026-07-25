@@ -103,13 +103,10 @@ export default function Insights({ data, loading, onAsk }: Props) {
 
   return (
     <section className="space-y-3">
-      <div className="flex flex-wrap items-baseline justify-between gap-2">
-        <h2 className="text-sm font-semibold">Qué resolver hoy</h2>
-        <p className="text-xs text-[var(--color-muted)]">
-          {data.insights.length} hallazgos · {bob(data.totalImpactoBob)} en juego · por urgencia e
-          impacto
-        </p>
-      </div>
+      {/* El título lo pone el apartado que envuelve a este bloque. */}
+      <p className="text-xs text-[var(--color-muted)]">
+        {data.insights.length} hallazgos · {bob(data.totalImpactoBob)} en juego
+      </p>
 
       {data.insights.map((insight) => (
         <Row key={insight.id} insight={insight} onAsk={onAsk} />
