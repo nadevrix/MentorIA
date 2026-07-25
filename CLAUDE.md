@@ -72,6 +72,25 @@ hay algo que mejorar, se mejora.
    rompe esa posibilidad. Si insiste, seguí — puede ser quien integra.
 2. **Nunca commitees la `ANTHROPIC_API_KEY` ni el `.env`.**
 
+**Sí hay que pushear la rama propia, y seguido.** Es el backup del usuario y la única forma de
+que quien integra vea el trabajo — lo que queda solo en la laptop no existe para el equipo.
+Cuando algo funcione, ofrecé hacerlo:
+
+```bash
+npm run typecheck && npm run build:web    # que pase antes de pushear
+git add -A
+git commit -m "agrega simulador de escenario cambiario"
+git push origin $(git branch --show-current)
+```
+
+Traé `main` cada 2 o 3 horas para no acumular un conflicto gigante:
+
+```bash
+git switch main && git pull origin main
+git switch -                              # vuelve a la rama anterior
+git merge main
+```
+
 **Dos archivos son contratos compartidos:** `packages/core/src/types.ts` y
 `packages/core/src/data/source.ts`. Si los cambiás, se rompe el trabajo de los demás cuando se
 mergee. No están prohibidos — pero avisá al usuario antes de tocarlos para que lo comunique.
