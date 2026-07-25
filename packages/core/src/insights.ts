@@ -8,6 +8,7 @@ import {
   salesInPeriod,
 } from './tools/helpers.js';
 import type { ToolContext } from './tools/registry.js';
+import { buildTaxes, type Obligacion } from './taxes.js';
 
 /**
  * Motor de hallazgos proactivos.
@@ -110,6 +111,7 @@ interface World {
   expenses: Expense[];
   fx: FxRate;
   fxHistory: FxRate[];
+  impuestos: Obligacion[];
   t: InsightThresholds;
 }
 
@@ -176,7 +178,7 @@ function detectErodedMargin({ products, sales, fx, t }: World): Insight[] {
       id: `margen-erosionado:${afectados.length}`,
       tipo: 'margen_erosionado',
       severidad: 'alta',
-      titulo: `${afectados.length} productos con margen por debajo del ${t.margenMinimoPct}%`,
+      titulo: `${afectados.length} ${afectados.length === 1 ? 'producto tiene' : 'productos tienen'} margen por debajo del ${t.margenMinimoPct}%`,
       detalle:
         `Todavía ganás con ellos, pero poco: el margen real quedó bajo el piso saludable porque el costo ` +
         `de reposición subió y el precio no. Ajustarlos al ${t.margenObjetivoPct}% recupera la diferencia.`,
@@ -308,6 +310,59 @@ function detectPayables({ expenses }: World): Insight[] {
   return out;
 }
 
+/**
+ * Vencimientos con el SIN.
+ *
+ * Un impuesto vencido no es sólo el monto: son multas e intereses que crecen
+ * todos los días, y una deuda tributaria bloquea trámites. Por eso lo vencido
+ * va como crítico aunque el monto sea chico.
+ */
+function detectTaxes({ impuestos }: World): Insight[] {
+  const vencidas = impuestos.filter((o) => o.estado === 'vencida' && o.montoBob > 0);
+  const proximas = impuestos.filter((o) => o.estado === 'proxima' && o.montoBob > 0);
+  const out: Insight[] = [];
+
+  if (vencidas.length) {
+    const monto = round(vencidas.reduce((s, o) => s + o.montoBob, 0));
+    const peor = vencidas[0]!;
+    out.push({
+      id: `impuesto-vencido:${vencidas.map((o) => o.tipo).join('-')}`,
+      tipo: 'impuesto_vencido',
+      severidad: 'critica',
+      titulo: `${vencidas.length} ${vencidas.length === 1 ? 'declaración vencida' : 'declaraciones vencidas'} por Bs ${monto.toLocaleString('es-BO')}`,
+      detalle:
+        `${peor.nombre} del periodo ${peor.periodo} venció hace ${Math.abs(peor.diasParaVencer)} días. ` +
+        `Una deuda con el SIN suma multas e intereses todos los días y traba trámites. ` +
+        `Es una estimación: confirmá el monto exacto con tu contador antes de pagar.`,
+      impactoBob: monto,
+      impactoNota: 'Suma estimada de las declaraciones que ya pasaron su vencimiento.',
+      agenteId: 'finanzas',
+      pregunta: '¿Qué impuestos tengo vencidos y con qué cuento para pagarlos?',
+    });
+  }
+
+  if (proximas.length) {
+    const monto = round(proximas.reduce((s, o) => s + o.montoBob, 0));
+    const primera = proximas[0]!;
+    out.push({
+      id: `impuesto-proximo:${proximas.map((o) => o.tipo).join('-')}`,
+      tipo: 'impuesto_proximo',
+      severidad: 'alta',
+      titulo: `Bs ${monto.toLocaleString('es-BO')} de impuestos vencen en ${primera.diasParaVencer} días`,
+      detalle:
+        `${proximas.map((o) => o.nombre).join(' y ')} del periodo ${primera.periodo}. ` +
+        `Conviene tener ese monto reservado antes del ${primera.vencimiento}, ` +
+        `porque sale de la caja el mismo mes en que hay que reponer mercadería.`,
+      impactoBob: monto,
+      impactoNota: 'Estimación de lo que vence en los próximos 10 días.',
+      agenteId: 'finanzas',
+      pregunta: '¿Me alcanza la caja para los impuestos que vencen esta semana?',
+    });
+  }
+
+  return out;
+}
+
 /** Clientes valiosos que dejaron de comprar. */
 function detectChurnRisk({ customers, t }: World): Insight[] {
   const inactivos = customers
@@ -326,7 +381,7 @@ function detectChurnRisk({ customers, t }: World): Insight[] {
       id: `clientes-inactivos:${inactivos.length}`,
       tipo: 'cliente_en_riesgo',
       severidad: 'media',
-      titulo: `${inactivos.length} clientes que ya te compraban no vuelven hace ${t.diasInactividadCliente}+ días`,
+      titulo: `${inactivos.length} ${inactivos.length === 1 ? 'cliente que ya te compraba no vuelve' : 'clientes que ya te compraban no vuelven'} hace ${t.diasInactividadCliente}+ días`,
       detalle:
         `El más valioso es ${top.c.name}, que gastó Bs ${top.c.totalSpentBob.toLocaleString('es-BO')} ` +
         `en ${top.c.purchaseCount} compras y lleva ${daysAgo(top.c.lastPurchaseDate)} días sin aparecer. ` +
@@ -413,6 +468,7 @@ function detectFxMove({ products, fx, fxHistory, t }: World): Insight[] {
 
 const DETECTORS = [
   detectSellingBelowCost,
+  detectTaxes,
   detectFxMove,
   detectPayables,
   detectSalesDrop,
@@ -431,16 +487,19 @@ export async function buildInsights(
   overrides: Partial<InsightThresholds> = {},
 ): Promise<{ generadoEn: string; umbrales: InsightThresholds; totalImpactoBob: number; insights: Insight[] }> {
   const t = { ...DEFAULT_THRESHOLDS, ...overrides };
-  const [products, sales, customers, expenses, fx, fxHistory] = await Promise.all([
+  const [products, sales, customers, expenses, fx, fxHistory, impuestos] = await Promise.all([
     ctx.data.products(),
     ctx.data.sales(),
     ctx.data.customers(),
     ctx.data.expenses(),
     ctx.fx.current(),
     ctx.fx.history(),
+    // Con la configuración por defecto: el último dígito del NIT lo elige el
+    // usuario en el apartado de impuestos, y ahí ve las fechas exactas.
+    buildTaxes(ctx).then((t) => t.obligaciones),
   ]);
 
-  const world: World = { products, sales, customers, expenses, fx, fxHistory, t };
+  const world: World = { products, sales, customers, expenses, fx, fxHistory, impuestos, t };
   const insights = DETECTORS.flatMap((detect) => detect(world));
 
   insights.sort(
@@ -453,7 +512,13 @@ export async function buildInsights(
     // Las cuentas por pagar no son pérdida, son calendario: no suman al total.
     totalImpactoBob: round(
       insights
-        .filter((i) => i.tipo !== 'cuenta_vencida' && i.tipo !== 'cuenta_por_vencer')
+        .filter(
+          (i) =>
+            i.tipo !== 'cuenta_vencida' &&
+            i.tipo !== 'cuenta_por_vencer' &&
+            i.tipo !== 'impuesto_vencido' &&
+            i.tipo !== 'impuesto_proximo',
+        )
         .reduce((s, i) => s + i.impactoBob, 0),
     ),
     insights,

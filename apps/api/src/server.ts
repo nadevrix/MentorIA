@@ -3,6 +3,7 @@ import {
   AGENTS,
   buildDashboard,
   buildInsights,
+  buildTaxes,
   createContext,
   generateImage,
   imageProviderConfigured,
@@ -133,6 +134,28 @@ app.get('/api/brief', async (c) => {
       });
     }
   });
+});
+
+/**
+ * Obligaciones tributarias estimadas.
+ *
+ * El día de vencimiento depende del último dígito del NIT, así que viaja como
+ * parámetro: no guardamos el NIT del comercio en ningún lado.
+ */
+app.get('/api/taxes', async (c) => {
+  const digito = Number(c.req.query('digitoNit') ?? 0);
+  const regimen = c.req.query('regimen') === 'simplificado' ? 'simplificado' : 'general';
+  try {
+    return c.json(
+      await buildTaxes(ctx, {
+        digitoNit: Number.isInteger(digito) && digito >= 0 && digito <= 9 ? digito : 0,
+        regimen,
+      }),
+    );
+  } catch (error) {
+    console.error('[taxes]', error);
+    return c.json({ error: error instanceof Error ? error.message : 'Error desconocido' }, 500);
+  }
 });
 
 const ENTIDADES = ['products', 'sales', 'customers', 'expenses'] as const;

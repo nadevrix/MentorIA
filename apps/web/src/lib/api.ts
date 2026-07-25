@@ -111,6 +111,42 @@ export async function fetchMarketing(): Promise<MarketingResponse> {
   return res.json();
 }
 
+export interface Obligacion {
+  tipo: 'iva' | 'it' | 'iue';
+  nombre: string;
+  periodo: string;
+  montoBob: number;
+  vencimiento: string;
+  diasParaVencer: number;
+  estado: 'vencida' | 'proxima' | 'programada';
+  formula: string;
+  supuesto?: string;
+}
+
+export interface TaxSummary {
+  regimen: 'general' | 'simplificado';
+  digitoNit: number;
+  totalPorPagarBob: number;
+  vencidasBob: number;
+  obligaciones: Obligacion[];
+  base: {
+    ventasMesBob: number;
+    comprasConFacturaMesBob: number;
+    ventasAnioBob: number;
+    utilidadAnioBob: number;
+  };
+  advertencia: string;
+}
+
+export async function fetchTaxes(
+  digitoNit: number,
+  regimen: 'general' | 'simplificado',
+): Promise<TaxSummary> {
+  const res = await fetch(`${API_URL}/api/taxes?digitoNit=${digitoNit}&regimen=${regimen}`);
+  if (!res.ok) throw new Error('No se pudieron calcular los impuestos');
+  return res.json();
+}
+
 export interface ImageResult {
   ok: boolean;
   prompt: string;

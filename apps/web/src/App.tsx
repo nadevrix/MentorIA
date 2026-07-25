@@ -8,6 +8,7 @@ import Icon from './components/Icon';
 import Insights from './components/Insights';
 import MarketingPanel from './components/MarketingPanel';
 import Shell, { type Tab } from './components/Shell';
+import TaxPanel from './components/TaxPanel';
 import Widgets from './components/Widgets';
 import {
   fetchAgents,
@@ -49,6 +50,7 @@ interface Ask {
 const TABS: readonly Tab[] = [
   { id: 'resumen', label: 'Resumen' },
   { id: 'dolar', label: 'Dólar' },
+  { id: 'impuestos', label: 'Impuestos' },
   { id: 'datos', label: 'Mis datos' },
   { id: 'marketing', label: 'Marketing' },
 ];
@@ -183,6 +185,8 @@ export default function App() {
 
       {/* El simulador vive en Dólar, no acá: es una herramienta de ese tema. */}
       {tab === 'dolar' && <FxPanel data={dashboard} onAsk={handleAsk} />}
+
+      {tab === 'impuestos' && <TaxPanel onAsk={handleAsk} />}
 
       {tab === 'datos' && (
         <DataPanel
