@@ -140,10 +140,24 @@ El orden importa más que la cantidad de features. Lo que gana puntos, en orden:
 **No agregues agentes nuevos.** Cinco ya son más de los que se pueden mostrar en 4 minutos.
 Profundidad sobre superficie. Razonamiento completo en `docs/08-estrategia.md`.
 
-## Documentación
+## Documentación — leé la que corresponda ANTES de trabajar
 
-`docs/00` visión · `01` arquitectura · `02` backlog de trabajo · `03` agentes · `04` datos ·
-`05` deploy · `06` pitch · `07` git y comunicación · `08` estrategia · `09` onboarding
+No las leas todas. Abrí la del tema que vas a tocar, antes de escribir código:
+
+| Si vas a… | Leé primero |
+| --- | --- |
+| Agregar o cambiar una herramienta o un agente | `docs/03-agentes.md` |
+| Tocar datos, el modelo de dominio o conectar una fuente real | `docs/04-datos.md` |
+| Tocar el loop de agentes, la API o entender cómo encaja todo | `docs/01-arquitectura.md` |
+| Desplegar o depurar Netlify / Render | `docs/05-deploy.md` |
+| Trabajar en la interfaz o preparar la demo | `docs/06-demo-pitch.md` |
+| Hacer commit, merge o resolver un conflicto | `docs/07-convenciones.md` |
+| Decidir **qué** construir o si algo vale la pena | `docs/08-estrategia.md` y `docs/02-equipo.md` |
+| Entender el problema de negocio y el usuario | `docs/00-vision.md` |
+
+Si el usuario te pide algo y no sabés por dónde empezar, la respuesta está en
+`docs/02-equipo.md` (backlog ordenado por impacto). `docs/09-onboarding.md` tiene el flujo de
+trabajo del equipo.
 
 ## Estado actual
 

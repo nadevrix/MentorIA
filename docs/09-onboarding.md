@@ -39,8 +39,9 @@ PASO 1 — Ponéme al día. Ejecutá esto y mostrame la salida:
   npm run dev                            # API en :8787, web en :5173
 
 PASO 2 — Leé CLAUDE.md en la raíz del repo antes de proponerme nada. Ahí está la
-arquitectura, la convención de moneda y cómo agregar herramientas o agentes. Si algo
-no te queda claro, la carpeta docs/ tiene el detalle.
+arquitectura, la convención de moneda, las reglas del equipo y una tabla que dice qué
+documento de docs/ leer según lo que vayas a tocar. Cuando decidamos en qué trabajar,
+abrí el documento que corresponda ANTES de escribir código — están escritos para vos.
 
 QUÉ ES EL PROYECTO: en Bolivia el dólar oficial está intervenido (~6.96 Bs) pero el
 paralelo se mueve al alza. Un comercio importador fija precios con el dólar de cuando
