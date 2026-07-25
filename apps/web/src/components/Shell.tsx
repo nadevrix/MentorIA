@@ -149,7 +149,7 @@ export default function Shell({
           </div>
         </main>
 
-        <aside className="flex w-full shrink-0 flex-col border-t border-[var(--color-line)] bg-white/40 lg:h-auto lg:w-[400px] lg:border-l lg:border-t-0">
+        <aside className="glass-aside flex w-full shrink-0 flex-col border-t border-[var(--color-line)] lg:h-auto lg:w-[400px] lg:border-l lg:border-t-0">
           {aside}
         </aside>
       </div>

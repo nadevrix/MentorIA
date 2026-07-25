@@ -10,7 +10,8 @@ import Simulator from './Simulator';
  * El simulador vive acá y no en el resumen: es una herramienta de este tema.
  */
 
-const NARANJA = '#eb6834';
+/** Mismo naranja de series que el tablero: medido sobre el vidrio, no a ojo. */
+const NARANJA = '#e35d28';
 
 interface Props {
   data: Record<string, any> | null;

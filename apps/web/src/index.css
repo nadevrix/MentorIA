@@ -7,10 +7,12 @@
  * que refractar, así que el lienzo lleva luces de color difusas y las
  * superficies son traslúcidas con desenfoque.
  *
- * En claro el vidrio tiene que mantenerse BRILLANTE, y no es capricho: medido
- * con el validador, sobre un vidrio agrisado (#E9EDF3) el naranja de las series
- * cae a 2,72:1, por debajo del piso de 3:1. Sobre vidrio casi blanco (#F6F8FB)
- * pasa todos los gates. Por eso el tinte es blanco con opacidad alta.
+ * SOBRE EL BRILLO DEL VIDRIO, que es una restricción medida y no una preferencia:
+ * el vidrio no se apoya sobre el lienzo pelado sino sobre las luces del fondo, y
+ * la azul es la más oscura. Compuesta, la superficie real más oscura da #ECF1F7
+ * (antes se había medido contra el lienzo limpio, que da un número optimista).
+ * Sobre esa superficie se validó la paleta de series con el validador, no a ojo.
+ * Si se oscurece el tinte, hay que volver a medir.
  *
  * Semántica de los acentos, que en un producto financiero no es decorativa:
  *   rojo   → marca, y también lo crítico (estás perdiendo plata)
@@ -61,75 +63,223 @@ body {
 }
 
 /*
- * Luces del fondo. Sin esto el vidrio no tiene nada que refractar y se ve como
- * un blanco plano. Opacidades bajas: en claro, un lienzo saturado se come el
- * contraste del texto que va encima del vidrio.
+ * Luces del fondo, en dos capas que derivan en sentidos opuestos.
+ *
+ * Sin esto el vidrio no tiene nada que refractar y se ve como un blanco plano.
+ * La deriva es lo que lo hace "líquido": al moverse la luz detrás, el vidrio
+ * cambia sin que nada en la interfaz se mueva. Muy lenta a propósito — se nota
+ * si mirás, no distrae si estás leyendo un número.
+ *
+ * Opacidades bajas: en claro, un lienzo saturado se come el contraste del texto
+ * que va encima del vidrio.
  */
-body::before {
+body::before,
+body::after {
   content: '';
   position: fixed;
-  inset: 0;
+  /* Más grande que la pantalla: al derivar, el borde nunca entra en cuadro. */
+  inset: -25%;
   z-index: -1;
+  pointer-events: none;
+  will-change: transform;
+}
+
+body::before {
   background:
-    radial-gradient(60rem 40rem at 10% 5%, rgba(254, 63, 57, 0.14), transparent 60%),
-    radial-gradient(52rem 38rem at 90% 0%, rgba(252, 191, 2, 0.16), transparent 55%),
-    radial-gradient(48rem 44rem at 80% 95%, rgba(42, 120, 214, 0.16), transparent 60%),
-    radial-gradient(40rem 32rem at 15% 95%, rgba(21, 128, 61, 0.1), transparent 60%);
+    radial-gradient(38rem 30rem at 22% 18%, rgba(254, 63, 57, 0.15), transparent 62%),
+    radial-gradient(34rem 28rem at 78% 12%, rgba(252, 191, 2, 0.17), transparent 58%);
+  animation: deriva-a 54s ease-in-out infinite alternate;
+}
+
+body::after {
+  background:
+    radial-gradient(36rem 32rem at 74% 82%, rgba(42, 120, 214, 0.16), transparent 62%),
+    radial-gradient(30rem 26rem at 18% 88%, rgba(21, 128, 61, 0.11), transparent 62%);
+  animation: deriva-b 68s ease-in-out infinite alternate;
+}
+
+@keyframes deriva-a {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(3%, 2%, 0) scale(1.08);
+  }
+}
+
+@keyframes deriva-b {
+  from {
+    transform: translate3d(0, 0, 0) scale(1.06);
+  }
+  to {
+    transform: translate3d(-3%, -2.5%, 0) scale(1);
+  }
 }
 
 /*
  * Vidrio.
  *
- * Tres ingredientes, y los tres hacen falta:
- *  1. tinte traslúcido claro    → mantiene el contraste de series y texto
- *  2. backdrop-filter           → la refracción
- *  3. borde superior blanco     → el reflejo especular que lo hace leer como
- *     vidrio (arriba claro, abajo sombra: la luz viene de arriba)
+ * Cinco ingredientes, y cada uno hace un trabajo distinto:
+ *  1. tinte traslúcido claro  → sostiene el contraste de series y texto
+ *  2. reflejo especular       → la luz entra por arriba a la izquierda
+ *  3. backdrop-filter         → la refracción
+ *  4. canto con dispersión    → arriba luz blanca, abajo un frío azulado y al
+ *     costado un cálido: eso es lo que hace que el ojo lea "vidrio" y no
+ *     "tarjeta blanca con borde"
+ *  5. dos sombras             → una de contacto, corta y densa, y una ambiental
+ *     amplia; con una sola la pieza flota sin apoyarse en nada
+ *
+ * El grano (--grano) rompe el bandeado que deja el desenfoque en superficies
+ * grandes. Va bajo: cada punto que se agrega oscurece el vidrio, y el vidrio
+ * tiene un piso medido del que no puede bajar.
  */
+:root {
+  --grano: url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22160%22 height=%22160%22%3E%3Cfilter id=%22g%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.8%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23g)%22 opacity=%220.28%22/%3E%3C/svg%3E');
+}
+
 .glass {
-  background: linear-gradient(160deg, rgba(255, 255, 255, 0.82) 0%, rgba(255, 255, 255, 0.66) 100%);
-  backdrop-filter: blur(22px) saturate(150%);
-  -webkit-backdrop-filter: blur(22px) saturate(150%);
-  border: 1px solid rgba(255, 255, 255, 0.9);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.95),
-    0 8px 28px rgba(15, 23, 42, 0.08);
-}
-
-/* Capa contenedora: más grande, así que más desenfoque y sombra más profunda. */
-.glass-shell {
-  background: linear-gradient(160deg, rgba(255, 255, 255, 0.76) 0%, rgba(255, 255, 255, 0.6) 100%);
-  backdrop-filter: blur(34px) saturate(140%);
-  -webkit-backdrop-filter: blur(34px) saturate(140%);
-  border: 1px solid rgba(255, 255, 255, 0.9);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.95),
-    0 24px 70px rgba(15, 23, 42, 0.14);
-}
-
-/* Píldoras y controles: vidrio más liviano, sin tanto peso visual. */
-.glass-soft {
-  background: rgba(255, 255, 255, 0.65);
-  backdrop-filter: blur(14px) saturate(140%);
-  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  background:
+    var(--grano),
+    radial-gradient(120% 90% at 0% 0%, rgba(255, 255, 255, 0.55), transparent 58%),
+    linear-gradient(158deg, rgba(255, 255, 255, 0.84) 0%, rgba(255, 255, 255, 0.72) 100%);
+  background-size:
+    160px 160px,
+    auto,
+    auto;
+  background-blend-mode: soft-light, normal, normal;
+  backdrop-filter: blur(24px) saturate(165%);
+  -webkit-backdrop-filter: blur(24px) saturate(165%);
   border: 1px solid rgba(255, 255, 255, 0.85);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    inset 0 -1px 0 rgba(96, 132, 196, 0.16),
+    inset 1px 0 0 rgba(255, 226, 196, 0.18),
+    0 1px 2px rgba(15, 23, 42, 0.05),
+    0 14px 36px -10px rgba(15, 23, 42, 0.13);
 }
 
-.glass-soft:hover {
-  background: rgba(255, 255, 255, 0.88);
+/*
+ * Capa contenedora: es la pieza más grande, así que más desenfoque, sombra más
+ * profunda y un reflejo que barre todo el borde superior en vez de nacer en la
+ * esquina — a esa escala, una luz puntual se lee como una mancha.
+ */
+.glass-shell {
+  background:
+    var(--grano),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.4), transparent 22%),
+    linear-gradient(158deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.68) 100%);
+  background-size:
+    160px 160px,
+    auto,
+    auto;
+  background-blend-mode: soft-light, normal, normal;
+  backdrop-filter: blur(36px) saturate(155%);
+  -webkit-backdrop-filter: blur(36px) saturate(155%);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    inset 0 -1px 0 rgba(96, 132, 196, 0.18),
+    0 2px 4px rgba(15, 23, 42, 0.04),
+    0 30px 80px -20px rgba(15, 23, 42, 0.18);
+}
+
+/*
+ * Píldoras y controles: vidrio más liviano y con respuesta física. Al pasar el
+ * puntero sube un pixel y se aclara; al presionar vuelve abajo y pierde la
+ * sombra. Es lo que separa un control de vidrio de una calcomanía.
+ *
+ * El relieve se limita a lo que de verdad se puede accionar: la misma clase la
+ * usan el chip del dólar y los campos de texto, y una ficha informativa que se
+ * levanta al pasar el puntero promete un clic que no existe.
+ */
+.glass-soft {
+  background:
+    radial-gradient(120% 140% at 0% 0%, rgba(255, 255, 255, 0.5), transparent 60%),
+    rgba(255, 255, 255, 0.66);
+  backdrop-filter: blur(16px) saturate(150%);
+  -webkit-backdrop-filter: blur(16px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 1px 2px rgba(15, 23, 42, 0.04);
+  transition:
+    background-color 140ms ease,
+    box-shadow 140ms ease,
+    transform 140ms ease;
+}
+
+.glass-soft:is(button, a, [role='button']):hover {
+  background-color: rgba(255, 255, 255, 0.9);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    0 4px 12px -2px rgba(15, 23, 42, 0.12);
+  transform: translateY(-1px);
+}
+
+.glass-soft:is(button, a, [role='button']):active {
+  box-shadow:
+    inset 0 1px 2px rgba(15, 23, 42, 0.08),
+    0 1px 1px rgba(15, 23, 42, 0.04);
+  transform: translateY(0);
+}
+
+/* Los campos sólo se aclaran: subirlos al escribir sería un temblor. */
+.glass-soft:is(input, textarea, select):focus {
+  background-color: rgba(255, 255, 255, 0.92);
+}
+
+/*
+ * Panel lateral: no lleva sombra propia porque vive dentro del contenedor, pero
+ * necesita su canto de luz para que se lea como otra lámina y no como un hueco.
+ */
+.glass-aside {
+  background: linear-gradient(200deg, rgba(255, 255, 255, 0.58) 0%, rgba(255, 255, 255, 0.42) 100%);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  box-shadow: inset 1px 0 0 rgba(255, 255, 255, 0.75);
+}
+
+/* Tarjeta que responde al puntero, para las que llevan a algún lado. */
+.glass-hover {
+  transition:
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.glass-hover:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    inset 0 -1px 0 rgba(96, 132, 196, 0.16),
+    0 1px 2px rgba(15, 23, 42, 0.05),
+    0 22px 48px -12px rgba(15, 23, 42, 0.18);
+}
+
+/*
+ * El foco de teclado tiene que verse sobre vidrio. Va sólo en botones y enlaces:
+ * los campos ya traen su propio anillo y los dos juntos se ven como un error.
+ */
+button:focus-visible,
+a:focus-visible,
+[role='tab']:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: 6px;
 }
 
 /*
  * Fallbacks. El vidrio es un lujo, no un requisito:
  *  - sin soporte de backdrop-filter → superficie sólida
  *  - si la persona pidió menos transparencia → superficie sólida
- * En ambos casos se conserva el borde y el realce, así que la jerarquía no se pierde.
+ * En ambos casos se conserva el canto y el realce, así que la jerarquía no se
+ * pierde. Y se quita el grano: sin desenfoque no hay bandeado que romper, y el
+ * ruido sobre un fondo sólido sólo ensucia.
  */
 @supports not (backdrop-filter: blur(1px)) {
   .glass,
   .glass-shell,
-  .glass-soft {
+  .glass-soft,
+  .glass-aside {
     background: var(--color-surface);
   }
 }
@@ -137,12 +287,14 @@ body::before {
 @media (prefers-reduced-transparency: reduce) {
   .glass,
   .glass-shell,
-  .glass-soft {
+  .glass-soft,
+  .glass-aside {
     background: var(--color-surface);
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
   }
-  body::before {
+  body::before,
+  body::after {
     display: none;
   }
 }
@@ -164,11 +316,22 @@ body::before {
   background: transparent;
 }
 
+/*
+ * Menos movimiento. La deriva del fondo se apaga entera: acortar su duración,
+ * como hace la regla general, convertiría una animación infinita en un parpadeo
+ * — justo lo contrario de lo que pide quien activa esta preferencia.
+ */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+  body::before,
+  body::after {
+    animation: none !important;
+    transform: none !important;
   }
 }

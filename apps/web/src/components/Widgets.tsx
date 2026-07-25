@@ -9,14 +9,17 @@ import LineChart from './charts/LineChart';
  * Grilla de widgets del panel principal, con la composición de la referencia:
  * fila 1 → tarjeta compacta + dona + gráfico ancho; fila 2 → ancho + medio.
  *
- * Paleta de series validada contra la superficie #242A2F: azul y naranja miden
- * ΔE 26,8 en el peor caso de daltonismo. El rojo y el ámbar de la marca quedan
- * para el cromo de la interfaz, no para codificar datos.
+ * Paleta de series medida contra la superficie real del vidrio (#ECF1F7, el
+ * peor caso: vidrio apoyado sobre la luz azul del fondo). Azul y naranja miden
+ * ΔE 25,3 en el peor caso de daltonismo y ambos pasan el piso de 3:1. El
+ * naranja anterior (#EB6834) daba 2,82:1 ahí: se veía bien sobre el lienzo
+ * pelado y se caía justo donde el fondo tiene color. El rojo y el ámbar de la
+ * marca quedan para el cromo de la interfaz, no para codificar datos.
  */
-const SERIES = { azul: '#2a78d6', naranja: '#eb6834' };
+const SERIES = { azul: '#2a78d6', naranja: '#e35d28' };
 
 /** Paleta de estado, reservada: nunca se reutiliza como color de serie. */
-const ESTADO = { bueno: '#0ca30c', atencion: '#c2740a', critico: '#d03b3b' };
+const ESTADO = { bueno: '#0b970b', atencion: '#c2740a', critico: '#d03b3b' };
 
 interface Props {
   data: Record<string, any>;
