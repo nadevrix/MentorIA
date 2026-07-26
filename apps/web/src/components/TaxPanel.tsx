@@ -7,6 +7,7 @@ import {
   type Obligacion,
   type TaxSummary,
 } from '../lib/api';
+import { usePerfil, type Regimen } from '../lib/perfil';
 import Icon from './Icon';
 
 /**
@@ -208,8 +209,10 @@ function Catalogo({ propios }: { propios: Set<string> }) {
 }
 
 export default function TaxPanel({ onAsk }: { onAsk: (a: string, q: string) => void }) {
-  const [digito, setDigito] = useState(0);
-  const [regimen, setRegimen] = useState<'general' | 'simplificado'>('general');
+  // El dígito y el régimen salen del perfil compartido: tocarlos acá o en
+  // Ajustes tiene que dar el mismo resultado en los dos lados.
+  const [perfil, guardar] = usePerfil();
+  const { digitoNit: digito, regimen } = perfil;
   const [data, setData] = useState<TaxSummary | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -242,7 +245,7 @@ export default function TaxPanel({ onAsk }: { onAsk: (a: string, q: string) => v
             <span className="block text-[var(--color-muted)]">Último dígito de tu NIT</span>
             <select
               value={digito}
-              onChange={(e) => setDigito(Number(e.target.value))}
+              onChange={(e) => guardar({ digitoNit: Number(e.target.value) })}
               className="mt-1.5 rounded-full glass-soft px-3.5 py-2 text-sm outline-none focus:ring-2 focus:ring-[var(--color-accent)]"
             >
               {Array.from({ length: 10 }, (_, i) => (
@@ -257,7 +260,7 @@ export default function TaxPanel({ onAsk }: { onAsk: (a: string, q: string) => v
             <span className="block text-[var(--color-muted)]">Régimen</span>
             <select
               value={regimen}
-              onChange={(e) => setRegimen(e.target.value as 'general' | 'simplificado')}
+              onChange={(e) => guardar({ regimen: e.target.value as Regimen })}
               className="mt-1.5 rounded-full glass-soft px-3.5 py-2 text-sm outline-none focus:ring-2 focus:ring-[var(--color-accent)]"
             >
               <option value="general">General</option>
