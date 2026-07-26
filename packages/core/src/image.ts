@@ -41,6 +41,24 @@ export function imageProviderConfigured(): ImageProviderName | null {
   return p === 'gemini' ? 'gemini' : 'openai';
 }
 
+/**
+ * Traduce el error del proveedor a algo que el dueño pueda accionar. Los dos
+ * casos que de verdad pasan —cuota agotada y clave inválida— tienen mensaje
+ * propio; el resto conserva el detalle crudo para poder diagnosticar.
+ */
+function motivoDeError(status: number, detail: string): string {
+  if (status === 429) {
+    return (
+      'la cuota del generador de imágenes está agotada por hoy. ' +
+      'Copiá el prompt y usalo en otro generador, o probá de nuevo más tarde.'
+    );
+  }
+  if (status === 401 || status === 403) {
+    return 'la clave del generador de imágenes no es válida o no tiene permiso para este modelo.';
+  }
+  return `el proveedor respondió ${status}. ${detail.slice(0, 300)}`;
+}
+
 async function generateOpenAI(
   prompt: string,
   key: string,
@@ -78,7 +96,7 @@ async function generateOpenAI(
 
   if (!res.ok) {
     const detail = await res.text().catch(() => '');
-    return { ok: false, prompt, motivo: `el proveedor respondió ${res.status}. ${detail.slice(0, 300)}` };
+    return { ok: false, prompt, motivo: motivoDeError(res.status, detail) };
   }
 
   const json = (await res.json()) as { data?: { b64_json?: string; url?: string }[] };
@@ -117,7 +135,7 @@ async function generateGemini(
 
   if (!res.ok) {
     const detail = await res.text().catch(() => '');
-    return { ok: false, prompt, motivo: `el proveedor respondió ${res.status}. ${detail.slice(0, 300)}` };
+    return { ok: false, prompt, motivo: motivoDeError(res.status, detail) };
   }
 
   const json = (await res.json()) as {

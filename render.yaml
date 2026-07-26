@@ -52,6 +52,15 @@ services:
       - key: ANTHROPIC_API_KEY
         sync: false
 
+      # --- Taller de imagen ---
+      # La misma clave de AI Studio sirve: Google usa una sola para todos sus
+      # modelos, incluido el de imagen. Va en variable aparte porque el taller
+      # es opcional: sin clave degrada a mostrar el prompt para copiar.
+      - key: IMAGE_PROVIDER
+        value: gemini
+      - key: IMAGE_API_KEY
+        sync: false          # cargar en el panel de Render (mismo valor que GEMINI_API_KEY)
+
       # --- Frontend permitido ---
       # URL pública del sitio estático, sin barra final.
       - key: CORS_ORIGIN

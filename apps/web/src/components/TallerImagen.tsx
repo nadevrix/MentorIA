@@ -25,7 +25,10 @@ const LADO_MAX = 1024;
 const CALIDAD = 0.85;
 
 /** Achica manteniendo proporción y devuelve base64 sin el encabezado `data:`. */
-async function prepararFoto(file: File): Promise<ImagenReferencia & { previa: string }> {
+async function prepararFoto(
+  file: File,
+  rol: 'producto' | 'logo',
+): Promise<ImagenReferencia & { previa: string }> {
   const bitmap = await createImageBitmap(file);
   const escala = Math.min(1, LADO_MAX / Math.max(bitmap.width, bitmap.height));
   const w = Math.round(bitmap.width * escala);
@@ -39,12 +42,13 @@ async function prepararFoto(file: File): Promise<ImagenReferencia & { previa: st
   ctx.drawImage(bitmap, 0, 0, w, h);
   bitmap.close();
 
-  // JPEG para fotos; el logo suele tener transparencia, así que va PNG.
-  const esLogo = file.type === 'image/png';
-  const mime = esLogo ? 'image/png' : 'image/jpeg';
+  // El mime lo decide el rol, no el formato original: el logo va en PNG para
+  // conservar la transparencia venga como venga; la foto del producto va en
+  // JPEG, que comprime mucho mejor una fotografía.
+  const mime = rol === 'logo' ? 'image/png' : 'image/jpeg';
   const dataUri = canvas.toDataURL(mime, CALIDAD);
   return {
-    rol: 'producto',
+    rol,
     mime,
     base64: dataUri.slice(dataUri.indexOf(',') + 1),
     previa: dataUri,
@@ -75,8 +79,7 @@ function Adjunto({
       return;
     }
     try {
-      const lista = await prepararFoto(file);
-      onFoto({ ...lista, rol });
+      onFoto(await prepararFoto(file, rol));
     } catch (e) {
       onError(e instanceof Error ? e.message : 'No se pudo leer la imagen.');
     }
@@ -152,9 +155,17 @@ export default function TallerImagen() {
 
   const promptArmado = useMemo(() => {
     if (!actual) return '';
+    // Un obligatorio vacío se muestra como [campo] en vez de dejar un hueco
+    // (": .") en el texto. No puede viajar así: el botón exige completarlo.
+    const visibles = Object.fromEntries(
+      actual.campos.map((c) => {
+        const v = (valores[c.id] ?? '').trim();
+        return [c.id, v || (c.obligatorio ? `[${c.etiqueta.toLowerCase()}]` : '')];
+      }),
+    );
     return componerPrompt({
       plantilla: actual.plantilla,
-      valores,
+      valores: visibles,
       estilo: estilo === 'otro' ? estiloPropio : estilo,
       conFotoProducto: Boolean(producto),
       conLogo: Boolean(logo),
@@ -208,6 +219,9 @@ export default function TallerImagen() {
               setSeccion(p.id);
               setValores({});
               setEditado(null);
+              // La imagen o el error de la pieza anterior no describen a ésta.
+              setResult(null);
+              setError(null);
             }}
             className={`rounded-full px-3.5 py-2 text-xs font-semibold transition ${
               seccion === p.id
