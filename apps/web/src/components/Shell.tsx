@@ -31,7 +31,7 @@ interface Props {
   subtitle?: string;
   /** Chip de la barra superior: el tipo de cambio vigente (único desde la unificación). */
   rate?: { valor: number; variacionPct?: number | null } | null;
-  urgenciasBadge?: { count: number; montoBob?: number } | null;
+  urgenciasBadge?: { count: number } | null;
   onUrgenciasClick?: () => void;
   headerRight?: ReactNode;
   children: ReactNode;

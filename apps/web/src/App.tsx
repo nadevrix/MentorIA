@@ -9,6 +9,8 @@ import FormalizacionPanel from './components/FormalizacionPanel';
 import FxPanel from './components/FxPanel';
 import Icon from './components/Icon';
 import Insights from './components/Insights';
+import Landing from './components/Landing';
+import Login, { type ModoAcceso } from './components/Login';
 import MarketingPanel from './components/MarketingPanel';
 import Shell, { type Tab, type TopNav } from './components/Shell';
 import TaxPanel from './components/TaxPanel';
@@ -21,6 +23,7 @@ import {
   type Agent,
   type InsightsResponse,
 } from './lib/api';
+import { useSesion } from './lib/sesion';
 
 /** Apartado del panel: un título que orienta y el bloque de contenido. */
 function Section({
@@ -43,6 +46,35 @@ function Section({
   );
 }
 
+/**
+ * Identidad y salida, arriba a la derecha.
+ *
+ * La inicial en vez de un avatar: no tenemos foto de nadie, y una silueta
+ * genérica ocupa el mismo espacio sin decir nada.
+ */
+function BotonSalir({ onSalir }: { onSalir: () => void }) {
+  const { sesion } = useSesion();
+  if (!sesion) return null;
+
+  return (
+    <div className="flex items-center gap-2">
+      <span
+        title={sesion.usuario}
+        className="grid h-8 w-8 place-items-center rounded-full bg-[var(--color-accent)]/15 text-xs font-bold uppercase text-[var(--color-accent)]"
+      >
+        {sesion.usuario.trim().charAt(0)}
+      </span>
+      <button
+        type="button"
+        onClick={onSalir}
+        className="rounded-full glass-soft px-3.5 py-2 text-xs font-semibold text-[var(--color-muted)] transition hover:text-[var(--color-fg)]"
+      >
+        Salir
+      </button>
+    </div>
+  );
+}
+
 /** Pregunta enviada desde un hallazgo o el simulador hacia el chat. */
 interface Ask {
   agentId: string;
@@ -51,7 +83,32 @@ interface Ask {
   nonce: number;
 }
 
+/**
+ * Raíz de la aplicación.
+ *
+ * Tres pantallas antes del panel: portada → acceso → panel. La sesión decide
+ * cuál se muestra; no es autenticación (ver lib/sesion.ts), es la puerta de la
+ * demo. Quien ya entró una vez cae directo en el panel al recargar.
+ */
 export default function App() {
+  const { sesion, salir } = useSesion();
+  // null = portada. Si no, en cuál de los dos modos está el formulario.
+  const [acceso, setAcceso] = useState<ModoAcceso | null>(null);
+
+  if (!sesion) {
+    return acceso ? (
+      <Login modo={acceso} onModo={setAcceso} onVolver={() => setAcceso(null)} />
+    ) : (
+      <Landing onEntrar={setAcceso} />
+    );
+  }
+
+  // El panel se monta recién con sesión: así sus efectos no piden datos a la
+  // API mientras alguien está mirando la portada.
+  return <Panel onSalir={salir} />;
+}
+
+function Panel({ onSalir }: { onSalir: () => void }) {
   const [agents, setAgents] = useState<Agent[]>([]);
   const [active, setActive] = useState<Agent | null>(null);
   const [dashboard, setDashboard] = useState<Record<string, any> | null>(null);
@@ -118,10 +175,14 @@ export default function App() {
     <Shell
       tabs={tabs}
       activeTab={tab}
-      onTab={setTab}
+      onTab={(id) => {
+        // Las pestañas se ven también desde Ajustes/Ayuda: clicar una vuelve al inicio.
+        setTopNav('inicio');
+        setTab(id);
+      }}
       topNav={topNav}
-      onTopNav={(nav) => setTopNav(nav)}
-      urgenciasBadge={hallazgosCount > 0 ? { count: hallazgosCount, montoBob: insights?.totalImpactoBob } : null}
+      onTopNav={setTopNav}
+      urgenciasBadge={hallazgosCount > 0 ? { count: hallazgosCount } : null}
       onUrgenciasClick={() => {
         setTopNav('inicio');
         setTab('urgencias');
@@ -145,6 +206,7 @@ export default function App() {
               : 'Tus agentes ya revisaron el negocio. Esto es lo que encontraron.'
       }
       rate={fx ? { valor: fx.tipoCambio, variacionPct: fx.variacion30dPct } : null}
+      headerRight={<BotonSalir onSalir={onSalir} />}
       aside={
         <>
           <div className="shrink-0 border-b border-[var(--color-line)] p-4">

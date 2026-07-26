@@ -96,11 +96,7 @@ const GLOSARIO = [
   },
 ];
 
-export default function Ayuda({
-  agents = [],
-  onTab = () => {},
-  onAsk = () => {},
-}: Partial<Props>) {
+export default function Ayuda({ agents, onTab, onAsk }: Props) {
   return (
     <div className="space-y-4">
       <section className="rounded-[var(--radius-card)] glass p-5">

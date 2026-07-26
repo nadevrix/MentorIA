@@ -185,7 +185,8 @@ export default function FormalizacionPanel({ onAsk, onPendientes }: Props) {
 
         {data && !data.persistente && (
           <p className="mt-3 text-[11px] text-[var(--color-faint)]">
-            Sin base de datos configurada: el avance se guarda en memoria y se recupera en la sesión actual.
+            Sin base de datos configurada: el avance se guarda en memoria y se pierde al reiniciar
+            el servidor.
           </p>
         )}
       </section>

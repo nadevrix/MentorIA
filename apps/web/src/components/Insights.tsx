@@ -11,10 +11,6 @@ interface Props {
  * Rojo para lo crítico, ámbar para lo que se está deteriorando, gris para el
  * resto. Nunca sólo color: cada nivel lleva también su etiqueta en texto.
  */
-/**
- * Jerarquía visual limpia: rojo para lo crítico, ámbar para lo alto, slate para media y baja.
- * Sin emojis informales, con contraste y tipografía financiera profesional.
- */
 const SEVERITY: Record<Severity, { label: string; bg: string; bar: string; amountColor: string }> = {
   critica: {
     label: 'Crítico',
