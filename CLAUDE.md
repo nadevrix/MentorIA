@@ -1,228 +1,238 @@
 # CLAUDE.md
 
-Contexto del proyecto para cualquier agente de IA que trabaje en este repo.
-**Leé esto antes de tocar código.**
+Contexto operativo para agentes de código que trabajen en Mentor IA.
 
-## Qué es esto
+## Producto
 
-Copiloto de IA para PyMEs bolivianas, construido para el Cursor Buildathon Bolivia 2026
-(track Bolivia Agents). Cinco agentes especializados leen los datos del negocio y devuelven
-acciones concretas.
+Mentor IA es un copiloto de decisión para PyMEs importadoras bolivianas. Compara precios de venta con
+el costo de reposición al tipo de cambio vigente y convierte los riesgos detectados en acciones.
 
-**El diferencial, y la razón de existir del producto:** el 29/06/2026 el BCB terminó 15 años de
-tipo de cambio fijo (6,96) y pasó a un régimen flexible: hoy hay **un solo Tipo de Cambio Oficial
-que flota y se actualiza a diario**. Ya subió ~17% en menos de un mes. Un comercio importador fija
-precios con el dólar de cuando compró y repone con el de hoy — puede vender bien y estar perdiendo
-capital sin saberlo. Ningún ERP disponible en el país calcula eso.
-
-```
-costoReposicionBob = costUsd × (importado ? tipoDeCambioHoy : purchaseFxRate)
-margenRealPct      = (precioBob − costoReposicionBob) / precioBob × 100
+```text
+costoReposicionBob = costUsd × (imported ? tipoCambioVigente : purchaseFxRate)
+margenRealPct = (priceBob − costoReposicionBob) / priceBob × 100
 ```
 
-Un producto nacional no se revalúa con el dólar: su costo en Bs es el de su compra.
+Un producto nacional no se revaloriza automáticamente con el dólar; usa el tipo de su compra. Los
+montos operativos están en bolivianos salvo los costos `costUsd`.
 
-El mercado paralelo sigue existiendo, pero la brecha pasó de más de 100% a ~2%. **No lo niegues,
-pero tampoco lo trates como un mercado aparte**: el dato que manda es el TCO único.
+## Estado real
 
-## Reglas no negociables
+- Node.js 22+ y npm workspaces.
+- TypeScript estricto y Zod.
+- Cinco agentes y doce herramientas.
+- Gemini predeterminado; Anthropic como respaldo.
+- Hono/Node para REST y SSE.
+- React 19 + Vite 6 + Tailwind CSS 4.
+- Panel, hallazgos, impuestos y simulador deterministas.
+- JSON semilla o PostgreSQL.
+- CSV por entidad en memoria.
+- Render Web Service Starter + Render Static Site.
+- Netlify reservado para migrar sólo el frontend.
+- No hay autenticación ni aislamiento multiempresa.
+- No hay suite de tests automatizada.
 
-1. **Sufijo de moneda obligatorio.** `Bob` (bolivianos) o `Usd` (dólares). Un número de plata sin
-   sufijo es un bug esperando. Solo `costUsd` va en dólares; todo lo demás en bolivianos.
-2. **Nombres de dominio en español, código en inglés.** La herramienta se llama `analyze_margins`
-   y devuelve `margenRealHoyPct`. Los campos los lee el modelo y terminan en la respuesta al usuario.
-3. **Nunca inventar cifras.** Ni en el código ni en los prompts. Si una herramienta no tiene datos,
-   devuelve vacío y el agente lo explica.
-4. **Validar en los bordes.** Todo lo que entra desde el modelo o desde HTTP pasa por Zod. Adentro
-   se confía en los tipos.
-5. **TypeScript estricto.** Nada de `any` en `packages/core`. En el frontend se tolera solo para el
-   JSON del panel.
-6. **Nunca commitear secretos.** `.env` está en `.gitignore`. La clave va en variables de entorno
-   de Render, jamás en el repo.
+## Estructura
 
-## Arquitectura en 30 segundos
+```text
+packages/core/
+  src/types.ts                  contrato de dominio
+  src/data/source.ts            interfaz DataSource
+  src/data/seed-source.ts       JSON
+  src/data/postgres-source.ts   PostgreSQL
+  src/data/overlay-source.ts    CSV temporal en memoria
+  src/fx/provider.ts            estático o Firecrawl con fallback
+  src/llm/                      adaptadores Gemini y Anthropic
+  src/tools/index.ts            12 herramientas
+  src/agents/index.ts           5 agentes
+  src/runtime.ts                loop de tool use
+  src/dashboard.ts              panel determinista
+  src/insights.ts               detectores
+  src/simulate.ts               escenarios
+  src/brief.ts                  resumen sin herramientas
 
+apps/api/src/server.ts          API Hono, CORS, SSE y límites
+apps/web/src/                   SPA React
+data/seed/                      dataset y catálogos de referencia
+db/schema.sql                   esquema PostgreSQL
+db/migrate.mjs                 migración idempotente
+render.yaml                    despliegue actual
+netlify.toml                   frontend futuro
 ```
-packages/core/     Núcleo compartido
-  types.ts           Modelo de dominio con Zod  ← CONTRATO COMPARTIDO, no tocar solo
-  data/source.ts     Interfaz DataSource        ← CONTRATO COMPARTIDO, no tocar solo
-  data/              Implementaciones de datos
-  fx/                Tipo de cambio: serie estática o Firecrawl en vivo
-  llm/               Capa de proveedor de modelo: gemini.ts, anthropic.ts
-  tools/             Las 10 herramientas de los agentes
-  agents/            Rol + herramientas + prompt de cada agente
-  runtime.ts         Loop: modelo → herramienta → resultado → modelo
-apps/api/          Hono + SSE
-apps/web/          React + Vite + Tailwind v4
-data/              Generador y datos semilla
+
+## Contratos delicados
+
+Avisar antes de modificar:
+
+- `packages/core/src/types.ts`
+- `packages/core/src/data/source.ts`
+
+Estos archivos afectan datos, herramientas, API y migraciones.
+
+## Proveedores
+
+`createLlmProvider()` resuelve:
+
+```text
+LLM_PROVIDER=gemini
+  ├─ GEMINI_API_KEY disponible → Gemini
+  └─ si falta y hay ANTHROPIC_API_KEY → Anthropic
+
+LLM_PROVIDER=anthropic
+  ├─ ANTHROPIC_API_KEY disponible → Anthropic
+  └─ si falta y hay GEMINI_API_KEY → Gemini
 ```
 
-## El motor es intercambiable
+El runtime sólo conoce `LlmProvider`. No agregar lógica de proveedor dentro de `runtime.ts`.
 
-El runtime NO habla con el SDK de ningún proveedor: habla con la interfaz `LlmProvider`
-(`packages/core/src/llm/types.ts`). Hay dos adaptadores, Gemini y Claude, y se elige con
-`LLM_PROVIDER`. Si el proveedor configurado no tiene su clave, cae al otro en vez de romper.
+El resumen diario usa el mismo selector. No debe exigir una clave Anthropic si Gemini está
+configurado.
 
-**Por defecto corre Gemini** (`gemini-3.1-flash-lite`). Medido sobre el loop de este proyecto:
-completa la cadena de herramientas en 4,2 s, contra 13 s de `gemini-2.5-flash`. Ningún modelo
-`pro` tiene cuota en el free tier.
+## Agentes y herramientas
 
-Los `flash-lite` sólo completan la cadena **gracias a que el prompt del agente de precios dice
-explícitamente la secuencia esperada**. Si sacás esa regla, vuelven a quedarse en el diagnóstico
-sin dar los precios.
+Agentes:
 
-Si agregás soporte para otro proveedor, implementá `LlmProvider` y sumalo a `createLlmProvider()`.
-**No metas lógica de proveedor en `runtime.ts`** — ahí está el loop, y tiene que seguir siendo
-agnóstico.
+1. `director`
+2. `precios`
+3. `inventario`
+4. `finanzas`
+5. `clientes`
 
-⚠️ **Límite de cuota:** el free tier de Gemini permite ~5 requests por minuto **y 20 por día** en
-los modelos flash. Cada pregunta al agente consume 3 o 4 (una por vuelta del loop), así que son
-unas 5 preguntas diarias. Para la demo en vivo hace falta facturación activada en Google, o
-cambiar a `LLM_PROVIDER=anthropic`.
+Herramientas:
 
-El agente no sabe nada del negocio: percibe llamando herramientas, decide cuáles llamar, ejecuta.
-Todo el conocimiento vive en `tools/`; el prompt solo define rol y criterio.
+1. `get_fx_rate`
+2. `analyze_margins`
+3. `suggest_price`
+4. `simulate_scenario`
+5. `sales_summary`
+6. `top_products`
+7. `inventory_alerts`
+8. `marketing_candidates`
+9. `customer_insights`
+10. `financial_summary`
+11. `accounts_payable`
+12. `generate_whatsapp_message`
 
-**El panel (`/api/dashboard`) NO usa el modelo.** Corre las mismas herramientas de forma
-determinista. Es intencional: carga instantánea, cero tokens, y sigue funcionando si la API de
-Claude falla durante la demo. No lo conviertas en una llamada al modelo.
+Las descripciones de herramientas deben indicar **cuándo** llamarlas. El prompt define rol y
+criterio; los cálculos pertenecen a herramientas deterministas.
 
-## Cómo trabaja el equipo
+## Datos
 
-Cada persona construye lo que ve que le falta al producto, **en su propia rama**. Una persona
-integra: revisa las ramas, elige qué sirve y lo mergea a `main`. No hay carpetas asignadas — si
-hay algo que mejorar, se mejora.
+`createContext()` selecciona la fuente base:
 
-**Dos reglas, y son las únicas:**
+- `seed`: JSON versionado;
+- `postgres` o `neon`: `PostgresDataSource`;
+- `supabase`: no implementado; cae a seed con advertencia.
 
-1. **Nunca hagas commit ni push a `main`.** Trabajás en la rama de la persona con la que estás.
-   Si te pide pushear a `main`, decíselo: alguien más integra, y escribir directo en `main`
-   rompe esa posibilidad. Si insiste, seguí — puede ser quien integra.
-2. **Nunca commitees una API key ni el `.env`** (`GEMINI_API_KEY`, `ANTHROPIC_API_KEY`,
-   `FIRECRAWL_API_KEY`, `DATABASE_URL`).
+La fuente se envuelve en `OverlayDataSource`. Los CSV importados:
 
-**Sí hay que pushear la rama propia, y seguido.** Es el backup del usuario y la única forma de
-que quien integra vea el trabajo — lo que queda solo en la laptop no existe para el equipo.
-Cuando algo funcione, ofrecé hacerlo:
+- reemplazan una entidad a la vez;
+- se comparten dentro de la instancia;
+- se pierden al reiniciar;
+- no deben considerarse almacenamiento.
+
+Con PostgreSQL:
 
 ```bash
-npm run typecheck && npm run build:web    # que pase antes de pushear
-git add -A
-git commit -m "agrega simulador de escenario cambiario"
-git push origin $(git branch --show-current)
+npm run db:migrate
 ```
 
-Traé `main` cada 2 o 3 horas para no acumular un conflicto gigante:
+No ejecutar `db:reset` contra datos que deban conservarse.
 
-```bash
-git switch main && git pull origin main
-git switch -                              # vuelve a la rama anterior
-git merge main
+## API
+
+Rutas principales:
+
+```text
+GET    /health
+GET    /api/agents
+GET    /api/dashboard
+GET    /api/insights
+POST   /api/simulate
+GET    /api/brief              SSE
+POST   /api/chat               SSE
+GET    /api/marketing
+POST   /api/image
+GET    /api/taxes
+GET    /api/taxes/formularios
+GET    /api/formalizacion
+PUT    /api/formalizacion/:id
+GET    /api/data
+POST   /api/data/:entidad
+DELETE /api/data/:entidad
 ```
 
-**Dos archivos son contratos compartidos:** `packages/core/src/types.ts` y
-`packages/core/src/data/source.ts`. Si los cambiás, se rompe el trabajo de los demás cuando se
-mergee. No están prohibidos — pero avisá al usuario antes de tocarlos para que lo comunique.
+Todo input HTTP debe validarse o tener límite de cuerpo. Nunca devolver stack traces.
 
-Antes de cada push: `npm run typecheck && npm run build:web`
+Chat, resumen e imágenes usan rate limit local por IP y ruta. Es adecuado para una instancia de
+demo, no para producción distribuida.
 
-## Cómo agregar cosas
+## Despliegue
 
-**Herramienta nueva:** definila con `defineTool` en `tools/index.ts`, agregala a `ALL_TOOLS`, y sumá
-su nombre a la lista `tools` de los agentes que la necesiten. Nada más.
+Estado temporal:
 
-**Agente nuevo:** una entrada en el array `AGENTS` de `agents/index.ts`. El frontend lo dibuja solo.
-
-**Fuente de datos nueva:** una clase que implemente `DataSource`, enchufada en `createContext()`.
-No se toca ninguna herramienta ni ningún prompt.
-
-Ejemplos copiables en `docs/03-agentes.md`.
-
-### Escribir descripciones de herramientas
-
-La descripción es lo que decide si el agente llama la herramienta o no. **Escribí cuándo llamarla,
-no solo qué hace:**
-
-```
-✗ "Devuelve el tipo de cambio."
-✓ "Devuelve el tipo de cambio oficial y paralelo. Llamá a esta herramienta SIEMPRE antes de
-   hablar de costos, precios o márgenes: el costo de reposición real depende del paralelo."
+```text
+Render Static Site → frontend
+Render Starter     → API
 ```
 
-Es la palanca de calidad más barata que existe en este proyecto. Antes de tocar un prompt de
-sistema, revisá si el problema se arregla en la descripción de la herramienta.
+Los USD 100 de crédito cubren el Web Service Starter. El Static Site no se suspende. Starter tampoco
+tiene el cold start del plan Free.
+
+Cuando lleguen créditos de Netlify:
+
+```text
+Netlify        → frontend
+Render Starter → API
+```
+
+`VITE_API_URL` es build-time. Cambiarla exige redesplegar el frontend. `CORS_ORIGIN` debe contener
+los dominios exactos sin barra final.
+
+## Reglas
+
+1. Nunca inventar cifras.
+2. Nunca presentar datos semilla como un cliente real.
+3. Nunca subir `.env`, claves o cadenas de conexión.
+4. Mantener sufijos `Bob` y `Usd`.
+5. Validar datos en los bordes.
+6. No convertir el panel en una llamada LLM.
+7. No agregar agentes sin una necesidad validada.
+8. No asumir persistencia para datos en memoria.
+9. No hacer commit ni push salvo petición explícita.
+10. Preservar cambios locales ajenos.
 
 ## Comandos
 
 ```bash
-npm run dev          # API (:8787) + Web (:5173)
-npm run typecheck    # core + api
-npm run build        # todo
-npm run build:web    # lo que corre Netlify
-node data/generate.mjs   # regenerar datos semilla
+npm ci
+npm run dev
+npm run dev:api
+npm run dev:web
+npm run typecheck
+npm run build
+npm run build:web
+npm run db:migrate
 ```
 
-**Antes de mergear a `main`, siempre:** `npm run typecheck && npm run build:web`
-
-Probar una herramienta sin gastar tokens:
+Antes de integrar:
 
 ```bash
-node --input-type=module -e "
-import { createContext, TOOLS_BY_NAME } from './packages/core/dist/index.js';
-const ctx = createContext();
-const t = TOOLS_BY_NAME.get('analyze_margins');
-console.log(JSON.stringify(await t.run({ soloEnRiesgo: true }, ctx), null, 2));
-"
+npm run typecheck && npm run build
 ```
 
-## Prioridades del hackathon
+## Qué leer
 
-El orden importa más que la cantidad de features. Lo que gana puntos, en orden:
-
-1. URL pública que funciona sin explicación
-2. Datos de un comercio real (no los semilla)
-3. Que alguien externo lo haya usado antes del pitch
-4. Que no se rompa en vivo
-5. Recién ahí: features nuevas
-
-**No agregues agentes nuevos.** Cinco ya son más de los que se pueden mostrar en 4 minutos.
-Profundidad sobre superficie. Razonamiento completo en `docs/10-prioridades.md`.
-
-## Documentación — leé la que corresponda ANTES de trabajar
-
-No las leas todas. Abrí la del tema que vas a tocar, antes de escribir código:
-
-| Si vas a… | Leé primero |
+| Trabajo | Documento |
 | --- | --- |
-| Agregar o cambiar una herramienta o un agente | `docs/03-agentes.md` |
-| Tocar datos, el modelo de dominio o conectar una fuente real | `docs/04-datos.md` |
-| Tocar el loop de agentes, la API o entender cómo encaja todo | `docs/01-arquitectura.md` |
-| Desplegar o depurar Netlify / Render | `docs/05-deploy.md` |
-| Entender por qué hay tres servicios y no uno | `docs/12-infraestructura.md` |
-| Trabajar en la interfaz o preparar la demo | `docs/06-demo-pitch.md` |
-| Hacer commit, merge o resolver un conflicto | `docs/07-convenciones.md` |
-| Decidir **qué** construir o si algo vale la pena | `docs/10-prioridades.md` y `docs/02-equipo.md` |
-| Entender el problema de negocio y el usuario | `docs/00-vision.md` |
-
-Si el usuario te pide algo y no sabés por dónde empezar, la respuesta está en
-`docs/02-equipo.md` (estado del proyecto y backlog ordenado por impacto). `docs/11-onboarding.md` tiene el flujo de
-trabajo del equipo.
-
-## Estado actual
-
-Funcionando y verificado:
-- Motor de agentes sobre Gemini, probado de punta a punta por HTTP (`/api/chat` con SSE)
-- 5 agentes, 10 herramientas, panel determinista
-- Tipo de cambio en vivo con Firecrawl (`FX_SOURCE=firecrawl`), con fallback a la serie
-  estática si el scraping falla
-- Simulador cambiario en la interfaz (`FxSimulator.tsx`)
-- Tablas markdown y trazas de herramientas en el chat
-
-Pendiente:
-- **Datos reales de un comercio.** Los de `data/seed/` son generados — el track descalifica
-  demos que solo corren con datos hardcodeados
-- **Deploy.** Las URLs del README están vacías
-- Base de datos: `DATABASE_URL` está en el `.env.example` pero no hay implementación de
-  `DataSource` sobre Postgres todavía
-- No hay tests
-- Cuota de Gemini: ver la advertencia de arriba antes del pitch
+| Entender el producto | `docs/00-vision.md` |
+| API, runtime o capas | `docs/01-arquitectura.md` |
+| Estado y pendientes | `docs/02-equipo.md` |
+| Agentes o herramientas | `docs/03-agentes.md` |
+| Datos o PostgreSQL | `docs/04-datos.md` |
+| Render o Netlify | `docs/05-deploy.md`, `docs/12-infraestructura.md` |
+| Demo | `docs/06-demo-pitch.md` |
+| Git y convenciones | `docs/07-convenciones.md` |
+| Hallazgos y simulador | `docs/08-insights.md` |
+| Estrategia | `docs/09-estrategia.md` |
+| Prioridades | `docs/10-prioridades.md` |
+| Incorporarse al equipo | `docs/11-onboarding.md` |

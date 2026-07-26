@@ -1,142 +1,193 @@
-# 12 — Infraestructura: por qué tres servicios y no uno
+# 12 — Infraestructura
 
-Tres piezas, tres servicios, cada uno haciendo lo que sabe hacer:
+## Decisión actual
 
-```
-Netlify  →  la interfaz          archivos estáticos servidos desde el borde
-Render   →  la API con agentes   un servidor Node prendido, sin límite de tiempo
-Neon     →  la base de datos     Postgres gestionado
-```
+Durante la etapa inicial, todo el producto se aloja en Render:
 
-Netlify y Render son **sponsors del Buildathon**, así que además de encajar técnicamente
-suman en el uso de herramientas del evento.
-
----
-
-## Qué es cada uno, en una frase
-
-| Servicio | Qué es realmente |
-| --- | --- |
-| **Netlify** | Un almacén de archivos con red de distribución global. Guarda el HTML, CSS y JS ya compilados y los sirve desde el servidor más cercano al visitante. No ejecuta tu backend. |
-| **Render** | Una computadora en la nube con tu servidor Node prendido, esperando pedidos. Ejecuta código de verdad, sin límite de duración. |
-| **Neon** | Postgres gestionado. Sólo guarda datos; no sirve páginas ni corre tu código. |
-
----
-
-## ¿Por qué no todo en Netlify?
-
-Netlify **sí** puede correr backend, pero con un límite duro: **las funciones se cortan a los
-10 segundos**.
-
-El loop de un agente tarda más que eso:
-
-```
-pregunta → get_fx_rate → analyze_margins → suggest_price → respuesta
-                    4 a 13 segundos, más el arranque
+```text
+Render Static Site  → apps/web → HTML, CSS y JavaScript por CDN
+Render Web Service  → apps/api → Hono, SSE y ejecución de agentes
+Datos               → JSON versionado; Neon/Postgres es opcional
 ```
 
-Y hay algo peor que la duración: **el chat transmite la respuesta mientras se genera** (por eso se
-ven las trazas de herramientas en vivo). Eso necesita una conexión HTTP abierta todo el tiempo —
-Server-Sent Events.
+Esta decisión aprovecha los USD 100 de créditos disponibles, reduce proveedores durante la demo y
+no exige adaptar el código. Cuando se habiliten los créditos de Netlify, sólo cambia el host del
+frontend:
 
-Netlify tiene funciones largas, de hasta 15 minutos, pero contestan `202 Recibido` de inmediato y
-trabajan por detrás. **No pueden ir mandando texto al navegador**, que es justo lo que hace falta.
+```text
+Netlify             → apps/web
+Render Web Service  → apps/api
+Neon/Postgres       → sin cambios
+```
 
-> Si algún día el chat dejara de transmitir en vivo y se volviera pregunta-respuesta simple,
-> Netlify Functions podría alcanzar. Hoy no.
+## Por qué son dos servicios
 
-## ¿Por qué no todo en Render?
+El frontend es una SPA compilada. Después de `vite build` sólo quedan archivos estáticos en
+`apps/web/dist`; no necesita un proceso Node.
 
-Render puede servir archivos estáticos, sí. Pero el free tier **duerme el servicio tras ~15 minutos
-sin tráfico** y tarda 30–60 segundos en despertar.
+La API sí necesita un proceso:
 
-Si la interfaz viviera ahí, **el sitio entero estaría dormido**, no sólo la API. El jurado abre la
-URL y mira una pantalla en blanco durante casi un minuto.
+- mantiene conexiones SSE abiertas;
+- ejecuta loops de herramientas que pueden durar varios segundos;
+- consulta proveedores LLM y fuentes externas;
+- conserva temporalmente el overlay CSV en memoria.
 
-Con el reparto actual, el frontend en Netlify **nunca duerme** (son archivos estáticos, siempre
-disponibles). Lo único que puede estar frío es la API, y eso se resuelve abriendo `<API>/health`
-cinco minutos antes del pitch.
+Servir ambos como Web Service desperdiciaría recursos. Intentar convertir la API a funciones
+serverless requeriría otra entrada, revisar streaming, límites y estado. No aporta valor al hackathon.
 
-| | Netlify (frontend) | Render (frontend) |
-| --- | --- | --- |
-| ¿Duerme? | No | Sí, a los 15 min |
-| Primera carga en frío | Instantánea | 30–60 s |
-| Distribución | Global, desde el borde | Una sola región |
+## Render Static Site
 
-## ¿Por qué no la base de datos en Render?
+Un Static Site de Render:
 
-Se podría — Render ofrece Postgres. Pero:
+- se sirve por CDN global;
+- no se suspende por inactividad;
+- tiene TLS y dominio `.onrender.com`;
+- reconstruye al cambiar la rama conectada;
+- aplica rewrites y headers definidos en `render.yaml`.
 
-| | Neon | Render Postgres |
-| --- | --- | --- |
-| Estado hoy | Creada, conecta, con el esquema cargado | Habría que crearla y migrar todo |
-| Free tier | No expira | Expira a los ~30 días |
-| Ganancia de mover | **Ninguna** | — |
+El cold start de Render afecta a los **Web Services Free**, no a los Static Sites. La documentación
+anterior del proyecto mezclaba ambos tipos de servicio.
 
-Mover la base ahora cuesta una hora y no aporta nada. Lo único que importa es la **cercanía
-geográfica**: Neon está en `us-east-2` (Ohio), así que `render.yaml` fija la API en Ohio también.
-Si estuvieran en regiones lejanas, cada consulta pagaría el viaje de ida y vuelta, y el panel hace
-varias por carga.
+## Render Web Service Starter
 
----
+La API usa Starter:
 
-## Costo
+- aproximadamente USD 7/mes;
+- 512 MB de RAM y 0,5 CPU;
+- no se suspende tras 15 minutos;
+- admite el servidor Node y el streaming SSE actual;
+- expone `/health` para diagnóstico.
 
-Los tres tienen free tier suficiente para el hackathon:
+El plan Free serviría para pruebas, pero introduce cerca de un minuto de arranque después de estar
+inactivo. Con créditos disponibles no hay razón para asumir ese riesgo en la presentación.
 
-| Servicio | Free tier | Riesgo real |
-| --- | --- | --- |
-| Netlify | Archivos estáticos, generoso | Ninguno |
-| Render | 750 h/mes, duerme a los 15 min | El arranque en frío en el pitch |
-| Neon | No expira | Ninguno a esta escala |
+La región configurada es Ohio. Si se conecta una base externa, conviene crearla en la misma región
+o lo más cerca posible.
 
-**El costo que sí importa no es de hosting: es el del modelo.** El free tier de Gemini permite
-~5 requests por minuto y 20 por día, y cada pregunta al agente consume 3 o 4. Ver `CLAUDE.md`
-para el detalle y `docs/02-equipo.md` para el estado de ese pendiente.
+## Datos y persistencia
 
-## El arranque en frío, en detalle
+### Modo inicial
 
-Es el único punto de fricción del reparto y conviene entenderlo:
+`DATA_SOURCE=seed` carga los JSON de `data/seed/`. Es reproducible y no depende de una base.
 
-1. Nadie usa la API por 15 minutos → Render la duerme.
-2. Llega el primer pedido → tarda 30–60 s en levantarse.
-3. A partir de ahí responde normal hasta el próximo período de inactividad.
+La API siempre envuelve la fuente base en `OverlayDataSource` para permitir CSV por entidad. Ese
+overlay vive en RAM:
 
-Mitigaciones, en orden:
+- se comparte entre todos los visitantes de la única instancia;
+- se pierde al reiniciar o redesplegar;
+- no permite escalar horizontalmente con estado coherente.
 
-1. **Abrir `<API>/health` cinco minutos antes de subir al escenario.** Gratis y suficiente.
-2. Un ping cada 10 minutos durante el Demo Day desde cualquier servicio de uptime.
-3. En el frontend, mostrar "despertando el servidor…" en lugar de un error.
+Sin `DATABASE_URL`, el progreso de formalización también vive en RAM.
 
-## Variables de entorno: quién necesita qué
+### PostgreSQL
 
-**Render (la API):**
+`PostgresDataSource` ya está implementado. Para habilitarlo:
 
-| Variable | Para qué |
-| --- | --- |
-| `LLM_PROVIDER`, `GEMINI_API_KEY`, `GEMINI_MODEL` | El motor de agentes |
-| `ANTHROPIC_API_KEY` | Respaldo: si Gemini rate-limitea, se cambia `LLM_PROVIDER` sin redeploy |
-| `CORS_ORIGIN` | La URL de Netlify, **sin barra final** |
-| `DATA_SOURCE`, `DATABASE_URL` | Vacías = datos semilla. `postgres` + cadena = Neon |
-| `FX_SOURCE`, `FIRECRAWL_API_KEY` | Tipo de cambio en vivo |
+1. crear Neon o PostgreSQL;
+2. ejecutar `npm run db:migrate`;
+3. configurar `DATABASE_URL`;
+4. cambiar `DATA_SOURCE=postgres`;
+5. verificar `baseSource: "postgres"` en `/health`.
 
-**Netlify (la interfaz):**
+Neon es la opción preferida si ya existe una base. Render Postgres también es compatible, pero no
+hay beneficio en migrar entre proveedores sólo por uniformidad.
 
-| Variable | Para qué |
-| --- | --- |
-| `VITE_API_URL` | La URL de Render, **sin barra final** |
+### Redis
 
-⚠️ Las variables `VITE_*` se inyectan **en tiempo de build**. Si cargás la variable después del
-primer deploy, hay que **redesplegar**: si no, el sitio sigue apuntando a `localhost` y no se nota
-hasta abrir el chat.
+No hace falta Redis hoy. No hay colas, sesiones distribuidas, pub/sub ni workers. El rate limit es
+local porque el despliegue usa una sola instancia. Redis se evaluará sólo si se escala a varias
+réplicas o se agregan trabajos asíncronos.
 
-## Orden de despliegue
+## Flujo de una petición
 
-Siempre **API primero**, porque el frontend necesita su URL para compilarse:
+```text
+Navegador
+  ├─ GET /api/dashboard ───────────────┐
+  └─ POST /api/chat + ReadableStream ──┤
+                                       v
+                                Hono en Render
+                                  ├─ DataSource
+                                  ├─ FxProvider
+                                  └─ LlmProvider
+                                       ├─ Gemini
+                                       └─ Anthropic
+```
 
-1. Render → obtenés `https://TU-API.onrender.com`
-2. Verificás `/health`
-3. Netlify con `VITE_API_URL` apuntando ahí
-4. Volvés a Render y ajustás `CORS_ORIGIN` a la URL de Netlify
+El panel, hallazgos, impuestos y simulador son deterministas. El chat y el resumen usan LLM. Por eso
+una caída del proveedor no debería dejar el panel vacío.
 
-El paso a paso completo está en `docs/05-deploy.md`.
+## Seguridad operativa actual
+
+- CORS acepta uno o varios orígenes configurados.
+- `/health` y `/api/*` comparten la política CORS.
+- Chat, resumen e imágenes tienen rate limit por IP y ruta.
+- JSON y CSV tienen límites de tamaño.
+- Las claves sólo existen en variables del Web Service.
+- El frontend nunca recibe claves privadas.
+
+Esto sigue siendo un MVP público:
+
+- no hay autenticación;
+- no hay aislamiento por empresa;
+- las mutaciones de CSV y formalización son compartidas;
+- el rate limit en memoria no es defensa suficiente para producción.
+
+Antes de usar datos sensibles o abrir el producto a clientes se necesita autenticación, tenancy,
+persistencia del overlay y límites globales.
+
+## Variables por servicio
+
+### API
+
+```text
+LLM_PROVIDER
+GEMINI_API_KEY
+GEMINI_MODEL
+ANTHROPIC_API_KEY
+CORS_ORIGIN
+DATA_SOURCE
+DATABASE_URL
+FX_SOURCE
+FIRECRAWL_API_KEY
+IMAGE_PROVIDER
+IMAGE_API_KEY
+AI_RATE_LIMIT_MAX
+AI_RATE_LIMIT_WINDOW_MS
+MAX_JSON_BODY_BYTES
+MAX_CSV_BODY_BYTES
+```
+
+### Frontend
+
+```text
+VITE_API_URL
+```
+
+`VITE_API_URL` se inserta durante el build. Cada cambio exige un nuevo deploy del Static Site.
+
+## Costo y crédito
+
+Con la configuración inicial:
+
+- API Starter: alrededor de USD 7/mes;
+- frontend estático: sin instancia de cómputo;
+- base: no requerida en modo seed;
+- consumo LLM: se factura en el proveedor del modelo, no en Render.
+
+Los USD 100 de Render cubren ampliamente la API durante el hackathon. Debe vigilarse por separado
+la cuota de Gemini o Anthropic: una conversación puede realizar varias llamadas al modelo.
+
+## Migración a Netlify
+
+La migración no cambia el código:
+
+1. Netlify ejecuta `npm run build:web`.
+2. Publica `apps/web/dist`.
+3. Recibe `VITE_API_URL` con la misma API.
+4. Render autoriza temporalmente ambos dominios en `CORS_ORIGIN`.
+5. Tras probar Netlify, se retira el Static Site de Render.
+
+No conviene usar Vercel como puente: la SPA es compatible, pero agregaría una tercera configuración
+y otra migración sin resolver ningún problema técnico.
+
+El procedimiento operativo completo está en `docs/05-deploy.md`.

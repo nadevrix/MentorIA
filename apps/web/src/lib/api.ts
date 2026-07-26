@@ -28,7 +28,7 @@ export interface Health {
   /** Qué hay debajo de la superposición: Postgres o los datos de ejemplo. */
   baseSource: string;
   fxSource: string;
-  hasApiKey: boolean;
+  llm: { provider: string; model: string } | { error: string };
   imageProvider: string | null;
   agents: number;
 }

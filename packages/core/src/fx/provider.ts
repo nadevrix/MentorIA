@@ -4,9 +4,9 @@ import type { FxRate } from '../types.js';
 /**
  * Proveedor de tipo de cambio.
  *
- * El diferencial del producto: en Bolivia el dólar oficial (BCB) está fijo
- * pero el paralelo se mueve, y es el paralelo el que define el costo real
- * de reposición de un importador.
+ * El diferencial del producto: desde el cambio de régimen de junio de 2026 el
+ * tipo oficial es flexible. El costo real de reposición debe usar la cotización
+ * vigente, no la que tenía el lote cuando se compró.
  */
 export interface FxProvider {
   readonly name: string;
@@ -32,7 +32,7 @@ export class SeedFxProvider implements FxProvider {
 }
 
 /**
- * Proveedor en vivo que obtiene el tipo de cambio del dólar paralelo mediante la API de Firecrawl.
+ * Proveedor en vivo que obtiene una cotización de referencia mediante la API de Firecrawl.
  * Mantiene un caché en memoria de 15 minutos (900,000 ms). Si el scraping falla o no hay API key,
  * realiza un fallback transparente a SeedFxProvider para garantizar estabilidad durante las demos.
  */
@@ -55,7 +55,7 @@ export class FirecrawlFxProvider implements FxProvider {
       throw new Error('FIRECRAWL_API_KEY no está configurada');
     }
 
-    // URL de referencia pública del dólar paralelo en Bolivia
+    // URL pública de referencia para la cotización en Bolivia.
     const targetUrl = 'https://boliviabolivar.com';
 
     const res = await fetch('https://api.firecrawl.dev/v1/scrape', {
@@ -138,10 +138,12 @@ export class FirecrawlFxProvider implements FxProvider {
  * Crea el proveedor de tipo de cambio según las variables de entorno.
  */
 export function createFxProvider(data: DataSource): FxProvider {
-  const fxSource = process.env.FX_SOURCE;
+  const fxSource = process.env.FX_SOURCE?.toLowerCase();
   const hasKey = Boolean(process.env.FIRECRAWL_API_KEY);
 
-  if (fxSource === 'firecrawl' || hasKey) {
+  // Una selección explícita siempre manda. La clave sólo activa Firecrawl
+  // automáticamente cuando FX_SOURCE no está definido, por compatibilidad.
+  if (fxSource === 'firecrawl' || (!fxSource && hasKey)) {
     return new FirecrawlFxProvider(data);
   }
 

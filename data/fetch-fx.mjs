@@ -1,5 +1,6 @@
 /**
- * Trae la serie real del tipo de cambio del BCB y la escribe en data/seed/fx.json.
+ * Trae una serie publicada como oficial por la fuente indicada y la escribe en
+ * data/seed/fx.json.
  *
  * Contexto que hace falta para entender el archivo que genera: hasta finales de
  * junio de 2026 Bolivia tenía un tipo oficial intervenido y un paralelo que se
@@ -65,7 +66,7 @@ async function main() {
       rate: Number(r.sell),
       // 'unificado' = régimen flexible actual; 'referencial' = el tramo fijo anterior.
       regimen: r.kind === 'unificado' ? 'flexible' : 'fijo',
-      source: 'bcb',
+      source: 'dolarbluebolivia.click (serie oficial)',
     }))
     .sort((a, b) => a.date.localeCompare(b.date));
 

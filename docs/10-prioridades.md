@@ -44,7 +44,7 @@ inventados. **Un dueño de tienda diciendo "esto me sirve" mueve tres criterios.
 3. **Que alguien externo lo use antes del pitch.** Aunque sea un comerciante conocido por WhatsApp.
    Poder decir *"lo probó Don X y encontró dos productos que vendía perdiendo plata"* vale más que
    cualquier funcionalidad.
-4. **Que no se rompa en vivo.** Errores manejados, estados de carga, Render despierto.
+4. **Que no se rompa en vivo.** Errores manejados, estados de carga y `/health` verificado.
 5. **Recién ahí: base de datos real, alertas proactivas, features nuevas.**
 
 Si terminan 1–4 antes de la medianoche, lo que más suma es **Neon con datos reales adentro + el reto
@@ -63,11 +63,13 @@ ocho módulos en 24 horas es exactamente eso: mucha superficie, poca profundidad
 no haya visto tres veces esa mañana.
 
 **Qué se hizo en cambio:** cinco agentes, todos anclados a la misma tesis del dólar. El de
-Inventario decide reponer según la tendencia del paralelo; el Financiero valúa el costo de ventas a
+Inventario decide reponer según la tendencia del tipo vigente; el Financiero valúa el costo de ventas a
 reposición. No son módulos sueltos: son la misma idea vista desde cinco ángulos.
 
-**No cambiar de base de datos por prolijidad.** Los agentes solo leen; nada escribe. Un JSON
-validado con Zod es suficiente hasta que haya datos reales grandes, multiusuario o escritura.
+**No cambiar de base de datos por prolijidad.** Las herramientas de análisis leen, pero la app ya
+escribe el overlay CSV en memoria y el avance de formalización en memoria o Postgres. Un JSON
+validado con Zod sigue siendo suficiente para la demo; autenticación, multiempresa y persistencia
+del overlay sí son necesarias antes de operar con clientes.
 
 ## El pitch: qué vender
 
@@ -81,19 +83,20 @@ Guion completo en `docs/06-demo-pitch.md`.
 
 ## Base de datos: Neon vs Supabase
 
-Si en algún momento se agrega una (paso 5 de la escalera):
+`PostgresDataSource` ya existe y sirve con cualquier cadena PostgreSQL. La decisión pendiente es el
+servicio gestionado, no la implementación del contrato:
 
 | | Neon | Supabase |
 | --- | --- | --- |
 | Es | Postgres serverless | Postgres + auth + API REST + storage |
 | Ventaja | Más simple, arranca rápido, branching de DB | Trae autenticación gratis |
-| Cold start | Sí, ~500 ms en free tier | Menor |
+| Estado en este proyecto | Compatible mediante `DATABASE_URL` | Compatible como PostgreSQL |
 
-Con solo tablas, Neon es más liviano. Si en algún momento quieren login de varios comercios,
+Con sólo tablas, Neon es más liviano. Si en algún momento quieren login de varios comercios,
 Supabase ahorra escribir auth.
 
-En ambos casos es **una clase de ~60 líneas** que implementa `DataSource`, sin tocar ningún agente
-ni ninguna herramienta. Esa es la razón de que exista la interfaz. Ver `docs/04-datos.md`.
+En ambos casos los agentes y herramientas permanecen iguales porque hablan con `DataSource`. Ver
+`docs/04-datos.md`.
 
 ## Riesgos que sí pueden costarles el hackathon
 
@@ -101,7 +104,7 @@ Ninguno es técnico:
 
 1. **Llegar a las 09:00 sin URL pública.** Descalifica.
 2. **Demo con datos inventados.** El track lo dice explícitamente.
-3. **Render dormido en el escenario.** 40 segundos de arranque en frío sobre 4 minutos de pitch.
-   Abrir `<API>/health` cinco minutos antes.
+3. **Un deploy o proveedor caído en el escenario.** Probar `/health`, dashboard y un chat completo
+   desde la URL pública antes de presentar.
 4. **Pitch sin ensayar.** Tres veces, cronometrado, en voz alta.
 5. **`main` roto a las 08:00** porque alguien pusheó sin correr el build.

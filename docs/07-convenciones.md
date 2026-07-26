@@ -15,7 +15,7 @@ Varias personas, 24 horas, un repo. Estas reglas existen para que nadie pierda t
 ```
    fulano   ──┐
    mengana  ──┤
-   vallejos ──┼──► (revisión) ──► main ──► Netlify + Render despliegan de acá
+   vallejos ──┼──► (revisión) ──► main ──► Render despliega de acá
    zutano   ──┘
 ```
 
@@ -37,7 +37,7 @@ Con una rama por persona, lo que no funciona simplemente **no se mergea**. Cero 
 ```bash
 git clone https://github.com/nadevrix/MentorIA.git
 cd MentorIA
-npm install
+npm ci
 cp .env.example .env      # pegar la GEMINI_API_KEY
 
 git switch -c MI-NOMBRE   # tu rama, con tu nombre
@@ -92,7 +92,7 @@ git push origin main
 
 Si algo no sirve, no se mergea. No hace falta explicar ni revertir nada.
 
-**Nunca pushear a `main` sin correr el build primero.** Si `main` está roto, Netlify falla y
+**Nunca pushear a `main` sin correr el build primero.** Si `main` está roto, Render falla y
 todos lo arrastran en su próximo merge.
 
 ## Cuando algo sale mal
@@ -159,11 +159,11 @@ repo de todos los demás.
 ### Secretos
 
 ```bash
-git log -p | grep -i "sk-ant" && echo "⚠️ HAY UNA CLAVE EN EL HISTORIAL"
+git log -p | rg -i "sk-ant-|AIza[0-9A-Za-z_-]{20,}|postgres(ql)?://[^ ]+@"
 ```
 
-Si aparece algo: **rotá la clave en la consola de Anthropic inmediatamente.** Generar una clave
-nueva es más rápido que reescribir el historial de git.
+Si aparece algo: **rotá la credencial afectada inmediatamente.** Generar una nueva es más rápido
+que discutir si alguien llegó a copiarla.
 
 ## Mensajes de commit
 
@@ -238,7 +238,7 @@ en qué estoy trabado.** Sirven sobre todo para detectar trabajo duplicado a tie
 - **TypeScript estricto.** Nada de `any` en `packages/core`.
 - **Nombres de dominio en español, código en inglés.** `analyze_margins` devuelve `margenRealHoyPct`.
 - **Sufijo de moneda obligatorio:** `Bob` o `Usd`. Un número de plata sin sufijo es un bug esperando.
-- **Comentá el porqué, no el qué.** `// el paralelo, no el oficial: es el costo real de reponer`
+- **Comentá el porqué, no el qué.** `// usa el tipo vigente: mide el costo real de reponer`
   sirve. `// suma el total` no.
 
 ## Manejo de errores
@@ -254,7 +254,7 @@ en qué estoy trabado.** Sirven sobre todo para detectar trabajo duplicado a tie
 Si agregás una:
 1. Documentala en `.env.example` con un comentario.
 2. Dale un valor por defecto sensato en el código.
-3. Avisá para que se cargue en Render o Netlify.
+3. Avisá para que se cargue en Render y, si empieza por `VITE_`, también en el host del frontend.
 
 Las del frontend llevan prefijo `VITE_` y **se inyectan en tiempo de build** — cambiarlas exige
 redesplegar.
@@ -267,6 +267,6 @@ npm run dev:api      # solo API, con recarga
 npm run dev:web      # solo frontend
 npm run typecheck    # core + api
 npm run build        # todo
-npm run build:web    # lo que corre Netlify
+npm run build:web    # build del frontend estático
 node data/generate.mjs   # regenerar datos semilla
 ```

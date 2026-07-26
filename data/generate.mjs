@@ -31,16 +31,9 @@ const iso = (daysBack) => {
   return d.toISOString().slice(0, 10);
 };
 
-// --- Tipo de cambio: oficial fijo, paralelo con tendencia alcista ---------
-const OFFICIAL = 6.96;
-const fx = [];
-for (let i = 180; i >= 0; i -= 3) {
-  const t = (180 - i) / 180;
-  const parallel = round2(11.4 + t * 3.3 + (rnd() - 0.5) * 0.25);
-  fx.push({ date: iso(i), official: OFFICIAL, parallel, source: 'promedio mercado paralelo (dato de referencia)' });
-}
-
-const currentParallel = fx.at(-1).parallel;
+// Tipo histórico usado únicamente para compras nacionales de referencia.
+// El tipo de cambio de mercado vive en data/seed/fx.json y no se genera acá.
+const FIXED_PURCHASE_RATE = 6.96;
 
 // --- Productos ------------------------------------------------------------
 const catalog = [
@@ -56,8 +49,8 @@ const catalog = [
   ['Funda para celular (varios)', 'accesorios', 1.8, true, 200, 7.6],
   ['Protector de pantalla vidrio', 'accesorios', 0.9, true, 260, 7.6],
   ['Reloj inteligente serie 8', 'wearables', 41, true, 10, 9.9],
-  ['Bolsa de regalo impresa', 'insumos', 0.35, false, 400, OFFICIAL],
-  ['Etiquetas térmicas rollo', 'insumos', 4.2, false, 30, OFFICIAL],
+  ['Bolsa de regalo impresa', 'insumos', 0.35, false, 400, FIXED_PURCHASE_RATE],
+  ['Etiquetas térmicas rollo', 'insumos', 4.2, false, 30, FIXED_PURCHASE_RATE],
 ];
 
 const products = catalog.map(([name, category, costUsd, imported, stock, purchaseFxRate], i) => {
@@ -160,8 +153,8 @@ addExpense({ date: iso(12), category: 'mercaderia', description: 'Saldo proveedo
 addExpense({ date: iso(10), category: 'impuestos', description: 'IVA/IT del mes', amountBob: 3120, dueDate: iso(-5), paid: false });
 addExpense({ date: iso(25), category: 'servicios', description: 'Factura de energía eléctrica', amountBob: 742, dueDate: iso(2), paid: false });
 
-// OJO: fx.json NO se genera acá. Lo trae data/fetch-fx.mjs con el tipo de cambio
-// real del BCB. Generar uno ficticio rompería el esquema y falsearía la demo.
+// OJO: fx.json NO se genera acá. Lo actualiza data/fetch-fx.mjs desde su fuente
+// documentada. Generar una serie ficticia acá borraría su trazabilidad.
 const files = {
   'products.json': products,
   'customers.json': customers,
@@ -173,4 +166,4 @@ for (const [file, contents] of Object.entries(files)) {
   writeFileSync(join(OUT, file), `${JSON.stringify(contents, null, 2)}\n`);
   console.log(`✓ ${file} (${contents.length} registros)`);
 }
-console.log('\nEl tipo de cambio lo trae data/fetch-fx.mjs (dato real del BCB), no este script.');
+console.log('\nEl tipo de cambio lo trae data/fetch-fx.mjs; este script no modifica fx.json.');

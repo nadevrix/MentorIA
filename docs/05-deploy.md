@@ -1,93 +1,200 @@
-# 05 — Deploy
+# 05 — Despliegue
 
-> **Hacé esto primero, con el esqueleto vacío.** Un producto perfecto sin URL pública no compite.
-> Es la prioridad #1 del backlog (`docs/02-equipo.md`).
+## Estrategia vigente
 
-Dos servicios, ambos free tier y accesibles para el jurado sin cuenta ni instalación:
+Hasta que se habiliten los créditos de Netlify, el producto completo se despliega en Render:
 
-| Pieza    | Servicio | Config              |
-| -------- | -------- | ------------------- |
-| Frontend | Netlify  | `netlify.toml`      |
-| API      | Render   | `render.yaml`       |
+| Componente | Tipo de servicio | Plan |
+| --- | --- | --- |
+| `mentor-ia-api` | Web Service Node | Starter |
+| `mentor-ia-web` | Static Site | Gratuito |
 
-## 1. API en Render
+La API Starter cuesta aproximadamente USD 7/mes y se cubre con los USD 100 de créditos disponibles.
+No se suspende por inactividad. El frontend estático se sirve por CDN y tampoco tiene cold start.
 
-1. Render → **New → Web Service** → conectá el repo de GitHub.
-2. Render detecta `render.yaml`. Si lo configurás a mano:
-   - **Runtime:** Node
-   - **Build:** `npm install && npm run build --workspace=@pyme/core && npm run build --workspace=@pyme/api`
-   - **Start:** `node apps/api/dist/server.js`
-   - **Health check path:** `/health`
-3. Variables de entorno (pestaña *Environment*):
+Cuando llegue Netlify, sólo se moverá el frontend. La API seguirá en Render.
 
-   | Variable            | Valor                                         |
-   | ------------------- | --------------------------------------------- |
-   | `LLM_PROVIDER`      | `gemini` (o `anthropic`)                      |
-   | `GEMINI_API_KEY`    | tu clave — **nunca en el repo**               |
-   | `GEMINI_MODEL`      | `gemini-2.5-flash`                            |
-   | `ANTHROPIC_API_KEY` | opcional, respaldo si Gemini falla en vivo    |
-   | `CORS_ORIGIN`       | la URL de Netlify (dejalo en `*` mientras probás) |
-   | `DATA_SOURCE`       | `seed`                                        |
-   | `FX_SOURCE`         | `firecrawl` si hay clave, si no `static`      |
-   | `FIRECRAWL_API_KEY` | opcional, para el dólar en vivo               |
+## Requisitos previos
 
-4. Verificá: `curl https://TU-API.onrender.com/health` debe devolver el proveedor y el modelo:
+1. El repositorio debe estar disponible en `https://github.com/nadevrix/MentorIA`.
+2. La rama a desplegar debe contener `render.yaml`.
+3. No debe haber secretos en Git; `.env` ya está ignorado.
+4. Debe existir al menos una clave: `GEMINI_API_KEY` o `ANTHROPIC_API_KEY`.
+5. Antes de subir cambios:
 
-   ```json
-   {"ok":true,"dataSource":"seed","fxSource":"firecrawl",
-    "llm":{"provider":"gemini","model":"gemini-2.5-flash"},"agents":5}
-   ```
+```bash
+npm ci
+npm run typecheck
+npm run build
+npm audit
+```
 
-   Si `llm` trae un `error` en vez de `provider`, falta la clave del modelo.
+## Crear los servicios con el Blueprint
 
-## 2. Frontend en Netlify
+1. En Render, abrir **New → Blueprint**.
+2. Conectar el repositorio `nadevrix/MentorIA`.
+3. Elegir la rama de producción.
+4. Render leerá `render.yaml` y propondrá dos servicios.
+5. Completar los secretos solicitados:
+   - `GEMINI_API_KEY`: clave principal.
+   - `ANTHROPIC_API_KEY`: respaldo opcional.
+   - `VITE_API_URL`: usar inicialmente la URL esperada de la API, por ejemplo
+     `https://mentor-ia-api.onrender.com`.
+6. Aplicar el Blueprint.
 
-1. Netlify → **Add new site → Import an existing project** → el mismo repo.
-2. Toma `netlify.toml` automáticamente (build `npm run build:web`, publish `apps/web/dist`).
-3. Variable de entorno: `VITE_API_URL = https://TU-API.onrender.com` (sin barra final).
-4. **Redesplegá después de agregar la variable** — Vite inyecta las `VITE_*` en tiempo de build, así
-   que un deploy previo no la toma.
-5. Ajustá `CORS_ORIGIN` en Render a la URL de Netlify y guardá las URLs en el README.
+Si Render asigna otro dominio a la API, corregir `VITE_API_URL` en `mentor-ia-web` y lanzar
+**Manual Deploy → Deploy latest commit**. Esta variable se inserta durante el build; cambiarla sin
+redesplegar no modifica el JavaScript publicado.
 
-## El arranque en frío de Render
+## Configuración de la API
 
-El free tier duerme el servicio tras ~15 minutos sin tráfico, y despertarlo toma **30–60 segundos**.
-En medio de un pitch de 4 minutos eso es fatal.
+La configuración versionada es:
 
-Mitigaciones, en orden de preferencia:
+```text
+Runtime: Node
+Node: 22
+Plan: Starter
+Region: Ohio
+Build: npm ci && npm run build --workspace=@pyme/core && npm run build --workspace=@pyme/api
+Start: node apps/api/dist/server.js
+Health check: /health
+```
 
-1. **Abrí `<API>/health` cinco minutos antes de subir al escenario.** Suficiente y gratis.
-2. Un ping cada 10 minutos durante el Demo Day desde cualquier servicio de uptime.
-3. En el frontend, mostrar "despertando el servidor…" en lugar de un error.
+Variables principales:
 
-## Checklist previo al pitch
+| Variable | Valor inicial | Uso |
+| --- | --- | --- |
+| `LLM_PROVIDER` | `gemini` | Proveedor preferido |
+| `GEMINI_API_KEY` | secreto | Chat y resumen |
+| `GEMINI_MODEL` | `gemini-3.1-flash-lite` | Modelo principal |
+| `ANTHROPIC_API_KEY` | secreto opcional | Respaldo |
+| `CORS_ORIGIN` | `*` sólo al arrancar | Origen autorizado |
+| `DATA_SOURCE` | `seed` | Datos versionados |
+| `FX_SOURCE` | `static` | Histórico local |
+| `AI_RATE_LIMIT_MAX` | `6` | Solicitudes de IA por IP/ruta/ventana |
+| `AI_RATE_LIMIT_WINDOW_MS` | `60000` | Ventana del límite |
 
-- [ ] `<API>/health` responde `ok: true` y `llm` trae `provider` y `model`
-- [ ] Dos preguntas seguidas al agente funcionan sin 429 (si no, falta facturación en Gemini)
-- [ ] `<API>/api/dashboard` devuelve datos
-- [ ] La URL de Netlify carga el panel con números
-- [ ] Un chat completo con un agente funciona de punta a punta desde la URL pública
-- [ ] Probado en el celular de alguien del equipo, con datos móviles (no el WiFi del venue)
-- [ ] `CORS_ORIGIN` apunta a la URL real de Netlify
-- [ ] `git log -p | grep -i "sk-ant"` no devuelve nada
+Después de conocer la URL del frontend, reemplazar `CORS_ORIGIN=*` por el dominio exacto, sin barra
+final:
 
-## Errores frecuentes
+```text
+https://mentor-ia-web.onrender.com
+```
 
-**CORS bloqueado.** `CORS_ORIGIN` en Render tiene que ser la URL exacta de Netlify, sin barra final.
-Mientras depurás, `*` funciona.
+El middleware acepta varios orígenes separados por coma. Esto permite una migración sin corte:
 
-**Falta la clave del modelo.** `/health` lo dice en el campo `llm`. El panel funciona igual (es
-determinista) pero `/api/chat` devuelve 500.
+```text
+https://mentor-ia-web.onrender.com,https://mentor-ia.netlify.app
+```
 
-**429 de Gemini en medio de la demo.** El free tier permite ~5 requests por minuto y cada pregunta
-consume 3 o 4. Activá facturación en Google antes del pitch, o cambiá `LLM_PROVIDER=anthropic` en
-Render — el cambio no requiere redeploy del frontend.
+## Verificación inicial
 
-**El build de Netlify falla con "cannot find module @pyme/core".** El build tiene que compilar el core
-primero — para eso `npm run build:web` corre ambos. No lo cambies por `vite build` pelado.
+### Salud
 
-**El frontend apunta a localhost en producción.** Faltó `VITE_API_URL` o no se redesplegó después de
-agregarla.
+```bash
+curl https://TU_API.onrender.com/health
+```
 
-**El SSE se corta a mitad de respuesta.** Suele ser un proxy con buffering. Render no lo hace; si
-pasa, revisá que no haya un CDN intermedio delante de la API.
+Respuesta esperada:
+
+```json
+{
+  "ok": true,
+  "dataSource": "overlay",
+  "baseSource": "seed",
+  "fxSource": "static",
+  "llm": {
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite"
+  },
+  "imageProvider": null,
+  "agents": 5
+}
+```
+
+`dataSource: "overlay"` es correcto: la capa de CSV envuelve a la fuente base. El campo que confirma
+si se usa JSON o Postgres es `baseSource`.
+
+### Panel determinista
+
+```bash
+curl https://TU_API.onrender.com/api/dashboard
+curl https://TU_API.onrender.com/api/insights
+```
+
+Ambos deben funcionar incluso si el proveedor LLM está caído.
+
+### Streaming
+
+Probar desde la URL pública:
+
+1. El resumen diario debe empezar a escribir texto.
+2. Una pregunta al agente debe mostrar `tool_use`, `tool_result` y texto incremental.
+3. Dos preguntas consecutivas deben completar sin 429 del proveedor.
+
+## PostgreSQL opcional
+
+El primer despliegue usa `DATA_SOURCE=seed`. Para conectar Neon:
+
+1. Crear la base cerca de Ohio.
+2. Configurar `DATABASE_URL` en la API.
+3. Ejecutar localmente contra la base remota:
+
+```bash
+DATABASE_URL='postgresql://...' npm run db:migrate
+```
+
+4. Cambiar `DATA_SOURCE=postgres`.
+5. Redesplegar la API.
+6. Confirmar `baseSource: "postgres"` en `/health`.
+
+No usar `db:reset` contra una base con datos que deban conservarse.
+
+## Migración posterior del frontend a Netlify
+
+No se mueve la API ni la base:
+
+1. Importar el mismo repositorio en Netlify.
+2. Netlify detectará `netlify.toml`.
+3. Configurar `VITE_API_URL=https://TU_API.onrender.com`.
+4. Desplegar y probar la URL `.netlify.app`.
+5. Agregar temporalmente ambos dominios a `CORS_ORIGIN`.
+6. Cambiar el dominio público.
+7. Retirar Render Static cuando la versión de Netlify esté verificada.
+
+## Problemas frecuentes
+
+**El frontend intenta llamar a `localhost:8787`.** Falta `VITE_API_URL` en el Static Site o no se
+redesplegó después de cambiarla.
+
+**CORS bloquea el navegador.** `CORS_ORIGIN` no coincide con el origen completo del frontend.
+No incluir rutas ni barra final.
+
+**`/health` muestra `llm.error`.** Falta una clave válida o el proveedor seleccionado no está
+configurado.
+
+**El panel funciona pero el chat no.** El panel no usa LLM. Revisar claves, cuota, modelo y logs de
+Render.
+
+**Respuesta 429 de Mentor IA.** Se alcanzó `AI_RATE_LIMIT_MAX`. Esperar la ventana o ajustar el límite.
+
+**Respuesta 429 de Gemini/Anthropic.** Es la cuota del proveedor, no el rate limit local. Activar
+facturación o cambiar `LLM_PROVIDER`.
+
+**Los CSV desaparecieron.** El overlay vive en memoria y se pierde en reinicios o despliegues. Es
+comportamiento actual, no almacenamiento persistente.
+
+**El build no encuentra `@pyme/core`.** Ejecutar desde la raíz y usar los comandos workspace del
+Blueprint; no reemplazarlos por `vite build`.
+
+## Lista final
+
+- [ ] `/health` informa proveedor y modelo.
+- [ ] `baseSource` coincide con la fuente prevista.
+- [ ] Dashboard e insights responden.
+- [ ] Frontend usa la API pública.
+- [ ] `CORS_ORIGIN` ya no es `*`.
+- [ ] Resumen y chat transmiten por SSE.
+- [ ] Probado desde un teléfono con datos móviles.
+- [ ] No hay secretos en el historial Git.
+- [ ] Las URL definitivas están en `README.md`.

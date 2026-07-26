@@ -21,11 +21,11 @@ Motor            sistema detecta → prioriza por Bs → propone acción → age
 
 ### Sin modelo, a propósito
 
-La detección es **determinista y estadística**. No pasa por Claude.
+La detección es **determinista y estadística**. No pasa por ningún modelo.
 
 | | Detección | Interpretación |
 |---|---|---|
-| Quién | `insights.ts` | Agente Claude |
+| Quién | `insights.ts` | Proveedor LLM seleccionado |
 | Costo | 0 tokens | Tokens normales |
 | Latencia | milisegundos | segundos |
 | Reproducible | Siempre igual | Varía en redacción |
@@ -78,7 +78,7 @@ plata manda.
 
 ---
 
-## 3. Los ocho detectores
+## 3. Los nueve detectores
 
 Cada detector es una función pura `(World) => Insight[]`. Ninguno conoce a los demás.
 
@@ -86,12 +86,13 @@ Cada detector es una función pura `(World) => Insight[]`. Ninguno conoce a los 
 |---|---|---|---|
 | `precio_bajo_costo` | crítica | `precio < costo de reposición hoy` | Pérdida × unidades vendidas en 30 d |
 | `cuenta_vencida` | crítica | Obligación pasó su vencimiento | Monto vencido |
-| `dolar_subio` | alta | Paralelo +3% en 30 d | Cuánto más cuesta reponer el stock importado |
+| `dolar_subio` | alta | Tipo vigente +3% dentro del mismo régimen | Cuánto más cuesta reponer el stock importado |
 | `caida_ventas` | alta | Ventas 30 d caen >15% vs. 30 d previos | Diferencia de facturación |
 | `margen_erosionado` | alta | Margen real < 20% pero aún positivo | Lo que falta para llegar al margen objetivo |
 | `stock_critico` | alta | Stock ≤ punto de reposición **y** el producto rota | Venta que se pierde en 30 d |
 | `capital_dormido` | alta/media | Sin venta en 60 d con stock > 0 | Capital inmovilizado a costo de reposición |
 | `cuenta_por_vencer` | media | Vence en ≤ 7 días | Monto por vencer |
+| `impuesto_vencido` / `impuesto_proximo` | crítica/alta | Obligación tributaria vencida o próxima | Monto estimado |
 | `cliente_en_riesgo` | media | ≥2 compras previas y 45 d sin comprar | Una compra promedio por cliente |
 
 Dos decisiones que importan:
@@ -154,8 +155,9 @@ La prueba que hay que correr después de tocar este archivo: **simular al tipo d
 debe dar delta cero.**
 
 ```bash
+TC=$(curl -s localhost:8787/api/dashboard | jq -r '.fx.tipoCambio')
 curl -s localhost:8787/api/simulate -H 'content-type: application/json' \
-  -d '{"tipoCambioSimulado": 14.76}' | jq '.utilidadMensualBob.delta, .capitalAdicionalBob'
+  -d "{\"tipoCambioSimulado\":${TC}}" | jq '.utilidadMensualBob.delta, .capitalAdicionalBob'
 # → 0
 # → 0
 ```
@@ -184,7 +186,7 @@ El agente arranca por el escenario y recién después baja al detalle.
 Cierra el ciclo: los detectores encuentran y cuantifican, el Director redacta.
 
 ```
-insights.ts (determinista)  →  brief.ts (Claude, sin tools)  →  3 frases en streaming
+insights.ts (determinista)  →  brief.ts (LLM elegido, sin tools)  →  3 frases en streaming
 ```
 
 **El modelo no tiene herramientas.** Recibe los hallazgos ya calculados en el mensaje de usuario
@@ -195,23 +197,22 @@ capacidad de hacerlo.
 
 Detalles de implementación que importan:
 
-- **`effort: 'low'`** — redactar tres frases sobre datos ya calculados no requiere razonamiento
-  profundo, y este texto es lo primero que aparece en pantalla. La latencia manda.
-- **`cache_control` en el system prompt** — es idéntico en cada corrida; cachearlo abarata el
-  resumen diario cuando corre por cron para muchos negocios.
-- **Emite los mismos `AgentEvent` que `runAgent`** — el frontend reutiliza el parser de SSE que
-  ya tenía para el chat, sin plumbing nuevo.
-- **Degrada en silencio** — si falta `ANTHROPIC_API_KEY`, el endpoint responde 500 y el componente
-  se oculta. Los hallazgos deterministas de abajo ya cuentan la historia completa; una demo no se
-  cae por no tener llave.
+- **Proveedor intercambiable** — usa `createLlmProvider()`, igual que el chat; Gemini y Anthropic
+  comparten el mismo flujo.
+- **Emite los mismos `AgentEvent` que `runAgent`** — el frontend reutiliza el parser de SSE que ya
+  tenía para el chat, sin plumbing nuevo.
+- **Degrada en silencio** — si no hay ningún proveedor disponible, el endpoint responde 500 y el
+  componente se oculta. Los hallazgos deterministas de abajo siguen disponibles.
 
 ## 6. Cómo se ve en la interfaz
+
+Ejemplo ilustrativo; los importes dependen del dataset y de la fecha:
 
 ```
 ┌─ QUÉ RESOLVER HOY ──────────── 7 hallazgos · Bs 64.254 en juego ─┐
 │                                                                  │
-│ ▌🔴 2 productos se venden bajo costo de reposición    Bs 51      │
-│ ▌   Con el dólar a Bs 14,76, reponer estos productos            │
+│ ▌🔴 3 productos se venden bajo costo de reposición     Bs …      │
+│ ▌   Con el dólar a Bs 11,37, reponer estos productos            │
 │ ▌   cuesta más de lo que cobrás...                              │
 │ ▌   [ ¿Qué precios tengo que subir y a cuánto? ]                │
 │                                                                  │

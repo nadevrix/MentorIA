@@ -59,7 +59,7 @@ const getFxRate = defineTool({
       historial: history.slice(-10).map((r) => ({ fecha: r.date, tipoCambio: r.rate })),
       nota:
         'Desde el 29/06/2026 el BCB unificó el régimen: hay un solo tipo de cambio y flota. ' +
-        'Ya no existe la brecha oficial/paralelo.',
+        'El modelo usa una sola cotización vigente y no calcula una brecha separada.',
     };
   },
 });
@@ -109,7 +109,7 @@ const analyzeMargins = defineTool({
         precioBob: p.priceBob,
         // El costo en dólares es lo único que permite recalcular el margen a otro tipo de
         // cambio. Sin él, un simulador tiene que estimarlo dividiendo el costo histórico por
-        // el paralelo de hoy — y eso da un costo hasta 30% menor que el real.
+        // la cotización de hoy — y eso puede dar un costo muy distinto del real.
         costUsd: p.costUsd,
         costoAlComprarBob: costoCompra,
         costoReposicionHoyBob: costoHoy,

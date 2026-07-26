@@ -29,7 +29,7 @@ const APARTADOS = [
     id: 'dolar',
     titulo: 'Dólar',
     texto:
-      'Cuánto está el tipo de cambio, cómo se movió y qué pasa con tus precios si sigue subiendo. Desde la unificación de junio de 2026 hay un solo tipo flexible: ya no existe la brecha entre oficial y paralelo.',
+      'Cuánto está el tipo de cambio, cómo se movió y qué pasa con tus precios si sigue subiendo. Desde la unificación de junio de 2026 la app trabaja con una cotización flexible vigente.',
   },
   {
     id: 'impuestos',
@@ -41,7 +41,7 @@ const APARTADOS = [
     id: 'tramites',
     titulo: 'Trámites',
     texto:
-      'Lo que necesita una empresa para operar en regla: SEPREC, NIT, licencia municipal, empleadores y los permisos de tu rubro. Marcás lo que ya hiciste y queda guardado.',
+      'Lo que necesita una empresa para operar en regla: SEPREC, NIT, licencia municipal, empleadores y permisos por rubro. El avance se persiste si hay Postgres; sin base dura sólo durante la sesión del servidor.',
   },
   {
     id: 'datos',
@@ -86,7 +86,7 @@ const GLOSARIO = [
   {
     termino: 'Tipo de cambio flexible',
     texto:
-      'Desde el 29 de junio de 2026 Bolivia tiene un solo tipo de cambio que flota. Antes convivían el oficial fijo y el paralelo; esa brecha ya no existe.',
+      'Desde el 29 de junio de 2026 la app modela un tipo de cambio vigente que flota. Cada cotización muestra fecha y fuente.',
   },
 ];
 

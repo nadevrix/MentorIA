@@ -5,7 +5,7 @@ import Icon from './Icon';
 /**
  * Las tres frases con las que abre la app.
  *
- * Si falla — típicamente porque no hay ANTHROPIC_API_KEY — el componente
+ * Si falla — por ejemplo porque no hay ningún proveedor LLM disponible — el componente
  * desaparece en silencio: los hallazgos deterministas de abajo ya cuentan la
  * historia completa, y una demo no se cae por no tener llave.
  */

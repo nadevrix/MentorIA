@@ -17,15 +17,15 @@ Antes de agarrar algo grande, avisá en el grupo para que no lo hagan dos person
 | Pieza | Estado |
 | --- | --- |
 | Motor de agentes | Gemini (`gemini-3.1-flash-lite`) detrás de una capa de proveedor. Probado de punta a punta por HTTP |
-| 5 agentes, 11 herramientas | Director, Precios, Inventario, Finanzas, Clientes y Marketing |
+| 5 agentes, 12 herramientas | Director, Precios, Inventario, Finanzas y Clientes/Marketing |
 | Panel determinista | Corre sin modelo: carga instantánea y cero tokens |
-| Motor de hallazgos | Detectores con severidad e impacto en Bs |
+| Motor de hallazgos | 9 detectores con severidad e impacto en Bs |
 | Resumen del día | Redacta los hallazgos en tres frases |
 | Simulador cambiario | Recalcula el catálogo contra un tipo de cambio simulado |
 | Régimen cambiario nuevo | Modelo de tipo único con marca de régimen, alineado a la unificación del 29/06/2026 |
 | Impuestos y formalización | Formularios del SIN y trámites para abrir empresa |
 | Marketing | Candidatos con margen sano + generación de contenido |
-| Chat | Tablas markdown, trazas de herramientas en vivo, indicador de arranque en frío |
+| Chat | Tablas markdown, trazas de herramientas y texto por SSE |
 | Tipo de cambio en vivo | `FirecrawlFxProvider` implementado, con fallback |
 | Postgres | `PostgresDataSource` + `db/schema.sql` + `db/migrate.mjs` escritos |
 
@@ -33,19 +33,19 @@ Antes de agarrar algo grande, avisá en el grupo para que no lo hagan dos person
 
 ## 🔴 Crítico — sin esto no competimos
 
-### 1. Deploy en Netlify + Render
+### 1. Deploy completo en Render
 
-Un producto perfecto sin URL pública no compite. La configuración está escrita (`netlify.toml`,
-`render.yaml`) y el paso a paso en `docs/05-deploy.md`. Por qué esos dos servicios y no uno solo:
-`docs/12-infraestructura.md`.
+Un producto perfecto sin URL pública no compite. `render.yaml` crea la API Starter y el frontend
+estático. `netlify.toml` queda preparado para mover el frontend cuando se habiliten esos créditos.
+El paso a paso está en `docs/05-deploy.md` y la decisión en `docs/12-infraestructura.md`.
 
 *Listo cuando:* las dos URLs responden y están en la tabla del README.
 
 ### 2. Cuota del modelo
 
-El free tier de Gemini permite **~5 requests por minuto y 20 por día**. Cada pregunta al agente
-consume 3 o 4, así que son unas **5 preguntas diarias** — y el guion del pitch tiene dos preguntas
-seguidas.
+Las cuotas de Gemini cambian por modelo, proyecto y estado de facturación. Una pregunta al agente
+puede consumir varias llamadas — una por vuelta del loop, hasta un máximo de ocho. Hay que revisar
+la cuota vigente del proyecto y probar las dos preguntas del guion seguidas.
 
 Tres salidas, en orden:
 1. **Activar facturación en Google.** Centavos para todo el evento. Es la solución real.
@@ -66,15 +66,15 @@ Neon con `db/migrate.mjs`.
 
 ### 4. Conectar Postgres de verdad
 
-El código está, pero la app corre con los JSON: `DATA_SOURCE` está vacío. Falta cargar el esquema
-en Neon y poner `DATA_SOURCE=postgres` + `DATABASE_URL` en Render. Sólo vale la pena **con datos
-reales adentro** — una base con datos generados no mueve un punto de la rúbrica.
+El código está, pero el despliegue inicial usa `DATA_SOURCE=seed`. Falta cargar el esquema en Neon y
+poner `DATA_SOURCE=postgres` + `DATABASE_URL` en Render. Sólo vale la pena **con datos reales
+autorizados adentro**: una base con los mismos datos generados no mejora la demostración.
 
 ### 5. Tipo de cambio en vivo
 
-Hoy corre en `static` (dato real del BCB, pero fijo en el archivo). Alguien del equipo está
-conectando las APIs del blue. Cumplir la interfaz `FxProvider` y **mantener el fallback**: un
-scraping caído nunca debe romper la demo.
+El deploy usa `static`, una captura versionada con fecha y fuente. `FirecrawlFxProvider` ya puede
+consultar la fuente en vivo. Antes de activarlo hay que validar que el selector siga extrayendo el
+valor correcto y **mantener el fallback**: un scraping caído nunca debe romper la demo.
 
 ### 6. Alertas automáticas (reto Zavu, USD 500)
 
@@ -90,11 +90,11 @@ productos que vendía perdiendo plata"* vale más que cualquier funcionalidad nu
 
 ## 🔧 Lo que hay que corregir
 
-### Hay dos simuladores cambiarios
+### La demo pública no es multiusuario
 
-`FxSimulator.tsx` (282 líneas) y `Simulator.tsx` + `FxPanel.tsx` resuelven lo mismo: ambos
-quedaron en el repo tras integrar dos ramas que lo construyeron en paralelo. **Hay que elegir uno
-y borrar el otro** — dos componentes equivalentes divergen y confunden.
+No hay autenticación ni aislamiento por empresa. El overlay CSV vive en memoria y es compartido por
+la única instancia. El rate limit protege parcialmente las llamadas de IA, pero antes de usar datos
+sensibles hacen falta auth, tenancy y persistencia.
 
 ### El scraping del tipo de cambio es frágil
 
@@ -104,7 +104,7 @@ vivo. **Verificarlo el día del pitch** y anotar la fecha en `docs/04-datos.md`.
 
 ### El alcance creció más de lo que el pitch aguanta
 
-Hay siete pestañas. En 4 minutos no se muestran siete cosas. Hay que decidir **qué se demuestra y
+Hay seis pestañas. En 4 minutos no se muestran seis cosas. Hay que decidir **qué se demuestra y
 qué sólo se menciona** — la recomendación está en `docs/10-prioridades.md`: vender el agente
 cambiario, mencionar el resto en veinte segundos.
 
@@ -123,8 +123,9 @@ pena moverlo mientras los datos sean los JSON semilla.
 ## ⛔ Lo que no conviene hacer
 
 - **Agregar agentes nuevos.** Cinco ya son más de los que se pueden mostrar en 4 minutos.
-- **Agregar pestañas nuevas.** Mismo motivo, y ya hay siete.
-- **Mover la base de datos a otro proveedor.** Neon funciona; mover cuesta una hora y no aporta nada.
+- **Agregar pestañas nuevas.** Mismo motivo, y ya hay seis.
+- **Mover la base de datos por uniformidad.** El adaptador PostgreSQL ya es portable; cambiar de
+  proveedor sin datos reales no aporta nada.
 - **Sacar la regla de secuencia del prompt del agente de precios.** Sin ella, los modelos rápidos
   se quedan en el diagnóstico y nunca dan los precios sugeridos.
 
@@ -139,4 +140,4 @@ pena moverlo mientras los datos sean los JSON semilla.
 - [ ] Slides de máximo 4 minutos
 - [ ] Formulario del portal enviado antes de las 09:00
 - [ ] Fuentes de datos citadas (`docs/04-datos.md`)
-- [ ] Ningún secreto commiteado (`git log -p | grep -iE "sk-ant|AIza|npg_"`)
+- [ ] Ningún secreto commiteado (`git log -p | rg -i "sk-ant-|AIza|postgres(ql)?://"`)

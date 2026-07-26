@@ -48,17 +48,21 @@ Nos paramos **encima** de los datos que el negocio ya tiene y aportamos la capa 
 
 1. **El cálculo de margen a costo de reposición** — no es un dashboard más: es una métrica que
    ningún ERP disponible en el país calcula, y es exactamente la que decide si el negocio sobrevive.
-2. **Datos locales** — serie real del TCO del BCB, canales reales (WhatsApp, Facebook, mayoreo), categorías
-   de gasto e impuestos bolivianos (IVA/IT).
+2. **Datos locales** — serie cambiaria con fecha y fuente, canales del mercado boliviano
+   (WhatsApp, Facebook, mayoreo), categorías de gasto e impuestos bolivianos (IVA/IT).
 3. **Salida accionable** — cada respuesta termina en instrucciones ejecutables, no en un gráfico.
 
 ## Alcance del hackathon
 
 **Dentro (24 h):**
 - Panel determinista con los indicadores críticos.
-- Los 5 agentes con sus 10 herramientas sobre datos reales de un comercio piloto.
+- Los 5 agentes con 12 herramientas sobre el contrato de datos del negocio.
 - Simulación de escenarios cambiarios.
+- Importación CSV, estimación de impuestos, formalización y marketing.
 - Deploy público accesible sin instalar nada.
+
+El repositorio incluye datos de referencia. Usar datos de un comercio real en la presentación exige
+autorización, anonimización y dejar claro qué fuente se está mostrando.
 
 **Fuera (pero diseñado para entrar):**
 - Escritura de vuelta al ERP (hoy solo lectura y recomendación).

@@ -1,18 +1,32 @@
+# Todo el producto en Render: la API como web service y la interfaz como sitio
+# estático. Cuando lleguen los créditos de Netlify, mover el frontend allá es
+# cambiar de proveedor sin tocar código — `netlify.toml` ya está escrito.
+#
+# Por qué el reparto y qué hace cada pieza: docs/12-infraestructura.md
+
 services:
+  # ---------------------------------------------------------------------------
+  # API: el motor de agentes. Necesita un servidor prendido porque el chat
+  # transmite la respuesta mientras se genera (SSE) y el loop puede tardar
+  # decenas de segundos.
+  # ---------------------------------------------------------------------------
   - type: web
     name: mentor-ia-api
     runtime: node
-    plan: free
-    # Misma región que la base de datos cuando se conecte Postgres: si la API queda
-    # en Oregon y la base en Ohio, cada consulta paga ~60 ms de ida y vuelta, y el
-    # panel hace varias por carga.
+    # `starter` en vez de `free` a propósito: el plan gratuito duerme el servicio
+    # tras 15 min sin tráfico y tarda 30-60 s en despertar. Sobre un pitch de
+    # 4 minutos eso es fatal, y son ~7 USD al mes de los créditos disponibles.
+    plan: starter
+    # Misma región que la base de datos cuando se conecte Postgres: si la API
+    # queda en Oregon y la base en Ohio, cada consulta paga ~60 ms de ida y
+    # vuelta, y el panel hace varias por carga.
     region: ohio
-    buildCommand: npm install && npm run build --workspace=@pyme/core && npm run build --workspace=@pyme/api
+    buildCommand: npm ci && npm run build --workspace=@pyme/core && npm run build --workspace=@pyme/api
     startCommand: node apps/api/dist/server.js
     healthCheckPath: /health
     envVars:
       - key: NODE_VERSION
-        value: "20"
+        value: "22"
 
       # --- Motor de agentes ---
       - key: LLM_PROVIDER
@@ -26,19 +40,60 @@ services:
         sync: false
 
       # --- Frontend permitido ---
+      # La URL del sitio estático, sin barra final. Se completa después del
+      # primer deploy. `*` permite arrancar; hay que reemplazarlo por el dominio
+      # exacto de mentor-ia-web al terminar la configuración.
       - key: CORS_ORIGIN
-        sync: false          # la URL de Netlify, sin barra final
+        value: "*"
+
+      # Evita que una URL pública consuma sin límite las cuotas de los modelos.
+      - key: AI_RATE_LIMIT_MAX
+        value: "6"
+      - key: AI_RATE_LIMIT_WINDOW_MS
+        value: "60000"
+      - key: MAX_JSON_BODY_BYTES
+        value: "131072"
+      - key: MAX_CSV_BODY_BYTES
+        value: "2097152"
 
       # --- Datos ---
-      # Sin DATA_SOURCE usa los JSON de data/seed/. Para Postgres:
-      # DATA_SOURCE=postgres + DATABASE_URL
+      # El primer deploy usa los JSON versionados. Para Neon/Postgres, cambiar a
+      # `postgres`, agregar DATABASE_URL y ejecutar `npm run db:migrate`.
       - key: DATA_SOURCE
-        sync: false
-      - key: DATABASE_URL
-        sync: false
+        value: seed
 
       # --- Tipo de cambio ---
       - key: FX_SOURCE
         value: static
       - key: FIRECRAWL_API_KEY
         sync: false
+
+  # ---------------------------------------------------------------------------
+  # Interfaz: archivos estáticos. Los sitios estáticos de Render son gratis, se
+  # sirven por CDN y NO duermen — a diferencia de los web services.
+  # ---------------------------------------------------------------------------
+  - type: web
+    name: mentor-ia-web
+    runtime: static
+    buildCommand: npm ci && npm run build:web
+    staticPublishPath: apps/web/dist
+    envVars:
+      # La URL de la API, sin barra final. Vite la inyecta EN TIEMPO DE BUILD:
+      # si se carga después del primer deploy, hay que volver a desplegar.
+      - key: VITE_API_URL
+        sync: false
+    routes:
+      # SPA: cualquier ruta cae en index.html, si no un refresh da 404.
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    headers:
+      - path: /*
+        name: X-Frame-Options
+        value: DENY
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+      - path: /*
+        name: Referrer-Policy
+        value: strict-origin-when-cross-origin

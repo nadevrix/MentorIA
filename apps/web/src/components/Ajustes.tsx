@@ -217,8 +217,12 @@ export default function Ajustes() {
               <Estado label="Tipo de cambio" valor={health.fxSource} ok />
               <Estado
                 label="Modelo (chat y resumen)"
-                valor={health.hasApiKey ? 'configurado' : 'falta ANTHROPIC_API_KEY'}
-                ok={health.hasApiKey}
+                valor={
+                  'provider' in health.llm
+                    ? `${health.llm.provider} · ${health.llm.model}`
+                    : health.llm.error
+                }
+                ok={'provider' in health.llm}
               />
               <Estado
                 label="Generación de imágenes"

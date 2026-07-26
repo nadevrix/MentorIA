@@ -8,7 +8,7 @@
     "apps/*"
   ],
   "engines": {
-    "node": ">=20"
+    "node": ">=22"
   },
   "scripts": {
     "dev": "npm run dev --workspace=@pyme/api & npm run dev --workspace=@pyme/web",

@@ -18,7 +18,8 @@ import {
   TOOLS_BY_NAME,
   createLlmProvider,
 } from '@pyme/core';
-import { Hono } from 'hono';
+import { Hono, type MiddlewareHandler } from 'hono';
+import { bodyLimit } from 'hono/body-limit';
 import { cors } from 'hono/cors';
 import { streamSSE } from 'hono/streaming';
 import { z } from 'zod';
@@ -27,10 +28,68 @@ const app = new Hono();
 const ctx = createContext();
 
 const origin = process.env.CORS_ORIGIN ?? '*';
-app.use(
-  '/api/*',
-  cors({ origin: origin === '*' ? '*' : origin.split(',').map((o) => o.trim()) }),
-);
+const corsOptions = {
+  origin: origin === '*' ? '*' : origin.split(',').map((o) => o.trim()),
+};
+app.use('/health', cors(corsOptions));
+app.use('/api/*', cors(corsOptions));
+
+function positiveInteger(name: string, fallback: number): number {
+  const value = Number(process.env[name]);
+  return Number.isInteger(value) && value > 0 ? value : fallback;
+}
+
+const AI_RATE_LIMIT_MAX = positiveInteger('AI_RATE_LIMIT_MAX', 6);
+const AI_RATE_LIMIT_WINDOW_MS = positiveInteger('AI_RATE_LIMIT_WINDOW_MS', 60_000);
+const rateBuckets = new Map<string, { count: number; resetAt: number }>();
+let nextRateSweepAt = Date.now() + AI_RATE_LIMIT_WINDOW_MS;
+
+/** Límite simple por IP: suficiente para una sola instancia de demo en Render. */
+const limitAiRequests: MiddlewareHandler = async (c, next) => {
+  const forwarded = c.req.header('x-forwarded-for')?.split(',')[0]?.trim();
+  const ip = forwarded || c.req.header('x-real-ip') || 'local';
+  const key = `${ip}:${c.req.path}`;
+  const now = Date.now();
+
+  if (now >= nextRateSweepAt) {
+    for (const [bucketKey, bucket] of rateBuckets) {
+      if (bucket.resetAt <= now) rateBuckets.delete(bucketKey);
+    }
+    nextRateSweepAt = now + AI_RATE_LIMIT_WINDOW_MS;
+  }
+
+  const current = rateBuckets.get(key);
+  const bucket =
+    current && current.resetAt > now
+      ? current
+      : { count: 0, resetAt: now + AI_RATE_LIMIT_WINDOW_MS };
+
+  bucket.count++;
+  rateBuckets.set(key, bucket);
+
+  if (bucket.count > AI_RATE_LIMIT_MAX) {
+    c.header('Retry-After', String(Math.max(1, Math.ceil((bucket.resetAt - now) / 1000))));
+    return c.json({ error: 'Demasiadas solicitudes. Esperá un momento y volvé a intentar.' }, 429);
+  }
+
+  await next();
+};
+
+const jsonBodyLimit = bodyLimit({
+  maxSize: positiveInteger('MAX_JSON_BODY_BYTES', 128 * 1024),
+  onError: (c) => c.json({ error: 'El cuerpo de la petición es demasiado grande.' }, 413),
+});
+const csvBodyLimit = bodyLimit({
+  maxSize: positiveInteger('MAX_CSV_BODY_BYTES', 2 * 1024 * 1024),
+  onError: (c) => c.json({ error: 'El CSV supera el límite permitido.' }, 413),
+});
+
+app.use('/api/brief', limitAiRequests);
+app.use('/api/chat', limitAiRequests, jsonBodyLimit);
+app.use('/api/image', limitAiRequests, jsonBodyLimit);
+app.use('/api/simulate', jsonBodyLimit);
+app.use('/api/formalizacion/*', jsonBodyLimit);
+app.use('/api/data/*', csvBodyLimit);
 
 app.get('/health', (c) => {
   // Se resuelve el proveedor acá, no al arrancar: /health tiene que responder
@@ -129,8 +188,14 @@ app.post('/api/simulate', async (c) => {
  * queremos que el usuario mire una pantalla en blanco mientras el modelo escribe.
  */
 app.get('/api/brief', async (c) => {
-  if (!process.env.ANTHROPIC_API_KEY) {
-    return c.json({ error: 'Falta ANTHROPIC_API_KEY en el servidor.' }, 500);
+  let provider;
+  try {
+    provider = createLlmProvider();
+  } catch (error) {
+    return c.json(
+      { error: error instanceof Error ? error.message : 'No hay proveedor de modelo disponible.' },
+      500,
+    );
   }
 
   return streamSSE(c, async (stream) => {
@@ -138,7 +203,7 @@ app.get('/api/brief', async (c) => {
     stream.onAbort(() => controller.abort());
 
     try {
-      for await (const event of streamBrief({ ctx, signal: controller.signal })) {
+      for await (const event of streamBrief({ ctx, provider, signal: controller.signal })) {
         await stream.writeSSE({ event: event.type, data: JSON.stringify(event) });
       }
     } catch (error) {
@@ -295,7 +360,7 @@ const ChatRequest = z.object({
     .array(
       z.object({
         role: z.enum(['user', 'assistant']),
-        content: z.string().min(1),
+        content: z.string().min(1).max(8_000),
       }),
     )
     .min(1)

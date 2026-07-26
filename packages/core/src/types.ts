@@ -24,7 +24,7 @@ export const ProductSchema = z.object({
   stock: z.number().int().nonnegative(),
   /** Punto de reorden: por debajo de esto hay que reponer. */
   reorderPoint: z.number().int().nonnegative(),
-  /** Si es importado, el costo depende del dólar paralelo. */
+  /** Si es importado, el costo de reposición depende del tipo de cambio vigente. */
   imported: z.boolean(),
   supplier: z.string().optional(),
 });

@@ -46,26 +46,27 @@ En `packages/core/src/agents/index.ts`, agregá una entrada a `AGENTS`:
 
 ```ts
 {
-  id: 'marketing',
-  name: 'Agente de Marketing',
-  icon: '📣',
-  tagline: 'Qué publicar y qué promocionar',
-  tools: ['top_products', 'sales_summary', 'analyze_margins', 'customer_insights'],
-  examples: ['¿Qué producto promociono esta semana?', 'Armame un posteo para Facebook'],
+  id: 'compras',
+  name: 'Agente de Compras',
+  icon: 'package',
+  tagline: 'Qué comprar, cuándo y cuánto capital hace falta',
+  tools: ['inventory_alerts', 'top_products', 'get_fx_rate', 'simulate_scenario'],
+  examples: ['¿Qué tengo que reponer?', '¿Conviene comprar antes de que suba el dólar?'],
   systemPrompt: prompt(`
-Sos el especialista en marketing.
-- Nunca promociones un producto cuyo margen real esté bajo 15%: verificalo con analyze_margins.
-- Cuando pidan un posteo, escribilo listo para publicar, con precio en Bs y llamada a la acción.
+Sos el especialista en compras.
+- Cruzá rotación, stock y tipo de cambio antes de recomendar una orden.
+- Cuantificá siempre el capital necesario en Bs.
 `),
 }
 ```
 
 El frontend lo levanta solo: `/api/agents` devuelve el catálogo y la UI dibuja la tarjeta.
+Marketing ya pertenece al agente `clientes`; no crear otro agente que duplique esa responsabilidad.
 
 ### Criterios de diseño
 
-- **Pocas herramientas por agente.** Menos opciones = mejores decisiones. Si un agente necesita las
-  nueve, probablemente es el Director.
+- **Pocas herramientas por agente.** Menos opciones = mejores decisiones. Si necesita la mayoría de
+  las doce, probablemente esa pregunta pertenece al Director.
 - **`prompt()` inyecta el contexto de país compartido.** Usalo siempre; no repitas las reglas de
   moneda o tipo de cambio en cada agente.
 - **El prompt define criterio, no cálculos.** Si estás explicando una fórmula en el prompt, esa
@@ -77,21 +78,23 @@ El frontend lo levanta solo: `/api/agents` devuelve el catálogo y la UI dibuja 
 | Agente | ID | Herramientas |
 | ------ | -- | ------------ |
 | 🧭 Director de Negocio | `director` | fx, márgenes, ventas, inventario, clientes, finanzas, pagos |
-| 💵 Cambiario y de Precios | `precios` | fx, márgenes, sugerir precio, inventario |
-| 📦 Inventario | `inventario` | inventario, top productos, fx, ventas |
+| 💵 Cambiario y de Precios | `precios` | fx, márgenes, sugerir precio, escenarios, inventario |
+| 📦 Inventario | `inventario` | inventario, top productos, fx, ventas, escenarios |
 | 📊 Financiero | `finanzas` | finanzas, ventas, pagos, top productos, fx |
-| 👥 Clientes | `clientes` | clientes, ventas, top productos, mensaje de WhatsApp |
+| 👥 Clientes y Marketing | `clientes` | clientes, ventas, top productos, candidatos de campaña, WhatsApp |
 
 ## Herramientas disponibles
 
 | Herramienta | Devuelve |
 | ----------- | -------- |
-| `get_fx_rate` | Oficial, paralelo, brecha, variación 30d, últimos 10 registros |
+| `get_fx_rate` | Tipo vigente, régimen, variación reciente, fuente y últimos 10 registros |
 | `analyze_margins` | Margen al comprar vs. margen real de hoy, por producto; cuáles pierden plata |
 | `suggest_price` | Precio sugerido para un margen objetivo, con escenario de dólar simulable |
+| `simulate_scenario` | Impacto del tipo simulado sobre catálogo, utilidad y capital de reposición |
 | `sales_summary` | Total, cantidad, ticket promedio, por canal, variación vs. periodo anterior |
 | `top_products` | Ranking por unidades, ingresos o utilidad estimada |
 | `inventory_alerts` | Por agotarse, sin rotación, capital inmovilizado |
+| `marketing_candidates` | Productos seguros para promocionar, motivo y descuento máximo |
 | `customer_insights` | Inactivos, mejores clientes, ticket promedio por cliente |
 | `financial_summary` | Ingresos, CMV a reposición, gastos por categoría, utilidad y margen neto |
 | `accounts_payable` | Pendientes, vencidas, próximas a vencer |

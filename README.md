@@ -1,125 +1,153 @@
 ﻿# Mentor IA
 
-**Agentes de IA que protegen el margen de las PyMEs bolivianas cuando se mueve el dólar.**
+**Agentes de IA que protegen el margen de las PyMEs bolivianas cuando cambia el costo de reponer.**
 
-En Bolivia el dólar oficial está intervenido en 6.96 Bs, pero el paralelo se mueve todas las semanas.
-Un comercio importador compró su mercadería con el dólar a 11 y hoy repone a 14.76: sigue vendiendo
-al mismo precio, ve movimiento en caja y cree que gana — pero ya no puede reponer lo que vende.
-Nadie le avisa. Su Excel no sabe de tipo de cambio.
-
-Mentor IA sí. Cinco agentes especializados leen las ventas, el inventario, los clientes y el tipo de
-cambio del negocio, **recalculan el margen real al costo de reposición de hoy** y devuelven acciones
-concretas: qué precio subir, a cuánto, qué cliente contactar, qué pago vence.
+Desde el cambio de régimen de junio de 2026, el tipo de cambio boliviano es flexible. Un comercio
+importador puede vender con la lista de precios de la semana pasada y descubrir demasiado tarde que
+ya no puede reponer lo vendido. Mentor IA cruza productos, ventas, inventario, clientes, gastos y
+tipo de cambio para convertir ese riesgo en acciones concretas.
 
 > **Track:** Bolivia Agents · **Evento:** Cursor Buildathon Bolivia 2026
 
----
+## Estado actual
 
-## Correr en local (4 pasos)
+- Monorepo npm con núcleo de dominio, API y SPA.
+- Cinco agentes y doce herramientas con tool use real.
+- Panel, nueve detectores y simulaciones deterministas: no consumen tokens.
+- Chat y resumen diario en streaming mediante Server-Sent Events.
+- Datos JSON incluidos; Postgres/Neon y carga CSV disponibles.
+- Despliegue temporal preparado completamente en Render.
 
-```bash
-git clone <URL-DEL-REPO> && cd buildathoncursor
-npm install
-cp .env.example .env        # y pegá tu ANTHROPIC_API_KEY
-npm run dev                 # API en :8787 · Web en :5173
-```
+Las URL públicas se completan después del primer despliegue:
 
-Abrí <http://localhost:5173>. Los datos semilla ya están en el repo; para regenerarlos con fechas
-frescas: `node data/generate.mjs`.
+| Servicio | URL |
+| --- | --- |
+| Web | `https://mentor-ia-web.onrender.com` _(confirmar dominio asignado)_ |
+| API | `https://mentor-ia-api.onrender.com` _(confirmar dominio asignado)_ |
+| Salud | `<URL_API>/health` |
 
-## Demo desplegada
+## Qué incluye
 
-| Pieza    | URL                          |
-| -------- | ---------------------------- |
-| Frontend | _(Netlify — completar)_      |
-| API      | _(Render — completar)_       |
-| Health   | `<API>/health`               |
-
----
-
-## Qué hace, concretamente
-
-- **Hallazgos proactivos** — ocho detectores deterministas revisan márgenes, stock, rotación, cobros,
-  clientes y tipo de cambio, y devuelven qué resolver hoy ordenado por urgencia y por bolivianos en
-  juego. Cada hallazgo trae la pregunta lista para el agente que puede resolverlo. Esto es lo que
-  separa al producto de un chatbot: no espera la pregunta, la trae.
-- **Resumen del día** — el Director toma esos hallazgos y los redacta en tres frases, en streaming.
-  Corre sin herramientas a propósito: sólo puede narrar los números que le pasó el motor
-  determinista, así que no hay forma de que invente una cifra.
-- **Panel determinista** — los mismos cálculos que usan los agentes, corridos sin modelo. Carga
-  instantánea y sin costo de tokens: márgenes en riesgo, ventas vs. mes anterior, utilidad neta,
-  capital inmovilizado, cuentas vencidas.
-- **5 agentes con herramientas reales** — cada uno ve solo las herramientas de su dominio y decide
-  cuáles llamar y en qué orden. No es un prompt largo: es un loop de percepción → decisión → ejecución.
-- **Simulación cambiaria** — "¿qué pasa si el dólar llega a 15?" recalcula el catálogo completo y
-  devuelve el impacto sobre el negocio: cuántos productos quedan bajo costo, cuánta utilidad mensual
-  se evapora, cuánto capital extra hace falta para reponer y qué precio corresponde a cada producto.
-- **Trazabilidad en vivo** — la UI muestra qué herramienta está corriendo el agente mientras piensa.
-
-### Los agentes
-
-| Agente                       | Resuelve                                             |
-| ---------------------------- | ---------------------------------------------------- |
-| 🧭 Director de Negocio       | "¿Cómo estoy? ¿Qué hago hoy?" — cruza todas las áreas |
-| 💵 Cambiario y de Precios    | Margen real, precios sugeridos, escenarios de dólar   |
-| 📦 Inventario                | Reposición, rotación, capital dormido                 |
-| 📊 Financiero                | Utilidad, gastos, liquidez, cuentas por pagar         |
-| 👥 Clientes (CRM)            | Inactivos, mejores clientes, mensajes de reactivación |
+- **Panel de negocio:** ventas, margen a costo de reposición, utilidad, inventario y cuentas por pagar.
+- **Hallazgos proactivos:** nueve detectores ordenados por urgencia e impacto en bolivianos.
+- **Resumen diario:** un proveedor LLM redacta los hallazgos ya calculados, sin herramientas.
+- **Agentes especializados:** Director, Precios, Inventario, Finanzas y Clientes/Marketing.
+- **Simulador cambiario:** recalcula margen, utilidad y capital de reposición para un escenario.
+- **Datos propios:** importa CSV por entidad sobre los datos base.
+- **Impuestos y formalización:** estimaciones tributarias, formularios de referencia y seguimiento de trámites.
+- **Marketing:** elige productos promocionables sin sacrificar margen y genera contenido.
+- **Trazabilidad:** la interfaz muestra las herramientas que ejecuta cada agente.
 
 ## Stack
 
-| Capa       | Tecnología                                | Por qué                                             |
-| ---------- | ----------------------------------------- | --------------------------------------------------- |
-| Agentes    | Claude Opus 5 (`@anthropic-ai/sdk`)       | Tool use nativo, decide qué consultar                |
-| Backend    | Node 20 + Hono, SSE                       | Streaming sin límite de 10s de las funciones edge    |
-| Frontend   | React 19 + Vite + Tailwind v4             | Build de <1s, despliegue directo en Netlify          |
-| Tipos      | TypeScript + Zod, compartidos vía workspace | Un solo modelo de dominio para todo el equipo       |
-| Deploy     | Netlify (web) + Render (API)              | Free tier, accesible para el jurado sin instalar nada |
+| Capa | Tecnología |
+| --- | --- |
+| Runtime | Node.js 22 LTS |
+| Lenguaje | TypeScript estricto + Zod |
+| LLM | Gemini por defecto; Anthropic como respaldo |
+| Backend | Hono sobre Node, REST + SSE |
+| Frontend | React 19, Vite 6 y Tailwind CSS 4 |
+| Datos | JSON versionado o PostgreSQL mediante `pg` |
+| Deploy actual | Render Web Service Starter + Render Static Site |
+| Deploy posterior | API en Render + frontend en Netlify |
 
-## Estructura
+## Ejecutar en local
 
+Requisitos: Node.js 22 o superior y npm.
+
+```bash
+git clone https://github.com/nadevrix/MentorIA.git
+cd MentorIA
+npm ci
+cp .env.example .env
+npm run dev
 ```
-packages/core/     Núcleo: modelo de dominio, herramientas, agentes, loop de ejecución
-  src/types.ts       Esquemas Zod del negocio (productos, ventas, clientes, gastos, FX)
-  src/data/          Contrato DataSource + implementación con datos semilla
-  src/fx/            Proveedor de tipo de cambio (paralelo)
-  src/tools/         Las 10 herramientas que pueden invocar los agentes
-  src/agents/        Definición de cada agente: rol, herramientas, prompt
-  src/runtime.ts     Loop: modelo → herramienta → resultado → modelo
-  src/insights.ts    Motor de hallazgos: detección determinista ordenada por impacto en Bs
-  src/simulate.ts    Simulador de escenario cambiario sobre el catálogo completo
-  src/brief.ts       Resumen del día: el Director redacta los hallazgos, sin herramientas
-apps/api/          Servidor Hono: /health, /api/agents, /api/dashboard, /api/insights,
-                   /api/simulate, /api/brief (SSE), /api/chat (SSE)
-apps/web/          Interfaz React: panel + chat con agentes
-data/              Generador y datos semilla del negocio piloto
-docs/              Visión, arquitectura, división del equipo, deploy, guion del pitch
+
+- Web: <http://localhost:5173>
+- API: <http://localhost:8787>
+- Health: <http://localhost:8787/health>
+
+El panel funciona sin una clave LLM. Para chat y resumen configurá `GEMINI_API_KEY` o
+`ANTHROPIC_API_KEY` en `.env`.
+
+## Comandos
+
+```bash
+npm run dev          # API y frontend
+npm run dev:api      # sólo API
+npm run dev:web      # sólo frontend
+npm run typecheck    # core + API
+npm run build        # core + API + frontend
+npm run build:web    # core + frontend
+npm run db:migrate   # crea esquema y carga datos si Postgres está vacío
+npm run db:reset     # vacía y recarga Postgres; usar con cuidado
 ```
+
+## Arquitectura
+
+```text
+Navegador
+  └─ apps/web (React/Vite, estático)
+       └─ HTTP + SSE a VITE_API_URL
+            └─ apps/api (Hono/Node)
+                 └─ packages/core
+                      ├─ LlmProvider: Gemini | Anthropic
+                      ├─ DataSource: seed | PostgreSQL
+                      └─ FxProvider: static | Firecrawl con fallback
+```
+
+```text
+packages/core/     Tipos, datos, agentes, herramientas y cálculos
+apps/api/          API REST, SSE, CORS, límites de cuerpo y rate limit
+apps/web/          SPA React
+data/seed/         Dataset de referencia y catálogos
+db/                Esquema y migrador idempotente de PostgreSQL
+docs/              Documentación de producto, técnica y operativa
+render.yaml        API y frontend en Render
+netlify.toml       Migración futura del frontend
+```
+
+## Despliegue
+
+Mientras se habilitan los créditos de Netlify, todo corre en Render:
+
+1. `mentor-ia-api`: Web Service **Starter** en Ohio.
+2. `mentor-ia-web`: Static Site gratuito servido por CDN.
+3. La API usa los créditos disponibles de Render; Starter evita el cold start del plan Free.
+4. Cuando llegue Netlify, sólo se mueve `apps/web`; la API y sus variables permanecen en Render.
+
+El orden y las variables exactas están en [docs/05-deploy.md](docs/05-deploy.md). La decisión de
+infraestructura está explicada en [docs/12-infraestructura.md](docs/12-infraestructura.md).
+
+## Datos y límites actuales
+
+- `DATA_SOURCE=seed` lee `data/seed/*.json`.
+- `DATA_SOURCE=postgres` requiere `DATABASE_URL` y `npm run db:migrate`.
+- Los CSV importados viven en memoria y se pierden al reiniciar o redesplegar la API.
+- Sin `DATABASE_URL`, el avance de formalización también vive en memoria.
+- No hay autenticación ni separación multiempresa todavía.
+- Los endpoints de IA tienen un límite básico por IP; no sustituye autenticación para producción.
+
+Los datos incluidos son de referencia. Antes de presentar cifras como un caso real, hay que cargar
+un dataset autorizado y anonimizado. Ver [docs/04-datos.md](docs/04-datos.md).
 
 ## Documentación
 
-| Documento                                        | Para qué                                      |
-| ------------------------------------------------ | --------------------------------------------- |
-| [00 — Visión](docs/00-vision.md)                 | Problema, usuario, propuesta de valor         |
-| [01 — Arquitectura](docs/01-arquitectura.md)     | Cómo funciona el loop de agentes              |
-| [02 — Estado y backlog](docs/02-equipo.md)       | **Qué funciona, qué falta, qué corregir**     |
-| [03 — Agentes](docs/03-agentes.md)               | Cómo agregar o modificar un agente            |
-| [04 — Datos](docs/04-datos.md)                   | Modelo de datos y fuentes                     |
-| [05 — Deploy](docs/05-deploy.md)                 | Netlify + Render paso a paso                  |
-| [06 — Demo y pitch](docs/06-demo-pitch.md)       | Guion de 4 minutos y plan B                   |
-| [07 — Git y comunicación](docs/07-convenciones.md) | Rama por persona, comandos, qué avisar      |
-| [08 — Hallazgos](docs/08-insights.md)            | El motor de detectores y el simulador         |
-| [09 — Estrategia de negocio](docs/09-estrategia.md) | Mercado, ICP, pricing, go-to-market        |
-| [10 — Prioridades](docs/10-prioridades.md)       | Dónde invertir las horas y por qué            |
-| [11 — Onboarding](docs/11-onboarding.md)         | **El prompt para arrancar (uno, para todos)** |
-| [12 — Infraestructura](docs/12-infraestructura.md) | **Por qué Netlify + Render + Neon**         |
-
-## Créditos y datos
-
-Los datos incluidos en `data/seed/` son de un negocio de referencia generados con
-`data/generate.mjs` para desarrollo. **Para la demo final se usan datos reales del comercio piloto**
-(ver [docs/04-datos.md](docs/04-datos.md)). El tipo de cambio paralelo es un dato de mercado; la
-fuente en vivo se documenta en el mismo archivo.
+| Documento | Contenido |
+| --- | --- |
+| [00 — Visión](docs/00-vision.md) | Problema, usuario y alcance |
+| [01 — Arquitectura](docs/01-arquitectura.md) | Componentes, flujo y contratos |
+| [02 — Estado](docs/02-equipo.md) | Implementado, riesgos y pendientes |
+| [03 — Agentes](docs/03-agentes.md) | Catálogo de agentes y herramientas |
+| [04 — Datos](docs/04-datos.md) | Modelo, fuentes y persistencia |
+| [05 — Deploy](docs/05-deploy.md) | Render ahora y Netlify después |
+| [06 — Demo](docs/06-demo-pitch.md) | Guion y lista de comprobación |
+| [07 — Convenciones](docs/07-convenciones.md) | Git, código y comunicación |
+| [08 — Hallazgos](docs/08-insights.md) | Detectores, simulador y resumen |
+| [09 — Estrategia](docs/09-estrategia.md) | ICP, propuesta y roadmap |
+| [10 — Prioridades](docs/10-prioridades.md) | Orden de trabajo |
+| [11 — Onboarding](docs/11-onboarding.md) | Arranque para colaboradores |
+| [12 — Infraestructura](docs/12-infraestructura.md) | Decisiones de hosting y operación |
 
 ## Licencia
 

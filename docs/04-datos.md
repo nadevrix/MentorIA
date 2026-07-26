@@ -32,7 +32,7 @@ Definido con Zod en `packages/core/src/types.ts` — la validación y los tipos 
 | `Sale`     | `date`, `items[]`, `totalBob`, `channel` (tienda · whatsapp · facebook · tiktok · mayoreo) |
 | `Customer` | `lastPurchaseDate`, `totalSpentBob`, `purchaseCount`, `segment`           |
 | `Expense`  | `category`, `amountBob`, `dueDate`, `paid` — las no pagadas con vencimiento son cuentas por pagar |
-| `FxRate`   | `official`, `parallel`, `date`, `source`                                  |
+| `FxRate`   | `rate`, `regimen` (`fijo` o `flexible`), `date`, `source`                  |
 
 `purchaseFxRate` es el campo clave: sin él no se puede contrastar el margen de entonces con el de hoy.
 
@@ -43,15 +43,15 @@ Santa Cruz. Generado por `data/generate.mjs`, determinista, con fechas relativas
 
 ```bash
 node data/generate.mjs      # productos, ventas, clientes y gastos
-node data/fetch-fx.mjs      # tipo de cambio REAL del BCB
+node data/fetch-fx.mjs      # actualiza la serie desde la fuente configurada
 ```
 
-⚠️ **`generate.mjs` no toca `fx.json` a propósito.** El tipo de cambio es un dato real que trae
-`fetch-fx.mjs`; generar uno ficticio rompe el esquema y falsea la demo.
+**`generate.mjs` no toca `fx.json` a propósito.** La cotización se actualiza por separado con
+`fetch-fx.mjs`; mezclarla con el generador del negocio borraría su trazabilidad.
 
 El dataset está calibrado contra el régimen real: los productos se compraron con el dólar entre
 7,6 y 9,9 Bs (lo que se pagaba antes de la unificación) y hoy se reponen a 11,37, lo que deja
-**3 productos vendiéndose bajo costo de reposición y 5 con margen erosionado**, más una cuenta
+**3 productos vendiéndose bajo costo de reposición y 6 con margen erosionado**, más una cuenta
 vencida y tres productos por agotarse. El peor pasó de 27% de margen a −9%.
 
 Para una demo con fecha fija: `DEMO_TODAY=2026-07-26` en el entorno.
@@ -60,10 +60,24 @@ Para una demo con fecha fija: `DEMO_TODAY=2026-07-26` en el entorno.
 > funcionan con datos hardcodeados. Antes del pitch hay que apuntar a datos reales — es la
 > prioridad #2 del backlog (`docs/02-equipo.md`).
 
-## Conectar datos reales
+## Fuentes disponibles
 
-Implementá la interfaz y enchufala en `createContext()` (`packages/core/src/index.ts`). No hay que
-tocar ninguna herramienta ni ningún prompt.
+`createContext()` (`packages/core/src/index.ts`) selecciona la fuente base:
+
+- `DATA_SOURCE=seed`: JSON de `data/seed/`.
+- `DATA_SOURCE=postgres` o `neon`: `PostgresDataSource` con `DATABASE_URL`.
+- `DATA_SOURCE=supabase`: reservado, todavía cae a seed con una advertencia.
+
+La fuente base se envuelve en `OverlayDataSource`. La interfaz puede importar CSV de productos,
+ventas, clientes o gastos y reemplazar cada entidad por separado. Ese overlay vive en memoria y se
+pierde al reiniciar la API; no es persistencia.
+
+El avance de formalización usa otra tienda porque no forma parte de `DataSource`: con
+`DATABASE_URL` se guarda en la tabla `compliance`; sin conexión queda en memoria y también se pierde
+al reiniciar.
+
+Para una fuente nueva, implementá la interfaz y enchufala en `createContext()`. No hay que tocar
+herramientas ni prompts.
 
 ```ts
 export class MiFuente implements DataSource {
@@ -76,13 +90,14 @@ export class MiFuente implements DataSource {
 }
 ```
 
-### Camino recomendado por esfuerzo
+### Camino recomendado
 
 | Fuente | Esfuerzo | Cuándo |
 | ------ | -------- | ------ |
-| Export de Excel/CSV de un comercio → convertir a `data/seed/` | 2 h | **Hacé esto primero.** Datos reales con el mínimo de código |
-| Postgres (Neon, Render o Supabase) | 4 h | Si se quiere persistencia y multiusuario. La cadena va en `DATABASE_URL` |
-| API REST de Odoo (solo lectura) | 6 h | Demuestra integración con el ERP que ya usa el comercio |
+| CSV desde la interfaz | Bajo | Validar el formato; se pierde al reiniciar |
+| Dataset autorizado en `data/seed/` | Bajo | Demo reproducible sin base |
+| PostgreSQL (Neon, Render o Supabase) | Medio | Persistencia de las entidades base |
+| API REST de Odoo (solo lectura) | Alto | Integración futura con un ERP existente |
 
 Si un campo no existe en la fuente real (típicamente `purchaseFxRate`), **no lo inventes**: hacelo
 opcional y que las herramientas lo omitan del cálculo comparativo, informándolo en el campo `nota`.
@@ -94,15 +109,19 @@ opcional y que las herramientas lo omitan del cálculo comparativo, informándol
   (Resolución Ministerial 245/2026 y Resolución de Directorio 88/2026 del BCB). Al 25/07/2026
   está en Bs 11,37. El paralelo sigue existiendo (~Bs 11,69) pero la brecha es de ~2%.
 
-El histórico de `data/seed/fx.json` es una serie de referencia generada para desarrollo.
+El histórico de `data/seed/fx.json` es una captura versionada. Cada punto conserva `source`.
 **Al conectar la fuente en vivo, documentá acá la URL exacta y la fecha de captura** — el track exige
 citar fuentes, y el jurado lo va a preguntar.
 
 ```
-Fuente en vivo: https://boliviabolivar.com
-Método:         scraping con Firecrawl (FirecrawlFxProvider), caché 15 min, fallback automático a SeedFxProvider
-Capturado:      En tiempo real vía API de Firecrawl con respaldo estático en data/seed/fx.json
+Actualizador del histórico: https://dolarbluebolivia.click/
+Fuente en vivo de la API:   https://boliviabolivar.com
+Método en vivo:             scraping con Firecrawl, caché 15 min y fallback a SeedFxProvider
+Respaldo:                   data/seed/fx.json
 ```
+
+El proveedor en vivo es una referencia de mercado, no una conexión directa al BCB. La UI y las
+respuestas deben mostrar el campo `source` que acompaña cada cotización.
 
 ## Colaboración con el Bolivia Data Track
 

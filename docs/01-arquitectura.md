@@ -12,7 +12,7 @@ y un agente es que acá el modelo **toma decisiones reales** sobre qué consulta
 ## Diagrama
 
 ```
-┌──────────────── Netlify ────────────────┐
+┌──────────── Render Static Site ─────────┐
 │  apps/web  (React + Vite)               │
 │    Panel (determinista)  ·  Chat (SSE)  │
 └──────────────┬──────────────────────────┘
@@ -32,17 +32,20 @@ y un agente es que acá el modelo **toma decisiones reales** sobre qué consulta
 │                    ┌────────────┴────────────┐               │
 │                    ▼                         ▼               │
 │              DataSource                 FxProvider           │
-│         (seed hoy · Postgres/Odoo)   (estático · Firecrawl)  │
+│       (seed · Postgres · futuro Odoo) (estático · Firecrawl) │
 └──────────────────────────────────────────────────────────────┘
 ```
 
-## Las cuatro capas
+El frontend migrará a Netlify cuando estén disponibles sus créditos; el resto del diagrama no cambia.
+
+## Las cinco capas
 
 ### 1. Fuentes (`data/`, `fx/`)
 
 `DataSource` y `FxProvider` son **interfaces**. Todo el sistema habla con ellas y nunca con una base de
-datos concreta. Hoy hay una implementación sobre JSON; cambiarla por Supabase u Odoo es escribir otra
-clase que cumpla el contrato — sin tocar ni una herramienta ni un prompt.
+datos concreta. Hay implementaciones sobre JSON y PostgreSQL. Conectar otro origen, como Odoo, exige
+una clase que cumpla el contrato, sin tocar herramientas ni prompts. `DATA_SOURCE=supabase` todavía no
+es una implementación: cae de forma explícita a los datos semilla.
 
 ```ts
 interface DataSource {
@@ -69,9 +72,9 @@ Cada herramienta es una función pura sobre la fuente de datos, con:
 La descripción prescriptiva es la palanca de calidad más barata: `"Llamá a esta herramienta SIEMPRE
 antes de hablar de precios"` cambia el comportamiento más que tres párrafos en el prompt de sistema.
 
-Herramientas actuales: `get_fx_rate`, `analyze_margins`, `suggest_price`, `sales_summary`,
-`top_products`, `inventory_alerts`, `customer_insights`, `financial_summary`, `accounts_payable`,
-`generate_whatsapp_message`.
+Herramientas actuales: `get_fx_rate`, `analyze_margins`, `suggest_price`, `simulate_scenario`,
+`sales_summary`, `top_products`, `inventory_alerts`, `marketing_candidates`, `customer_insights`,
+`financial_summary`, `accounts_payable` y `generate_whatsapp_message`.
 
 ### 3. Agentes (`agents/`)
 
@@ -79,7 +82,8 @@ Un agente es **rol + subconjunto de herramientas + prompt**. Nada más. Darle a 
 herramientas mejora la precisión: el Agente de Clientes no puede distraerse con el tipo de cambio.
 
 Todos comparten un bloque de contexto de país (`SHARED_CONTEXT`) que fija las reglas no negociables:
-moneda, la diferencia entre oficial y paralelo, y prohibición de inventar cifras.
+moneda, régimen flexible vigente, tratamiento distinto de productos importados y nacionales, y
+prohibición de inventar cifras.
 
 ### 4. Proveedor de modelo (`llm/`)
 
@@ -116,8 +120,8 @@ Detalles que importan:
 
 - **Límite de iteraciones.** Un agente colgado en vivo arruina el pitch. A las 8 vueltas corta con error.
 - **Errores de herramienta no rompen el loop.** Se devuelven con `is_error: true` y el modelo corrige.
-- **Prompt caching** en el bloque de sistema: el prompt y las herramientas son idénticos entre turnos,
-  así que a partir del segundo mensaje se pagan a ~10%.
+- **Caché dependiente del proveedor.** El adaptador puede aprovechar caché de contexto cuando la API
+  elegida lo soporta; el runtime no asume un mecanismo ni un descuento concreto.
 - **Validación con Zod** de todo input del modelo antes de ejecutar.
 
 ## El panel no usa el modelo
@@ -126,7 +130,7 @@ Detalles que importan:
 
 1. La pantalla principal carga en milisegundos, no en 15 segundos.
 2. No gasta tokens en cada refresh.
-3. Si la API de Claude falla en vivo, **el panel sigue funcionando** y el pitch tiene plan B.
+3. Si el proveedor LLM falla en vivo, **el panel sigue funcionando** y el pitch tiene plan B.
 
 El modelo entra cuando hay que interpretar y decidir, no para formatear números.
 
@@ -147,6 +151,32 @@ El modelo entra cuando hay que interpretar y decidir, no para formatear números
 Mostrar las herramientas mientras corren es lo que hace visible que hay un agente detrás y no un
 prompt. Vale puntos en la demo.
 
+## Superficie HTTP
+
+La API expone 16 rutas:
+
+```text
+GET    /health
+GET    /api/agents
+GET    /api/dashboard
+GET    /api/insights
+POST   /api/simulate
+GET    /api/brief
+POST   /api/chat
+GET    /api/marketing
+POST   /api/image
+GET    /api/taxes
+GET    /api/taxes/formularios
+GET    /api/formalizacion
+PUT    /api/formalizacion/:itemId
+GET    /api/data
+POST   /api/data/:entidad
+DELETE /api/data/:entidad
+```
+
+`/api/brief` y `/api/chat` transmiten SSE. Las rutas de datos reemplazan entidades en el overlay
+temporal; formalización persiste en PostgreSQL sólo cuando existe `DATABASE_URL`.
+
 ## Modelo, costo y cuota
 
 Modelo por defecto: **`gemini-3.1-flash-lite`**. La elección se midió corriendo el mismo prompt
@@ -164,16 +194,16 @@ Los `flash-lite` originalmente terminaban el turno sin llamar `suggest_price` �
 problema pero no decían a cuánto subir. Se arregló **escribiendo la secuencia esperada en el
 prompt del agente**, no cambiando de modelo: ahora completan la cadena y son 3× más rápidos.
 
-⚠️ **Cuota: el free tier de Gemini permite ~5 requests por minuto y 20 por día**, y cada pregunta al agente
-consume 3 o 4 (una por vuelta del loop). Sin facturación activada, la segunda pregunta seguida
-falla con un 429. Antes del pitch: activar facturación en Google, o cambiar a
-`LLM_PROVIDER=anthropic`.
+**Cuota:** una pregunta puede realizar varias llamadas, una por vuelta del loop. Los límites de
+Gemini dependen del modelo, proyecto y facturación, así que no deben asumirse desde este documento.
+Antes del pitch hay que probar el guion completo y tener `LLM_PROVIDER=anthropic` como respaldo si
+existe una clave.
 
 `max_tokens` es 8000 por turno, para dejar espacio al razonamiento más la respuesta.
 
-## Por qué Render y no Netlify Functions para la API
+## Por qué la API queda en Render
 
-Una vuelta del loop con varias herramientas puede tomar 20–40 segundos. Las funciones síncronas de
-Netlify cortan a los 10. Render free tier no tiene ese límite y soporta SSE largo. El costo es el
-arranque en frío del free tier (~30 s): **hay que despertar la API antes del pitch** (ver
-`docs/06-demo-pitch.md`).
+Una vuelta del loop puede realizar varias llamadas al modelo y mantener una respuesta SSE abierta.
+La implementación actual es un servidor Node con `@hono/node-server`, no una función serverless.
+Render lo ejecuta sin adaptar la entrada ni el streaming. El plan Starter cubierto por los créditos
+disponibles evita la suspensión por inactividad; el frontend usa un Static Site independiente.

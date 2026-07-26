@@ -67,6 +67,9 @@ Leer la salida: producto, precio actual, precio sugerido, ajuste porcentual.
 
 *(Si el reto Zavu quedó implementado, mostrarlo acá en lugar de contarlo.)*
 
+Las pestañas Impuestos, Trámites, Mis datos y Marketing demuestran amplitud, pero no se navegan
+durante el guion principal. Se mencionan en una frase o se reservan para preguntas.
+
 ### 3:30 – 3:50 · Cierre
 
 > "Mentor IA: agentes que protegen el margen de las PyMEs bolivianas cuando se mueve el dólar.
@@ -74,9 +77,10 @@ Leer la salida: producto, precio actual, precio sugerido, ajuste porcentual.
 
 ## Preparación (30 min antes)
 
-- [ ] Abrir `<API>/health` para despertar Render — **crítico**
+- [ ] Abrir `<API>/health` y confirmar que el deploy correcto está saludable
 - [ ] Confirmar que `llm` en `/health` trae `provider` y `model`
-- [ ] Probar **dos preguntas seguidas**: si la segunda da 429, falta facturación en Gemini
+- [ ] Confirmar que `baseSource` corresponde al dataset que se presentará
+- [ ] Probar **dos preguntas seguidas**; si aparece 429, distinguir el límite local de la cuota del proveedor
 - [ ] Cargar la URL pública en el navegador y hacer una consulta completa de prueba
 - [ ] Correr `node data/generate.mjs` si el dataset debe verse fresco, y **anotar los números nuevos**
 - [ ] Cerrar Slack, notificaciones y demás pestañas
@@ -90,7 +94,7 @@ Leer la salida: producto, precio actual, precio sugerido, ajuste porcentual.
 | ----- | --------- |
 | Sin WiFi | Correr en local contra `localhost` y decirlo: "esto corre en Render, acá va local por la red" |
 | Modelo caído o con 429 | Cambiar `LLM_PROVIDER` al otro proveedor. Si tampoco, mostrar el panel (es determinista, funciona sin modelo) + capturas de una conversación real |
-| Render frío en escena | Seguir hablando del problema mientras despierta; hay 40 segundos de guion antes de la demo |
+| API de Render no responde | Pasar al panel local o a las capturas y revisar `/health` después; Starter no debería tener cold start |
 | Un agente responde mal en vivo | No repetir la misma pregunta. Pasar a la siguiente del guion y seguir |
 
 **Nunca digas "no sé por qué falla".** Decí qué debería estar pasando y seguí. Si la demo falla,
@@ -107,14 +111,14 @@ mostrar capturas o código impacta la puntuación pero no descalifica.
 > reales sea la prioridad #2 del backlog.)*
 
 **"¿De dónde sacan el tipo de cambio?"**
-> Del BCB, que desde el 29/06/2026 publica un Tipo de Cambio Oficial único que flota a diario.
-> Explicar el fallback si el scraping falla. Si preguntan por el paralelo: sigue existiendo, pero
-> la brecha pasó de más de 100% a unos dos puntos, así que ya no es el dato que manda.
+> Mostrar el campo `source` de la cotización. En modo estático se usa el histórico versionado; con
+> Firecrawl se consulta `boliviabolivar.com` y se vuelve al histórico si el scraping falla. No
+> presentar el scraping como una conexión directa al BCB.
 
 **"¿Por qué no lo hace Odoo?"**
 > Porque modela un solo tipo de cambio y asume que es el oficial. Nosotros no reemplazamos al ERP:
 > nos paramos encima.
 
 **"¿Cuánto cuesta correr esto por cliente?"**
-> El panel es determinista, cero tokens. Solo el chat consume, con prompt caching en el bloque de
-> sistema. Tener a mano el número de tokens de una consulta típica (sale en el evento `done`).
+> El panel es determinista y no consume tokens. Chat y resumen sí. Tener a mano el uso de una
+> consulta típica (sale en el evento `done`) y separar costo del modelo de costo de hosting.

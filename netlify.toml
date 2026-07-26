@@ -1,9 +1,11 @@
+# Fase 2: migración futura del frontend. El despliegue activo usa Render Static.
+
 [build]
   command = "npm run build:web"
   publish = "apps/web/dist"
 
 [build.environment]
-  NODE_VERSION = "20"
+  NODE_VERSION = "22"
 
 # SPA: todas las rutas caen en index.html
 [[redirects]]
