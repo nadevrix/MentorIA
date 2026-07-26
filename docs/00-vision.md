@@ -9,8 +9,8 @@ su precio está fijado al dólar de cuando compró y su costo de reposición al 
 
 | Hecho                                                        | Consecuencia                                            |
 | ------------------------------------------------------------ | ------------------------------------------------------- |
-| El dólar oficial del BCB está intervenido (~6.96 Bs)          | No refleja el costo real de importar                    |
-| El dólar paralelo se mueve y tiende al alza                   | El costo de reposición sube todas las semanas           |
+| El 29/06/2026 el BCB terminó 15 años de tipo fijo: ahora flota | El costo de importar cambia **todos los días**          |
+| El Tipo de Cambio Oficial subió ~17% en menos de un mes       | El costo de reposición sube más rápido que los precios  |
 | El comercio fija precios una vez y los revisa "cuando duele"  | El margen se erosiona sin que nadie lo mida             |
 | Las herramientas que usa (Excel, cuaderno, WhatsApp) no saben de tipo de cambio | Nadie le avisa hasta que se queda sin capital |
 
@@ -35,18 +35,20 @@ Nos paramos **encima** de los datos que el negocio ya tiene y aportamos la capa 
 
 ## Por qué esto no existía bien
 
-- **Los ERP internacionales** (Odoo, Bind, Alegra) modelan un solo tipo de cambio y asumen que es el
-  oficial. En Bolivia esa suposición está rota, y ahí es donde se pierde el margen.
+- **Los ERP internacionales** (Odoo, Bind, Alegra) valúan el inventario al costo histórico. Con un
+  tipo de cambio que flota a diario, ese número deja de significar algo: lo que importa es a cuánto
+  reponés hoy, y ninguno lo calcula.
 - **Los dashboards de BI** muestran el pasado. No deciden ni recomiendan.
 - **Los chatbots genéricos** no tienen acceso a las cifras del negocio ni herramientas para calcular.
-- La brecha entre oficial y paralelo (hoy >100%) es un problema **específicamente boliviano**, con
-  gemelos en Argentina y Venezuela. Nadie con producto global lo va a resolver primero.
+- La transición a tipo de cambio flexible es **un evento de hace cuatro semanas**: ningún producto
+  existente está calibrado para eso, y miles de comercios acaban de quedar con listas de precios
+  obsoletas. Argentina y Venezuela pasaron por lo mismo. Nadie con producto global lo resuelve primero.
 
 ## Diferencial defendible
 
 1. **El cálculo de margen a costo de reposición** — no es un dashboard más: es una métrica que
    ningún ERP disponible en el país calcula, y es exactamente la que decide si el negocio sobrevive.
-2. **Datos locales** — serie del paralelo, canales reales (WhatsApp, Facebook, mayoreo), categorías
+2. **Datos locales** — serie real del TCO del BCB, canales reales (WhatsApp, Facebook, mayoreo), categorías
    de gasto e impuestos bolivianos (IVA/IT).
 3. **Salida accionable** — cada respuesta termina en instrucciones ejecutables, no en un gráfico.
 

@@ -44,24 +44,24 @@ const currentParallel = fx.at(-1).parallel;
 
 // --- Productos ------------------------------------------------------------
 const catalog = [
-  ['Audífonos Bluetooth TWS', 'audio', 11, true, 45, 10.9],
-  ['Parlante portátil 20W', 'audio', 26, true, 30, 11.2],
-  ['Cargador rápido 65W USB-C', 'accesorios', 9, true, 60, 10.6],
-  ['Cable USB-C trenzado 2m', 'accesorios', 2.4, true, 140, 10.4],
-  ['Power bank 20.000 mAh', 'accesorios', 17, true, 25, 12.9],
-  ['Mouse inalámbrico ergonómico', 'computo', 8.5, true, 40, 11.0],
-  ['Teclado mecánico compacto', 'computo', 34, true, 12, 13.4],
-  ['Webcam 1080p', 'computo', 21, true, 8, 13.1],
-  ['Soporte de laptop aluminio', 'computo', 13, true, 18, 12.7],
-  ['Funda para celular (varios)', 'accesorios', 1.8, true, 200, 10.3],
-  ['Protector de pantalla vidrio', 'accesorios', 0.9, true, 260, 10.3],
-  ['Reloj inteligente serie 8', 'wearables', 41, true, 10, 13.8],
+  ['Audífonos Bluetooth TWS', 'audio', 11, true, 45, 8.1],
+  ['Parlante portátil 20W', 'audio', 26, true, 30, 8.6],
+  ['Cargador rápido 65W USB-C', 'accesorios', 9, true, 60, 7.9],
+  ['Cable USB-C trenzado 2m', 'accesorios', 2.4, true, 140, 7.6],
+  ['Power bank 20.000 mAh', 'accesorios', 17, true, 25, 9.6],
+  ['Mouse inalámbrico ergonómico', 'computo', 8.5, true, 40, 8.3],
+  ['Teclado mecánico compacto', 'computo', 34, true, 12, 9.9],
+  ['Webcam 1080p', 'computo', 21, true, 8, 9.7],
+  ['Soporte de laptop aluminio', 'computo', 13, true, 18, 9.4],
+  ['Funda para celular (varios)', 'accesorios', 1.8, true, 200, 7.6],
+  ['Protector de pantalla vidrio', 'accesorios', 0.9, true, 260, 7.6],
+  ['Reloj inteligente serie 8', 'wearables', 41, true, 10, 9.9],
   ['Bolsa de regalo impresa', 'insumos', 0.35, false, 400, OFFICIAL],
   ['Etiquetas térmicas rollo', 'insumos', 4.2, false, 30, OFFICIAL],
 ];
 
 const products = catalog.map(([name, category, costUsd, imported, stock, purchaseFxRate], i) => {
-  // Precio fijado cuando el dólar estaba en purchaseFxRate, con margen ~32%.
+  // Precio fijado cuando el dólar estaba en purchaseFxRate, con margen ~32% al momento de la compra.
   const costAtPurchase = costUsd * purchaseFxRate;
   const priceBob = Math.round((costAtPurchase / (1 - 0.32)) / 5) * 5;
   return {
@@ -160,16 +160,17 @@ addExpense({ date: iso(12), category: 'mercaderia', description: 'Saldo proveedo
 addExpense({ date: iso(10), category: 'impuestos', description: 'IVA/IT del mes', amountBob: 3120, dueDate: iso(-5), paid: false });
 addExpense({ date: iso(25), category: 'servicios', description: 'Factura de energía eléctrica', amountBob: 742, dueDate: iso(2), paid: false });
 
+// OJO: fx.json NO se genera acá. Lo trae data/fetch-fx.mjs con el tipo de cambio
+// real del BCB. Generar uno ficticio rompería el esquema y falsearía la demo.
 const files = {
   'products.json': products,
   'customers.json': customers,
   'sales.json': sales,
   'expenses.json': expenses,
-  'fx.json': fx,
 };
 
 for (const [file, contents] of Object.entries(files)) {
   writeFileSync(join(OUT, file), `${JSON.stringify(contents, null, 2)}\n`);
   console.log(`✓ ${file} (${contents.length} registros)`);
 }
-console.log(`\nDólar paralelo actual del dataset: ${currentParallel} Bs`);
+console.log('\nEl tipo de cambio lo trae data/fetch-fx.mjs (dato real del BCB), no este script.');

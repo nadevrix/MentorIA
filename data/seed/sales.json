@@ -7,15 +7,15 @@
       {
         "productId": "prod-012",
         "quantity": 4,
-        "unitPriceBob": 830
+        "unitPriceBob": 595
       },
       {
         "productId": "prod-009",
         "quantity": 2,
-        "unitPriceBob": 245
+        "unitPriceBob": 180
       }
     ],
-    "totalBob": 3810,
+    "totalBob": 2740,
     "channel": "tiktok"
   },
   {
@@ -40,20 +40,20 @@
       {
         "productId": "prod-011",
         "quantity": 1,
-        "unitPriceBob": 15
+        "unitPriceBob": 10
       },
       {
         "productId": "prod-003",
         "quantity": 4,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       },
       {
         "productId": "prod-004",
         "quantity": 2,
-        "unitPriceBob": 35
+        "unitPriceBob": 25
       }
     ],
-    "totalBob": 645,
+    "totalBob": 480,
     "channel": "tienda"
   },
   {
@@ -64,15 +64,15 @@
       {
         "productId": "prod-011",
         "quantity": 3,
-        "unitPriceBob": 15
+        "unitPriceBob": 10
       },
       {
         "productId": "prod-006",
         "quantity": 2,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       }
     ],
-    "totalBob": 325,
+    "totalBob": 240,
     "channel": "tienda"
   },
   {
@@ -83,7 +83,7 @@
       {
         "productId": "prod-002",
         "quantity": 4,
-        "unitPriceBob": 430
+        "unitPriceBob": 330
       },
       {
         "productId": "prod-013",
@@ -91,7 +91,7 @@
         "unitPriceBob": 5
       }
     ],
-    "totalBob": 1730,
+    "totalBob": 1330,
     "channel": "mayoreo"
   },
   {
@@ -102,15 +102,15 @@
       {
         "productId": "prod-006",
         "quantity": 3,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       },
       {
         "productId": "prod-001",
         "quantity": 1,
-        "unitPriceBob": 175
+        "unitPriceBob": 130
       }
     ],
-    "totalBob": 595,
+    "totalBob": 445,
     "channel": "whatsapp"
   },
   {
@@ -121,12 +121,12 @@
       {
         "productId": "prod-002",
         "quantity": 3,
-        "unitPriceBob": 430
+        "unitPriceBob": 330
       },
       {
         "productId": "prod-006",
         "quantity": 1,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       },
       {
         "productId": "prod-014",
@@ -134,7 +134,7 @@
         "unitPriceBob": 45
       }
     ],
-    "totalBob": 1475,
+    "totalBob": 1140,
     "channel": "mayoreo"
   },
   {
@@ -145,15 +145,15 @@
       {
         "productId": "prod-003",
         "quantity": 4,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       },
       {
         "productId": "prod-002",
         "quantity": 2,
-        "unitPriceBob": 430
+        "unitPriceBob": 330
       }
     ],
-    "totalBob": 1420,
+    "totalBob": 1080,
     "channel": "whatsapp"
   },
   {
@@ -164,10 +164,10 @@
       {
         "productId": "prod-004",
         "quantity": 2,
-        "unitPriceBob": 35
+        "unitPriceBob": 25
       }
     ],
-    "totalBob": 70,
+    "totalBob": 50,
     "channel": "whatsapp"
   },
   {
@@ -178,10 +178,10 @@
       {
         "productId": "prod-012",
         "quantity": 1,
-        "unitPriceBob": 830
+        "unitPriceBob": 595
       }
     ],
-    "totalBob": 830,
+    "totalBob": 595,
     "channel": "whatsapp"
   },
   {
@@ -192,20 +192,20 @@
       {
         "productId": "prod-011",
         "quantity": 4,
-        "unitPriceBob": 15
+        "unitPriceBob": 10
       },
       {
         "productId": "prod-002",
         "quantity": 1,
-        "unitPriceBob": 430
+        "unitPriceBob": 330
       },
       {
         "productId": "prod-001",
         "quantity": 3,
-        "unitPriceBob": 175
+        "unitPriceBob": 130
       }
     ],
-    "totalBob": 1015,
+    "totalBob": 760,
     "channel": "facebook"
   },
   {
@@ -221,10 +221,10 @@
       {
         "productId": "prod-011",
         "quantity": 2,
-        "unitPriceBob": 15
+        "unitPriceBob": 10
       }
     ],
-    "totalBob": 45,
+    "totalBob": 35,
     "channel": "mayoreo"
   },
   {
@@ -249,15 +249,15 @@
       {
         "productId": "prod-010",
         "quantity": 3,
-        "unitPriceBob": 25
+        "unitPriceBob": 20
       },
       {
         "productId": "prod-011",
         "quantity": 4,
-        "unitPriceBob": 15
+        "unitPriceBob": 10
       }
     ],
-    "totalBob": 135,
+    "totalBob": 100,
     "channel": "tiktok"
   },
   {
@@ -268,20 +268,20 @@
       {
         "productId": "prod-012",
         "quantity": 1,
-        "unitPriceBob": 830
+        "unitPriceBob": 595
       },
       {
         "productId": "prod-010",
         "quantity": 2,
-        "unitPriceBob": 25
+        "unitPriceBob": 20
       },
       {
         "productId": "prod-006",
         "quantity": 2,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       }
     ],
-    "totalBob": 1160,
+    "totalBob": 845,
     "channel": "tienda"
   },
   {
@@ -302,10 +302,10 @@
       {
         "productId": "prod-012",
         "quantity": 2,
-        "unitPriceBob": 830
+        "unitPriceBob": 595
       }
     ],
-    "totalBob": 1800,
+    "totalBob": 1330,
     "channel": "tiktok"
   },
   {
@@ -316,10 +316,10 @@
       {
         "productId": "prod-007",
         "quantity": 4,
-        "unitPriceBob": 670
+        "unitPriceBob": 495
       }
     ],
-    "totalBob": 2680,
+    "totalBob": 1980,
     "channel": "mayoreo"
   },
   {
@@ -330,7 +330,7 @@
       {
         "productId": "prod-001",
         "quantity": 2,
-        "unitPriceBob": 175
+        "unitPriceBob": 130
       },
       {
         "productId": "prod-014",
@@ -340,10 +340,10 @@
       {
         "productId": "prod-004",
         "quantity": 2,
-        "unitPriceBob": 35
+        "unitPriceBob": 25
       }
     ],
-    "totalBob": 555,
+    "totalBob": 445,
     "channel": "mayoreo"
   },
   {
@@ -354,10 +354,10 @@
       {
         "productId": "prod-005",
         "quantity": 3,
-        "unitPriceBob": 325
+        "unitPriceBob": 240
       }
     ],
-    "totalBob": 975,
+    "totalBob": 720,
     "channel": "whatsapp"
   },
   {
@@ -368,15 +368,15 @@
       {
         "productId": "prod-011",
         "quantity": 4,
-        "unitPriceBob": 15
+        "unitPriceBob": 10
       },
       {
         "productId": "prod-003",
         "quantity": 2,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       }
     ],
-    "totalBob": 340,
+    "totalBob": 250,
     "channel": "tienda"
   },
   {
@@ -387,10 +387,10 @@
       {
         "productId": "prod-006",
         "quantity": 2,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       }
     ],
-    "totalBob": 280,
+    "totalBob": 210,
     "channel": "tienda"
   },
   {
@@ -401,10 +401,10 @@
       {
         "productId": "prod-008",
         "quantity": 2,
-        "unitPriceBob": 405
+        "unitPriceBob": 300
       }
     ],
-    "totalBob": 810,
+    "totalBob": 600,
     "channel": "tienda"
   },
   {
@@ -415,15 +415,15 @@
       {
         "productId": "prod-002",
         "quantity": 2,
-        "unitPriceBob": 430
+        "unitPriceBob": 330
       },
       {
         "productId": "prod-009",
         "quantity": 3,
-        "unitPriceBob": 245
+        "unitPriceBob": 180
       }
     ],
-    "totalBob": 1595,
+    "totalBob": 1200,
     "channel": "tiktok"
   },
   {
@@ -434,20 +434,20 @@
       {
         "productId": "prod-011",
         "quantity": 1,
-        "unitPriceBob": 15
+        "unitPriceBob": 10
       },
       {
         "productId": "prod-007",
         "quantity": 1,
-        "unitPriceBob": 670
+        "unitPriceBob": 495
       },
       {
         "productId": "prod-006",
         "quantity": 2,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       }
     ],
-    "totalBob": 965,
+    "totalBob": 715,
     "channel": "whatsapp"
   },
   {
@@ -458,15 +458,15 @@
       {
         "productId": "prod-007",
         "quantity": 3,
-        "unitPriceBob": 670
+        "unitPriceBob": 495
       },
       {
         "productId": "prod-010",
         "quantity": 1,
-        "unitPriceBob": 25
+        "unitPriceBob": 20
       }
     ],
-    "totalBob": 2035,
+    "totalBob": 1505,
     "channel": "mayoreo"
   },
   {
@@ -482,15 +482,15 @@
       {
         "productId": "prod-002",
         "quantity": 1,
-        "unitPriceBob": 430
+        "unitPriceBob": 330
       },
       {
         "productId": "prod-003",
         "quantity": 3,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       }
     ],
-    "totalBob": 865,
+    "totalBob": 660,
     "channel": "facebook"
   },
   {
@@ -501,7 +501,7 @@
       {
         "productId": "prod-006",
         "quantity": 1,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       },
       {
         "productId": "prod-014",
@@ -511,10 +511,10 @@
       {
         "productId": "prod-005",
         "quantity": 4,
-        "unitPriceBob": 325
+        "unitPriceBob": 240
       }
     ],
-    "totalBob": 1575,
+    "totalBob": 1200,
     "channel": "tienda"
   },
   {
@@ -525,15 +525,15 @@
       {
         "productId": "prod-006",
         "quantity": 1,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       },
       {
         "productId": "prod-002",
         "quantity": 4,
-        "unitPriceBob": 430
+        "unitPriceBob": 330
       }
     ],
-    "totalBob": 1860,
+    "totalBob": 1425,
     "channel": "tiktok"
   },
   {
@@ -544,15 +544,15 @@
       {
         "productId": "prod-004",
         "quantity": 4,
-        "unitPriceBob": 35
+        "unitPriceBob": 25
       },
       {
         "productId": "prod-008",
         "quantity": 4,
-        "unitPriceBob": 405
+        "unitPriceBob": 300
       }
     ],
-    "totalBob": 1760,
+    "totalBob": 1300,
     "channel": "facebook"
   },
   {
@@ -568,10 +568,10 @@
       {
         "productId": "prod-004",
         "quantity": 1,
-        "unitPriceBob": 35
+        "unitPriceBob": 25
       }
     ],
-    "totalBob": 55,
+    "totalBob": 45,
     "channel": "mayoreo"
   },
   {
@@ -582,10 +582,10 @@
       {
         "productId": "prod-011",
         "quantity": 1,
-        "unitPriceBob": 15
+        "unitPriceBob": 10
       }
     ],
-    "totalBob": 15,
+    "totalBob": 10,
     "channel": "whatsapp"
   },
   {
@@ -596,10 +596,10 @@
       {
         "productId": "prod-004",
         "quantity": 4,
-        "unitPriceBob": 35
+        "unitPriceBob": 25
       }
     ],
-    "totalBob": 140,
+    "totalBob": 100,
     "channel": "tiktok"
   },
   {
@@ -610,15 +610,15 @@
       {
         "productId": "prod-005",
         "quantity": 2,
-        "unitPriceBob": 325
+        "unitPriceBob": 240
       },
       {
         "productId": "prod-010",
         "quantity": 4,
-        "unitPriceBob": 25
+        "unitPriceBob": 20
       }
     ],
-    "totalBob": 750,
+    "totalBob": 560,
     "channel": "tienda"
   },
   {
@@ -643,15 +643,15 @@
       {
         "productId": "prod-003",
         "quantity": 4,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       },
       {
         "productId": "prod-006",
         "quantity": 3,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       }
     ],
-    "totalBob": 980,
+    "totalBob": 735,
     "channel": "whatsapp"
   },
   {
@@ -662,20 +662,20 @@
       {
         "productId": "prod-003",
         "quantity": 4,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       },
       {
         "productId": "prod-001",
         "quantity": 2,
-        "unitPriceBob": 175
+        "unitPriceBob": 130
       },
       {
         "productId": "prod-009",
         "quantity": 2,
-        "unitPriceBob": 245
+        "unitPriceBob": 180
       }
     ],
-    "totalBob": 1400,
+    "totalBob": 1040,
     "channel": "tienda"
   },
   {
@@ -686,15 +686,15 @@
       {
         "productId": "prod-003",
         "quantity": 3,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       },
       {
         "productId": "prod-012",
         "quantity": 4,
-        "unitPriceBob": 830
+        "unitPriceBob": 595
       }
     ],
-    "totalBob": 3740,
+    "totalBob": 2695,
     "channel": "mayoreo"
   },
   {
@@ -705,10 +705,10 @@
       {
         "productId": "prod-003",
         "quantity": 3,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       }
     ],
-    "totalBob": 420,
+    "totalBob": 315,
     "channel": "tiktok"
   },
   {
@@ -719,10 +719,10 @@
       {
         "productId": "prod-008",
         "quantity": 3,
-        "unitPriceBob": 405
+        "unitPriceBob": 300
       }
     ],
-    "totalBob": 1215,
+    "totalBob": 900,
     "channel": "mayoreo"
   },
   {
@@ -733,10 +733,10 @@
       {
         "productId": "prod-002",
         "quantity": 1,
-        "unitPriceBob": 430
+        "unitPriceBob": 330
       }
     ],
-    "totalBob": 430,
+    "totalBob": 330,
     "channel": "tiktok"
   },
   {
@@ -747,15 +747,15 @@
       {
         "productId": "prod-006",
         "quantity": 4,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       },
       {
         "productId": "prod-007",
         "quantity": 4,
-        "unitPriceBob": 670
+        "unitPriceBob": 495
       }
     ],
-    "totalBob": 3240,
+    "totalBob": 2400,
     "channel": "tienda"
   },
   {
@@ -771,10 +771,10 @@
       {
         "productId": "prod-007",
         "quantity": 4,
-        "unitPriceBob": 670
+        "unitPriceBob": 495
       }
     ],
-    "totalBob": 2695,
+    "totalBob": 1995,
     "channel": "tienda"
   },
   {
@@ -785,10 +785,10 @@
       {
         "productId": "prod-008",
         "quantity": 4,
-        "unitPriceBob": 405
+        "unitPriceBob": 300
       }
     ],
-    "totalBob": 1620,
+    "totalBob": 1200,
     "channel": "facebook"
   },
   {
@@ -799,20 +799,20 @@
       {
         "productId": "prod-001",
         "quantity": 1,
-        "unitPriceBob": 175
+        "unitPriceBob": 130
       },
       {
         "productId": "prod-007",
         "quantity": 4,
-        "unitPriceBob": 670
+        "unitPriceBob": 495
       },
       {
         "productId": "prod-005",
         "quantity": 1,
-        "unitPriceBob": 325
+        "unitPriceBob": 240
       }
     ],
-    "totalBob": 3180,
+    "totalBob": 2350,
     "channel": "tienda"
   },
   {
@@ -823,15 +823,15 @@
       {
         "productId": "prod-011",
         "quantity": 3,
-        "unitPriceBob": 15
+        "unitPriceBob": 10
       },
       {
         "productId": "prod-009",
         "quantity": 4,
-        "unitPriceBob": 245
+        "unitPriceBob": 180
       }
     ],
-    "totalBob": 1025,
+    "totalBob": 750,
     "channel": "facebook"
   },
   {
@@ -856,12 +856,12 @@
       {
         "productId": "prod-001",
         "quantity": 2,
-        "unitPriceBob": 175
+        "unitPriceBob": 130
       },
       {
         "productId": "prod-007",
         "quantity": 4,
-        "unitPriceBob": 670
+        "unitPriceBob": 495
       },
       {
         "productId": "prod-013",
@@ -869,7 +869,7 @@
         "unitPriceBob": 5
       }
     ],
-    "totalBob": 3045,
+    "totalBob": 2255,
     "channel": "mayoreo"
   },
   {
@@ -880,15 +880,15 @@
       {
         "productId": "prod-007",
         "quantity": 2,
-        "unitPriceBob": 670
+        "unitPriceBob": 495
       },
       {
         "productId": "prod-001",
         "quantity": 4,
-        "unitPriceBob": 175
+        "unitPriceBob": 130
       }
     ],
-    "totalBob": 2040,
+    "totalBob": 1510,
     "channel": "tienda"
   },
   {
@@ -899,10 +899,10 @@
       {
         "productId": "prod-003",
         "quantity": 1,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       }
     ],
-    "totalBob": 140,
+    "totalBob": 105,
     "channel": "tiktok"
   },
   {
@@ -913,20 +913,20 @@
       {
         "productId": "prod-007",
         "quantity": 1,
-        "unitPriceBob": 670
+        "unitPriceBob": 495
       },
       {
         "productId": "prod-003",
         "quantity": 1,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       },
       {
         "productId": "prod-012",
         "quantity": 1,
-        "unitPriceBob": 830
+        "unitPriceBob": 595
       }
     ],
-    "totalBob": 1640,
+    "totalBob": 1195,
     "channel": "whatsapp"
   },
   {
@@ -942,15 +942,15 @@
       {
         "productId": "prod-003",
         "quantity": 3,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       },
       {
         "productId": "prod-008",
         "quantity": 3,
-        "unitPriceBob": 405
+        "unitPriceBob": 300
       }
     ],
-    "totalBob": 1650,
+    "totalBob": 1230,
     "channel": "whatsapp"
   },
   {
@@ -961,15 +961,15 @@
       {
         "productId": "prod-009",
         "quantity": 1,
-        "unitPriceBob": 245
+        "unitPriceBob": 180
       },
       {
         "productId": "prod-002",
         "quantity": 3,
-        "unitPriceBob": 430
+        "unitPriceBob": 330
       }
     ],
-    "totalBob": 1535,
+    "totalBob": 1170,
     "channel": "mayoreo"
   },
   {
@@ -980,20 +980,20 @@
       {
         "productId": "prod-005",
         "quantity": 3,
-        "unitPriceBob": 325
+        "unitPriceBob": 240
       },
       {
         "productId": "prod-011",
         "quantity": 4,
-        "unitPriceBob": 15
+        "unitPriceBob": 10
       },
       {
         "productId": "prod-009",
         "quantity": 3,
-        "unitPriceBob": 245
+        "unitPriceBob": 180
       }
     ],
-    "totalBob": 1770,
+    "totalBob": 1300,
     "channel": "facebook"
   },
   {
@@ -1004,15 +1004,15 @@
       {
         "productId": "prod-012",
         "quantity": 1,
-        "unitPriceBob": 830
+        "unitPriceBob": 595
       },
       {
         "productId": "prod-008",
         "quantity": 2,
-        "unitPriceBob": 405
+        "unitPriceBob": 300
       }
     ],
-    "totalBob": 1640,
+    "totalBob": 1195,
     "channel": "mayoreo"
   },
   {
@@ -1037,15 +1037,15 @@
       {
         "productId": "prod-012",
         "quantity": 3,
-        "unitPriceBob": 830
+        "unitPriceBob": 595
       },
       {
         "productId": "prod-006",
         "quantity": 2,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       }
     ],
-    "totalBob": 2770,
+    "totalBob": 1995,
     "channel": "mayoreo"
   },
   {
@@ -1056,7 +1056,7 @@
       {
         "productId": "prod-004",
         "quantity": 4,
-        "unitPriceBob": 35
+        "unitPriceBob": 25
       },
       {
         "productId": "prod-013",
@@ -1064,7 +1064,7 @@
         "unitPriceBob": 5
       }
     ],
-    "totalBob": 150,
+    "totalBob": 110,
     "channel": "mayoreo"
   },
   {
@@ -1075,20 +1075,20 @@
       {
         "productId": "prod-002",
         "quantity": 2,
-        "unitPriceBob": 430
+        "unitPriceBob": 330
       },
       {
         "productId": "prod-004",
         "quantity": 2,
-        "unitPriceBob": 35
+        "unitPriceBob": 25
       },
       {
         "productId": "prod-007",
         "quantity": 1,
-        "unitPriceBob": 670
+        "unitPriceBob": 495
       }
     ],
-    "totalBob": 1600,
+    "totalBob": 1205,
     "channel": "mayoreo"
   },
   {
@@ -1099,12 +1099,12 @@
       {
         "productId": "prod-012",
         "quantity": 3,
-        "unitPriceBob": 830
+        "unitPriceBob": 595
       },
       {
         "productId": "prod-011",
         "quantity": 2,
-        "unitPriceBob": 15
+        "unitPriceBob": 10
       },
       {
         "productId": "prod-013",
@@ -1112,7 +1112,7 @@
         "unitPriceBob": 5
       }
     ],
-    "totalBob": 2530,
+    "totalBob": 1815,
     "channel": "whatsapp"
   },
   {
@@ -1123,15 +1123,15 @@
       {
         "productId": "prod-008",
         "quantity": 2,
-        "unitPriceBob": 405
+        "unitPriceBob": 300
       },
       {
         "productId": "prod-006",
         "quantity": 3,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       }
     ],
-    "totalBob": 1230,
+    "totalBob": 915,
     "channel": "mayoreo"
   },
   {
@@ -1142,20 +1142,20 @@
       {
         "productId": "prod-011",
         "quantity": 3,
-        "unitPriceBob": 15
+        "unitPriceBob": 10
       },
       {
         "productId": "prod-001",
         "quantity": 3,
-        "unitPriceBob": 175
+        "unitPriceBob": 130
       },
       {
         "productId": "prod-010",
         "quantity": 1,
-        "unitPriceBob": 25
+        "unitPriceBob": 20
       }
     ],
-    "totalBob": 595,
+    "totalBob": 440,
     "channel": "tienda"
   },
   {
@@ -1171,15 +1171,15 @@
       {
         "productId": "prod-007",
         "quantity": 4,
-        "unitPriceBob": 670
+        "unitPriceBob": 495
       },
       {
         "productId": "prod-012",
         "quantity": 3,
-        "unitPriceBob": 830
+        "unitPriceBob": 595
       }
     ],
-    "totalBob": 5215,
+    "totalBob": 3810,
     "channel": "whatsapp"
   },
   {
@@ -1195,10 +1195,10 @@
       {
         "productId": "prod-009",
         "quantity": 1,
-        "unitPriceBob": 245
+        "unitPriceBob": 180
       }
     ],
-    "totalBob": 290,
+    "totalBob": 225,
     "channel": "mayoreo"
   },
   {
@@ -1214,15 +1214,15 @@
       {
         "productId": "prod-011",
         "quantity": 3,
-        "unitPriceBob": 15
+        "unitPriceBob": 10
       },
       {
         "productId": "prod-005",
         "quantity": 1,
-        "unitPriceBob": 325
+        "unitPriceBob": 240
       }
     ],
-    "totalBob": 375,
+    "totalBob": 275,
     "channel": "whatsapp"
   },
   {
@@ -1233,10 +1233,10 @@
       {
         "productId": "prod-009",
         "quantity": 3,
-        "unitPriceBob": 245
+        "unitPriceBob": 180
       }
     ],
-    "totalBob": 735,
+    "totalBob": 540,
     "channel": "mayoreo"
   },
   {
@@ -1247,10 +1247,10 @@
       {
         "productId": "prod-007",
         "quantity": 3,
-        "unitPriceBob": 670
+        "unitPriceBob": 495
       }
     ],
-    "totalBob": 2010,
+    "totalBob": 1485,
     "channel": "mayoreo"
   },
   {
@@ -1261,10 +1261,10 @@
       {
         "productId": "prod-003",
         "quantity": 2,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       }
     ],
-    "totalBob": 280,
+    "totalBob": 210,
     "channel": "tienda"
   },
   {
@@ -1275,10 +1275,10 @@
       {
         "productId": "prod-011",
         "quantity": 2,
-        "unitPriceBob": 15
+        "unitPriceBob": 10
       }
     ],
-    "totalBob": 30,
+    "totalBob": 20,
     "channel": "whatsapp"
   },
   {
@@ -1289,12 +1289,12 @@
       {
         "productId": "prod-005",
         "quantity": 1,
-        "unitPriceBob": 325
+        "unitPriceBob": 240
       },
       {
         "productId": "prod-004",
         "quantity": 2,
-        "unitPriceBob": 35
+        "unitPriceBob": 25
       },
       {
         "productId": "prod-014",
@@ -1302,7 +1302,7 @@
         "unitPriceBob": 45
       }
     ],
-    "totalBob": 575,
+    "totalBob": 470,
     "channel": "facebook"
   },
   {
@@ -1318,15 +1318,15 @@
       {
         "productId": "prod-006",
         "quantity": 2,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       },
       {
         "productId": "prod-003",
         "quantity": 1,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       }
     ],
-    "totalBob": 465,
+    "totalBob": 360,
     "channel": "whatsapp"
   },
   {
@@ -1337,7 +1337,7 @@
       {
         "productId": "prod-002",
         "quantity": 1,
-        "unitPriceBob": 430
+        "unitPriceBob": 330
       },
       {
         "productId": "prod-013",
@@ -1347,10 +1347,10 @@
       {
         "productId": "prod-012",
         "quantity": 4,
-        "unitPriceBob": 830
+        "unitPriceBob": 595
       }
     ],
-    "totalBob": 3755,
+    "totalBob": 2715,
     "channel": "tiktok"
   },
   {
@@ -1366,10 +1366,10 @@
       {
         "productId": "prod-006",
         "quantity": 2,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       }
     ],
-    "totalBob": 415,
+    "totalBob": 345,
     "channel": "tiktok"
   },
   {
@@ -1380,10 +1380,10 @@
       {
         "productId": "prod-012",
         "quantity": 3,
-        "unitPriceBob": 830
+        "unitPriceBob": 595
       }
     ],
-    "totalBob": 2490,
+    "totalBob": 1785,
     "channel": "facebook"
   },
   {
@@ -1394,15 +1394,15 @@
       {
         "productId": "prod-004",
         "quantity": 3,
-        "unitPriceBob": 35
+        "unitPriceBob": 25
       },
       {
         "productId": "prod-008",
         "quantity": 2,
-        "unitPriceBob": 405
+        "unitPriceBob": 300
       }
     ],
-    "totalBob": 915,
+    "totalBob": 675,
     "channel": "whatsapp"
   },
   {
@@ -1413,10 +1413,10 @@
       {
         "productId": "prod-003",
         "quantity": 1,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       }
     ],
-    "totalBob": 140,
+    "totalBob": 105,
     "channel": "tienda"
   },
   {
@@ -1427,10 +1427,10 @@
       {
         "productId": "prod-004",
         "quantity": 1,
-        "unitPriceBob": 35
+        "unitPriceBob": 25
       }
     ],
-    "totalBob": 35,
+    "totalBob": 25,
     "channel": "whatsapp"
   },
   {
@@ -1441,15 +1441,15 @@
       {
         "productId": "prod-009",
         "quantity": 1,
-        "unitPriceBob": 245
+        "unitPriceBob": 180
       },
       {
         "productId": "prod-003",
         "quantity": 1,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       }
     ],
-    "totalBob": 385,
+    "totalBob": 285,
     "channel": "whatsapp"
   },
   {
@@ -1460,10 +1460,10 @@
       {
         "productId": "prod-002",
         "quantity": 1,
-        "unitPriceBob": 430
+        "unitPriceBob": 330
       }
     ],
-    "totalBob": 430,
+    "totalBob": 330,
     "channel": "tiktok"
   },
   {
@@ -1474,20 +1474,20 @@
       {
         "productId": "prod-004",
         "quantity": 4,
-        "unitPriceBob": 35
+        "unitPriceBob": 25
       },
       {
         "productId": "prod-002",
         "quantity": 1,
-        "unitPriceBob": 430
+        "unitPriceBob": 330
       },
       {
         "productId": "prod-010",
         "quantity": 1,
-        "unitPriceBob": 25
+        "unitPriceBob": 20
       }
     ],
-    "totalBob": 595,
+    "totalBob": 450,
     "channel": "tienda"
   },
   {
@@ -1498,20 +1498,20 @@
       {
         "productId": "prod-011",
         "quantity": 4,
-        "unitPriceBob": 15
+        "unitPriceBob": 10
       },
       {
         "productId": "prod-008",
         "quantity": 3,
-        "unitPriceBob": 405
+        "unitPriceBob": 300
       },
       {
         "productId": "prod-009",
         "quantity": 2,
-        "unitPriceBob": 245
+        "unitPriceBob": 180
       }
     ],
-    "totalBob": 1765,
+    "totalBob": 1300,
     "channel": "tienda"
   },
   {
@@ -1522,10 +1522,10 @@
       {
         "productId": "prod-011",
         "quantity": 1,
-        "unitPriceBob": 15
+        "unitPriceBob": 10
       }
     ],
-    "totalBob": 15,
+    "totalBob": 10,
     "channel": "whatsapp"
   },
   {
@@ -1536,7 +1536,7 @@
       {
         "productId": "prod-008",
         "quantity": 3,
-        "unitPriceBob": 405
+        "unitPriceBob": 300
       },
       {
         "productId": "prod-014",
@@ -1546,10 +1546,10 @@
       {
         "productId": "prod-009",
         "quantity": 3,
-        "unitPriceBob": 245
+        "unitPriceBob": 180
       }
     ],
-    "totalBob": 1995,
+    "totalBob": 1485,
     "channel": "facebook"
   },
   {
@@ -1560,15 +1560,15 @@
       {
         "productId": "prod-001",
         "quantity": 1,
-        "unitPriceBob": 175
+        "unitPriceBob": 130
       },
       {
         "productId": "prod-007",
         "quantity": 4,
-        "unitPriceBob": 670
+        "unitPriceBob": 495
       }
     ],
-    "totalBob": 2855,
+    "totalBob": 2110,
     "channel": "mayoreo"
   },
   {
@@ -1579,10 +1579,10 @@
       {
         "productId": "prod-006",
         "quantity": 1,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       }
     ],
-    "totalBob": 140,
+    "totalBob": 105,
     "channel": "mayoreo"
   },
   {
@@ -1593,10 +1593,10 @@
       {
         "productId": "prod-010",
         "quantity": 3,
-        "unitPriceBob": 25
+        "unitPriceBob": 20
       }
     ],
-    "totalBob": 75,
+    "totalBob": 60,
     "channel": "whatsapp"
   },
   {
@@ -1612,10 +1612,10 @@
       {
         "productId": "prod-009",
         "quantity": 1,
-        "unitPriceBob": 245
+        "unitPriceBob": 180
       }
     ],
-    "totalBob": 260,
+    "totalBob": 195,
     "channel": "mayoreo"
   },
   {
@@ -1626,15 +1626,15 @@
       {
         "productId": "prod-012",
         "quantity": 2,
-        "unitPriceBob": 830
+        "unitPriceBob": 595
       },
       {
         "productId": "prod-007",
         "quantity": 3,
-        "unitPriceBob": 670
+        "unitPriceBob": 495
       }
     ],
-    "totalBob": 3670,
+    "totalBob": 2675,
     "channel": "facebook"
   },
   {
@@ -1645,15 +1645,15 @@
       {
         "productId": "prod-009",
         "quantity": 3,
-        "unitPriceBob": 245
+        "unitPriceBob": 180
       },
       {
         "productId": "prod-007",
         "quantity": 4,
-        "unitPriceBob": 670
+        "unitPriceBob": 495
       }
     ],
-    "totalBob": 3415,
+    "totalBob": 2520,
     "channel": "facebook"
   },
   {
@@ -1664,20 +1664,20 @@
       {
         "productId": "prod-007",
         "quantity": 1,
-        "unitPriceBob": 670
+        "unitPriceBob": 495
       },
       {
         "productId": "prod-011",
         "quantity": 3,
-        "unitPriceBob": 15
+        "unitPriceBob": 10
       },
       {
         "productId": "prod-009",
         "quantity": 1,
-        "unitPriceBob": 245
+        "unitPriceBob": 180
       }
     ],
-    "totalBob": 960,
+    "totalBob": 705,
     "channel": "facebook"
   },
   {
@@ -1688,15 +1688,15 @@
       {
         "productId": "prod-011",
         "quantity": 1,
-        "unitPriceBob": 15
+        "unitPriceBob": 10
       },
       {
         "productId": "prod-002",
         "quantity": 3,
-        "unitPriceBob": 430
+        "unitPriceBob": 330
       }
     ],
-    "totalBob": 1305,
+    "totalBob": 1000,
     "channel": "mayoreo"
   },
   {
@@ -1707,10 +1707,10 @@
       {
         "productId": "prod-010",
         "quantity": 3,
-        "unitPriceBob": 25
+        "unitPriceBob": 20
       }
     ],
-    "totalBob": 75,
+    "totalBob": 60,
     "channel": "facebook"
   },
   {
@@ -1721,10 +1721,10 @@
       {
         "productId": "prod-009",
         "quantity": 1,
-        "unitPriceBob": 245
+        "unitPriceBob": 180
       }
     ],
-    "totalBob": 245,
+    "totalBob": 180,
     "channel": "whatsapp"
   },
   {
@@ -1735,15 +1735,15 @@
       {
         "productId": "prod-008",
         "quantity": 1,
-        "unitPriceBob": 405
+        "unitPriceBob": 300
       },
       {
         "productId": "prod-001",
         "quantity": 2,
-        "unitPriceBob": 175
+        "unitPriceBob": 130
       }
     ],
-    "totalBob": 755,
+    "totalBob": 560,
     "channel": "facebook"
   },
   {
@@ -1759,15 +1759,15 @@
       {
         "productId": "prod-004",
         "quantity": 4,
-        "unitPriceBob": 35
+        "unitPriceBob": 25
       },
       {
         "productId": "prod-007",
         "quantity": 3,
-        "unitPriceBob": 670
+        "unitPriceBob": 495
       }
     ],
-    "totalBob": 2155,
+    "totalBob": 1590,
     "channel": "facebook"
   },
   {
@@ -1778,20 +1778,20 @@
       {
         "productId": "prod-012",
         "quantity": 3,
-        "unitPriceBob": 830
+        "unitPriceBob": 595
       },
       {
         "productId": "prod-006",
         "quantity": 3,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       },
       {
         "productId": "prod-011",
         "quantity": 1,
-        "unitPriceBob": 15
+        "unitPriceBob": 10
       }
     ],
-    "totalBob": 2925,
+    "totalBob": 2110,
     "channel": "tienda"
   },
   {
@@ -1807,15 +1807,15 @@
       {
         "productId": "prod-009",
         "quantity": 1,
-        "unitPriceBob": 245
+        "unitPriceBob": 180
       },
       {
         "productId": "prod-008",
         "quantity": 1,
-        "unitPriceBob": 405
+        "unitPriceBob": 300
       }
     ],
-    "totalBob": 655,
+    "totalBob": 485,
     "channel": "tiktok"
   },
   {
@@ -1826,10 +1826,10 @@
       {
         "productId": "prod-009",
         "quantity": 3,
-        "unitPriceBob": 245
+        "unitPriceBob": 180
       }
     ],
-    "totalBob": 735,
+    "totalBob": 540,
     "channel": "tiktok"
   },
   {
@@ -1840,15 +1840,15 @@
       {
         "productId": "prod-008",
         "quantity": 4,
-        "unitPriceBob": 405
+        "unitPriceBob": 300
       },
       {
         "productId": "prod-002",
         "quantity": 3,
-        "unitPriceBob": 430
+        "unitPriceBob": 330
       }
     ],
-    "totalBob": 2910,
+    "totalBob": 2190,
     "channel": "whatsapp"
   },
   {
@@ -1859,7 +1859,7 @@
       {
         "productId": "prod-005",
         "quantity": 1,
-        "unitPriceBob": 325
+        "unitPriceBob": 240
       },
       {
         "productId": "prod-013",
@@ -1869,10 +1869,10 @@
       {
         "productId": "prod-007",
         "quantity": 2,
-        "unitPriceBob": 670
+        "unitPriceBob": 495
       }
     ],
-    "totalBob": 1680,
+    "totalBob": 1245,
     "channel": "facebook"
   },
   {
@@ -1883,10 +1883,10 @@
       {
         "productId": "prod-012",
         "quantity": 2,
-        "unitPriceBob": 830
+        "unitPriceBob": 595
       }
     ],
-    "totalBob": 1660,
+    "totalBob": 1190,
     "channel": "tiktok"
   },
   {
@@ -1897,10 +1897,10 @@
       {
         "productId": "prod-006",
         "quantity": 4,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       }
     ],
-    "totalBob": 560,
+    "totalBob": 420,
     "channel": "mayoreo"
   },
   {
@@ -1911,15 +1911,15 @@
       {
         "productId": "prod-010",
         "quantity": 2,
-        "unitPriceBob": 25
+        "unitPriceBob": 20
       },
       {
         "productId": "prod-008",
         "quantity": 2,
-        "unitPriceBob": 405
+        "unitPriceBob": 300
       }
     ],
-    "totalBob": 860,
+    "totalBob": 640,
     "channel": "tienda"
   },
   {
@@ -1930,15 +1930,15 @@
       {
         "productId": "prod-002",
         "quantity": 2,
-        "unitPriceBob": 430
+        "unitPriceBob": 330
       },
       {
         "productId": "prod-003",
         "quantity": 1,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       }
     ],
-    "totalBob": 1000,
+    "totalBob": 765,
     "channel": "tienda"
   },
   {
@@ -1963,20 +1963,20 @@
       {
         "productId": "prod-012",
         "quantity": 4,
-        "unitPriceBob": 830
+        "unitPriceBob": 595
       },
       {
         "productId": "prod-007",
         "quantity": 3,
-        "unitPriceBob": 670
+        "unitPriceBob": 495
       },
       {
         "productId": "prod-006",
         "quantity": 3,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       }
     ],
-    "totalBob": 5750,
+    "totalBob": 4180,
     "channel": "mayoreo"
   },
   {
@@ -1987,15 +1987,15 @@
       {
         "productId": "prod-009",
         "quantity": 2,
-        "unitPriceBob": 245
+        "unitPriceBob": 180
       },
       {
         "productId": "prod-012",
         "quantity": 1,
-        "unitPriceBob": 830
+        "unitPriceBob": 595
       }
     ],
-    "totalBob": 1320,
+    "totalBob": 955,
     "channel": "facebook"
   },
   {
@@ -2006,10 +2006,10 @@
       {
         "productId": "prod-004",
         "quantity": 1,
-        "unitPriceBob": 35
+        "unitPriceBob": 25
       }
     ],
-    "totalBob": 35,
+    "totalBob": 25,
     "channel": "facebook"
   },
   {
@@ -2020,7 +2020,7 @@
       {
         "productId": "prod-006",
         "quantity": 2,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       },
       {
         "productId": "prod-014",
@@ -2030,10 +2030,10 @@
       {
         "productId": "prod-002",
         "quantity": 3,
-        "unitPriceBob": 430
+        "unitPriceBob": 330
       }
     ],
-    "totalBob": 1705,
+    "totalBob": 1335,
     "channel": "whatsapp"
   },
   {
@@ -2044,15 +2044,15 @@
       {
         "productId": "prod-011",
         "quantity": 4,
-        "unitPriceBob": 15
+        "unitPriceBob": 10
       },
       {
         "productId": "prod-009",
         "quantity": 4,
-        "unitPriceBob": 245
+        "unitPriceBob": 180
       }
     ],
-    "totalBob": 1040,
+    "totalBob": 760,
     "channel": "tiktok"
   },
   {
@@ -2063,12 +2063,12 @@
       {
         "productId": "prod-007",
         "quantity": 4,
-        "unitPriceBob": 670
+        "unitPriceBob": 495
       },
       {
         "productId": "prod-012",
         "quantity": 3,
-        "unitPriceBob": 830
+        "unitPriceBob": 595
       },
       {
         "productId": "prod-014",
@@ -2076,7 +2076,7 @@
         "unitPriceBob": 45
       }
     ],
-    "totalBob": 5305,
+    "totalBob": 3900,
     "channel": "mayoreo"
   },
   {
@@ -2087,15 +2087,15 @@
       {
         "productId": "prod-011",
         "quantity": 4,
-        "unitPriceBob": 15
+        "unitPriceBob": 10
       },
       {
         "productId": "prod-006",
         "quantity": 1,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       }
     ],
-    "totalBob": 200,
+    "totalBob": 145,
     "channel": "mayoreo"
   },
   {
@@ -2106,15 +2106,15 @@
       {
         "productId": "prod-004",
         "quantity": 4,
-        "unitPriceBob": 35
+        "unitPriceBob": 25
       },
       {
         "productId": "prod-010",
         "quantity": 3,
-        "unitPriceBob": 25
+        "unitPriceBob": 20
       }
     ],
-    "totalBob": 215,
+    "totalBob": 160,
     "channel": "mayoreo"
   },
   {
@@ -2125,10 +2125,10 @@
       {
         "productId": "prod-008",
         "quantity": 4,
-        "unitPriceBob": 405
+        "unitPriceBob": 300
       }
     ],
-    "totalBob": 1620,
+    "totalBob": 1200,
     "channel": "tiktok"
   },
   {
@@ -2139,15 +2139,15 @@
       {
         "productId": "prod-010",
         "quantity": 4,
-        "unitPriceBob": 25
+        "unitPriceBob": 20
       },
       {
         "productId": "prod-008",
         "quantity": 2,
-        "unitPriceBob": 405
+        "unitPriceBob": 300
       }
     ],
-    "totalBob": 910,
+    "totalBob": 680,
     "channel": "tienda"
   },
   {
@@ -2158,10 +2158,10 @@
       {
         "productId": "prod-010",
         "quantity": 3,
-        "unitPriceBob": 25
+        "unitPriceBob": 20
       }
     ],
-    "totalBob": 75,
+    "totalBob": 60,
     "channel": "facebook"
   },
   {
@@ -2172,10 +2172,10 @@
       {
         "productId": "prod-010",
         "quantity": 4,
-        "unitPriceBob": 25
+        "unitPriceBob": 20
       }
     ],
-    "totalBob": 100,
+    "totalBob": 80,
     "channel": "mayoreo"
   },
   {
@@ -2186,15 +2186,15 @@
       {
         "productId": "prod-009",
         "quantity": 2,
-        "unitPriceBob": 245
+        "unitPriceBob": 180
       },
       {
         "productId": "prod-007",
         "quantity": 4,
-        "unitPriceBob": 670
+        "unitPriceBob": 495
       }
     ],
-    "totalBob": 3170,
+    "totalBob": 2340,
     "channel": "tiktok"
   },
   {
@@ -2219,7 +2219,7 @@
       {
         "productId": "prod-001",
         "quantity": 1,
-        "unitPriceBob": 175
+        "unitPriceBob": 130
       },
       {
         "productId": "prod-013",
@@ -2227,7 +2227,7 @@
         "unitPriceBob": 5
       }
     ],
-    "totalBob": 185,
+    "totalBob": 140,
     "channel": "facebook"
   },
   {
@@ -2238,20 +2238,20 @@
       {
         "productId": "prod-005",
         "quantity": 4,
-        "unitPriceBob": 325
+        "unitPriceBob": 240
       },
       {
         "productId": "prod-002",
         "quantity": 4,
-        "unitPriceBob": 430
+        "unitPriceBob": 330
       },
       {
         "productId": "prod-007",
         "quantity": 4,
-        "unitPriceBob": 670
+        "unitPriceBob": 495
       }
     ],
-    "totalBob": 5700,
+    "totalBob": 4260,
     "channel": "tienda"
   },
   {
@@ -2262,20 +2262,20 @@
       {
         "productId": "prod-001",
         "quantity": 1,
-        "unitPriceBob": 175
+        "unitPriceBob": 130
       },
       {
         "productId": "prod-006",
         "quantity": 3,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       },
       {
         "productId": "prod-007",
         "quantity": 1,
-        "unitPriceBob": 670
+        "unitPriceBob": 495
       }
     ],
-    "totalBob": 1265,
+    "totalBob": 940,
     "channel": "mayoreo"
   },
   {
@@ -2291,10 +2291,10 @@
       {
         "productId": "prod-012",
         "quantity": 3,
-        "unitPriceBob": 830
+        "unitPriceBob": 595
       }
     ],
-    "totalBob": 2500,
+    "totalBob": 1795,
     "channel": "tiktok"
   },
   {
@@ -2305,15 +2305,15 @@
       {
         "productId": "prod-008",
         "quantity": 4,
-        "unitPriceBob": 405
+        "unitPriceBob": 300
       },
       {
         "productId": "prod-003",
         "quantity": 4,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       }
     ],
-    "totalBob": 2180,
+    "totalBob": 1620,
     "channel": "mayoreo"
   },
   {
@@ -2324,10 +2324,10 @@
       {
         "productId": "prod-011",
         "quantity": 3,
-        "unitPriceBob": 15
+        "unitPriceBob": 10
       }
     ],
-    "totalBob": 45,
+    "totalBob": 30,
     "channel": "tienda"
   },
   {
@@ -2338,15 +2338,15 @@
       {
         "productId": "prod-010",
         "quantity": 4,
-        "unitPriceBob": 25
+        "unitPriceBob": 20
       },
       {
         "productId": "prod-005",
         "quantity": 4,
-        "unitPriceBob": 325
+        "unitPriceBob": 240
       }
     ],
-    "totalBob": 1400,
+    "totalBob": 1040,
     "channel": "mayoreo"
   },
   {
@@ -2357,15 +2357,15 @@
       {
         "productId": "prod-003",
         "quantity": 2,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       },
       {
         "productId": "prod-011",
         "quantity": 2,
-        "unitPriceBob": 15
+        "unitPriceBob": 10
       }
     ],
-    "totalBob": 310,
+    "totalBob": 230,
     "channel": "facebook"
   },
   {
@@ -2376,10 +2376,10 @@
       {
         "productId": "prod-010",
         "quantity": 1,
-        "unitPriceBob": 25
+        "unitPriceBob": 20
       }
     ],
-    "totalBob": 25,
+    "totalBob": 20,
     "channel": "tienda"
   },
   {
@@ -2390,15 +2390,15 @@
       {
         "productId": "prod-006",
         "quantity": 2,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       },
       {
         "productId": "prod-008",
         "quantity": 3,
-        "unitPriceBob": 405
+        "unitPriceBob": 300
       }
     ],
-    "totalBob": 1495,
+    "totalBob": 1110,
     "channel": "facebook"
   },
   {
@@ -2414,10 +2414,10 @@
       {
         "productId": "prod-009",
         "quantity": 3,
-        "unitPriceBob": 245
+        "unitPriceBob": 180
       }
     ],
-    "totalBob": 745,
+    "totalBob": 550,
     "channel": "tiktok"
   },
   {
@@ -2428,10 +2428,10 @@
       {
         "productId": "prod-006",
         "quantity": 3,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       }
     ],
-    "totalBob": 420,
+    "totalBob": 315,
     "channel": "mayoreo"
   },
   {
@@ -2442,7 +2442,7 @@
       {
         "productId": "prod-007",
         "quantity": 2,
-        "unitPriceBob": 670
+        "unitPriceBob": 495
       },
       {
         "productId": "prod-013",
@@ -2450,7 +2450,7 @@
         "unitPriceBob": 5
       }
     ],
-    "totalBob": 1360,
+    "totalBob": 1010,
     "channel": "tienda"
   },
   {
@@ -2461,10 +2461,10 @@
       {
         "productId": "prod-006",
         "quantity": 1,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       }
     ],
-    "totalBob": 140,
+    "totalBob": 105,
     "channel": "tienda"
   },
   {
@@ -2475,15 +2475,15 @@
       {
         "productId": "prod-004",
         "quantity": 2,
-        "unitPriceBob": 35
+        "unitPriceBob": 25
       },
       {
         "productId": "prod-009",
         "quantity": 1,
-        "unitPriceBob": 245
+        "unitPriceBob": 180
       }
     ],
-    "totalBob": 315,
+    "totalBob": 230,
     "channel": "facebook"
   },
   {
@@ -2494,15 +2494,15 @@
       {
         "productId": "prod-010",
         "quantity": 2,
-        "unitPriceBob": 25
+        "unitPriceBob": 20
       },
       {
         "productId": "prod-004",
         "quantity": 4,
-        "unitPriceBob": 35
+        "unitPriceBob": 25
       }
     ],
-    "totalBob": 190,
+    "totalBob": 140,
     "channel": "mayoreo"
   },
   {
@@ -2513,10 +2513,10 @@
       {
         "productId": "prod-010",
         "quantity": 4,
-        "unitPriceBob": 25
+        "unitPriceBob": 20
       }
     ],
-    "totalBob": 100,
+    "totalBob": 80,
     "channel": "mayoreo"
   },
   {
@@ -2532,15 +2532,15 @@
       {
         "productId": "prod-010",
         "quantity": 4,
-        "unitPriceBob": 25
+        "unitPriceBob": 20
       },
       {
         "productId": "prod-012",
         "quantity": 2,
-        "unitPriceBob": 830
+        "unitPriceBob": 595
       }
     ],
-    "totalBob": 1780,
+    "totalBob": 1290,
     "channel": "mayoreo"
   },
   {
@@ -2556,10 +2556,10 @@
       {
         "productId": "prod-009",
         "quantity": 4,
-        "unitPriceBob": 245
+        "unitPriceBob": 180
       }
     ],
-    "totalBob": 1115,
+    "totalBob": 855,
     "channel": "whatsapp"
   },
   {
@@ -2570,20 +2570,20 @@
       {
         "productId": "prod-006",
         "quantity": 4,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       },
       {
         "productId": "prod-012",
         "quantity": 2,
-        "unitPriceBob": 830
+        "unitPriceBob": 595
       },
       {
         "productId": "prod-005",
         "quantity": 1,
-        "unitPriceBob": 325
+        "unitPriceBob": 240
       }
     ],
-    "totalBob": 2545,
+    "totalBob": 1850,
     "channel": "mayoreo"
   },
   {
@@ -2594,10 +2594,10 @@
       {
         "productId": "prod-004",
         "quantity": 1,
-        "unitPriceBob": 35
+        "unitPriceBob": 25
       }
     ],
-    "totalBob": 35,
+    "totalBob": 25,
     "channel": "tiktok"
   },
   {
@@ -2608,15 +2608,15 @@
       {
         "productId": "prod-010",
         "quantity": 2,
-        "unitPriceBob": 25
+        "unitPriceBob": 20
       },
       {
         "productId": "prod-008",
         "quantity": 2,
-        "unitPriceBob": 405
+        "unitPriceBob": 300
       }
     ],
-    "totalBob": 860,
+    "totalBob": 640,
     "channel": "tiktok"
   },
   {
@@ -2627,20 +2627,20 @@
       {
         "productId": "prod-002",
         "quantity": 4,
-        "unitPriceBob": 430
+        "unitPriceBob": 330
       },
       {
         "productId": "prod-004",
         "quantity": 3,
-        "unitPriceBob": 35
+        "unitPriceBob": 25
       },
       {
         "productId": "prod-001",
         "quantity": 3,
-        "unitPriceBob": 175
+        "unitPriceBob": 130
       }
     ],
-    "totalBob": 2350,
+    "totalBob": 1785,
     "channel": "tienda"
   },
   {
@@ -2651,20 +2651,20 @@
       {
         "productId": "prod-011",
         "quantity": 4,
-        "unitPriceBob": 15
+        "unitPriceBob": 10
       },
       {
         "productId": "prod-001",
         "quantity": 3,
-        "unitPriceBob": 175
+        "unitPriceBob": 130
       },
       {
         "productId": "prod-005",
         "quantity": 2,
-        "unitPriceBob": 325
+        "unitPriceBob": 240
       }
     ],
-    "totalBob": 1235,
+    "totalBob": 910,
     "channel": "facebook"
   },
   {
@@ -2675,15 +2675,15 @@
       {
         "productId": "prod-003",
         "quantity": 3,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       },
       {
         "productId": "prod-011",
         "quantity": 1,
-        "unitPriceBob": 15
+        "unitPriceBob": 10
       }
     ],
-    "totalBob": 435,
+    "totalBob": 325,
     "channel": "tienda"
   },
   {
@@ -2694,7 +2694,7 @@
       {
         "productId": "prod-012",
         "quantity": 1,
-        "unitPriceBob": 830
+        "unitPriceBob": 595
       },
       {
         "productId": "prod-014",
@@ -2702,7 +2702,7 @@
         "unitPriceBob": 45
       }
     ],
-    "totalBob": 1010,
+    "totalBob": 775,
     "channel": "mayoreo"
   },
   {
@@ -2713,15 +2713,15 @@
       {
         "productId": "prod-004",
         "quantity": 4,
-        "unitPriceBob": 35
+        "unitPriceBob": 25
       },
       {
         "productId": "prod-010",
         "quantity": 4,
-        "unitPriceBob": 25
+        "unitPriceBob": 20
       }
     ],
-    "totalBob": 240,
+    "totalBob": 180,
     "channel": "tienda"
   },
   {
@@ -2732,12 +2732,12 @@
       {
         "productId": "prod-012",
         "quantity": 2,
-        "unitPriceBob": 830
+        "unitPriceBob": 595
       },
       {
         "productId": "prod-001",
         "quantity": 4,
-        "unitPriceBob": 175
+        "unitPriceBob": 130
       },
       {
         "productId": "prod-014",
@@ -2745,7 +2745,7 @@
         "unitPriceBob": 45
       }
     ],
-    "totalBob": 2405,
+    "totalBob": 1755,
     "channel": "tienda"
   },
   {
@@ -2756,7 +2756,7 @@
       {
         "productId": "prod-001",
         "quantity": 4,
-        "unitPriceBob": 175
+        "unitPriceBob": 130
       },
       {
         "productId": "prod-013",
@@ -2764,7 +2764,7 @@
         "unitPriceBob": 5
       }
     ],
-    "totalBob": 705,
+    "totalBob": 525,
     "channel": "whatsapp"
   },
   {
@@ -2775,7 +2775,7 @@
       {
         "productId": "prod-005",
         "quantity": 4,
-        "unitPriceBob": 325
+        "unitPriceBob": 240
       },
       {
         "productId": "prod-014",
@@ -2783,7 +2783,7 @@
         "unitPriceBob": 45
       }
     ],
-    "totalBob": 1480,
+    "totalBob": 1140,
     "channel": "facebook"
   },
   {
@@ -2794,20 +2794,20 @@
       {
         "productId": "prod-003",
         "quantity": 2,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       },
       {
         "productId": "prod-010",
         "quantity": 2,
-        "unitPriceBob": 25
+        "unitPriceBob": 20
       },
       {
         "productId": "prod-004",
         "quantity": 3,
-        "unitPriceBob": 35
+        "unitPriceBob": 25
       }
     ],
-    "totalBob": 435,
+    "totalBob": 325,
     "channel": "mayoreo"
   },
   {
@@ -2818,10 +2818,10 @@
       {
         "productId": "prod-007",
         "quantity": 1,
-        "unitPriceBob": 670
+        "unitPriceBob": 495
       }
     ],
-    "totalBob": 670,
+    "totalBob": 495,
     "channel": "tiktok"
   },
   {
@@ -2832,10 +2832,10 @@
       {
         "productId": "prod-004",
         "quantity": 3,
-        "unitPriceBob": 35
+        "unitPriceBob": 25
       }
     ],
-    "totalBob": 105,
+    "totalBob": 75,
     "channel": "mayoreo"
   },
   {
@@ -2846,7 +2846,7 @@
       {
         "productId": "prod-012",
         "quantity": 1,
-        "unitPriceBob": 830
+        "unitPriceBob": 595
       },
       {
         "productId": "prod-014",
@@ -2854,7 +2854,7 @@
         "unitPriceBob": 45
       }
     ],
-    "totalBob": 920,
+    "totalBob": 685,
     "channel": "tienda"
   },
   {
@@ -2870,10 +2870,10 @@
       {
         "productId": "prod-011",
         "quantity": 4,
-        "unitPriceBob": 15
+        "unitPriceBob": 10
       }
     ],
-    "totalBob": 75,
+    "totalBob": 55,
     "channel": "tienda"
   },
   {
@@ -2889,10 +2889,10 @@
       {
         "productId": "prod-001",
         "quantity": 1,
-        "unitPriceBob": 175
+        "unitPriceBob": 130
       }
     ],
-    "totalBob": 180,
+    "totalBob": 135,
     "channel": "tiktok"
   },
   {
@@ -2903,10 +2903,10 @@
       {
         "productId": "prod-009",
         "quantity": 2,
-        "unitPriceBob": 245
+        "unitPriceBob": 180
       }
     ],
-    "totalBob": 490,
+    "totalBob": 360,
     "channel": "mayoreo"
   },
   {
@@ -2931,15 +2931,15 @@
       {
         "productId": "prod-010",
         "quantity": 3,
-        "unitPriceBob": 25
+        "unitPriceBob": 20
       },
       {
         "productId": "prod-011",
         "quantity": 1,
-        "unitPriceBob": 15
+        "unitPriceBob": 10
       }
     ],
-    "totalBob": 90,
+    "totalBob": 70,
     "channel": "whatsapp"
   },
   {
@@ -2950,10 +2950,10 @@
       {
         "productId": "prod-010",
         "quantity": 1,
-        "unitPriceBob": 25
+        "unitPriceBob": 20
       }
     ],
-    "totalBob": 25,
+    "totalBob": 20,
     "channel": "whatsapp"
   },
   {
@@ -2964,10 +2964,10 @@
       {
         "productId": "prod-005",
         "quantity": 2,
-        "unitPriceBob": 325
+        "unitPriceBob": 240
       }
     ],
-    "totalBob": 650,
+    "totalBob": 480,
     "channel": "tiktok"
   },
   {
@@ -2978,20 +2978,20 @@
       {
         "productId": "prod-004",
         "quantity": 3,
-        "unitPriceBob": 35
+        "unitPriceBob": 25
       },
       {
         "productId": "prod-005",
         "quantity": 3,
-        "unitPriceBob": 325
+        "unitPriceBob": 240
       },
       {
         "productId": "prod-007",
         "quantity": 1,
-        "unitPriceBob": 670
+        "unitPriceBob": 495
       }
     ],
-    "totalBob": 1750,
+    "totalBob": 1290,
     "channel": "whatsapp"
   },
   {
@@ -3002,7 +3002,7 @@
       {
         "productId": "prod-001",
         "quantity": 3,
-        "unitPriceBob": 175
+        "unitPriceBob": 130
       },
       {
         "productId": "prod-013",
@@ -3015,7 +3015,7 @@
         "unitPriceBob": 45
       }
     ],
-    "totalBob": 725,
+    "totalBob": 590,
     "channel": "mayoreo"
   },
   {
@@ -3026,7 +3026,7 @@
       {
         "productId": "prod-007",
         "quantity": 4,
-        "unitPriceBob": 670
+        "unitPriceBob": 495
       },
       {
         "productId": "prod-013",
@@ -3034,7 +3034,7 @@
         "unitPriceBob": 5
       }
     ],
-    "totalBob": 2700,
+    "totalBob": 2000,
     "channel": "mayoreo"
   },
   {
@@ -3059,20 +3059,20 @@
       {
         "productId": "prod-008",
         "quantity": 1,
-        "unitPriceBob": 405
+        "unitPriceBob": 300
       },
       {
         "productId": "prod-006",
         "quantity": 4,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       },
       {
         "productId": "prod-010",
         "quantity": 4,
-        "unitPriceBob": 25
+        "unitPriceBob": 20
       }
     ],
-    "totalBob": 1065,
+    "totalBob": 800,
     "channel": "tiktok"
   },
   {
@@ -3083,15 +3083,15 @@
       {
         "productId": "prod-005",
         "quantity": 2,
-        "unitPriceBob": 325
+        "unitPriceBob": 240
       },
       {
         "productId": "prod-007",
         "quantity": 2,
-        "unitPriceBob": 670
+        "unitPriceBob": 495
       }
     ],
-    "totalBob": 1990,
+    "totalBob": 1470,
     "channel": "mayoreo"
   },
   {
@@ -3102,15 +3102,15 @@
       {
         "productId": "prod-002",
         "quantity": 4,
-        "unitPriceBob": 430
+        "unitPriceBob": 330
       },
       {
         "productId": "prod-005",
         "quantity": 1,
-        "unitPriceBob": 325
+        "unitPriceBob": 240
       }
     ],
-    "totalBob": 2045,
+    "totalBob": 1560,
     "channel": "tienda"
   },
   {
@@ -3121,12 +3121,12 @@
       {
         "productId": "prod-012",
         "quantity": 3,
-        "unitPriceBob": 830
+        "unitPriceBob": 595
       },
       {
         "productId": "prod-004",
         "quantity": 2,
-        "unitPriceBob": 35
+        "unitPriceBob": 25
       },
       {
         "productId": "prod-013",
@@ -3134,7 +3134,7 @@
         "unitPriceBob": 5
       }
     ],
-    "totalBob": 2580,
+    "totalBob": 1855,
     "channel": "mayoreo"
   },
   {
@@ -3145,15 +3145,15 @@
       {
         "productId": "prod-010",
         "quantity": 3,
-        "unitPriceBob": 25
+        "unitPriceBob": 20
       },
       {
         "productId": "prod-004",
         "quantity": 1,
-        "unitPriceBob": 35
+        "unitPriceBob": 25
       }
     ],
-    "totalBob": 110,
+    "totalBob": 85,
     "channel": "tiktok"
   },
   {
@@ -3164,15 +3164,15 @@
       {
         "productId": "prod-011",
         "quantity": 3,
-        "unitPriceBob": 15
+        "unitPriceBob": 10
       },
       {
         "productId": "prod-010",
         "quantity": 2,
-        "unitPriceBob": 25
+        "unitPriceBob": 20
       }
     ],
-    "totalBob": 95,
+    "totalBob": 70,
     "channel": "tienda"
   },
   {
@@ -3183,10 +3183,10 @@
       {
         "productId": "prod-006",
         "quantity": 3,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       }
     ],
-    "totalBob": 420,
+    "totalBob": 315,
     "channel": "facebook"
   },
   {
@@ -3202,10 +3202,10 @@
       {
         "productId": "prod-004",
         "quantity": 1,
-        "unitPriceBob": 35
+        "unitPriceBob": 25
       }
     ],
-    "totalBob": 55,
+    "totalBob": 45,
     "channel": "facebook"
   },
   {
@@ -3216,15 +3216,15 @@
       {
         "productId": "prod-009",
         "quantity": 1,
-        "unitPriceBob": 245
+        "unitPriceBob": 180
       },
       {
         "productId": "prod-004",
         "quantity": 1,
-        "unitPriceBob": 35
+        "unitPriceBob": 25
       }
     ],
-    "totalBob": 280,
+    "totalBob": 205,
     "channel": "whatsapp"
   },
   {
@@ -3235,10 +3235,10 @@
       {
         "productId": "prod-007",
         "quantity": 4,
-        "unitPriceBob": 670
+        "unitPriceBob": 495
       }
     ],
-    "totalBob": 2680,
+    "totalBob": 1980,
     "channel": "mayoreo"
   },
   {
@@ -3249,15 +3249,15 @@
       {
         "productId": "prod-003",
         "quantity": 3,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       },
       {
         "productId": "prod-012",
         "quantity": 3,
-        "unitPriceBob": 830
+        "unitPriceBob": 595
       }
     ],
-    "totalBob": 2910,
+    "totalBob": 2100,
     "channel": "facebook"
   },
   {
@@ -3268,10 +3268,10 @@
       {
         "productId": "prod-012",
         "quantity": 1,
-        "unitPriceBob": 830
+        "unitPriceBob": 595
       }
     ],
-    "totalBob": 830,
+    "totalBob": 595,
     "channel": "tiktok"
   },
   {
@@ -3282,10 +3282,10 @@
       {
         "productId": "prod-005",
         "quantity": 2,
-        "unitPriceBob": 325
+        "unitPriceBob": 240
       }
     ],
-    "totalBob": 650,
+    "totalBob": 480,
     "channel": "mayoreo"
   },
   {
@@ -3296,12 +3296,12 @@
       {
         "productId": "prod-006",
         "quantity": 1,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       },
       {
         "productId": "prod-001",
         "quantity": 1,
-        "unitPriceBob": 175
+        "unitPriceBob": 130
       },
       {
         "productId": "prod-014",
@@ -3309,7 +3309,7 @@
         "unitPriceBob": 45
       }
     ],
-    "totalBob": 495,
+    "totalBob": 415,
     "channel": "whatsapp"
   },
   {
@@ -3325,10 +3325,10 @@
       {
         "productId": "prod-008",
         "quantity": 4,
-        "unitPriceBob": 405
+        "unitPriceBob": 300
       }
     ],
-    "totalBob": 1665,
+    "totalBob": 1245,
     "channel": "mayoreo"
   },
   {
@@ -3339,10 +3339,10 @@
       {
         "productId": "prod-004",
         "quantity": 1,
-        "unitPriceBob": 35
+        "unitPriceBob": 25
       }
     ],
-    "totalBob": 35,
+    "totalBob": 25,
     "channel": "facebook"
   },
   {
@@ -3353,10 +3353,10 @@
       {
         "productId": "prod-008",
         "quantity": 2,
-        "unitPriceBob": 405
+        "unitPriceBob": 300
       }
     ],
-    "totalBob": 810,
+    "totalBob": 600,
     "channel": "mayoreo"
   },
   {
@@ -3367,10 +3367,10 @@
       {
         "productId": "prod-002",
         "quantity": 2,
-        "unitPriceBob": 430
+        "unitPriceBob": 330
       }
     ],
-    "totalBob": 860,
+    "totalBob": 660,
     "channel": "tiktok"
   },
   {
@@ -3381,10 +3381,10 @@
       {
         "productId": "prod-012",
         "quantity": 1,
-        "unitPriceBob": 830
+        "unitPriceBob": 595
       }
     ],
-    "totalBob": 830,
+    "totalBob": 595,
     "channel": "facebook"
   },
   {
@@ -3395,15 +3395,15 @@
       {
         "productId": "prod-009",
         "quantity": 2,
-        "unitPriceBob": 245
+        "unitPriceBob": 180
       },
       {
         "productId": "prod-002",
         "quantity": 3,
-        "unitPriceBob": 430
+        "unitPriceBob": 330
       }
     ],
-    "totalBob": 1780,
+    "totalBob": 1350,
     "channel": "whatsapp"
   },
   {
@@ -3414,15 +3414,15 @@
       {
         "productId": "prod-010",
         "quantity": 2,
-        "unitPriceBob": 25
+        "unitPriceBob": 20
       },
       {
         "productId": "prod-007",
         "quantity": 4,
-        "unitPriceBob": 670
+        "unitPriceBob": 495
       }
     ],
-    "totalBob": 2730,
+    "totalBob": 2020,
     "channel": "tienda"
   },
   {
@@ -3433,15 +3433,15 @@
       {
         "productId": "prod-011",
         "quantity": 2,
-        "unitPriceBob": 15
+        "unitPriceBob": 10
       },
       {
         "productId": "prod-010",
         "quantity": 3,
-        "unitPriceBob": 25
+        "unitPriceBob": 20
       }
     ],
-    "totalBob": 105,
+    "totalBob": 80,
     "channel": "mayoreo"
   },
   {
@@ -3452,7 +3452,7 @@
       {
         "productId": "prod-008",
         "quantity": 3,
-        "unitPriceBob": 405
+        "unitPriceBob": 300
       },
       {
         "productId": "prod-013",
@@ -3462,10 +3462,10 @@
       {
         "productId": "prod-005",
         "quantity": 3,
-        "unitPriceBob": 325
+        "unitPriceBob": 240
       }
     ],
-    "totalBob": 2210,
+    "totalBob": 1640,
     "channel": "facebook"
   },
   {
@@ -3476,15 +3476,15 @@
       {
         "productId": "prod-009",
         "quantity": 2,
-        "unitPriceBob": 245
+        "unitPriceBob": 180
       },
       {
         "productId": "prod-006",
         "quantity": 3,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       }
     ],
-    "totalBob": 910,
+    "totalBob": 675,
     "channel": "tiktok"
   },
   {
@@ -3500,10 +3500,10 @@
       {
         "productId": "prod-002",
         "quantity": 3,
-        "unitPriceBob": 430
+        "unitPriceBob": 330
       }
     ],
-    "totalBob": 1300,
+    "totalBob": 1000,
     "channel": "mayoreo"
   },
   {
@@ -3528,7 +3528,7 @@
       {
         "productId": "prod-004",
         "quantity": 3,
-        "unitPriceBob": 35
+        "unitPriceBob": 25
       },
       {
         "productId": "prod-013",
@@ -3536,7 +3536,7 @@
         "unitPriceBob": 5
       }
     ],
-    "totalBob": 120,
+    "totalBob": 90,
     "channel": "whatsapp"
   },
   {
@@ -3561,10 +3561,10 @@
       {
         "productId": "prod-011",
         "quantity": 3,
-        "unitPriceBob": 15
+        "unitPriceBob": 10
       }
     ],
-    "totalBob": 45,
+    "totalBob": 30,
     "channel": "mayoreo"
   },
   {
@@ -3575,10 +3575,10 @@
       {
         "productId": "prod-012",
         "quantity": 2,
-        "unitPriceBob": 830
+        "unitPriceBob": 595
       }
     ],
-    "totalBob": 1660,
+    "totalBob": 1190,
     "channel": "facebook"
   },
   {
@@ -3594,10 +3594,10 @@
       {
         "productId": "prod-010",
         "quantity": 3,
-        "unitPriceBob": 25
+        "unitPriceBob": 20
       }
     ],
-    "totalBob": 255,
+    "totalBob": 240,
     "channel": "mayoreo"
   },
   {
@@ -3608,10 +3608,10 @@
       {
         "productId": "prod-012",
         "quantity": 4,
-        "unitPriceBob": 830
+        "unitPriceBob": 595
       }
     ],
-    "totalBob": 3320,
+    "totalBob": 2380,
     "channel": "whatsapp"
   },
   {
@@ -3622,12 +3622,12 @@
       {
         "productId": "prod-003",
         "quantity": 1,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       },
       {
         "productId": "prod-005",
         "quantity": 1,
-        "unitPriceBob": 325
+        "unitPriceBob": 240
       },
       {
         "productId": "prod-014",
@@ -3635,7 +3635,7 @@
         "unitPriceBob": 45
       }
     ],
-    "totalBob": 600,
+    "totalBob": 480,
     "channel": "tienda"
   },
   {
@@ -3646,10 +3646,10 @@
       {
         "productId": "prod-008",
         "quantity": 3,
-        "unitPriceBob": 405
+        "unitPriceBob": 300
       }
     ],
-    "totalBob": 1215,
+    "totalBob": 900,
     "channel": "facebook"
   },
   {
@@ -3674,10 +3674,10 @@
       {
         "productId": "prod-005",
         "quantity": 3,
-        "unitPriceBob": 325
+        "unitPriceBob": 240
       }
     ],
-    "totalBob": 975,
+    "totalBob": 720,
     "channel": "whatsapp"
   },
   {
@@ -3688,10 +3688,10 @@
       {
         "productId": "prod-004",
         "quantity": 2,
-        "unitPriceBob": 35
+        "unitPriceBob": 25
       }
     ],
-    "totalBob": 70,
+    "totalBob": 50,
     "channel": "whatsapp"
   },
   {
@@ -3707,10 +3707,10 @@
       {
         "productId": "prod-007",
         "quantity": 1,
-        "unitPriceBob": 670
+        "unitPriceBob": 495
       }
     ],
-    "totalBob": 680,
+    "totalBob": 505,
     "channel": "tiktok"
   },
   {
@@ -3721,10 +3721,10 @@
       {
         "productId": "prod-008",
         "quantity": 3,
-        "unitPriceBob": 405
+        "unitPriceBob": 300
       }
     ],
-    "totalBob": 1215,
+    "totalBob": 900,
     "channel": "tiktok"
   },
   {
@@ -3735,10 +3735,10 @@
       {
         "productId": "prod-011",
         "quantity": 3,
-        "unitPriceBob": 15
+        "unitPriceBob": 10
       }
     ],
-    "totalBob": 45,
+    "totalBob": 30,
     "channel": "tiktok"
   },
   {
@@ -3749,7 +3749,7 @@
       {
         "productId": "prod-005",
         "quantity": 2,
-        "unitPriceBob": 325
+        "unitPriceBob": 240
       },
       {
         "productId": "prod-014",
@@ -3757,7 +3757,7 @@
         "unitPriceBob": 45
       }
     ],
-    "totalBob": 830,
+    "totalBob": 660,
     "channel": "whatsapp"
   },
   {
@@ -3782,7 +3782,7 @@
       {
         "productId": "prod-006",
         "quantity": 3,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       },
       {
         "productId": "prod-013",
@@ -3790,7 +3790,7 @@
         "unitPriceBob": 5
       }
     ],
-    "totalBob": 435,
+    "totalBob": 330,
     "channel": "facebook"
   },
   {
@@ -3801,15 +3801,15 @@
       {
         "productId": "prod-011",
         "quantity": 3,
-        "unitPriceBob": 15
+        "unitPriceBob": 10
       },
       {
         "productId": "prod-008",
         "quantity": 4,
-        "unitPriceBob": 405
+        "unitPriceBob": 300
       }
     ],
-    "totalBob": 1665,
+    "totalBob": 1230,
     "channel": "facebook"
   },
   {
@@ -3820,20 +3820,20 @@
       {
         "productId": "prod-001",
         "quantity": 4,
-        "unitPriceBob": 175
+        "unitPriceBob": 130
       },
       {
         "productId": "prod-008",
         "quantity": 3,
-        "unitPriceBob": 405
+        "unitPriceBob": 300
       },
       {
         "productId": "prod-012",
         "quantity": 2,
-        "unitPriceBob": 830
+        "unitPriceBob": 595
       }
     ],
-    "totalBob": 3575,
+    "totalBob": 2610,
     "channel": "mayoreo"
   },
   {
@@ -3844,7 +3844,7 @@
       {
         "productId": "prod-002",
         "quantity": 4,
-        "unitPriceBob": 430
+        "unitPriceBob": 330
       },
       {
         "productId": "prod-013",
@@ -3852,7 +3852,7 @@
         "unitPriceBob": 5
       }
     ],
-    "totalBob": 1725,
+    "totalBob": 1325,
     "channel": "mayoreo"
   },
   {
@@ -3868,15 +3868,15 @@
       {
         "productId": "prod-001",
         "quantity": 3,
-        "unitPriceBob": 175
+        "unitPriceBob": 130
       },
       {
         "productId": "prod-006",
         "quantity": 3,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       }
     ],
-    "totalBob": 965,
+    "totalBob": 725,
     "channel": "mayoreo"
   },
   {
@@ -3887,10 +3887,10 @@
       {
         "productId": "prod-001",
         "quantity": 4,
-        "unitPriceBob": 175
+        "unitPriceBob": 130
       }
     ],
-    "totalBob": 700,
+    "totalBob": 520,
     "channel": "mayoreo"
   },
   {
@@ -3901,12 +3901,12 @@
       {
         "productId": "prod-004",
         "quantity": 3,
-        "unitPriceBob": 35
+        "unitPriceBob": 25
       },
       {
         "productId": "prod-006",
         "quantity": 1,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       },
       {
         "productId": "prod-014",
@@ -3914,7 +3914,7 @@
         "unitPriceBob": 45
       }
     ],
-    "totalBob": 380,
+    "totalBob": 315,
     "channel": "tiktok"
   },
   {
@@ -3925,20 +3925,20 @@
       {
         "productId": "prod-010",
         "quantity": 3,
-        "unitPriceBob": 25
+        "unitPriceBob": 20
       },
       {
         "productId": "prod-012",
         "quantity": 3,
-        "unitPriceBob": 830
+        "unitPriceBob": 595
       },
       {
         "productId": "prod-001",
         "quantity": 3,
-        "unitPriceBob": 175
+        "unitPriceBob": 130
       }
     ],
-    "totalBob": 3090,
+    "totalBob": 2235,
     "channel": "facebook"
   },
   {
@@ -3949,10 +3949,10 @@
       {
         "productId": "prod-008",
         "quantity": 3,
-        "unitPriceBob": 405
+        "unitPriceBob": 300
       }
     ],
-    "totalBob": 1215,
+    "totalBob": 900,
     "channel": "tiktok"
   },
   {
@@ -3963,10 +3963,10 @@
       {
         "productId": "prod-003",
         "quantity": 3,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       }
     ],
-    "totalBob": 420,
+    "totalBob": 315,
     "channel": "whatsapp"
   },
   {
@@ -3977,7 +3977,7 @@
       {
         "productId": "prod-004",
         "quantity": 3,
-        "unitPriceBob": 35
+        "unitPriceBob": 25
       },
       {
         "productId": "prod-014",
@@ -3985,7 +3985,7 @@
         "unitPriceBob": 45
       }
     ],
-    "totalBob": 240,
+    "totalBob": 210,
     "channel": "whatsapp"
   },
   {
@@ -3996,10 +3996,10 @@
       {
         "productId": "prod-009",
         "quantity": 4,
-        "unitPriceBob": 245
+        "unitPriceBob": 180
       }
     ],
-    "totalBob": 980,
+    "totalBob": 720,
     "channel": "tiktok"
   },
   {
@@ -4010,10 +4010,10 @@
       {
         "productId": "prod-011",
         "quantity": 2,
-        "unitPriceBob": 15
+        "unitPriceBob": 10
       }
     ],
-    "totalBob": 30,
+    "totalBob": 20,
     "channel": "whatsapp"
   },
   {
@@ -4024,10 +4024,10 @@
       {
         "productId": "prod-006",
         "quantity": 1,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       }
     ],
-    "totalBob": 140,
+    "totalBob": 105,
     "channel": "mayoreo"
   },
   {
@@ -4038,15 +4038,15 @@
       {
         "productId": "prod-010",
         "quantity": 1,
-        "unitPriceBob": 25
+        "unitPriceBob": 20
       },
       {
         "productId": "prod-004",
         "quantity": 2,
-        "unitPriceBob": 35
+        "unitPriceBob": 25
       }
     ],
-    "totalBob": 95,
+    "totalBob": 70,
     "channel": "tienda"
   },
   {
@@ -4057,7 +4057,7 @@
       {
         "productId": "prod-010",
         "quantity": 2,
-        "unitPriceBob": 25
+        "unitPriceBob": 20
       },
       {
         "productId": "prod-014",
@@ -4065,7 +4065,7 @@
         "unitPriceBob": 45
       }
     ],
-    "totalBob": 95,
+    "totalBob": 85,
     "channel": "facebook"
   },
   {
@@ -4076,15 +4076,15 @@
       {
         "productId": "prod-009",
         "quantity": 4,
-        "unitPriceBob": 245
+        "unitPriceBob": 180
       },
       {
         "productId": "prod-004",
         "quantity": 4,
-        "unitPriceBob": 35
+        "unitPriceBob": 25
       }
     ],
-    "totalBob": 1120,
+    "totalBob": 820,
     "channel": "tienda"
   },
   {
@@ -4095,20 +4095,20 @@
       {
         "productId": "prod-002",
         "quantity": 2,
-        "unitPriceBob": 430
+        "unitPriceBob": 330
       },
       {
         "productId": "prod-009",
         "quantity": 3,
-        "unitPriceBob": 245
+        "unitPriceBob": 180
       },
       {
         "productId": "prod-007",
         "quantity": 1,
-        "unitPriceBob": 670
+        "unitPriceBob": 495
       }
     ],
-    "totalBob": 2265,
+    "totalBob": 1695,
     "channel": "facebook"
   },
   {
@@ -4119,10 +4119,10 @@
       {
         "productId": "prod-006",
         "quantity": 4,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       }
     ],
-    "totalBob": 560,
+    "totalBob": 420,
     "channel": "facebook"
   },
   {
@@ -4133,10 +4133,10 @@
       {
         "productId": "prod-007",
         "quantity": 2,
-        "unitPriceBob": 670
+        "unitPriceBob": 495
       }
     ],
-    "totalBob": 1340,
+    "totalBob": 990,
     "channel": "whatsapp"
   },
   {
@@ -4147,20 +4147,20 @@
       {
         "productId": "prod-012",
         "quantity": 1,
-        "unitPriceBob": 830
+        "unitPriceBob": 595
       },
       {
         "productId": "prod-008",
         "quantity": 4,
-        "unitPriceBob": 405
+        "unitPriceBob": 300
       },
       {
         "productId": "prod-004",
         "quantity": 4,
-        "unitPriceBob": 35
+        "unitPriceBob": 25
       }
     ],
-    "totalBob": 2590,
+    "totalBob": 1895,
     "channel": "facebook"
   },
   {
@@ -4171,20 +4171,20 @@
       {
         "productId": "prod-005",
         "quantity": 3,
-        "unitPriceBob": 325
+        "unitPriceBob": 240
       },
       {
         "productId": "prod-010",
         "quantity": 2,
-        "unitPriceBob": 25
+        "unitPriceBob": 20
       },
       {
         "productId": "prod-008",
         "quantity": 3,
-        "unitPriceBob": 405
+        "unitPriceBob": 300
       }
     ],
-    "totalBob": 2240,
+    "totalBob": 1660,
     "channel": "tiktok"
   },
   {
@@ -4195,15 +4195,15 @@
       {
         "productId": "prod-003",
         "quantity": 2,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       },
       {
         "productId": "prod-010",
         "quantity": 4,
-        "unitPriceBob": 25
+        "unitPriceBob": 20
       }
     ],
-    "totalBob": 380,
+    "totalBob": 290,
     "channel": "tienda"
   },
   {
@@ -4214,15 +4214,15 @@
       {
         "productId": "prod-006",
         "quantity": 2,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       },
       {
         "productId": "prod-001",
         "quantity": 3,
-        "unitPriceBob": 175
+        "unitPriceBob": 130
       }
     ],
-    "totalBob": 805,
+    "totalBob": 600,
     "channel": "facebook"
   },
   {
@@ -4233,10 +4233,10 @@
       {
         "productId": "prod-002",
         "quantity": 1,
-        "unitPriceBob": 430
+        "unitPriceBob": 330
       }
     ],
-    "totalBob": 430,
+    "totalBob": 330,
     "channel": "whatsapp"
   },
   {
@@ -4247,15 +4247,15 @@
       {
         "productId": "prod-001",
         "quantity": 4,
-        "unitPriceBob": 175
+        "unitPriceBob": 130
       },
       {
         "productId": "prod-002",
         "quantity": 3,
-        "unitPriceBob": 430
+        "unitPriceBob": 330
       }
     ],
-    "totalBob": 1990,
+    "totalBob": 1510,
     "channel": "mayoreo"
   },
   {
@@ -4266,7 +4266,7 @@
       {
         "productId": "prod-010",
         "quantity": 2,
-        "unitPriceBob": 25
+        "unitPriceBob": 20
       },
       {
         "productId": "prod-014",
@@ -4276,10 +4276,10 @@
       {
         "productId": "prod-012",
         "quantity": 2,
-        "unitPriceBob": 830
+        "unitPriceBob": 595
       }
     ],
-    "totalBob": 1755,
+    "totalBob": 1275,
     "channel": "mayoreo"
   },
   {
@@ -4290,10 +4290,10 @@
       {
         "productId": "prod-002",
         "quantity": 1,
-        "unitPriceBob": 430
+        "unitPriceBob": 330
       }
     ],
-    "totalBob": 430,
+    "totalBob": 330,
     "channel": "whatsapp"
   },
   {
@@ -4304,15 +4304,15 @@
       {
         "productId": "prod-003",
         "quantity": 2,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       },
       {
         "productId": "prod-011",
         "quantity": 3,
-        "unitPriceBob": 15
+        "unitPriceBob": 10
       }
     ],
-    "totalBob": 325,
+    "totalBob": 240,
     "channel": "whatsapp"
   },
   {
@@ -4323,20 +4323,20 @@
       {
         "productId": "prod-001",
         "quantity": 3,
-        "unitPriceBob": 175
+        "unitPriceBob": 130
       },
       {
         "productId": "prod-005",
         "quantity": 3,
-        "unitPriceBob": 325
+        "unitPriceBob": 240
       },
       {
         "productId": "prod-004",
         "quantity": 2,
-        "unitPriceBob": 35
+        "unitPriceBob": 25
       }
     ],
-    "totalBob": 1570,
+    "totalBob": 1160,
     "channel": "mayoreo"
   },
   {
@@ -4347,10 +4347,10 @@
       {
         "productId": "prod-011",
         "quantity": 3,
-        "unitPriceBob": 15
+        "unitPriceBob": 10
       }
     ],
-    "totalBob": 45,
+    "totalBob": 30,
     "channel": "whatsapp"
   },
   {
@@ -4361,20 +4361,20 @@
       {
         "productId": "prod-002",
         "quantity": 2,
-        "unitPriceBob": 430
+        "unitPriceBob": 330
       },
       {
         "productId": "prod-001",
         "quantity": 3,
-        "unitPriceBob": 175
+        "unitPriceBob": 130
       },
       {
         "productId": "prod-003",
         "quantity": 2,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       }
     ],
-    "totalBob": 1665,
+    "totalBob": 1260,
     "channel": "tienda"
   },
   {
@@ -4390,10 +4390,10 @@
       {
         "productId": "prod-004",
         "quantity": 3,
-        "unitPriceBob": 35
+        "unitPriceBob": 25
       }
     ],
-    "totalBob": 240,
+    "totalBob": 210,
     "channel": "whatsapp"
   },
   {
@@ -4404,15 +4404,15 @@
       {
         "productId": "prod-005",
         "quantity": 2,
-        "unitPriceBob": 325
+        "unitPriceBob": 240
       },
       {
         "productId": "prod-011",
         "quantity": 3,
-        "unitPriceBob": 15
+        "unitPriceBob": 10
       }
     ],
-    "totalBob": 695,
+    "totalBob": 510,
     "channel": "facebook"
   },
   {
@@ -4423,20 +4423,20 @@
       {
         "productId": "prod-009",
         "quantity": 3,
-        "unitPriceBob": 245
+        "unitPriceBob": 180
       },
       {
         "productId": "prod-003",
         "quantity": 2,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       },
       {
         "productId": "prod-010",
         "quantity": 1,
-        "unitPriceBob": 25
+        "unitPriceBob": 20
       }
     ],
-    "totalBob": 1040,
+    "totalBob": 770,
     "channel": "tiktok"
   },
   {
@@ -4447,20 +4447,20 @@
       {
         "productId": "prod-007",
         "quantity": 1,
-        "unitPriceBob": 670
+        "unitPriceBob": 495
       },
       {
         "productId": "prod-004",
         "quantity": 1,
-        "unitPriceBob": 35
+        "unitPriceBob": 25
       },
       {
         "productId": "prod-003",
         "quantity": 1,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       }
     ],
-    "totalBob": 845,
+    "totalBob": 625,
     "channel": "mayoreo"
   },
   {
@@ -4471,10 +4471,10 @@
       {
         "productId": "prod-004",
         "quantity": 1,
-        "unitPriceBob": 35
+        "unitPriceBob": 25
       }
     ],
-    "totalBob": 35,
+    "totalBob": 25,
     "channel": "tiktok"
   },
   {
@@ -4485,20 +4485,20 @@
       {
         "productId": "prod-005",
         "quantity": 1,
-        "unitPriceBob": 325
+        "unitPriceBob": 240
       },
       {
         "productId": "prod-012",
         "quantity": 2,
-        "unitPriceBob": 830
+        "unitPriceBob": 595
       },
       {
         "productId": "prod-011",
         "quantity": 4,
-        "unitPriceBob": 15
+        "unitPriceBob": 10
       }
     ],
-    "totalBob": 2045,
+    "totalBob": 1470,
     "channel": "tienda"
   },
   {
@@ -4514,10 +4514,10 @@
       {
         "productId": "prod-005",
         "quantity": 4,
-        "unitPriceBob": 325
+        "unitPriceBob": 240
       }
     ],
-    "totalBob": 1345,
+    "totalBob": 1005,
     "channel": "whatsapp"
   },
   {
@@ -4528,7 +4528,7 @@
       {
         "productId": "prod-010",
         "quantity": 3,
-        "unitPriceBob": 25
+        "unitPriceBob": 20
       },
       {
         "productId": "prod-014",
@@ -4536,7 +4536,7 @@
         "unitPriceBob": 45
       }
     ],
-    "totalBob": 165,
+    "totalBob": 150,
     "channel": "facebook"
   },
   {
@@ -4547,20 +4547,20 @@
       {
         "productId": "prod-001",
         "quantity": 2,
-        "unitPriceBob": 175
+        "unitPriceBob": 130
       },
       {
         "productId": "prod-002",
         "quantity": 2,
-        "unitPriceBob": 430
+        "unitPriceBob": 330
       },
       {
         "productId": "prod-008",
         "quantity": 1,
-        "unitPriceBob": 405
+        "unitPriceBob": 300
       }
     ],
-    "totalBob": 1615,
+    "totalBob": 1220,
     "channel": "tiktok"
   },
   {
@@ -4590,15 +4590,15 @@
       {
         "productId": "prod-003",
         "quantity": 2,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       },
       {
         "productId": "prod-007",
         "quantity": 4,
-        "unitPriceBob": 670
+        "unitPriceBob": 495
       }
     ],
-    "totalBob": 2960,
+    "totalBob": 2190,
     "channel": "mayoreo"
   },
   {
@@ -4609,10 +4609,10 @@
       {
         "productId": "prod-009",
         "quantity": 2,
-        "unitPriceBob": 245
+        "unitPriceBob": 180
       }
     ],
-    "totalBob": 490,
+    "totalBob": 360,
     "channel": "tiktok"
   },
   {
@@ -4628,10 +4628,10 @@
       {
         "productId": "prod-005",
         "quantity": 1,
-        "unitPriceBob": 325
+        "unitPriceBob": 240
       }
     ],
-    "totalBob": 340,
+    "totalBob": 255,
     "channel": "tiktok"
   },
   {
@@ -4642,12 +4642,12 @@
       {
         "productId": "prod-003",
         "quantity": 1,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       },
       {
         "productId": "prod-009",
         "quantity": 1,
-        "unitPriceBob": 245
+        "unitPriceBob": 180
       },
       {
         "productId": "prod-013",
@@ -4655,7 +4655,7 @@
         "unitPriceBob": 5
       }
     ],
-    "totalBob": 405,
+    "totalBob": 305,
     "channel": "tiktok"
   },
   {
@@ -4666,10 +4666,10 @@
       {
         "productId": "prod-009",
         "quantity": 1,
-        "unitPriceBob": 245
+        "unitPriceBob": 180
       }
     ],
-    "totalBob": 245,
+    "totalBob": 180,
     "channel": "facebook"
   },
   {
@@ -4680,10 +4680,10 @@
       {
         "productId": "prod-003",
         "quantity": 3,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       }
     ],
-    "totalBob": 420,
+    "totalBob": 315,
     "channel": "mayoreo"
   },
   {
@@ -4694,15 +4694,15 @@
       {
         "productId": "prod-001",
         "quantity": 1,
-        "unitPriceBob": 175
+        "unitPriceBob": 130
       },
       {
         "productId": "prod-002",
         "quantity": 4,
-        "unitPriceBob": 430
+        "unitPriceBob": 330
       }
     ],
-    "totalBob": 1895,
+    "totalBob": 1450,
     "channel": "mayoreo"
   },
   {
@@ -4713,15 +4713,15 @@
       {
         "productId": "prod-001",
         "quantity": 3,
-        "unitPriceBob": 175
+        "unitPriceBob": 130
       },
       {
         "productId": "prod-004",
         "quantity": 4,
-        "unitPriceBob": 35
+        "unitPriceBob": 25
       }
     ],
-    "totalBob": 665,
+    "totalBob": 490,
     "channel": "whatsapp"
   },
   {
@@ -4732,20 +4732,20 @@
       {
         "productId": "prod-009",
         "quantity": 3,
-        "unitPriceBob": 245
+        "unitPriceBob": 180
       },
       {
         "productId": "prod-005",
         "quantity": 1,
-        "unitPriceBob": 325
+        "unitPriceBob": 240
       },
       {
         "productId": "prod-007",
         "quantity": 4,
-        "unitPriceBob": 670
+        "unitPriceBob": 495
       }
     ],
-    "totalBob": 3740,
+    "totalBob": 2760,
     "channel": "tiktok"
   },
   {
@@ -4756,15 +4756,15 @@
       {
         "productId": "prod-011",
         "quantity": 3,
-        "unitPriceBob": 15
+        "unitPriceBob": 10
       },
       {
         "productId": "prod-012",
         "quantity": 3,
-        "unitPriceBob": 830
+        "unitPriceBob": 595
       }
     ],
-    "totalBob": 2535,
+    "totalBob": 1815,
     "channel": "whatsapp"
   },
   {
@@ -4775,20 +4775,20 @@
       {
         "productId": "prod-012",
         "quantity": 3,
-        "unitPriceBob": 830
+        "unitPriceBob": 595
       },
       {
         "productId": "prod-004",
         "quantity": 1,
-        "unitPriceBob": 35
+        "unitPriceBob": 25
       },
       {
         "productId": "prod-009",
         "quantity": 4,
-        "unitPriceBob": 245
+        "unitPriceBob": 180
       }
     ],
-    "totalBob": 3505,
+    "totalBob": 2530,
     "channel": "tiktok"
   },
   {
@@ -4823,15 +4823,15 @@
       {
         "productId": "prod-009",
         "quantity": 1,
-        "unitPriceBob": 245
+        "unitPriceBob": 180
       },
       {
         "productId": "prod-010",
         "quantity": 1,
-        "unitPriceBob": 25
+        "unitPriceBob": 20
       }
     ],
-    "totalBob": 290,
+    "totalBob": 220,
     "channel": "tiktok"
   },
   {
@@ -4842,10 +4842,10 @@
       {
         "productId": "prod-002",
         "quantity": 3,
-        "unitPriceBob": 430
+        "unitPriceBob": 330
       }
     ],
-    "totalBob": 1290,
+    "totalBob": 990,
     "channel": "whatsapp"
   },
   {
@@ -4856,10 +4856,10 @@
       {
         "productId": "prod-008",
         "quantity": 2,
-        "unitPriceBob": 405
+        "unitPriceBob": 300
       }
     ],
-    "totalBob": 810,
+    "totalBob": 600,
     "channel": "tienda"
   },
   {
@@ -4870,10 +4870,10 @@
       {
         "productId": "prod-006",
         "quantity": 2,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       }
     ],
-    "totalBob": 280,
+    "totalBob": 210,
     "channel": "tiktok"
   },
   {
@@ -4884,7 +4884,7 @@
       {
         "productId": "prod-005",
         "quantity": 3,
-        "unitPriceBob": 325
+        "unitPriceBob": 240
       },
       {
         "productId": "prod-014",
@@ -4894,10 +4894,10 @@
       {
         "productId": "prod-004",
         "quantity": 3,
-        "unitPriceBob": 35
+        "unitPriceBob": 25
       }
     ],
-    "totalBob": 1125,
+    "totalBob": 840,
     "channel": "whatsapp"
   },
   {
@@ -4908,20 +4908,20 @@
       {
         "productId": "prod-002",
         "quantity": 4,
-        "unitPriceBob": 430
+        "unitPriceBob": 330
       },
       {
         "productId": "prod-006",
         "quantity": 3,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       },
       {
         "productId": "prod-012",
         "quantity": 1,
-        "unitPriceBob": 830
+        "unitPriceBob": 595
       }
     ],
-    "totalBob": 2970,
+    "totalBob": 2230,
     "channel": "mayoreo"
   },
   {
@@ -4932,15 +4932,15 @@
       {
         "productId": "prod-005",
         "quantity": 3,
-        "unitPriceBob": 325
+        "unitPriceBob": 240
       },
       {
         "productId": "prod-006",
         "quantity": 3,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       }
     ],
-    "totalBob": 1395,
+    "totalBob": 1035,
     "channel": "tienda"
   },
   {
@@ -4951,10 +4951,10 @@
       {
         "productId": "prod-003",
         "quantity": 2,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       }
     ],
-    "totalBob": 280,
+    "totalBob": 210,
     "channel": "whatsapp"
   },
   {
@@ -4965,12 +4965,12 @@
       {
         "productId": "prod-002",
         "quantity": 4,
-        "unitPriceBob": 430
+        "unitPriceBob": 330
       },
       {
         "productId": "prod-004",
         "quantity": 3,
-        "unitPriceBob": 35
+        "unitPriceBob": 25
       },
       {
         "productId": "prod-014",
@@ -4978,7 +4978,7 @@
         "unitPriceBob": 45
       }
     ],
-    "totalBob": 1915,
+    "totalBob": 1485,
     "channel": "mayoreo"
   },
   {
@@ -4989,10 +4989,10 @@
       {
         "productId": "prod-006",
         "quantity": 4,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       }
     ],
-    "totalBob": 560,
+    "totalBob": 420,
     "channel": "mayoreo"
   },
   {
@@ -5003,10 +5003,10 @@
       {
         "productId": "prod-003",
         "quantity": 3,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       }
     ],
-    "totalBob": 420,
+    "totalBob": 315,
     "channel": "whatsapp"
   },
   {
@@ -5022,10 +5022,10 @@
       {
         "productId": "prod-011",
         "quantity": 1,
-        "unitPriceBob": 15
+        "unitPriceBob": 10
       }
     ],
-    "totalBob": 105,
+    "totalBob": 100,
     "channel": "mayoreo"
   },
   {
@@ -5041,10 +5041,10 @@
       {
         "productId": "prod-010",
         "quantity": 3,
-        "unitPriceBob": 25
+        "unitPriceBob": 20
       }
     ],
-    "totalBob": 120,
+    "totalBob": 105,
     "channel": "whatsapp"
   },
   {
@@ -5060,10 +5060,10 @@
       {
         "productId": "prod-007",
         "quantity": 2,
-        "unitPriceBob": 670
+        "unitPriceBob": 495
       }
     ],
-    "totalBob": 1385,
+    "totalBob": 1035,
     "channel": "facebook"
   },
   {
@@ -5074,10 +5074,10 @@
       {
         "productId": "prod-004",
         "quantity": 4,
-        "unitPriceBob": 35
+        "unitPriceBob": 25
       }
     ],
-    "totalBob": 140,
+    "totalBob": 100,
     "channel": "tienda"
   },
   {
@@ -5088,10 +5088,10 @@
       {
         "productId": "prod-002",
         "quantity": 1,
-        "unitPriceBob": 430
+        "unitPriceBob": 330
       }
     ],
-    "totalBob": 430,
+    "totalBob": 330,
     "channel": "mayoreo"
   },
   {
@@ -5102,10 +5102,10 @@
       {
         "productId": "prod-010",
         "quantity": 1,
-        "unitPriceBob": 25
+        "unitPriceBob": 20
       }
     ],
-    "totalBob": 25,
+    "totalBob": 20,
     "channel": "tiktok"
   },
   {
@@ -5116,10 +5116,10 @@
       {
         "productId": "prod-011",
         "quantity": 4,
-        "unitPriceBob": 15
+        "unitPriceBob": 10
       }
     ],
-    "totalBob": 60,
+    "totalBob": 40,
     "channel": "facebook"
   },
   {
@@ -5130,10 +5130,10 @@
       {
         "productId": "prod-009",
         "quantity": 2,
-        "unitPriceBob": 245
+        "unitPriceBob": 180
       }
     ],
-    "totalBob": 490,
+    "totalBob": 360,
     "channel": "tienda"
   },
   {
@@ -5144,15 +5144,15 @@
       {
         "productId": "prod-010",
         "quantity": 4,
-        "unitPriceBob": 25
+        "unitPriceBob": 20
       },
       {
         "productId": "prod-012",
         "quantity": 1,
-        "unitPriceBob": 830
+        "unitPriceBob": 595
       }
     ],
-    "totalBob": 930,
+    "totalBob": 675,
     "channel": "tienda"
   },
   {
@@ -5168,10 +5168,10 @@
       {
         "productId": "prod-004",
         "quantity": 3,
-        "unitPriceBob": 35
+        "unitPriceBob": 25
       }
     ],
-    "totalBob": 195,
+    "totalBob": 165,
     "channel": "facebook"
   },
   {
@@ -5182,15 +5182,15 @@
       {
         "productId": "prod-008",
         "quantity": 2,
-        "unitPriceBob": 405
+        "unitPriceBob": 300
       },
       {
         "productId": "prod-005",
         "quantity": 4,
-        "unitPriceBob": 325
+        "unitPriceBob": 240
       }
     ],
-    "totalBob": 2110,
+    "totalBob": 1560,
     "channel": "tienda"
   },
   {
@@ -5201,20 +5201,20 @@
       {
         "productId": "prod-003",
         "quantity": 4,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       },
       {
         "productId": "prod-012",
         "quantity": 1,
-        "unitPriceBob": 830
+        "unitPriceBob": 595
       },
       {
         "productId": "prod-004",
         "quantity": 3,
-        "unitPriceBob": 35
+        "unitPriceBob": 25
       }
     ],
-    "totalBob": 1495,
+    "totalBob": 1090,
     "channel": "tienda"
   },
   {
@@ -5225,7 +5225,7 @@
       {
         "productId": "prod-004",
         "quantity": 4,
-        "unitPriceBob": 35
+        "unitPriceBob": 25
       },
       {
         "productId": "prod-014",
@@ -5235,10 +5235,10 @@
       {
         "productId": "prod-002",
         "quantity": 1,
-        "unitPriceBob": 430
+        "unitPriceBob": 330
       }
     ],
-    "totalBob": 660,
+    "totalBob": 520,
     "channel": "tiktok"
   },
   {
@@ -5249,15 +5249,15 @@
       {
         "productId": "prod-007",
         "quantity": 2,
-        "unitPriceBob": 670
+        "unitPriceBob": 495
       },
       {
         "productId": "prod-009",
         "quantity": 2,
-        "unitPriceBob": 245
+        "unitPriceBob": 180
       }
     ],
-    "totalBob": 1830,
+    "totalBob": 1350,
     "channel": "tienda"
   },
   {
@@ -5282,15 +5282,15 @@
       {
         "productId": "prod-005",
         "quantity": 3,
-        "unitPriceBob": 325
+        "unitPriceBob": 240
       },
       {
         "productId": "prod-008",
         "quantity": 1,
-        "unitPriceBob": 405
+        "unitPriceBob": 300
       }
     ],
-    "totalBob": 1380,
+    "totalBob": 1020,
     "channel": "tienda"
   },
   {
@@ -5301,15 +5301,15 @@
       {
         "productId": "prod-007",
         "quantity": 1,
-        "unitPriceBob": 670
+        "unitPriceBob": 495
       },
       {
         "productId": "prod-008",
         "quantity": 3,
-        "unitPriceBob": 405
+        "unitPriceBob": 300
       }
     ],
-    "totalBob": 1885,
+    "totalBob": 1395,
     "channel": "mayoreo"
   },
   {
@@ -5334,10 +5334,10 @@
       {
         "productId": "prod-005",
         "quantity": 4,
-        "unitPriceBob": 325
+        "unitPriceBob": 240
       }
     ],
-    "totalBob": 1300,
+    "totalBob": 960,
     "channel": "tiktok"
   },
   {
@@ -5348,15 +5348,15 @@
       {
         "productId": "prod-004",
         "quantity": 1,
-        "unitPriceBob": 35
+        "unitPriceBob": 25
       },
       {
         "productId": "prod-003",
         "quantity": 3,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       }
     ],
-    "totalBob": 455,
+    "totalBob": 340,
     "channel": "whatsapp"
   },
   {
@@ -5367,20 +5367,20 @@
       {
         "productId": "prod-006",
         "quantity": 2,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       },
       {
         "productId": "prod-008",
         "quantity": 1,
-        "unitPriceBob": 405
+        "unitPriceBob": 300
       },
       {
         "productId": "prod-001",
         "quantity": 3,
-        "unitPriceBob": 175
+        "unitPriceBob": 130
       }
     ],
-    "totalBob": 1210,
+    "totalBob": 900,
     "channel": "whatsapp"
   },
   {
@@ -5396,10 +5396,10 @@
       {
         "productId": "prod-002",
         "quantity": 3,
-        "unitPriceBob": 430
+        "unitPriceBob": 330
       }
     ],
-    "totalBob": 1295,
+    "totalBob": 995,
     "channel": "whatsapp"
   },
   {
@@ -5410,10 +5410,10 @@
       {
         "productId": "prod-008",
         "quantity": 2,
-        "unitPriceBob": 405
+        "unitPriceBob": 300
       }
     ],
-    "totalBob": 810,
+    "totalBob": 600,
     "channel": "tiktok"
   },
   {
@@ -5424,20 +5424,20 @@
       {
         "productId": "prod-009",
         "quantity": 4,
-        "unitPriceBob": 245
+        "unitPriceBob": 180
       },
       {
         "productId": "prod-004",
         "quantity": 1,
-        "unitPriceBob": 35
+        "unitPriceBob": 25
       },
       {
         "productId": "prod-006",
         "quantity": 3,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       }
     ],
-    "totalBob": 1435,
+    "totalBob": 1060,
     "channel": "mayoreo"
   },
   {
@@ -5448,10 +5448,10 @@
       {
         "productId": "prod-001",
         "quantity": 3,
-        "unitPriceBob": 175
+        "unitPriceBob": 130
       }
     ],
-    "totalBob": 525,
+    "totalBob": 390,
     "channel": "whatsapp"
   },
   {
@@ -5462,20 +5462,20 @@
       {
         "productId": "prod-002",
         "quantity": 4,
-        "unitPriceBob": 430
+        "unitPriceBob": 330
       },
       {
         "productId": "prod-011",
         "quantity": 3,
-        "unitPriceBob": 15
+        "unitPriceBob": 10
       },
       {
         "productId": "prod-008",
         "quantity": 1,
-        "unitPriceBob": 405
+        "unitPriceBob": 300
       }
     ],
-    "totalBob": 2170,
+    "totalBob": 1650,
     "channel": "tiktok"
   },
   {
@@ -5486,10 +5486,10 @@
       {
         "productId": "prod-008",
         "quantity": 1,
-        "unitPriceBob": 405
+        "unitPriceBob": 300
       }
     ],
-    "totalBob": 405,
+    "totalBob": 300,
     "channel": "tienda"
   },
   {
@@ -5500,10 +5500,10 @@
       {
         "productId": "prod-002",
         "quantity": 3,
-        "unitPriceBob": 430
+        "unitPriceBob": 330
       }
     ],
-    "totalBob": 1290,
+    "totalBob": 990,
     "channel": "whatsapp"
   },
   {
@@ -5514,7 +5514,7 @@
       {
         "productId": "prod-003",
         "quantity": 1,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       },
       {
         "productId": "prod-014",
@@ -5524,10 +5524,10 @@
       {
         "productId": "prod-011",
         "quantity": 3,
-        "unitPriceBob": 15
+        "unitPriceBob": 10
       }
     ],
-    "totalBob": 275,
+    "totalBob": 225,
     "channel": "whatsapp"
   },
   {
@@ -5538,20 +5538,20 @@
       {
         "productId": "prod-006",
         "quantity": 4,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       },
       {
         "productId": "prod-001",
         "quantity": 4,
-        "unitPriceBob": 175
+        "unitPriceBob": 130
       },
       {
         "productId": "prod-005",
         "quantity": 2,
-        "unitPriceBob": 325
+        "unitPriceBob": 240
       }
     ],
-    "totalBob": 1910,
+    "totalBob": 1420,
     "channel": "tienda"
   },
   {
@@ -5562,7 +5562,7 @@
       {
         "productId": "prod-007",
         "quantity": 4,
-        "unitPriceBob": 670
+        "unitPriceBob": 495
       },
       {
         "productId": "prod-013",
@@ -5570,7 +5570,7 @@
         "unitPriceBob": 5
       }
     ],
-    "totalBob": 2700,
+    "totalBob": 2000,
     "channel": "whatsapp"
   },
   {
@@ -5581,15 +5581,15 @@
       {
         "productId": "prod-002",
         "quantity": 1,
-        "unitPriceBob": 430
+        "unitPriceBob": 330
       },
       {
         "productId": "prod-012",
         "quantity": 4,
-        "unitPriceBob": 830
+        "unitPriceBob": 595
       }
     ],
-    "totalBob": 3750,
+    "totalBob": 2710,
     "channel": "facebook"
   },
   {
@@ -5600,20 +5600,20 @@
       {
         "productId": "prod-011",
         "quantity": 4,
-        "unitPriceBob": 15
+        "unitPriceBob": 10
       },
       {
         "productId": "prod-004",
         "quantity": 2,
-        "unitPriceBob": 35
+        "unitPriceBob": 25
       },
       {
         "productId": "prod-005",
         "quantity": 4,
-        "unitPriceBob": 325
+        "unitPriceBob": 240
       }
     ],
-    "totalBob": 1430,
+    "totalBob": 1050,
     "channel": "whatsapp"
   },
   {
@@ -5624,15 +5624,15 @@
       {
         "productId": "prod-007",
         "quantity": 2,
-        "unitPriceBob": 670
+        "unitPriceBob": 495
       },
       {
         "productId": "prod-009",
         "quantity": 2,
-        "unitPriceBob": 245
+        "unitPriceBob": 180
       }
     ],
-    "totalBob": 1830,
+    "totalBob": 1350,
     "channel": "whatsapp"
   },
   {
@@ -5662,20 +5662,20 @@
       {
         "productId": "prod-009",
         "quantity": 3,
-        "unitPriceBob": 245
+        "unitPriceBob": 180
       },
       {
         "productId": "prod-001",
         "quantity": 2,
-        "unitPriceBob": 175
+        "unitPriceBob": 130
       },
       {
         "productId": "prod-003",
         "quantity": 3,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       }
     ],
-    "totalBob": 1505,
+    "totalBob": 1115,
     "channel": "facebook"
   },
   {
@@ -5686,12 +5686,12 @@
       {
         "productId": "prod-002",
         "quantity": 1,
-        "unitPriceBob": 430
+        "unitPriceBob": 330
       },
       {
         "productId": "prod-006",
         "quantity": 1,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       },
       {
         "productId": "prod-013",
@@ -5699,7 +5699,7 @@
         "unitPriceBob": 5
       }
     ],
-    "totalBob": 590,
+    "totalBob": 455,
     "channel": "whatsapp"
   },
   {
@@ -5710,15 +5710,15 @@
       {
         "productId": "prod-008",
         "quantity": 4,
-        "unitPriceBob": 405
+        "unitPriceBob": 300
       },
       {
         "productId": "prod-007",
         "quantity": 3,
-        "unitPriceBob": 670
+        "unitPriceBob": 495
       }
     ],
-    "totalBob": 3630,
+    "totalBob": 2685,
     "channel": "facebook"
   },
   {
@@ -5729,10 +5729,10 @@
       {
         "productId": "prod-005",
         "quantity": 2,
-        "unitPriceBob": 325
+        "unitPriceBob": 240
       }
     ],
-    "totalBob": 650,
+    "totalBob": 480,
     "channel": "tienda"
   },
   {
@@ -5743,10 +5743,10 @@
       {
         "productId": "prod-008",
         "quantity": 4,
-        "unitPriceBob": 405
+        "unitPriceBob": 300
       }
     ],
-    "totalBob": 1620,
+    "totalBob": 1200,
     "channel": "tienda"
   },
   {
@@ -5757,15 +5757,15 @@
       {
         "productId": "prod-003",
         "quantity": 2,
-        "unitPriceBob": 140
+        "unitPriceBob": 105
       },
       {
         "productId": "prod-001",
         "quantity": 2,
-        "unitPriceBob": 175
+        "unitPriceBob": 130
       }
     ],
-    "totalBob": 630,
+    "totalBob": 470,
     "channel": "tienda"
   },
   {
@@ -5776,10 +5776,10 @@
       {
         "productId": "prod-011",
         "quantity": 2,
-        "unitPriceBob": 15
+        "unitPriceBob": 10
       }
     ],
-    "totalBob": 30,
+    "totalBob": 20,
     "channel": "mayoreo"
   },
   {
@@ -5790,15 +5790,15 @@
       {
         "productId": "prod-002",
         "quantity": 4,
-        "unitPriceBob": 430
+        "unitPriceBob": 330
       },
       {
         "productId": "prod-001",
         "quantity": 1,
-        "unitPriceBob": 175
+        "unitPriceBob": 130
       }
     ],
-    "totalBob": 1895,
+    "totalBob": 1450,
     "channel": "mayoreo"
   },
   {
@@ -5809,15 +5809,15 @@
       {
         "productId": "prod-005",
         "quantity": 4,
-        "unitPriceBob": 325
+        "unitPriceBob": 240
       },
       {
         "productId": "prod-007",
         "quantity": 3,
-        "unitPriceBob": 670
+        "unitPriceBob": 495
       }
     ],
-    "totalBob": 3310,
+    "totalBob": 2445,
     "channel": "facebook"
   }
 ]

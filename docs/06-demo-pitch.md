@@ -6,7 +6,7 @@
 
 | Criterio | Peso | Dónde lo ganamos |
 | -------- | ---- | ---------------- |
-| Claridad del problema | 20% | El caso del dólar contado con un producto concreto en 30 segundos |
+| Claridad del problema | 20% | El caso del dólar contado con un producto concreto en 30 segundos. **La unificación del 29/06 es noticia fresca: el jurado boliviano la vive** |
 | Ejecución técnica | 25% | Loop de agentes real, arquitectura con interfaces, deploy funcionando |
 | Uso de IA y agentes | 20% | Mostrar las herramientas ejecutándose en vivo, no un chat genérico |
 | Demo y UX | 15% | Que corra en vivo sin fricción y se entienda sin explicación |
@@ -16,19 +16,24 @@
 
 ### 0:00 – 0:40 · El problema, con un caso
 
-> "Don Beto importa accesorios en Santa Cruz. Compró fundas de celular cuando el dólar estaba a 10.30
-> y las vende a 25 bolivianos: 26% de margen, buen negocio. Hoy el paralelo está a 14.76. Su costo de
-> reposición subió a 26.60. **Cada funda que vende hoy le hace perder plata**, y su Excel no se lo dice.
-> Ese es el problema: en Bolivia el precio se fija con el dólar de ayer y se repone con el de hoy."
+> "El 29 de junio, hace menos de un mes, el BCB terminó con 15 años de dólar fijo: hoy el tipo de
+> cambio flota y se mueve todos los días. Ya subió 17% desde entonces.
+>
+> Don Beto importa accesorios en Santa Cruz. Puso precio a sus cables cuando compraba dólares a 7,60.
+> Hoy repone a 11,37. **Cada cable que vende le hace perder 9%**, y su Excel no se lo dice — porque
+> su Excel no sabe que el dólar cambió esta mañana.
+>
+> Ese es el problema: en Bolivia el precio se fija con el dólar de ayer y se repone con el de hoy.
+> Y desde hace un mes, 'ayer' es literalmente ayer."
 
-*(Ajustar los números al dataset del día — el generador los imprime al correr.)*
+*(Verificar los números contra el panel el día del pitch: el tipo de cambio se actualiza solo.)*
 
 ### 0:40 – 1:00 · Qué construimos
 
 > "Mentor IA: cinco agentes que leen las ventas, el inventario y el tipo de cambio del negocio, y
 > devuelven qué hacer. No es un dashboard: es un equipo que decide."
 
-Abrir la URL pública, ya cargada. Señalar la tarjeta roja: **"2 productos se venden bajo costo."**
+Abrir la URL pública, ya cargada. Señalar la tarjeta roja: **"3 productos se venden bajo costo de reposición."**
 
 ### 1:00 – 2:20 · Demo en vivo (el núcleo)
 
@@ -42,7 +47,7 @@ Mientras responde, **señalar la traza de herramientas** en pantalla:
 Leer la salida: producto, precio actual, precio sugerido, ajuste porcentual.
 
 **Pregunta 2 — el escenario:**
-> *"¿Y si el dólar llega a 16?"*
+> *"¿Y si el dólar llega a 13?"*
 
 > "Esto es lo que un importador no puede hacer con ninguna herramienta que tenga hoy: proyectar su
 > catálogo entero contra un tipo de cambio que todavía no pasó."
@@ -101,9 +106,10 @@ mostrar capturas o código impacta la puntuación pero no descalifica.
 > Enseñar la interfaz `DataSource` y decir con qué comercio se probó. *(De ahí que conseguir datos
 > reales sea la prioridad #2 del backlog.)*
 
-**"¿De dónde sacan el dólar paralelo?"**
-> Responder con la fuente exacta documentada en `docs/04-datos.md`, y explicar el fallback si el
-> scraping falla.
+**"¿De dónde sacan el tipo de cambio?"**
+> Del BCB, que desde el 29/06/2026 publica un Tipo de Cambio Oficial único que flota a diario.
+> Explicar el fallback si el scraping falla. Si preguntan por el paralelo: sigue existiendo, pero
+> la brecha pasó de más de 100% a unos dos puntos, así que ya no es el dato que manda.
 
 **"¿Por qué no lo hace Odoo?"**
 > Porque modela un solo tipo de cambio y asume que es el oficial. Nosotros no reemplazamos al ERP:

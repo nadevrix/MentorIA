@@ -11,9 +11,13 @@
 costaría reponerlo hoy.
 
 ```
-costoReposicionBob = costUsd × (imported ? paralelo_hoy : oficial)
+costoReposicionBob = costUsd × (imported ? tipoDeCambioHoy : purchaseFxRate)
 margenRealPct      = (precioBob − costoReposicionBob) / precioBob × 100
 ```
+
+Desde el 29/06/2026 Bolivia tiene **un solo Tipo de Cambio Oficial que flota**. Por eso `FxRate`
+guarda `rate` y `regimen` (`fijo` | `flexible`) en vez del viejo par `official`/`parallel`: el
+`regimen` marca el quiebre para no comparar peras con manzanas al calcular variaciones.
 
 Si el margen real es negativo, cada venta reduce el capital del negocio aunque la caja muestre
 ingresos. Esa es la métrica que ningún ERP disponible en el país calcula, y es el corazón del producto.
@@ -38,12 +42,17 @@ Definido con Zod en `packages/core/src/types.ts` — la validación y los tipos 
 Santa Cruz. Generado por `data/generate.mjs`, determinista, con fechas relativas a hoy:
 
 ```bash
-node data/generate.mjs
+node data/generate.mjs      # productos, ventas, clientes y gastos
+node data/fetch-fx.mjs      # tipo de cambio REAL del BCB
 ```
 
-El dataset está calibrado para que la demo tenga historia: productos comprados con el dólar entre
-10.3 y 13.8 Bs, paralelo actual ~14.76 Bs, lo que deja **2 productos vendiéndose bajo costo de
-reposición y 7 con margen erosionado**, más una cuenta vencida y tres productos por agotarse.
+⚠️ **`generate.mjs` no toca `fx.json` a propósito.** El tipo de cambio es un dato real que trae
+`fetch-fx.mjs`; generar uno ficticio rompe el esquema y falsea la demo.
+
+El dataset está calibrado contra el régimen real: los productos se compraron con el dólar entre
+7,6 y 9,9 Bs (lo que se pagaba antes de la unificación) y hoy se reponen a 11,37, lo que deja
+**3 productos vendiéndose bajo costo de reposición y 5 con margen erosionado**, más una cuenta
+vencida y tres productos por agotarse. El peor pasó de 27% de margen a −9%.
 
 Para una demo con fecha fija: `DEMO_TODAY=2026-07-26` en el entorno.
 
@@ -80,9 +89,10 @@ opcional y que las herramientas lo omitan del cálculo comparativo, informándol
 
 ## Tipo de cambio
 
-- **Oficial:** 6.96 Bs/USD, tipo de referencia del BCB.
-- **Paralelo:** el que efectivamente paga un importador. Es un mercado informal, así que no hay una
-  única fuente oficial — se usa un promedio de referencias públicas.
+- **Hasta el 28/06/2026:** tipo oficial fijo en 6,96 Bs/USD más un paralelo que se movía aparte.
+- **Desde el 29/06/2026:** un solo Tipo de Cambio Oficial que flota y se actualiza a diario
+  (Resolución Ministerial 245/2026 y Resolución de Directorio 88/2026 del BCB). Al 25/07/2026
+  está en Bs 11,37. El paralelo sigue existiendo (~Bs 11,69) pero la brecha es de ~2%.
 
 El histórico de `data/seed/fx.json` es una serie de referencia generada para desarrollo.
 **Al conectar la fuente en vivo, documentá acá la URL exacta y la fecha de captura** — el track exige

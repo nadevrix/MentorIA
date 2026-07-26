@@ -15,7 +15,7 @@ import type {
  * suelen aparecer las sorpresas.
  */
 
-export const DEFAULT_GEMINI_MODEL = 'gemini-2.5-flash';
+export const DEFAULT_GEMINI_MODEL = 'gemini-3.1-flash-lite';
 const ENDPOINT = 'https://generativelanguage.googleapis.com/v1beta/models';
 
 /** Tipos de JSON Schema → tipos de la variante de OpenAPI que acepta Gemini. */

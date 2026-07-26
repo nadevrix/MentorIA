@@ -149,22 +149,22 @@ prompt. Vale puntos en la demo.
 
 ## Modelo, costo y cuota
 
-Modelo por defecto: **`gemini-2.5-flash`**. La elección se midió corriendo el mismo prompt
+Modelo por defecto: **`gemini-3.1-flash-lite`**. La elección se midió corriendo el mismo prompt
 contra cada modelo disponible y contando qué herramientas llamaba:
 
 | Modelo | Herramientas | Tiempo | ¿Da los precios? |
 | --- | --- | --- | --- |
-| `gemini-3.1-flash-lite` | 2 | 3.9 s | ❌ |
+| **`gemini-3.1-flash-lite`** | **3** | **4,2 s** | ✅ con la regla de secuencia en el prompt |
 | `gemini-2.5-flash-lite` | 2 | 12.1 s | ❌ |
-| **`gemini-2.5-flash`** | **3** | 11-13 s | ✅ |
+| `gemini-2.5-flash` | 3 | 11-13 s | ✅ |
 | `gemini-3-flash-preview` | 3 | 27.6 s | ✅ |
 | Cualquier `pro` | — | — | ❌ sin cuota en free tier |
 
-Los `flash-lite` detectan el problema y explican que hay productos en rojo, pero terminan el
-turno sin llamar `suggest_price` — es decir, sin decir a cuánto subir. Para un producto cuyo
-remate es el precio sugerido, eso no sirve.
+Los `flash-lite` originalmente terminaban el turno sin llamar `suggest_price` — detectaban el
+problema pero no decían a cuánto subir. Se arregló **escribiendo la secuencia esperada en el
+prompt del agente**, no cambiando de modelo: ahora completan la cadena y son 3× más rápidos.
 
-⚠️ **Cuota: el free tier de Gemini permite ~5 requests por minuto**, y cada pregunta al agente
+⚠️ **Cuota: el free tier de Gemini permite ~5 requests por minuto y 20 por día**, y cada pregunta al agente
 consume 3 o 4 (una por vuelta del loop). Sin facturación activada, la segunda pregunta seguida
 falla con un 429. Antes del pitch: activar facturación en Google, o cambiar a
 `LLM_PROVIDER=anthropic`.

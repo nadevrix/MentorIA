@@ -9,17 +9,21 @@ Copiloto de IA para PyMEs bolivianas, construido para el Cursor Buildathon Boliv
 (track Bolivia Agents). Cinco agentes especializados leen los datos del negocio y devuelven
 acciones concretas.
 
-**El diferencial, y la razón de existir del producto:** en Bolivia el dólar oficial está
-intervenido (~6.96 Bs) pero el paralelo se mueve al alza. Un comercio importador fija precios con
-el dólar de cuando compró y repone con el de hoy — puede vender bien y estar perdiendo capital sin
-saberlo. Ningún ERP disponible en el país calcula eso.
+**El diferencial, y la razón de existir del producto:** el 29/06/2026 el BCB terminó 15 años de
+tipo de cambio fijo (6,96) y pasó a un régimen flexible: hoy hay **un solo Tipo de Cambio Oficial
+que flota y se actualiza a diario**. Ya subió ~17% en menos de un mes. Un comercio importador fija
+precios con el dólar de cuando compró y repone con el de hoy — puede vender bien y estar perdiendo
+capital sin saberlo. Ningún ERP disponible en el país calcula eso.
 
 ```
-costoReposicionBob = costUsd × (importado ? paralelo_hoy : oficial)
+costoReposicionBob = costUsd × (importado ? tipoDeCambioHoy : purchaseFxRate)
 margenRealPct      = (precioBob − costoReposicionBob) / precioBob × 100
 ```
 
-Si estás por escribir un cálculo de margen que no use el paralelo, está mal.
+Un producto nacional no se revalúa con el dólar: su costo en Bs es el de su compra.
+
+El mercado paralelo sigue existiendo, pero la brecha pasó de más de 100% a ~2%. **No lo niegues,
+pero tampoco lo trates como un mercado aparte**: el dato que manda es el TCO único.
 
 ## Reglas no negociables
 
@@ -59,17 +63,22 @@ El runtime NO habla con el SDK de ningún proveedor: habla con la interfaz `LlmP
 (`packages/core/src/llm/types.ts`). Hay dos adaptadores, Gemini y Claude, y se elige con
 `LLM_PROVIDER`. Si el proveedor configurado no tiene su clave, cae al otro en vez de romper.
 
-**Por defecto corre Gemini** (`gemini-2.5-flash`). Motivo de la elección, medido: los modelos
-`flash-lite` se quedan en 2 herramientas y nunca llegan a `suggest_price` — explican el problema
-pero no dan los precios; y ningún modelo `pro` tiene cuota en el free tier.
+**Por defecto corre Gemini** (`gemini-3.1-flash-lite`). Medido sobre el loop de este proyecto:
+completa la cadena de herramientas en 4,2 s, contra 13 s de `gemini-2.5-flash`. Ningún modelo
+`pro` tiene cuota en el free tier.
+
+Los `flash-lite` sólo completan la cadena **gracias a que el prompt del agente de precios dice
+explícitamente la secuencia esperada**. Si sacás esa regla, vuelven a quedarse en el diagnóstico
+sin dar los precios.
 
 Si agregás soporte para otro proveedor, implementá `LlmProvider` y sumalo a `createLlmProvider()`.
 **No metas lógica de proveedor en `runtime.ts`** — ahí está el loop, y tiene que seguir siendo
 agnóstico.
 
-⚠️ **Límite de cuota:** el free tier de Gemini permite ~5 requests por minuto y cada pregunta
-al agente consume 3 o 4 (una por vuelta del loop). Para la demo en vivo hace falta facturación
-activada en Google, o cambiar a `LLM_PROVIDER=anthropic`.
+⚠️ **Límite de cuota:** el free tier de Gemini permite ~5 requests por minuto **y 20 por día** en
+los modelos flash. Cada pregunta al agente consume 3 o 4 (una por vuelta del loop), así que son
+unas 5 preguntas diarias. Para la demo en vivo hace falta facturación activada en Google, o
+cambiar a `LLM_PROVIDER=anthropic`.
 
 El agente no sabe nada del negocio: percibe llamando herramientas, decide cuáles llamar, ejecuta.
 Todo el conocimiento vive en `tools/`; el prompt solo define rol y criterio.
