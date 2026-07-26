@@ -1,4 +1,5 @@
 import { serve } from '@hono/node-server';
+import { timingSafeEqual } from 'node:crypto';
 import {
   AGENTS,
   buildDashboard,
@@ -17,6 +18,10 @@ import {
   formulariosDelRegimen,
   TOOLS_BY_NAME,
   createLlmProvider,
+  dispatchZavuAlerts,
+  getWallbitCoverage,
+  wallbitConfigured,
+  zavuIntegrationStatus,
 } from '@pyme/core';
 import { Hono, type MiddlewareHandler } from 'hono';
 import { bodyLimit } from 'hono/body-limit';
@@ -37,6 +42,70 @@ app.use('/api/*', cors(corsOptions));
 function positiveInteger(name: string, fallback: number): number {
   const value = Number(process.env[name]);
   return Number.isInteger(value) && value > 0 ? value : fallback;
+}
+
+const ZAVU_ALERTS_AUTO = process.env.ZAVU_ALERTS_AUTO?.toLowerCase() === 'true';
+const configuredAlertHour = Number(process.env.ZAVU_ALERT_HOUR);
+const ZAVU_ALERT_HOUR =
+  Number.isInteger(configuredAlertHour) && configuredAlertHour >= 0 && configuredAlertHour <= 23
+    ? configuredAlertHour
+    : 8;
+const ZAVU_ALERT_TIMEZONE = 'America/La_Paz';
+let lastScheduledAlertDate: string | null = null;
+let scheduledAlertRunning = false;
+
+function alertLocalClock(now = new Date()): { date: string; hour: number } {
+  const parts = new Intl.DateTimeFormat('en-CA', {
+    timeZone: ZAVU_ALERT_TIMEZONE,
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    hourCycle: 'h23',
+  }).formatToParts(now);
+  const value = (type: string) => parts.find((part) => part.type === type)?.value ?? '';
+  return {
+    date: `${value('year')}-${value('month')}-${value('day')}`,
+    hour: Number(value('hour')),
+  };
+}
+
+/**
+ * En una sola instancia Starter alcanza con un reloj local. La clave de
+ * idempotencia diaria evita duplicados incluso si Render reinicia el proceso.
+ */
+async function maybeDispatchScheduledAlert(now = new Date()): Promise<void> {
+  if (!ZAVU_ALERTS_AUTO || scheduledAlertRunning) return;
+  const clock = alertLocalClock(now);
+  if (clock.hour < ZAVU_ALERT_HOUR || lastScheduledAlertDate === clock.date) return;
+
+  scheduledAlertRunning = true;
+  lastScheduledAlertDate = clock.date;
+  try {
+    const result = await dispatchZavuAlerts(ctx, {
+      idempotencyKeyPrefix: `daily-${clock.date}`,
+    });
+    const log = result.ok ? console.log : console.warn;
+    log(`[zavu-scheduler] ${result.message}`);
+  } catch (error) {
+    console.error(
+      '[zavu-scheduler]',
+      error instanceof Error ? error.message : 'No se pudo ejecutar la alerta diaria.',
+    );
+  } finally {
+    scheduledAlertRunning = false;
+  }
+}
+
+function startZavuAlertScheduler(): void {
+  if (!ZAVU_ALERTS_AUTO) return;
+  console.log(
+    `  alertas Zavu: todos los días a las ${String(ZAVU_ALERT_HOUR).padStart(2, '0')}:00 (${ZAVU_ALERT_TIMEZONE})`,
+  );
+  const initial = setTimeout(() => void maybeDispatchScheduledAlert(), 3_000);
+  const interval = setInterval(() => void maybeDispatchScheduledAlert(), 60_000);
+  initial.unref();
+  interval.unref();
 }
 
 const AI_RATE_LIMIT_MAX = positiveInteger('AI_RATE_LIMIT_MAX', 6);
@@ -75,6 +144,27 @@ const limitAiRequests: MiddlewareHandler = async (c, next) => {
   await next();
 };
 
+/**
+ * Las integraciones sponsor usan credenciales financieras o pueden generar
+ * costos. La interfaz pide esta clave en cada sesión; nunca va en el bundle.
+ */
+const requireSponsorSecret: MiddlewareHandler = async (c, next) => {
+  const expected = process.env.SPONSOR_DEMO_SECRET?.trim();
+  if (!expected) {
+    return c.json({ error: 'Falta configurar SPONSOR_DEMO_SECRET en el servidor.' }, 503);
+  }
+
+  const provided = c.req.header('x-sponsor-demo-secret')?.trim();
+  const expectedBuffer = Buffer.from(expected);
+  const providedBuffer = Buffer.from(provided ?? '');
+  const valid =
+    expectedBuffer.length === providedBuffer.length &&
+    timingSafeEqual(expectedBuffer, providedBuffer);
+
+  if (!valid) return c.json({ error: 'Clave de demostración incorrecta.' }, 401);
+  await next();
+};
+
 const jsonBodyLimit = bodyLimit({
   maxSize: positiveInteger('MAX_JSON_BODY_BYTES', 128 * 1024),
   onError: (c) => c.json({ error: 'El cuerpo de la petición es demasiado grande.' }, 413),
@@ -94,6 +184,8 @@ const imageBodyLimit = bodyLimit({
 });
 app.use('/api/image', limitAiRequests, imageBodyLimit);
 app.use('/api/simulate', jsonBodyLimit);
+app.use('/api/alerts/dispatch', limitAiRequests, jsonBodyLimit, requireSponsorSecret);
+app.use('/api/wallbit/coverage', limitAiRequests, jsonBodyLimit, requireSponsorSecret);
 app.use('/api/formalizacion/*', jsonBodyLimit);
 app.use('/api/data/*', csvBodyLimit);
 
@@ -117,6 +209,17 @@ app.get('/health', (c) => {
     fxSource: ctx.fx.name,
     llm,
     imageProvider: imageProviderConfigured(),
+    zavu: {
+      ...zavuIntegrationStatus(),
+      automatic: {
+        enabled: ZAVU_ALERTS_AUTO,
+        hour: ZAVU_ALERT_HOUR,
+        timeZone: ZAVU_ALERT_TIMEZONE,
+        lastRunDate: lastScheduledAlertDate,
+      },
+    },
+    wallbit: { configured: wallbitConfigured() },
+    sponsorDemoProtected: Boolean(process.env.SPONSOR_DEMO_SECRET?.trim()),
     agents: AGENTS.length,
   });
 });
@@ -168,6 +271,23 @@ app.get('/api/insights', async (c) => {
   }
 });
 
+/**
+ * Distribuye el hallazgo más urgente por todos los canales Zavu configurados.
+ * El destinatario vive en variables del servidor: este endpoint nunca es un
+ * relay abierto hacia números o correos arbitrarios.
+ */
+app.post('/api/alerts/dispatch', async (c) => {
+  try {
+    return c.json(await dispatchZavuAlerts(ctx));
+  } catch (error) {
+    console.error('[zavu-alerts]', error);
+    return c.json(
+      { error: error instanceof Error ? error.message : 'No se pudo enviar la alerta.' },
+      502,
+    );
+  }
+});
+
 const SimulateRequest = z.object({
   tipoCambioSimulado: z.number().positive().max(1000),
   margenObjetivoPct: z.number().min(0).max(95).optional(),
@@ -185,6 +305,31 @@ app.post('/api/simulate', async (c) => {
   } catch (error) {
     console.error('[simulate]', error);
     return c.json({ error: error instanceof Error ? error.message : 'Error desconocido' }, 500);
+  }
+});
+
+const WallbitCoverageRequest = z.object({
+  capitalAdicionalBob: z.number().min(0).max(1_000_000_000),
+  tipoCambioEscenario: z.number().positive().max(1000),
+});
+
+/**
+ * Compara un escenario ya calculado con el saldo USD real. Está separado del
+ * simulador para no consultar Wallbit con cada movimiento del deslizador.
+ */
+app.post('/api/wallbit/coverage', async (c) => {
+  const parsed = WallbitCoverageRequest.safeParse(await c.req.json().catch(() => null));
+  if (!parsed.success) {
+    return c.json({ error: 'Petición inválida', detalle: parsed.error.flatten() }, 400);
+  }
+  try {
+    return c.json(await getWallbitCoverage(parsed.data));
+  } catch (error) {
+    console.error('[wallbit-coverage]', error);
+    return c.json(
+      { error: error instanceof Error ? error.message : 'No se pudo consultar Wallbit.' },
+      502,
+    );
   }
 });
 
@@ -440,6 +585,7 @@ const port = Number(process.env.PORT ?? 8787);
 serve({ fetch: app.fetch, port }, (info) => {
   console.log(`Mentor IA API escuchando en http://localhost:${info.port}`);
   console.log(`  datos: ${ctx.data.name} · tipo de cambio: ${ctx.fx.name}`);
+  startZavuAlertScheduler();
   try {
     const p = createLlmProvider();
     console.log(`  modelo: ${p.name} · ${p.model}`);

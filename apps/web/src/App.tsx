@@ -13,6 +13,7 @@ import Landing from './components/Landing';
 import Login, { type ModoAcceso } from './components/Login';
 import MarketingPanel from './components/MarketingPanel';
 import Shell, { type Tab, type TopNav } from './components/Shell';
+import SponsorAlerts from './components/SponsorAlerts';
 import TaxPanel from './components/TaxPanel';
 import Widgets from './components/Widgets';
 import {
@@ -295,6 +296,7 @@ function Panel({ onSalir }: { onSalir: () => void }) {
             <div className="space-y-6">
               <Section title="Qué resolver hoy" hint="Ordenado por urgencia e impacto en bolivianos">
                 {!loading && <DailyBrief />}
+                {!loading && <SponsorAlerts />}
                 <Insights data={insights} loading={loading} onAsk={handleAsk} />
               </Section>
             </div>

@@ -15,6 +15,8 @@ export * from './taxes.js';
 export * from './tax-forms.js';
 export * from './formalizacion.js';
 export * from './marketing-prompts.js';
+export * from './zavu.js';
+export * from './wallbit.js';
 
 import { SeedDataSource } from './data/seed-source.js';
 import { OverlayDataSource } from './data/overlay-source.js';

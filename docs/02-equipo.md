@@ -77,8 +77,9 @@ histórico versionado. `FirecrawlFxProvider` queda como alternativa para el desa
 
 ### 6. Alertas automáticas (reto Zavu, USD 500)
 
-Un cron que corre `analyze_margins` y dispara una alerta por Telegram o email cuando un producto
-cae bajo su margen mínimo. Encaja natural con el producto y es un premio adicional.
+✅ Implementado. La API siempre activa revisa los hallazgos cada día a las 08:00 de Bolivia y
+envía el más urgente por Zavu. La clave de idempotencia evita duplicados tras un reinicio de Render;
+Urgencias conserva un botón manual para demostrar el mismo flujo durante el pitch.
 
 ### 7. Que alguien externo lo use antes del pitch
 

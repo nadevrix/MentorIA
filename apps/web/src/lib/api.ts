@@ -1,5 +1,39 @@
 export const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:8787';
 
+let sponsorDemoSecret = '';
+
+/**
+ * La clave se conserva sólo en memoria hasta recargar la pestaña. No entra en
+ * Vite, localStorage ni el repositorio.
+ */
+function getSponsorDemoSecret(): string {
+  if (sponsorDemoSecret) return sponsorDemoSecret;
+  const entered = window.prompt('Ingresa la clave privada de demostración de sponsors:')?.trim();
+  if (!entered) throw new Error('Necesitas la clave de demostración para usar esta integración.');
+  sponsorDemoSecret = entered;
+  return entered;
+}
+
+async function sponsorPost<T>(path: string, body: unknown): Promise<T> {
+  const res = await fetch(`${API_URL}${path}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Sponsor-Demo-Secret': getSponsorDemoSecret(),
+    },
+    body: JSON.stringify(body),
+  });
+
+  const json = (await res.json().catch(() => null)) as { error?: unknown } | null;
+  if (!res.ok) {
+    if (res.status === 401) sponsorDemoSecret = '';
+    throw new Error(
+      typeof json?.error === 'string' ? json.error : `El servidor respondió ${res.status}.`,
+    );
+  }
+  return json as T;
+}
+
 export interface Agent {
   id: string;
   name: string;
@@ -30,6 +64,18 @@ export interface Health {
   fxSource: string;
   llm: { provider: string; model: string } | { error: string };
   imageProvider: string | null;
+  zavu?: {
+    configured: boolean;
+    channels: ('email' | 'telegram')[];
+    automatic?: {
+      enabled: boolean;
+      hour: number;
+      timeZone: string;
+      lastRunDate: string | null;
+    };
+  };
+  wallbit?: { configured: boolean };
+  sponsorDemoProtected?: boolean;
   agents: number;
 }
 
@@ -79,6 +125,27 @@ export async function fetchInsights(): Promise<InsightsResponse> {
   return res.json();
 }
 
+export interface ZavuDelivery {
+  channel: 'email' | 'telegram';
+  recipient: string;
+  ok: boolean;
+  messageId?: string;
+  status?: string;
+  error?: string;
+}
+
+export interface ZavuAlertResult {
+  ok: boolean;
+  configured: boolean;
+  message: string;
+  insight?: { id: string; severidad: Severity; titulo: string };
+  deliveries: ZavuDelivery[];
+}
+
+export async function dispatchZavuAlert(): Promise<ZavuAlertResult> {
+  return sponsorPost('/api/alerts/dispatch', {});
+}
+
 export interface ScenarioProduct {
   id: string;
   nombre: string;
@@ -99,6 +166,28 @@ export interface ScenarioResult {
   capitalAdicionalBob: number;
   ajustePromedioNecesarioPct: number;
   productos: ScenarioProduct[];
+}
+
+export interface WallbitCoverage {
+  configured: boolean;
+  capitalAdicionalBob: number;
+  capitalAdicionalUsd: number;
+  saldoUsd: number;
+  coberturaPct: number;
+  saldoSuficiente: boolean;
+  tipoCambioWallbitBob?: number;
+  tipoCambioActualizadoEn?: string;
+  message: string;
+}
+
+export async function fetchWallbitCoverage(
+  capitalAdicionalBob: number,
+  tipoCambioEscenario: number,
+): Promise<WallbitCoverage> {
+  return sponsorPost('/api/wallbit/coverage', {
+    capitalAdicionalBob,
+    tipoCambioEscenario,
+  });
 }
 
 export interface MarketingCandidate {

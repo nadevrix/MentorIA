@@ -63,10 +63,12 @@ Leer la salida: producto, precio actual, precio sugerido, ajuste porcentual.
 ### 3:00 – 3:30 · Mercado y siguiente paso
 
 > "Bolivia tiene decenas de miles de comercios importadores con este problema hoy. Argentina y
-> Venezuela tienen el mismo mercado con distinto nombre. El siguiente paso es la alerta proactiva:
-> que el agente avise por WhatsApp cuando un producto cruza el umbral, sin que nadie entre a la app."
+> Venezuela tienen el mismo mercado con distinto nombre. Y la decisión ya no queda encerrada en el
+> panel: cada mañana Mentor IA detecta el hallazgo más urgente y Zavu lo entrega por Telegram al
+> dueño, sin que tenga que entrar a la aplicación."
 
-*(Si el reto Zavu quedó implementado, mostrarlo acá en lugar de contarlo.)*
+*Pulsar “Enviar alerta con Zavu” y mostrar el mensaje llegando al teléfono. Aclarar que el mismo
+flujo corre automáticamente a las 08:00 y evita duplicados diarios.*
 
 Las pestañas Impuestos, Trámites, Mis datos y Marketing demuestran amplitud, pero no se navegan
 durante el guion principal. Se mencionan en una frase o se reservan para preguntas.

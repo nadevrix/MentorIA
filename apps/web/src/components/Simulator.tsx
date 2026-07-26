@@ -1,5 +1,11 @@
-﻿import { useEffect, useState } from 'react';
-import { bob, simulate, type ScenarioResult } from '../lib/api';
+﻿import { useEffect, useRef, useState } from 'react';
+import {
+  bob,
+  fetchWallbitCoverage,
+  simulate,
+  type ScenarioResult,
+  type WallbitCoverage,
+} from '../lib/api';
 
 interface Props {
   /** Tipo de cambio vigente, punto de partida del deslizador. */
@@ -33,11 +39,23 @@ function Delta({ label, antes, despues, format }: {
 /** Margen al que el negocio quiere sostener sus precios. */
 const MARGENES = [20, 25, 30, 35, 40] as const;
 
+const usd = (amount: number): string =>
+  amount.toLocaleString('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+
 export default function Simulator({ currentRate, onAsk }: Props) {
   const [rate, setRate] = useState(currentRate);
   const [targetMargin, setTargetMargin] = useState(35);
   const [result, setResult] = useState<ScenarioResult | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [coverage, setCoverage] = useState<WallbitCoverage | null>(null);
+  const [coverageError, setCoverageError] = useState<string | null>(null);
+  const [loadingCoverage, setLoadingCoverage] = useState(false);
+  const coverageRequest = useRef(0);
 
   // El deslizador se mueve rápido; esperamos a que el usuario se detenga.
   useEffect(() => {
@@ -47,6 +65,10 @@ export default function Simulator({ currentRate, onAsk }: Props) {
         .then((r) => {
           setResult(r);
           setError(null);
+          coverageRequest.current++;
+          setCoverage(null);
+          setCoverageError(null);
+          setLoadingCoverage(false);
         })
         .catch((e: unknown) => {
           if (e instanceof DOMException && e.name === 'AbortError') return;
@@ -62,6 +84,28 @@ export default function Simulator({ currentRate, onAsk }: Props) {
 
   const max = Math.ceil(currentRate * 2);
   const isScenario = Math.abs(rate - currentRate) > 0.01;
+
+  async function loadWallbitCoverage() {
+    if (!result) return;
+    const request = ++coverageRequest.current;
+    setLoadingCoverage(true);
+    setCoverageError(null);
+    try {
+      const response = await fetchWallbitCoverage(
+        result.capitalAdicionalBob,
+        result.escenario.tipoCambioSimulado,
+      );
+      if (coverageRequest.current === request) setCoverage(response);
+    } catch (cause) {
+      if (coverageRequest.current === request) {
+        setCoverageError(
+          cause instanceof Error ? cause.message : 'No se pudo consultar la cobertura.',
+        );
+      }
+    } finally {
+      if (coverageRequest.current === request) setLoadingCoverage(false);
+    }
+  }
 
   return (
     <section className="rounded-[var(--radius-card)] glass p-5">
@@ -161,6 +205,84 @@ export default function Simulator({ currentRate, onAsk }: Props) {
               </div>
             </div>
           </div>
+
+          {isScenario && result.capitalAdicionalBob > 0 && (
+            <div className="mt-3 rounded-xl border border-sky-200 bg-sky-50/80 p-4">
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="rounded-full bg-sky-600 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white">
+                      Wallbit
+                    </span>
+                    <h3 className="text-sm font-semibold text-slate-900">
+                      Cobertura de reposición en dólares
+                    </h3>
+                  </div>
+                  <p className="mt-1.5 text-xs text-slate-600">
+                    Compara el capital adicional del escenario con el saldo USD disponible.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => void loadWallbitCoverage()}
+                  disabled={loadingCoverage}
+                  className="rounded-full bg-sky-600 px-4 py-2 text-xs font-semibold text-white transition hover:bg-sky-700 disabled:cursor-wait disabled:opacity-60"
+                >
+                  {loadingCoverage ? 'Consultando…' : 'Consultar Wallbit'}
+                </button>
+              </div>
+
+              {coverageError && (
+                <p className="mt-3 text-xs font-medium text-[var(--color-bad)]">
+                  {coverageError}
+                </p>
+              )}
+
+              {coverage && (
+                <div className="mt-3 grid gap-2 sm:grid-cols-3">
+                  <div className="rounded-lg bg-white/70 p-3">
+                    <div className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">
+                      Capital adicional
+                    </div>
+                    <div className="mt-1 font-semibold tabular-nums text-slate-900">
+                      {usd(coverage.capitalAdicionalUsd)}
+                    </div>
+                  </div>
+                  <div className="rounded-lg bg-white/70 p-3">
+                    <div className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">
+                      Saldo Wallbit
+                    </div>
+                    <div className="mt-1 font-semibold tabular-nums text-slate-900">
+                      {usd(coverage.saldoUsd)}
+                    </div>
+                  </div>
+                  <div className="rounded-lg bg-white/70 p-3">
+                    <div className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">
+                      Cobertura
+                    </div>
+                    <div
+                      className={`mt-1 font-semibold tabular-nums ${
+                        coverage.saldoSuficiente
+                          ? 'text-[var(--color-good)]'
+                          : 'text-[var(--color-gold)]'
+                      }`}
+                    >
+                      {coverage.coberturaPct}%
+                    </div>
+                  </div>
+                  <p className="text-xs text-slate-600 sm:col-span-3">
+                    {coverage.message}
+                    {coverage.tipoCambioWallbitBob !== undefined && (
+                      <>
+                        {' '}
+                        Cotización informativa Wallbit: Bs {coverage.tipoCambioWallbitBob} por USD.
+                      </>
+                    )}
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
 
           {isScenario && (
             <p className="mt-3 text-sm leading-relaxed text-[var(--color-muted)]">

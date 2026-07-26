@@ -93,6 +93,28 @@ services:
       - key: FIRECRAWL_API_KEY
         sync: false
 
+      # --- Desafíos sponsor: Zavu + Wallbit ---
+      # Todas son sólo backend. SPONSOR_DEMO_SECRET protege los endpoints que
+      # envían mensajes o consultan el saldo financiero.
+      - key: SPONSOR_DEMO_SECRET
+        sync: false
+      - key: ZAVUDEV_API_KEY
+        sync: false
+      - key: ZAVU_SENDER_ID
+        sync: false
+      - key: ZAVU_ALERT_EMAIL
+        sync: false
+      - key: ZAVU_TELEGRAM_CHAT_ID
+        sync: false
+      - key: ZAVU_ALERTS_AUTO
+        value: "true"
+      - key: ZAVU_ALERT_HOUR
+        value: "8"
+      - key: ZAVU_ALERT_CONTEXT
+        value: "DEMO: datos de referencia; no corresponden a un comercio real."
+      - key: WALLBIT_API_KEY
+        sync: false
+
   # ---------------------------------------------------------------------------
   # Interfaz: archivos estáticos. Los sitios estáticos de Render son gratis, se
   # sirven por CDN y NO duermen — a diferencia de los web services.

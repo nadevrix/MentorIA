@@ -153,9 +153,9 @@ formulario de entrega si aplicamos.
 
 **Zavu (USD 500) — el más alcanzable.** Canales: Telegram, SMS, Email y Voice (no WhatsApp).
 Casos que premia: notificaciones y alertas automatizadas, seguimiento de clientes, automatización
-de procesos. Encaja exacto con la alerta de margen que está en el backlog: un cron corre
-`analyze_margins` y dispara Zavu cuando un producto cae bajo su umbral. Criterios: **uso real en
-la demo, no sólo mención**.
+de procesos. ✅ Implementado: la API corre el motor determinista de hallazgos cada día a las 08:00,
+elige el más urgente y lo envía por Telegram mediante Zavu, con deduplicación diaria y disparo
+manual para la demo. Criterios: **uso real en la demo, no sólo mención**.
 
 **Mención de impacto social — marcarla.** PyMEs es un ámbito explícito de la mención y es
 literalmente nuestro usuario. No cuesta nada más que tildar la casilla.
@@ -178,7 +178,7 @@ Herramientas recomendadas por el track y qué usamos:
 | **Render** | Deploy del backend y APIs | ✅ API y frontend |
 | **Netlify** | Deploy del frontend | ⏳ `netlify.toml` listo para cuando lleguen créditos |
 | **Firecrawl** | Scraping estructurado | ✅ `FirecrawlFxProvider` |
-| **Zavu** | Mensajería multicanal | ⏳ pendiente, es el desafío de USD 500 |
+| **Zavu** | Mensajería multicanal | ✅ alerta diaria por Telegram + envío manual para la demo |
 | Exa | Búsqueda semántica | ❌ |
 | ElevenLabs / Wispr Flow | Voz | ❌ |
 | fal.ai | Imágenes y video | ❌ (el módulo de marketing usa otro proveedor) |

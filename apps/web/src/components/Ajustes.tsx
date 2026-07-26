@@ -235,6 +235,29 @@ export default function Ajustes() {
                 valor={health.imageProvider ?? 'sin proveedor: sólo prompts'}
                 ok={Boolean(health.imageProvider)}
               />
+              <Estado
+                label="Alertas Zavu"
+                valor={
+                  health.zavu?.configured
+                    ? `${health.zavu.channels.join(' + ')}${
+                        health.zavu.automatic?.enabled
+                          ? ` · diario ${String(health.zavu.automatic.hour).padStart(2, '0')}:00`
+                          : ' · manual'
+                      }`
+                    : 'sin clave o destinatarios'
+                }
+                ok={Boolean(health.zavu?.configured)}
+              />
+              <Estado
+                label="Cobertura Wallbit"
+                valor={health.wallbit?.configured ? 'API read configurada' : 'sin clave'}
+                ok={Boolean(health.wallbit?.configured)}
+              />
+              <Estado
+                label="Protección de sponsors"
+                valor={health.sponsorDemoProtected ? 'clave de demo activa' : 'sin clave de demo'}
+                ok={Boolean(health.sponsorDemoProtected)}
+              />
               <Estado label="Agentes activos" valor={String(health.agents)} ok={health.agents > 0} />
             </>
           )}
