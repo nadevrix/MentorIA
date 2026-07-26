@@ -1,15 +1,33 @@
-# 02 — Backlog de trabajo
+# 02 — Estado y backlog
 
 **Cómo trabajamos:** cada persona construye lo que ve que le falta al producto, en su propia rama.
 Una persona integra: revisa las ramas, elige qué sirve y lo mergea a `main`. No hay carpetas
-asignadas. Flujo de git y las dos reglas en `docs/07-convenciones.md`; el prompt para arrancar en
-`docs/09-onboarding.md`.
+asignadas. Flujo de git en `docs/07-convenciones.md`; el prompt para arrancar en
+`docs/11-onboarding.md`.
 
-Este documento no reparte tareas: es el **menú de lo que hace falta**, ordenado por lo que más
-suma al puntaje. Si no sabés por dónde empezar, empezá por arriba. Antes de agarrar algo grande,
-avisá en el grupo para que no lo hagan dos personas a la vez.
+Este documento es la foto del proyecto: **qué ya funciona, qué falta y qué hay que corregir.**
+Ordenado por lo que más suma al puntaje. Razonamiento de las prioridades en `docs/10-prioridades.md`.
 
-Razonamiento completo de las prioridades en `docs/08-estrategia.md`.
+Antes de agarrar algo grande, avisá en el grupo para que no lo hagan dos personas a la vez.
+
+---
+
+## ✅ Lo que ya funciona
+
+| Pieza | Estado |
+| --- | --- |
+| Motor de agentes | Gemini (`gemini-3.1-flash-lite`) detrás de una capa de proveedor. Probado de punta a punta por HTTP |
+| 5 agentes, 11 herramientas | Director, Precios, Inventario, Finanzas, Clientes y Marketing |
+| Panel determinista | Corre sin modelo: carga instantánea y cero tokens |
+| Motor de hallazgos | Detectores con severidad e impacto en Bs |
+| Resumen del día | Redacta los hallazgos en tres frases |
+| Simulador cambiario | Recalcula el catálogo contra un tipo de cambio simulado |
+| Régimen cambiario nuevo | Modelo de tipo único con marca de régimen, alineado a la unificación del 29/06/2026 |
+| Impuestos y formalización | Formularios del SIN y trámites para abrir empresa |
+| Marketing | Candidatos con margen sano + generación de contenido |
+| Chat | Tablas markdown, trazas de herramientas en vivo, indicador de arranque en frío |
+| Tipo de cambio en vivo | `FirecrawlFxProvider` implementado, con fallback |
+| Postgres | `PostgresDataSource` + `db/schema.sql` + `db/migrate.mjs` escritos |
 
 ---
 
@@ -17,45 +35,46 @@ Razonamiento completo de las prioridades en `docs/08-estrategia.md`.
 
 ### 1. Deploy en Netlify + Render
 
-Un producto perfecto sin URL pública no compite. La configuración ya está escrita
-(`netlify.toml`, `render.yaml`); el paso a paso está en `docs/05-deploy.md`. **Hacelo hoy, aunque
-el producto esté a medias**, y después iterá encima.
+Un producto perfecto sin URL pública no compite. La configuración está escrita (`netlify.toml`,
+`render.yaml`) y el paso a paso en `docs/05-deploy.md`. Por qué esos dos servicios y no uno solo:
+`docs/12-infraestructura.md`.
 
-*Listo cuando:* las dos URLs responden y están en el README.
+*Listo cuando:* las dos URLs responden y están en la tabla del README.
 
-### 2. Datos reales de un comercio
+### 2. Cuota del modelo
+
+El free tier de Gemini permite **~5 requests por minuto y 20 por día**. Cada pregunta al agente
+consume 3 o 4, así que son unas **5 preguntas diarias** — y el guion del pitch tiene dos preguntas
+seguidas.
+
+Tres salidas, en orden:
+1. **Activar facturación en Google.** Centavos para todo el evento. Es la solución real.
+2. `LLM_PROVIDER=anthropic` en Render, si hay clave de Claude.
+3. Ensayar con una sola pregunta y esperar un minuto entre demos. Frágil.
+
+### 3. Datos reales de un comercio
 
 El track descalifica demos que solo corren con datos hardcodeados. Un export de Excel de ventas e
-inventario de una tienda conocida alcanza: convertirlo al formato de `data/seed/` o escribir un
-`ExcelDataSource` que implemente la interfaz `DataSource`.
-
-Es el salto más grande de toda la lista: cruza de "demo" a "producto".
+inventario de una tienda conocida alcanza: convertirlo al formato de `data/seed/`, o cargarlo a
+Neon con `db/migrate.mjs`.
 
 *Listo cuando:* el panel muestra números de un negocio de verdad.
-
-### 3. Cuota del modelo para la demo ✅ probado / ⚠️ pendiente
-
-El loop de agentes ya está probado de punta a punta contra Gemini. Lo que falta es la cuota:
-el free tier permite ~5 requests por minuto y cada pregunta consume 3 o 4, así que **dos
-preguntas seguidas en el pitch fallan**. Hay que activar facturación en Google (centavos para
-todo el evento) o dejar `LLM_PROVIDER=anthropic` para el escenario.
 
 ---
 
 ## 🟡 Alto impacto
 
-### 4. Dólar paralelo en vivo (Firecrawl, sponsor) — ✅ HECHO
+### 4. Conectar Postgres de verdad
 
-`FirecrawlFxProvider` está implementado, con caché de 15 min y fallback a la serie estática.
-Lo que queda: **verificar el día del pitch** que la extracción sigue funcionando (depende del
-maquetado de la fuente) y anotar la fecha en `docs/04-datos.md`.
+El código está, pero la app corre con los JSON: `DATA_SOURCE` está vacío. Falta cargar el esquema
+en Neon y poner `DATA_SOURCE=postgres` + `DATABASE_URL` en Render. Sólo vale la pena **con datos
+reales adentro** — una base con datos generados no mueve un punto de la rúbrica.
 
-### 5. Simulador cambiario en la interfaz — ✅ HECHO
+### 5. Tipo de cambio en vivo
 
-`FxSimulator.tsx` recalcula la tabla de precios contra un tipo de cambio simulado. Es el momento
-"wow" del pitch. Ojo con una lección aprendida: **usa `costUsd` directo, nunca lo estimes** — la
-primera versión lo derivaba del costo histórico y mostraba márgenes sanos en productos que pierden
-plata, contradiciendo al panel en la misma pantalla.
+Hoy corre en `static` (dato real del BCB, pero fijo en el archivo). Alguien del equipo está
+conectando las APIs del blue. Cumplir la interfaz `FxProvider` y **mantener el fallback**: un
+scraping caído nunca debe romper la demo.
 
 ### 6. Alertas automáticas (reto Zavu, USD 500)
 
@@ -64,49 +83,52 @@ cae bajo su margen mínimo. Encaja natural con el producto y es un premio adicio
 
 ### 7. Que alguien externo lo use antes del pitch
 
-Aunque sea un comerciante conocido por WhatsApp. Poder decir *"lo probó Don X y encontró dos
-productos que vendía perdiendo plata"* vale más que cualquier funcionalidad.
+Aunque sea un comerciante conocido por WhatsApp. Poder decir *"lo probó Don X y encontró tres
+productos que vendía perdiendo plata"* vale más que cualquier funcionalidad nueva.
 
 ---
 
-## 🟢 Mejoras
+## 🔧 Lo que hay que corregir
 
-- **Calidad de los agentes** — probar los 5 con sus preguntas de ejemplo y ajustar las
-  descripciones de las herramientas donde no las llamen o las llamen de más. Rinde más que tocar
-  el prompt de sistema. Ver `docs/03-agentes.md`.
-- **Herramientas nuevas** — candidatas: `simulate_purchase` ("¿compro ahora o espero?"),
-  `generate_whatsapp_message`, `sales_forecast`.
-- **Pulido de la demo** — jerarquía visual (lo rojo tiene que saltar a la vista), markdown en el
-  chat, tablas de precios como tabla real, responsive, y un estado "despertando el servidor…"
-  para el arranque en frío de Render.
-- **Base de datos** (Neon o Supabase) — una clase de ~60 líneas que implemente `DataSource`. Solo
-  vale la pena **con datos reales adentro**; ver `docs/04-datos.md`.
-- **Pitch** — escribirlo y ensayarlo cronometrado, tres veces, en voz alta. Guion en
-  `docs/06-demo-pitch.md`.
+### Hay dos simuladores cambiarios
+
+`FxSimulator.tsx` (282 líneas) y `Simulator.tsx` + `FxPanel.tsx` resuelven lo mismo: ambos
+quedaron en el repo tras integrar dos ramas que lo construyeron en paralelo. **Hay que elegir uno
+y borrar el otro** — dos componentes equivalentes divergen y confunden.
+
+### El scraping del tipo de cambio es frágil
+
+`FirecrawlFxProvider` extrae la cotización con una expresión regular sobre el markdown de la
+página. Si la fuente cambia el maquetado, el fallback protege la demo pero el dato deja de ser en
+vivo. **Verificarlo el día del pitch** y anotar la fecha en `docs/04-datos.md`.
+
+### El alcance creció más de lo que el pitch aguanta
+
+Hay siete pestañas. En 4 minutos no se muestran siete cosas. Hay que decidir **qué se demuestra y
+qué sólo se menciona** — la recomendación está en `docs/10-prioridades.md`: vender el agente
+cambiario, mencionar el resto en veinte segundos.
+
+### No hay tests
+
+Decisión consciente en 24 horas. Si el jurado pregunta por calidad, la respuesta honesta es que se
+valida con Zod en los bordes y se probó a mano.
+
+### Región de Render
+
+`render.yaml` fija Ohio para quedar junto a Neon. Si el servicio ya se creó en Oregon, no vale la
+pena moverlo mientras los datos sean los JSON semilla.
+
+---
 
 ## ⛔ Lo que no conviene hacer
 
-- **Agregar agentes nuevos.** Cinco ya son más de los que se pueden mostrar en 4 minutos. Cada
-  agente extra diluye el pitch y no suma puntos.
-- **Construir la plataforma amplia** (ocho módulos de negocio). El track penaliza explícitamente
-  las ideas genéricas. Profundidad sobre superficie.
-- **Cambiar de base de datos por prolijidad.** Los agentes solo leen; nada escribe.
+- **Agregar agentes nuevos.** Cinco ya son más de los que se pueden mostrar en 4 minutos.
+- **Agregar pestañas nuevas.** Mismo motivo, y ya hay siete.
+- **Mover la base de datos a otro proveedor.** Neon funciona; mover cuesta una hora y no aporta nada.
+- **Sacar la regla de secuencia del prompt del agente de precios.** Sin ella, los modelos rápidos
+  se quedan en el diagnóstico y nunca dan los precios sugeridos.
 
 ---
-
-## Cronograma
-
-| Franja | Foco del equipo |
-| --- | --- |
-| **09:00 – 13:00** | Deploy funcionando · conseguir datos reales · probar el chat con la API |
-| **13:00 – 19:00** | Features de alto impacto: FX en vivo, simulador, alertas |
-| **19:00 – 00:00** | Integrar todo a `main` · calidad de respuestas · escribir el pitch |
-| **00:00 – 04:00** | **Congelamiento de features.** Solo se arregla lo roto. Slides y ensayo |
-| **04:00 – 07:00** | Prueba del guion completo, todos juntos |
-| **07:00 – 09:00** | Solo bugs críticos · ensayos finales · **entregar 08:30** |
-
-**Congelamiento de código a las 00:00.** Lo que no está listo, no entra. Corte oficial del evento:
-**domingo 09:00 en punto, sin extensiones.**
 
 ## Checklist de entrega (track Bolivia Agents)
 
@@ -116,5 +138,5 @@ productos que vendía perdiendo plata"* vale más que cualquier funcionalidad.
 - [ ] Caso de uso definido: quién lo usa, qué resuelve, por qué en Bolivia
 - [ ] Slides de máximo 4 minutos
 - [ ] Formulario del portal enviado antes de las 09:00
-- [ ] Fuentes de datos citadas
-- [ ] Ningún secreto commiteado (`git log -p | grep -i "sk-ant"`)
+- [ ] Fuentes de datos citadas (`docs/04-datos.md`)
+- [ ] Ningún secreto commiteado (`git log -p | grep -iE "sk-ant|AIza|npg_"`)

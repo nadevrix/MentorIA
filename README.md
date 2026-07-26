@@ -98,18 +98,21 @@ docs/              Visión, arquitectura, división del equipo, deploy, guion de
 
 ## Documentación
 
-| Documento                                     | Para qué                                    |
-| --------------------------------------------- | ------------------------------------------- |
-| [00 — Visión](docs/00-vision.md)              | Problema, usuario, propuesta de valor       |
-| [01 — Arquitectura](docs/01-arquitectura.md)  | Cómo funciona el loop de agentes            |
-| [02 — División del equipo](docs/02-equipo.md) | **Quién hace qué durante las 24h**          |
-| [03 — Agentes](docs/03-agentes.md)            | Cómo agregar o modificar un agente          |
-| [04 — Datos](docs/04-datos.md)                | Modelo de datos y cómo conectar datos reales |
-| [05 — Deploy](docs/05-deploy.md)              | Netlify + Render paso a paso                |
-| [06 — Demo y pitch](docs/06-demo-pitch.md)    | Guion de 4 minutos y plan B                 |
-| [07 — Convenciones](docs/07-convenciones.md)  | Git, estilo, cómo no pisarse                |
-| [08 — Hallazgos y simulador](docs/08-insights.md) | **Cómo funciona el motor proactivo y cómo agregar un detector** |
-| [09 — Estrategia](docs/09-estrategia.md)      | ICP, competencia, precios, go-to-market, métricas |
+| Documento                                        | Para qué                                      |
+| ------------------------------------------------ | --------------------------------------------- |
+| [00 — Visión](docs/00-vision.md)                 | Problema, usuario, propuesta de valor         |
+| [01 — Arquitectura](docs/01-arquitectura.md)     | Cómo funciona el loop de agentes              |
+| [02 — Estado y backlog](docs/02-equipo.md)       | **Qué funciona, qué falta, qué corregir**     |
+| [03 — Agentes](docs/03-agentes.md)               | Cómo agregar o modificar un agente            |
+| [04 — Datos](docs/04-datos.md)                   | Modelo de datos y fuentes                     |
+| [05 — Deploy](docs/05-deploy.md)                 | Netlify + Render paso a paso                  |
+| [06 — Demo y pitch](docs/06-demo-pitch.md)       | Guion de 4 minutos y plan B                   |
+| [07 — Git y comunicación](docs/07-convenciones.md) | Rama por persona, comandos, qué avisar      |
+| [08 — Hallazgos](docs/08-insights.md)            | El motor de detectores y el simulador         |
+| [09 — Estrategia de negocio](docs/09-estrategia.md) | Mercado, ICP, pricing, go-to-market        |
+| [10 — Prioridades](docs/10-prioridades.md)       | Dónde invertir las horas y por qué            |
+| [11 — Onboarding](docs/11-onboarding.md)         | **El prompt para arrancar (uno, para todos)** |
+| [12 — Infraestructura](docs/12-infraestructura.md) | **Por qué Netlify + Render + Neon**         |
 
 ## Créditos y datos
 

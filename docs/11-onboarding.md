@@ -1,4 +1,4 @@
-# 09 — Onboarding: el prompt para empezar
+# 11 — Onboarding: el prompt para empezar
 
 Un solo prompt, igual para todos. Copialo, pegáselo a tu IA (Cursor, Claude Code, lo que uses)
 como primer mensaje, y reemplazá `MI-NOMBRE` por el tuyo en los dos lugares donde aparece.
@@ -107,7 +107,7 @@ emergencia en `docs/07-convenciones.md`.
 ## Ideas de qué construir
 
 No es una asignación, es un menú por si alguien no sabe por dónde empezar. Ordenado por lo que
-más suma al puntaje (razonamiento en `docs/08-estrategia.md`):
+más suma al puntaje (razonamiento en `docs/10-prioridades.md`):
 
 1. **Deploy en Netlify + Render** — sin URL pública no competimos. `docs/05-deploy.md`
 2. **Datos reales de un comercio** — el track descalifica demos con datos hardcodeados

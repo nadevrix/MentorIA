@@ -1,4 +1,4 @@
-# 08 — Estrategia: dónde invertir las horas
+# 10 — Prioridades: dónde invertir las horas
 
 Este documento existe porque el instinto natural en un hackathon es "agregar más cosas", y en este
 caso eso es lo que menos rinde. Acá está el razonamiento completo.
