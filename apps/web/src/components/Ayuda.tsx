@@ -23,7 +23,13 @@ const APARTADOS = [
     id: 'resumen',
     titulo: 'Resumen',
     texto:
-      'Lo que hay que resolver hoy, ordenado por urgencia y por bolivianos en juego. Arriba el tablero con el pulso del negocio; abajo los indicadores recalculados al costo de reposición de hoy.',
+      'El tablero con el pulso del negocio y sus indicadores recalculados al costo de reposición de hoy.',
+  },
+  {
+    id: 'urgencias',
+    titulo: 'Urgencias',
+    texto:
+      'El resumen diario y los hallazgos que requieren acción, ordenados por severidad y por bolivianos en juego.',
   },
   {
     id: 'dolar',

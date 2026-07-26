@@ -33,7 +33,8 @@
 > "Mentor IA: cinco agentes que leen las ventas, el inventario y el tipo de cambio del negocio, y
 > devuelven qué hacer. No es un dashboard: es un equipo que decide."
 
-Abrir la URL pública, ya cargada. Señalar la tarjeta roja: **"3 productos se venden bajo costo de reposición."**
+Abrir la URL pública, ya cargada. Entrar en **Urgencias** desde el botón rojo del encabezado y
+señalar la tarjeta crítica: **"3 productos se venden bajo costo de reposición."**
 
 ### 1:00 – 2:20 · Demo en vivo (el núcleo)
 
@@ -85,7 +86,7 @@ durante el guion principal. Se mencionan en una frase o se reservan para pregunt
 - [ ] Correr `node data/generate.mjs` si el dataset debe verse fresco, y **anotar los números nuevos**
 - [ ] Cerrar Slack, notificaciones y demás pestañas
 - [ ] Zoom del navegador al 125% — el proyector está lejos
-- [ ] Modo oscuro, tema por defecto (ya está)
+- [ ] Modo claro, tema por defecto (ya está)
 - [ ] Capturas del plan B abiertas en pestañas al lado
 
 ## Plan B

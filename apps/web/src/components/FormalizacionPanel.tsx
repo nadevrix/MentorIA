@@ -43,9 +43,21 @@ const SIGUIENTE: Record<Estado, Estado> = {
 };
 
 const SELLO: Record<Estado, { label: string; texto: string; fondo: string }> = {
-  hecho: { label: 'Hecho', texto: 'text-[var(--color-good)]', fondo: 'bg-[var(--color-good)]/12' },
-  pendiente: { label: 'Pendiente', texto: 'text-[var(--color-gold)]', fondo: 'bg-[var(--color-gold)]/12' },
-  no_aplica: { label: 'No aplica', texto: 'text-[var(--color-faint)]', fondo: 'bg-black/[0.06]' },
+  hecho: {
+    label: 'Hecho',
+    texto: 'font-semibold text-emerald-700',
+    fondo: 'border border-emerald-200/80 bg-emerald-50',
+  },
+  pendiente: {
+    label: 'Pendiente',
+    texto: 'font-semibold text-amber-800',
+    fondo: 'border border-amber-200/80 bg-amber-50',
+  },
+  no_aplica: {
+    label: 'No aplica',
+    texto: 'font-medium text-slate-500',
+    fondo: 'border border-slate-200 bg-slate-100',
+  },
 };
 
 const TIPOS = [
@@ -142,10 +154,10 @@ export default function FormalizacionPanel({ onAsk, onPendientes }: Props) {
               <button
                 key={t.id}
                 onClick={() => setTipo(t.id)}
-                className={`rounded-full px-3 py-1.5 font-semibold transition ${
+                className={`rounded-full px-3.5 py-1.5 font-semibold transition ${
                   tipo === t.id
-                    ? 'bg-[var(--color-accent-strong)] text-white'
-                    : 'glass-soft text-[var(--color-muted)]'
+                    ? 'glass-soft glass-selected'
+                    : 'glass-soft text-[var(--color-muted)] hover:border-slate-300 hover:text-[var(--color-fg)]'
                 }`}
               >
                 {t.label}
@@ -155,13 +167,13 @@ export default function FormalizacionPanel({ onAsk, onPendientes }: Props) {
 
           <button
             onClick={() => setEmpleados((v) => !v)}
-            className={`rounded-full px-3 py-1.5 font-semibold transition ${
+            className={`rounded-full px-3.5 py-1.5 font-semibold transition ${
               empleados
-                ? 'bg-[var(--color-accent-strong)] text-white'
-                : 'glass-soft text-[var(--color-muted)]'
+                ? 'glass-soft glass-selected'
+                : 'glass-soft text-[var(--color-muted)] hover:border-slate-300 hover:text-[var(--color-fg)]'
             }`}
           >
-            Tengo empleados
+            {empleados ? 'Con empleados' : 'Sin empleados'}
           </button>
 
           <div className="flex items-center gap-2">
@@ -173,10 +185,10 @@ export default function FormalizacionPanel({ onAsk, onPendientes }: Props) {
                   onClick={() =>
                     setRubros((v) => (on ? v.filter((x) => x !== r.id) : [...v, r.id]))
                   }
-                  className={`rounded-full px-3 py-1.5 font-semibold transition ${
+                  className={`rounded-full px-3.5 py-1.5 font-semibold transition ${
                     on
-                      ? 'bg-[var(--color-accent-strong)] text-white'
-                      : 'glass-soft text-[var(--color-muted)]'
+                      ? 'glass-soft glass-selected'
+                      : 'glass-soft text-[var(--color-muted)] hover:border-slate-300 hover:text-[var(--color-fg)]'
                   }`}
                 >
                   {r.label}
@@ -204,75 +216,86 @@ export default function FormalizacionPanel({ onAsk, onPendientes }: Props) {
         <>
           <div className="rounded-[var(--radius-card)] glass p-5">
             <div className="flex flex-wrap items-baseline justify-between gap-2">
-              <h3 className="text-[15px] font-semibold">
-                {data.hechos} de {data.totalObligatorios} obligatorios
-              </h3>
-              <span className="text-xs text-[var(--color-muted)]">
+              <div className="flex flex-wrap items-center gap-2.5">
+                <h3 className="text-[15px] font-bold text-slate-900">
+                  {data.hechos} de {data.totalObligatorios} obligatorios completados
+                </h3>
+                <span className="rounded-full border border-blue-200 bg-blue-50 px-2.5 py-0.5 text-xs font-bold text-blue-700">
+                  {pct}% avance
+                </span>
+              </div>
+              <span className="text-xs font-medium text-[var(--color-muted)]">
                 {data.faltantes.length === 0
                   ? 'Todo en regla según esta lista'
-                  : `Te faltan ${data.faltantes.length}`}
+                  : `Te faltan ${data.faltantes.length} trámites`}
               </span>
             </div>
-            <div className="mt-3 h-2 overflow-hidden rounded-full bg-black/[0.07]">
+            <div className="mt-3.5 h-2.5 overflow-hidden rounded-full border border-slate-300/60 bg-slate-200/80 p-0.5">
               <div
-                className="h-full rounded-full transition-all"
+                className="h-full rounded-full bg-gradient-to-r from-blue-600 via-indigo-500 to-emerald-500 transition-all duration-500"
                 style={{
-                  width: `${Math.max(2, pct)}%`,
-                  background: pct === 100 ? 'var(--color-good)' : 'var(--color-gold)',
+                  width: `${pct}%`,
                 }}
               />
             </div>
 
             {data.faltantes.length > 0 && (
-              <button
-                onClick={() =>
-                  onAsk(
-                    'director',
-                    `Me faltan estos trámites: ${data.faltantes.map((f) => f.titulo).join(', ')}. ¿Por cuál empiezo y por qué?`,
-                  )
-                }
-                className="mt-4 rounded-full bg-[var(--color-accent-strong)] px-4 py-2 text-xs font-semibold text-white transition hover:brightness-110"
-              >
-                ¿Por cuál trámite empiezo?
-              </button>
+              <div className="mt-4 flex flex-wrap items-center justify-between gap-3 pt-2">
+                <button
+                  onClick={() =>
+                    onAsk(
+                      'director',
+                      `Me faltan estos trámites: ${data.faltantes.map((f) => f.titulo).join(', ')}. ¿Por cuál empiezo y por qué?`,
+                    )
+                  }
+                  className="rounded-full bg-[var(--color-accent)] px-4 py-2 text-xs font-semibold text-white shadow-sm transition hover:bg-[var(--color-accent-strong)] hover:shadow"
+                >
+                  ¿Por cuál trámite empiezo?
+                </button>
+                <span className="text-xs font-medium text-slate-500">
+                  El Director de Negocio puede ayudarte a priorizarlos.
+                </span>
+              </div>
             )}
           </div>
 
           {data.fases.map((f) => (
             <section key={f.id} className="rounded-[var(--radius-card)] glass p-5">
-              <h3 className="text-[15px] font-semibold">{f.nombre}</h3>
+              <h3 className="text-[15px] font-bold text-slate-900">{f.nombre}</h3>
               <p className="mt-1 text-xs text-[var(--color-muted)]">{f.descripcion}</p>
 
-              <ul className="mt-4 space-y-2.5">
+              <ul className="mt-4 space-y-3">
                 {f.items.map((i) => {
                   const s = SELLO[i.estado];
                   return (
                     <li
                       key={i.id}
-                      className={`rounded-xl p-3.5 transition ${
-                        i.estado === 'no_aplica' ? 'opacity-55' : ''
-                      } bg-black/[0.03]`}
+                      className={`rounded-xl border border-slate-200/80 p-4 transition glass-soft ${
+                        i.estado === 'no_aplica'
+                          ? 'opacity-50'
+                          : 'shadow-sm hover:border-slate-300'
+                      }`}
                     >
                       <div className="flex flex-wrap items-start justify-between gap-3">
                         <div className="min-w-0">
                           <div className="flex flex-wrap items-center gap-2">
-                            <span className="text-sm font-semibold">{i.titulo}</span>
+                            <span className="text-sm font-bold text-slate-900">{i.titulo}</span>
                             {i.obligatorio && i.estado !== 'no_aplica' && (
-                              <span className="rounded-full bg-[var(--color-bad)]/10 px-2 py-0.5 text-[10px] font-semibold uppercase text-[var(--color-bad)]">
-                                obligatorio
+                              <span className="rounded-full border border-red-200 bg-red-50 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-red-700">
+                                Obligatorio
                               </span>
                             )}
                             {i.renovacion && (
-                              <span className="text-[10px] uppercase tracking-wide text-[var(--color-faint)]">
-                                renueva {i.renovacion}
+                              <span className="text-[10px] font-medium uppercase tracking-wide text-slate-400">
+                                Renueva {i.renovacion}
                               </span>
                             )}
                           </div>
-                          <p className="mt-1 text-xs leading-relaxed text-[var(--color-muted)]">
+                          <p className="mt-1.5 text-xs leading-relaxed text-slate-600">
                             {i.descripcion}
                           </p>
-                          <p className="mt-1 text-[11px] text-[var(--color-faint)]">
-                            {i.entidad}
+                          <p className="mt-1.5 text-[11px] font-medium text-slate-500">
+                            Entidad: <span className="font-semibold text-slate-700">{i.entidad}</span>
                             {i.fuente && (
                               <>
                                 {' · '}
@@ -280,9 +303,9 @@ export default function FormalizacionPanel({ onAsk, onPendientes }: Props) {
                                   href={i.fuente}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="underline"
+                                  className="font-semibold text-[var(--color-accent)] underline hover:text-[var(--color-accent-strong)]"
                                 >
-                                  sitio oficial
+                                  Sitio oficial
                                 </a>
                               </>
                             )}
@@ -292,7 +315,7 @@ export default function FormalizacionPanel({ onAsk, onPendientes }: Props) {
                         <button
                           onClick={() => void alternar(i)}
                           title="Cambiar estado"
-                          className={`shrink-0 rounded-full px-3 py-1.5 text-[10px] font-semibold uppercase tracking-wide transition ${s.fondo} ${s.texto}`}
+                          className={`shrink-0 rounded-full px-3.5 py-1.5 text-[11px] uppercase tracking-wider transition hover:scale-105 active:scale-95 ${s.fondo} ${s.texto}`}
                         >
                           {s.label}
                         </button>

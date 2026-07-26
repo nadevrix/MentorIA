@@ -97,10 +97,11 @@ export default function FormattedMessage({ content }: FormattedMessageProps) {
   );
 }
 
-/** Convierte negritas (**), código (`code`) y resalta bolivianos (Bs) */
+/** Convierte negritas, código y enlaces seguros de WhatsApp. */
 function renderInlineMarkdown(text: string) {
-  // Dividir por negrita **texto**
-  const parts = text.split(/(\*\*.*?\*\*|`.*?`)/g);
+  const parts = text.split(
+    /(\*\*.*?\*\*|`.*?`|\[[^\]\n]+\]\(https?:\/\/wa\.me\/[^\s<>()]+\)|https?:\/\/wa\.me\/[^\s<>()\],;!?]+)/g,
+  );
 
   return parts.map((part, idx) => {
     if (part.startsWith('**') && part.endsWith('**')) {
@@ -115,6 +116,25 @@ function renderInlineMarkdown(text: string) {
         <code key={idx} className="rounded bg-slate-800 px-1 py-0.5 font-mono text-xs text-[var(--color-accent)]">
           {part.slice(1, -1)}
         </code>
+      );
+    }
+    const markdownWhatsApp = part.match(
+      /^\[([^\]]+)\]\((https?:\/\/wa\.me\/[^\s<>()]+)\)$/,
+    );
+    const whatsappUrl =
+      markdownWhatsApp?.[2] ??
+      (part.startsWith('https://wa.me/') || part.startsWith('http://wa.me/') ? part : null);
+    if (whatsappUrl) {
+      return (
+        <a
+          key={idx}
+          href={whatsappUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="my-1.5 inline-flex items-center rounded-lg bg-emerald-600 px-3.5 py-1.5 text-xs font-semibold text-white shadow-md shadow-emerald-600/20 transition hover:scale-105 hover:bg-emerald-500 active:scale-95"
+        >
+          {markdownWhatsApp?.[1] ?? 'Abrir en WhatsApp'}
+        </a>
       );
     }
     return part;

@@ -15,7 +15,8 @@
  * Si se oscurece el tinte, hay que volver a medir.
  *
  * Semántica de los acentos, que en un producto financiero no es decorativa:
- *   rojo   → marca, y también lo crítico (estás perdiendo plata)
+ *   azul   → marca, navegación y acciones principales
+ *   rojo   → crítico (estás perdiendo plata)
  *   ámbar  → atención, algo que se deteriora pero todavía no duele
  *   verde  → sano
  */
@@ -29,12 +30,11 @@
   --color-line: #dde4ed;
 
   /*
-   * Acentos. En claro, el rojo de marca #FE3F39 da 3,4:1 sobre blanco y no pasa
-   * AA como texto, así que el token de marca ES el rojo profundo: sirve como
-   * texto sobre claro (~5:1) y como fondo bajo texto blanco (~4,6:1).
+   * Acentos. El azul separa la identidad de marca del rojo reservado para
+   * pérdidas y urgencias, y mantiene contraste AA como texto y como fondo.
    */
-  --color-accent: #d92b26;
-  --color-accent-strong: #b91c1c;
+  --color-accent: #2563eb;
+  --color-accent-strong: #1d4ed8;
   --color-gold: #b45309;
   --color-good: #15803d;
   --color-bad: #b91c1c;
@@ -86,14 +86,14 @@ body::after {
 
 body::before {
   background:
-    radial-gradient(38rem 30rem at 22% 18%, rgba(254, 63, 57, 0.15), transparent 62%),
-    radial-gradient(34rem 28rem at 78% 12%, rgba(252, 191, 2, 0.17), transparent 58%);
+    radial-gradient(38rem 30rem at 22% 18%, rgba(37, 99, 235, 0.15), transparent 62%),
+    radial-gradient(34rem 28rem at 78% 12%, rgba(59, 130, 246, 0.17), transparent 58%);
   animation: deriva-a 54s ease-in-out infinite alternate;
 }
 
 body::after {
   background:
-    radial-gradient(36rem 32rem at 74% 82%, rgba(42, 120, 214, 0.16), transparent 62%),
+    radial-gradient(36rem 32rem at 74% 82%, rgba(37, 99, 235, 0.14), transparent 62%),
     radial-gradient(30rem 26rem at 18% 88%, rgba(21, 128, 61, 0.11), transparent 62%);
   animation: deriva-b 68s ease-in-out infinite alternate;
 }
@@ -221,6 +221,19 @@ body::after {
     inset 0 1px 2px rgba(15, 23, 42, 0.08),
     0 1px 1px rgba(15, 23, 42, 0.04);
   transform: translateY(0);
+}
+
+/* Variante seleccionada: conserva el vidrio y agrega identidad azul verificable. */
+.glass-soft.glass-selected,
+.glass-soft.glass-selected:is(button, a, [role='button']):hover {
+  background:
+    radial-gradient(120% 140% at 0% 0%, rgba(255, 255, 255, 0.56), transparent 60%),
+    rgba(37, 99, 235, 0.14);
+  border-color: rgba(37, 99, 235, 0.46);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 4px 14px -4px rgba(37, 99, 235, 0.34);
+  color: var(--color-accent-strong);
 }
 
 /* Los campos sólo se aclaran: subirlos al escribir sería un temblor. */

@@ -104,7 +104,7 @@ vivo. **Verificarlo el día del pitch** y anotar la fecha en `docs/04-datos.md`.
 
 ### El alcance creció más de lo que el pitch aguanta
 
-Hay seis pestañas. En 4 minutos no se muestran seis cosas. Hay que decidir **qué se demuestra y
+Hay siete pestañas. En 4 minutos no se muestran siete cosas. Hay que decidir **qué se demuestra y
 qué sólo se menciona** — la recomendación está en `docs/10-prioridades.md`: vender el agente
 cambiario, mencionar el resto en veinte segundos.
 
@@ -123,7 +123,7 @@ pena moverlo mientras los datos sean los JSON semilla.
 ## ⛔ Lo que no conviene hacer
 
 - **Agregar agentes nuevos.** Cinco ya son más de los que se pueden mostrar en 4 minutos.
-- **Agregar pestañas nuevas.** Mismo motivo, y ya hay seis.
+- **Agregar pestañas nuevas.** Mismo motivo, y ya hay siete.
 - **Mover la base de datos por uniformidad.** El adaptador PostgreSQL ya es portable; cambiar de
   proveedor sin datos reales no aporta nada.
 - **Sacar la regla de secuencia del prompt del agente de precios.** Sin ella, los modelos rápidos
