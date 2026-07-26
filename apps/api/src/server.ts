@@ -86,7 +86,13 @@ const csvBodyLimit = bodyLimit({
 
 app.use('/api/brief', limitAiRequests);
 app.use('/api/chat', limitAiRequests, jsonBodyLimit);
-app.use('/api/image', limitAiRequests, jsonBodyLimit);
+// Límite propio: el cuerpo lleva hasta dos fotos en base64, que no entran en
+// los 128 KiB del JSON común.
+const imageBodyLimit = bodyLimit({
+  maxSize: positiveInteger('MAX_IMAGE_BODY_BYTES', 8 * 1024 * 1024),
+  onError: (c) => c.json({ error: 'Las imágenes superan el límite permitido.' }, 413),
+});
+app.use('/api/image', limitAiRequests, imageBodyLimit);
 app.use('/api/simulate', jsonBodyLimit);
 app.use('/api/formalizacion/*', jsonBodyLimit);
 app.use('/api/data/*', csvBodyLimit);
@@ -343,7 +349,24 @@ app.delete('/api/data/:entidad', async (c) => {
   }
 });
 
-const ImageRequest = z.object({ prompt: z.string().min(3).max(4000) });
+const ImageRequest = z.object({
+  prompt: z.string().min(3).max(4000),
+  /**
+   * Fotos que adjunta el comercio: su producto y su logo. Como máximo dos, y
+   * sólo formatos de imagen conocidos: esto termina en un proveedor externo,
+   * así que no se le reenvía cualquier cosa que llegue.
+   */
+  referencias: z
+    .array(
+      z.object({
+        rol: z.enum(['producto', 'logo']),
+        mime: z.enum(['image/png', 'image/jpeg', 'image/webp']),
+        base64: z.string().min(1).max(4_000_000),
+      }),
+    )
+    .max(2)
+    .optional(),
+});
 
 /**
  * Convierte en imagen un prompt escrito por el agente.
@@ -357,7 +380,7 @@ app.post('/api/image', async (c) => {
   if (!parsed.success) {
     return c.json({ error: 'Petición inválida', detalle: parsed.error.flatten() }, 400);
   }
-  return c.json(await generateImage(parsed.data.prompt));
+  return c.json(await generateImage(parsed.data.prompt, parsed.data.referencias ?? []));
 });
 
 const ChatRequest = z.object({

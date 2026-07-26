@@ -200,13 +200,25 @@ export interface ImageResult {
   motivo?: string;
 }
 
-export async function generateImage(prompt: string, signal?: AbortSignal): Promise<ImageResult> {
+export interface ImagenReferencia {
+  rol: 'producto' | 'logo';
+  mime: string;
+  /** Base64 sin el encabezado `data:`. */
+  base64: string;
+}
+
+export async function generateImage(
+  prompt: string,
+  referencias: ImagenReferencia[] = [],
+  signal?: AbortSignal,
+): Promise<ImageResult> {
   const res = await fetch(`${API_URL}/api/image`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ prompt }),
+    body: JSON.stringify({ prompt, referencias }),
     signal,
   });
+  if (res.status === 413) throw new Error('Las fotos pesan demasiado. Probá con imágenes más chicas.');
   if (!res.ok) throw new Error('No se pudo generar la imagen');
   return res.json();
 }

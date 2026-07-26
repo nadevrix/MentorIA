@@ -9,6 +9,10 @@
     ".": {
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
+    },
+    "./marketing-prompts": {
+      "types": "./dist/marketing-prompts.d.ts",
+      "default": "./dist/marketing-prompts.js"
     }
   },
   "scripts": {

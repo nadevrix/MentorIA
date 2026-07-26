@@ -2,12 +2,11 @@ import { useEffect, useState } from 'react';
 import {
   bob,
   fetchMarketing,
-  generateImage,
-  type ImageResult,
   type MarketingCandidate,
   type MarketingResponse,
 } from '../lib/api';
 import Icon from './Icon';
+import TallerImagen from './TallerImagen';
 
 /**
  * Apartado de marketing.
@@ -106,90 +105,6 @@ function Candidate({ c, onAsk }: { c: MarketingCandidate; onAsk: Props['onAsk'] 
   );
 }
 
-function ImageWorkshop() {
-  const [prompt, setPrompt] = useState('');
-  const [result, setResult] = useState<ImageResult | null>(null);
-  const [busy, setBusy] = useState(false);
-  const [copied, setCopied] = useState(false);
-
-  async function run() {
-    if (!prompt.trim() || busy) return;
-    setBusy(true);
-    setResult(null);
-    try {
-      setResult(await generateImage(prompt));
-    } catch (e) {
-      setResult({
-        ok: false,
-        prompt,
-        motivo: e instanceof Error ? e.message : 'Error al generar la imagen',
-      });
-    } finally {
-      setBusy(false);
-    }
-  }
-
-  async function copy() {
-    await navigator.clipboard.writeText(prompt);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 1600);
-  }
-
-  return (
-    <section className="rounded-[var(--radius-card)] glass p-5">
-      <h3 className="text-sm font-semibold">Taller de imagen</h3>
-      <p className="mt-1 text-xs leading-relaxed text-[var(--color-muted)]">
-        Pedile un post al agente y pegá acá el prompt que te devuelva. Si hay un generador
-        configurado en el servidor, se convierte en imagen; si no, copiálo y usalo donde quieras.
-      </p>
-
-      <textarea
-        value={prompt}
-        onChange={(e) => setPrompt(e.target.value)}
-        rows={4}
-        placeholder="Product photograph of… (el prompt va en inglés: los modelos de imagen rinden mejor así)"
-        className="scroll-slim mt-3 w-full resize-y rounded-xl glass-soft px-3.5 py-2.5 font-mono text-xs outline-none placeholder:text-[var(--color-faint)] focus:ring-2 focus:ring-[var(--color-accent)]"
-      />
-
-      <div className="mt-3 flex flex-wrap items-center gap-2">
-        <button
-          onClick={() => void run()}
-          disabled={busy || !prompt.trim()}
-          className="rounded-full bg-[var(--color-accent-strong)] px-4 py-2 text-xs font-semibold text-white transition hover:brightness-110 disabled:opacity-40"
-        >
-          {busy ? 'Generando…' : 'Generar imagen'}
-        </button>
-        <button
-          onClick={() => void copy()}
-          disabled={!prompt.trim()}
-          className="flex items-center gap-1.5 rounded-full glass-soft px-4 py-2 text-xs font-semibold transition disabled:opacity-40"
-        >
-          {copied && <Icon name="check" size={13} className="text-[var(--color-good)]" />}
-          {copied ? 'Copiado' : 'Copiar prompt'}
-        </button>
-      </div>
-
-      {result && !result.ok && (
-        <p className="mt-3 rounded-xl bg-[var(--color-gold)]/10 p-3 text-xs leading-relaxed text-[var(--color-muted)]">
-          {result.motivo}
-        </p>
-      )}
-
-      {result?.ok && result.dataUri && (
-        <figure className="mt-4">
-          <img
-            src={result.dataUri}
-            alt={result.prompt.slice(0, 120)}
-            className="w-full max-w-md rounded-[var(--radius-card)]"
-          />
-          <figcaption className="mt-2 text-[11px] text-[var(--color-faint)]">
-            Generada con {result.proveedor}. Revisala antes de publicar.
-          </figcaption>
-        </figure>
-      )}
-    </section>
-  );
-}
 
 export default function MarketingPanel({ onAsk }: Props) {
   const [data, setData] = useState<MarketingResponse | null>(null);
@@ -250,7 +165,7 @@ export default function MarketingPanel({ onAsk }: Props) {
         )}
       </section>
 
-      <ImageWorkshop />
+      <TallerImagen />
     </div>
   );
 }

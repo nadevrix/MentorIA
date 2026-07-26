@@ -14,6 +14,7 @@ export * from './image.js';
 export * from './taxes.js';
 export * from './tax-forms.js';
 export * from './formalizacion.js';
+export * from './marketing-prompts.js';
 
 import { SeedDataSource } from './data/seed-source.js';
 import { OverlayDataSource } from './data/overlay-source.js';

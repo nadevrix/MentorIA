@@ -12,6 +12,18 @@
 
 export type ImageProviderName = 'openai' | 'gemini';
 
+/**
+ * Imagen que el comercio adjunta como referencia: la foto de su producto o su
+ * logo. Va aparte del prompt porque el prompt la describe pero no la contiene.
+ */
+export interface ImagenReferencia {
+  /** 'producto' | 'logo'. Sólo informativo: el prompt ya dice qué hacer con cada una. */
+  rol: string;
+  mime: string;
+  /** Base64 sin el encabezado `data:`. */
+  base64: string;
+}
+
 export interface ImageResult {
   ok: boolean;
   /** El prompt usado, siempre presente: es útil aunque no haya imagen. */
@@ -29,18 +41,40 @@ export function imageProviderConfigured(): ImageProviderName | null {
   return p === 'gemini' ? 'gemini' : 'openai';
 }
 
-async function generateOpenAI(prompt: string, key: string, signal?: AbortSignal): Promise<ImageResult> {
-  const res = await fetch('https://api.openai.com/v1/images/generations', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${key}` },
-    body: JSON.stringify({
-      model: process.env.IMAGE_MODEL ?? 'gpt-image-1',
-      prompt,
-      size: process.env.IMAGE_SIZE ?? '1024x1024',
-      n: 1,
-    }),
-    signal,
-  });
+async function generateOpenAI(
+  prompt: string,
+  key: string,
+  referencias: ImagenReferencia[],
+  signal?: AbortSignal,
+): Promise<ImageResult> {
+  const model = process.env.IMAGE_MODEL ?? 'gpt-image-1';
+  const size = process.env.IMAGE_SIZE ?? '1024x1024';
+
+  // Con referencias hay que ir a /edits, que es multipart: /generations no
+  // acepta imágenes de entrada y las ignoraría en silencio.
+  const res = referencias.length
+    ? await (async () => {
+        const form = new FormData();
+        form.append('model', model);
+        form.append('prompt', prompt);
+        form.append('size', size);
+        for (const r of referencias) {
+          const bin = Uint8Array.from(atob(r.base64), (ch) => ch.charCodeAt(0));
+          form.append('image[]', new Blob([bin], { type: r.mime }), `${r.rol}.png`);
+        }
+        return fetch('https://api.openai.com/v1/images/edits', {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${key}` },
+          body: form,
+          signal,
+        });
+      })()
+    : await fetch('https://api.openai.com/v1/images/generations', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${key}` },
+        body: JSON.stringify({ model, prompt, size, n: 1 }),
+        signal,
+      });
 
   if (!res.ok) {
     const detail = await res.text().catch(() => '');
@@ -58,14 +92,25 @@ async function generateOpenAI(prompt: string, key: string, signal?: AbortSignal)
   return { ok: false, prompt, motivo: 'el proveedor no devolvió ninguna imagen' };
 }
 
-async function generateGemini(prompt: string, key: string, signal?: AbortSignal): Promise<ImageResult> {
+async function generateGemini(
+  prompt: string,
+  key: string,
+  referencias: ImagenReferencia[],
+  signal?: AbortSignal,
+): Promise<ImageResult> {
   const model = process.env.IMAGE_MODEL ?? 'gemini-2.5-flash-image';
+  // Las referencias van ANTES del texto: el modelo las toma como contexto de lo
+  // que tiene que respetar, no como algo que se le menciona al pasar.
+  const parts = [
+    ...referencias.map((r) => ({ inlineData: { mimeType: r.mime, data: r.base64 } })),
+    { text: prompt },
+  ];
   const res = await fetch(
     `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`,
     {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key },
-      body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] }),
+      body: JSON.stringify({ contents: [{ parts }] }),
       signal,
     },
   );
@@ -90,7 +135,11 @@ async function generateGemini(prompt: string, key: string, signal?: AbortSignal)
   };
 }
 
-export async function generateImage(prompt: string, signal?: AbortSignal): Promise<ImageResult> {
+export async function generateImage(
+  prompt: string,
+  referencias: ImagenReferencia[] = [],
+  signal?: AbortSignal,
+): Promise<ImageResult> {
   const clean = prompt.trim();
   if (!clean) return { ok: false, prompt, motivo: 'el prompt está vacío' };
 
@@ -108,8 +157,8 @@ export async function generateImage(prompt: string, signal?: AbortSignal): Promi
 
   try {
     return provider === 'gemini'
-      ? await generateGemini(clean, key, signal)
-      : await generateOpenAI(clean, key, signal);
+      ? await generateGemini(clean, key, referencias, signal)
+      : await generateOpenAI(clean, key, referencias, signal);
   } catch (error) {
     return {
       ok: false,
