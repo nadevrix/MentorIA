@@ -114,7 +114,8 @@ Respuesta esperada:
 ```
 
 `dataSource: "overlay"` es correcto: la capa de CSV envuelve a la fuente base. El campo que confirma
-Postgres es `baseSource: "postgres"`. El negocio arranca vacío hasta importar CSV.
+Postgres es `baseSource: "postgres"`. El negocio arranca con la demo comercial que `db:seed` carga
+en el primer deploy; importar un CSV la reemplaza entidad por entidad.
 
 ### Panel determinista
 
@@ -136,16 +137,18 @@ Probar desde la URL pública:
 ## PostgreSQL (Render)
 
 El Blueprint (`render.yaml`) ya define `mentor-ia-db` (plan `basic-256mb`, región Ohio) y enlaza
-`DATABASE_URL` a la API. La migración corre en `preDeployCommand` (`npm run db:migrate`): después
-de compilar y antes de arrancar, con el entorno de ejecución completo. Crea el esquema, deja el
-negocio vacío y carga solo el histórico de mercado en `fx_rates`. Si el esquema no se puede
-aplicar, el deploy falla limpio en vez de levantar una app sin tablas.
+`DATABASE_URL` a la API. La migración corre en `preDeployCommand`
+(`npm run db:migrate && npm run db:seed`): después de compilar y antes de arrancar, con el entorno
+de ejecución completo. Crea el esquema, carga el histórico de mercado en `fx_rates` y, **solo si el
+negocio está vacío**, la demo comercial de `data/seed/` — los deploys siguientes no la recargan y
+los CSV importados nunca se pisan. Si el esquema no se puede aplicar, el deploy falla limpio en vez
+de levantar una app sin tablas.
 
 Tras sincronizar el Blueprint:
 
 1. Confirmar que existe la base `mentor-ia-db` en el dashboard.
 2. Verificar `baseSource: "postgres"` en `/health`.
-3. En la UI, **Mis datos** debe mostrar las cuatro entidades en **vacío**.
+3. En la UI, **Mis datos** debe mostrar las cuatro entidades con la demo comercial cargada.
 4. Subir un CSV de productos y confirmar que sobrevive un redeploy.
 
 Comandos útiles contra la base remota:

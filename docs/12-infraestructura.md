@@ -69,8 +69,9 @@ o lo más cerca posible.
 ### Producción (Render)
 
 `DATA_SOURCE=postgres` + Render Postgres (`mentor-ia-db`, `basic-256mb`, Ohio). El
-`preDeployCommand` ejecuta `npm run db:migrate`: esquema vacío de negocio + histórico FX de
-mercado. Los CSV de la UI se escriben en Postgres y sobreviven reinicios.
+`preDeployCommand` ejecuta `npm run db:migrate && npm run db:seed`: esquema + histórico FX de
+mercado + demo comercial de `data/seed/` si el negocio está vacío (los deploys siguientes no la
+recargan). Los CSV de la UI se escriben en Postgres, reemplazan a la demo y sobreviven reinicios.
 
 Todavía no hay autenticación ni tenancy: todos los visitantes de la instancia comparten la misma
 base. Eso es aceptable para el pitch de un solo comercio piloto; no para multi-cliente.

@@ -25,13 +25,16 @@ services:
     # 4 minutos eso es fatal, y son ~7 USD al mes de los créditos disponibles.
     plan: starter
     region: ohio
-    # Esquema vacío + histórico FX de mercado. Sin demo comercial.
     buildCommand: npm ci && npm run build --workspace=@pyme/core && npm run build --workspace=@pyme/api
     # La migración va acá y no en el build: preDeploy corre después de compilar y
     # antes de arrancar, con el entorno de ejecución completo. Si el esquema no se
     # puede aplicar, el deploy falla limpio en vez de levantar una app sin tablas.
     # Sólo disponible en instancias pagas — con el plan free iría en buildCommand.
-    preDeployCommand: npm run db:migrate
+    #
+    # db:seed carga la demo comercial de data/seed/ SOLO si la base está vacía:
+    # los deploys siguientes no la recargan y los CSV que suba el comercio nunca
+    # se pisan. Una sola fuente de verdad: los JSON versionados del repo.
+    preDeployCommand: npm run db:migrate && npm run db:seed
     startCommand: node apps/api/dist/server.js
     healthCheckPath: /health
     envVars:
@@ -65,8 +68,8 @@ services:
         value: "2097152"
 
       # --- Datos ---
-      # Postgres vacío: productos/ventas/clientes/gastos arrancan en 0.
-      # Los CSV de la UI se persisten en la base.
+      # Postgres con la demo comercial precargada por db:seed en preDeploy.
+      # Los CSV de la UI se persisten en la base y reemplazan a la demo.
       - key: DATA_SOURCE
         value: postgres
       - key: DATABASE_URL
