@@ -79,8 +79,9 @@ npm run dev:web      # sólo frontend
 npm run typecheck    # core + API
 npm run build        # core + API + frontend
 npm run build:web    # core + frontend
-npm run db:migrate   # crea esquema y carga datos si Postgres está vacío
-npm run db:reset     # vacía y recarga Postgres; usar con cuidado
+npm run db:migrate   # esquema + FX de mercado; negocio vacío
+npm run db:seed      # demo comercial opcional en Postgres
+npm run db:reset     # vacía tablas del negocio (no toca FX)
 ```
 
 ## Arquitectura
@@ -121,10 +122,10 @@ infraestructura está explicada en [docs/12-infraestructura.md](docs/12-infraest
 
 ## Datos y límites actuales
 
-- `DATA_SOURCE=seed` lee `data/seed/*.json`.
-- `DATA_SOURCE=postgres` requiere `DATABASE_URL` y `npm run db:migrate`.
-- Los CSV importados viven en memoria y se pierden al reiniciar o redesplegar la API.
-- Sin `DATABASE_URL`, el avance de formalización también vive en memoria.
+- `DATA_SOURCE=seed` lee `data/seed/*.json` (desarrollo local).
+- `DATA_SOURCE=postgres` requiere `DATABASE_URL` y `npm run db:migrate` (negocio vacío).
+- Con Postgres, los CSV de la UI se persisten; con seed viven en memoria.
+- El avance de formalización usa la tabla `compliance` cuando hay `DATABASE_URL`.
 - No hay autenticación ni separación multiempresa todavía.
 - Los endpoints de IA tienen un límite básico por IP; no sustituye autenticación para producción.
 

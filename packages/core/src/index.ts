@@ -31,7 +31,8 @@ export * from './data/postgres-source.js';
  * Cuando exista SupabaseDataSource, se enchufa acá y nada más cambia.
  *
  * La fuente base siempre va envuelta en OverlayDataSource, así el comercio
- * puede superponer sus propios datos sin que nada más del sistema se entere.
+ * puede importar CSV sin que nada más del sistema se entere. Con Postgres
+ * esa importación se persiste; con seed queda en memoria (solo local/dev).
  */
 export function createContext(): ToolContext {
   let base: DataSource;
@@ -39,20 +40,18 @@ export function createContext(): ToolContext {
     case 'postgres':
     case 'neon': {
       const url = process.env.DATABASE_URL;
-      if (url) {
-        base = new PostgresDataSource(url);
-      } else {
-        // Caer a semilla y no reventar: una demo no se cae porque falte una
-        // variable de entorno, pero el aviso tiene que ser imposible de ignorar.
-        console.warn('[data] DATA_SOURCE=postgres pero falta DATABASE_URL; usando datos semilla.');
-        base = new SeedDataSource();
+      if (!url) {
+        throw new Error(
+          'DATA_SOURCE=postgres requiere DATABASE_URL. Configurala o usá DATA_SOURCE=seed en local.',
+        );
       }
+      base = new PostgresDataSource(url);
       break;
     }
     case 'supabase':
-      console.warn('[data] DATA_SOURCE=supabase aún no implementado; usando datos semilla.');
-      base = new SeedDataSource();
-      break;
+      throw new Error(
+        'DATA_SOURCE=supabase aún no está implementado. Usá postgres o seed.',
+      );
     default:
       base = new SeedDataSource();
   }

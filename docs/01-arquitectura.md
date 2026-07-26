@@ -46,7 +46,7 @@ El frontend migrará a Netlify cuando estén disponibles sus créditos; el resto
 datos concreta. Hay implementaciones sobre JSON y PostgreSQL; el tipo de cambio puede salir del
 histórico local, de la API pública de Dólar Blue Bolivia o de Firecrawl. Conectar otro origen, como
 Odoo, exige una clase que cumpla el contrato, sin tocar herramientas ni prompts.
-`DATA_SOURCE=supabase` todavía no es una implementación: cae de forma explícita a los datos semilla.
+`DATA_SOURCE=supabase` todavía no es una implementación: falla de forma explícita.
 
 ```ts
 interface DataSource {

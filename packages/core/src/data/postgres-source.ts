@@ -7,10 +7,11 @@ import type {
   Sale,
   SaleItem,
 } from '../types.js';
+import type { Entity } from './csv.js';
 import type { DataSource } from './source.js';
 
 /**
- * Fuente de datos sobre PostgreSQL (Neon).
+ * Fuente de datos sobre PostgreSQL (Render, Neon u otro).
  *
  * Es el punto de extensión que el proyecto ya tenía previsto: implementa
  * DataSource y se enchufa en createContext(). Ninguna herramienta, ningún
@@ -28,6 +29,9 @@ import type { DataSource } from './source.js';
  *    primera terminara, y saldrían decenas de consultas simultáneas que agotan
  *    el pool. Guardando la promesa, la primera consulta la comparten todas.
  *    El TTL es corto para que una importación se vea casi enseguida.
+ *
+ * Las importaciones CSV escriben acá (replace/clear) para que sobrevivan a
+ * reinicios del Web Service.
  */
 
 const { Pool } = pg;
@@ -191,5 +195,142 @@ export class PostgresDataSource implements DataSource {
         source: r.source,
       }));
     });
+  }
+
+  /** Reemplaza por completo una entidad comercial. Transaccional. */
+  async replace(entity: Entity, rows: unknown[]): Promise<void> {
+    const client = await this.pool.connect();
+    try {
+      await client.query('BEGIN');
+      await this.clearWithClient(client, entity);
+
+      if (entity === 'products') {
+        for (const raw of rows as Product[]) {
+          await client.query(
+            `INSERT INTO products (
+               id, sku, name, category, cost_usd, purchase_fx_rate,
+               price_bob, stock, reorder_point, imported, supplier
+             ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)`,
+            [
+              raw.id,
+              raw.sku,
+              raw.name,
+              raw.category,
+              raw.costUsd,
+              raw.purchaseFxRate,
+              raw.priceBob,
+              raw.stock,
+              raw.reorderPoint,
+              raw.imported,
+              raw.supplier ?? null,
+            ],
+          );
+        }
+      } else if (entity === 'customers') {
+        for (const raw of rows as Customer[]) {
+          await client.query(
+            `INSERT INTO customers (
+               id, name, phone, segment, first_purchase_date,
+               last_purchase_date, total_spent_bob, purchase_count
+             ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8)`,
+            [
+              raw.id,
+              raw.name,
+              raw.phone ?? null,
+              raw.segment,
+              raw.firstPurchaseDate,
+              raw.lastPurchaseDate,
+              raw.totalSpentBob,
+              raw.purchaseCount,
+            ],
+          );
+        }
+      } else if (entity === 'expenses') {
+        for (const raw of rows as Expense[]) {
+          await client.query(
+            `INSERT INTO expenses (
+               id, date, category, description, amount_bob, due_date, paid
+             ) VALUES ($1,$2,$3,$4,$5,$6,$7)`,
+            [
+              raw.id,
+              raw.date,
+              raw.category,
+              raw.description,
+              raw.amountBob,
+              raw.dueDate ?? null,
+              raw.paid,
+            ],
+          );
+        }
+      } else {
+        const idsCliente = new Set(
+          (
+            await client.query<{ id: string }>(`SELECT id FROM customers`)
+          ).rows.map((r) => r.id),
+        );
+        for (const raw of rows as Sale[]) {
+          const customerId =
+            raw.customerId && idsCliente.has(raw.customerId) ? raw.customerId : null;
+          await client.query(
+            `INSERT INTO sales (id, date, customer_id, total_bob, channel)
+             VALUES ($1,$2,$3,$4,$5)`,
+            [raw.id, raw.date, customerId, raw.totalBob, raw.channel],
+          );
+          for (const item of raw.items) {
+            await client.query(
+              `INSERT INTO sale_items (sale_id, product_id, quantity, unit_price_bob)
+               VALUES ($1,$2,$3,$4)`,
+              [raw.id, item.productId, item.quantity, item.unitPriceBob],
+            );
+          }
+        }
+      }
+
+      await client.query('COMMIT');
+      this.invalidate();
+    } catch (err) {
+      await client.query('ROLLBACK');
+      throw err;
+    } finally {
+      client.release();
+    }
+  }
+
+  /** Vacía una entidad comercial (o las cuatro). No toca fx_rates. */
+  async clear(entity?: Entity): Promise<void> {
+    const client = await this.pool.connect();
+    try {
+      await client.query('BEGIN');
+      if (entity) await this.clearWithClient(client, entity);
+      else {
+        await client.query('TRUNCATE sale_items, sales, expenses, customers, products');
+      }
+      await client.query('COMMIT');
+      this.invalidate();
+    } catch (err) {
+      await client.query('ROLLBACK');
+      throw err;
+    } finally {
+      client.release();
+    }
+  }
+
+  private async clearWithClient(client: pg.PoolClient, entity: Entity): Promise<void> {
+    if (entity === 'sales') {
+      await client.query('DELETE FROM sale_items');
+      await client.query('DELETE FROM sales');
+      return;
+    }
+    if (entity === 'customers') {
+      // Conservar ventas históricas aunque se borre el cliente.
+      await client.query('UPDATE sales SET customer_id = NULL');
+      await client.query('DELETE FROM customers');
+      return;
+    }
+    if (entity === 'products') {
+      await client.query('DELETE FROM products');
+      return;
+    }
+    await client.query('DELETE FROM expenses');
   }
 }

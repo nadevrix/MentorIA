@@ -211,8 +211,14 @@ export default function Ajustes() {
             <>
               <Estado
                 label="Datos del negocio"
-                valor={health.baseSource === 'seed' ? 'datos de ejemplo' : health.baseSource}
-                ok={health.baseSource !== 'seed'}
+                valor={
+                  health.baseSource === 'seed'
+                    ? 'datos de ejemplo (local)'
+                    : health.baseSource === 'postgres'
+                      ? 'PostgreSQL'
+                      : health.baseSource
+                }
+                ok={health.baseSource === 'postgres'}
               />
               <Estado label="Tipo de cambio" valor={health.fxSource} ok />
               <Estado

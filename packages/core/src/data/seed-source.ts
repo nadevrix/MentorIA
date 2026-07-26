@@ -23,8 +23,8 @@ const DEFAULT_SEED_DIR = resolve(here, '../../../../data/seed');
 /**
  * Fuente de datos de desarrollo: lee los JSON de `data/seed/`.
  *
- * Sí, son datos de ejemplo — pero el jurado penaliza demos "hardcodeadas",
- * así que en la demo hay que apuntar a datos reales del negocio piloto.
+ * Solo para local. En producción usamos Postgres vacío + CSV del comercio.
+ * La demo comercial opcional se carga con `npm run db:seed`, no por defecto.
  * Ver docs/04-datos.md.
  */
 export class SeedDataSource implements DataSource {

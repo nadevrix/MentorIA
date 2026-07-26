@@ -24,9 +24,9 @@ montos operativos están en bolivianos salvo los costos `costUsd`.
 - Hono/Node para REST y SSE.
 - React 19 + Vite 6 + Tailwind CSS 4.
 - Panel, hallazgos, impuestos y simulador deterministas.
-- JSON semilla o PostgreSQL.
-- CSV por entidad en memoria.
-- Render Web Service Starter + Render Static Site.
+- JSON semilla (local) o PostgreSQL vacío (producción).
+- CSV por entidad: persistente en Postgres, en memoria con seed.
+- Render Web Service Starter + Render Static Site + Render Postgres.
 - Netlify reservado para migrar sólo el frontend.
 - No hay autenticación ni aislamiento multiempresa.
 - No hay suite de tests automatizada.
@@ -39,7 +39,7 @@ packages/core/
   src/data/source.ts            interfaz DataSource
   src/data/seed-source.ts       JSON
   src/data/postgres-source.ts   PostgreSQL
-  src/data/overlay-source.ts    CSV temporal en memoria
+  src/data/overlay-source.ts    CSV (Postgres o memoria)
   src/fx/provider.ts            estático, API pública o Firecrawl con fallback
   src/llm/                      adaptadores Gemini y Anthropic
   src/tools/index.ts            12 herramientas

@@ -55,8 +55,8 @@ Tres salidas, en orden:
 ### 3. Datos reales de un comercio
 
 El track descalifica demos que solo corren con datos hardcodeados. Un export de Excel de ventas e
-inventario de una tienda conocida alcanza: convertirlo al formato de `data/seed/`, o cargarlo a
-Neon con `db/migrate.mjs`.
+inventario de una tienda conocida alcanza: subirlo por CSV en **Mis datos** (Postgres) o, para
+una demo reproducible, `npm run db:seed` contra la base.
 
 *Listo cuando:* el panel muestra números de un negocio de verdad.
 
@@ -66,9 +66,8 @@ Neon con `db/migrate.mjs`.
 
 ### 4. Conectar Postgres de verdad
 
-El código está, pero el despliegue inicial usa `DATA_SOURCE=seed`. Falta cargar el esquema en Neon y
-poner `DATA_SOURCE=postgres` + `DATABASE_URL` en Render. Sólo vale la pena **con datos reales
-autorizados adentro**: una base con los mismos datos generados no mejora la demostración.
+El Blueprint ya usa Render Postgres vacío (`DATA_SOURCE=postgres`). Falta cargar **datos reales
+autorizados** vía CSV: una base con seed demo no mejora la demostración ante el jurado.
 
 ### 5. Tipo de cambio en vivo
 
@@ -92,9 +91,9 @@ productos que vendía perdiendo plata"* vale más que cualquier funcionalidad nu
 
 ### La demo pública no es multiusuario
 
-No hay autenticación ni aislamiento por empresa. El overlay CSV vive en memoria y es compartido por
-la única instancia. El rate limit protege parcialmente las llamadas de IA, pero antes de usar datos
-sensibles hacen falta auth, tenancy y persistencia.
+No hay autenticación ni aislamiento por empresa. Todos los visitantes comparten la misma base
+Postgres. El rate limit protege parcialmente las llamadas de IA, pero antes de usar datos sensibles
+hacen falta auth y tenancy.
 
 ### La fuente en vivo es externa
 
@@ -115,8 +114,8 @@ valida con Zod en los bordes y se probó a mano.
 
 ### Región de Render
 
-`render.yaml` fija Ohio para quedar junto a Neon. Si el servicio ya se creó en Oregon, no vale la
-pena moverlo mientras los datos sean los JSON semilla.
+`render.yaml` fija Ohio para API y Postgres. Si el servicio ya se creó en otra región, alinear la
+base a la misma región evita latencia innecesaria.
 
 ---
 

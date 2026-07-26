@@ -64,17 +64,20 @@ Para una demo con fecha fija: `DEMO_TODAY=2026-07-26` en el entorno.
 
 `createContext()` (`packages/core/src/index.ts`) selecciona la fuente base:
 
-- `DATA_SOURCE=seed`: JSON de `data/seed/`.
-- `DATA_SOURCE=postgres` o `neon`: `PostgresDataSource` con `DATABASE_URL`.
-- `DATA_SOURCE=supabase`: reservado, todavía cae a seed con una advertencia.
+- `DATA_SOURCE=seed`: JSON de `data/seed/` (solo desarrollo local).
+- `DATA_SOURCE=postgres` o `neon`: `PostgresDataSource` con `DATABASE_URL` obligatoria.
+- `DATA_SOURCE=supabase`: reservado; falla de forma explícita hasta implementarlo.
 
-La fuente base se envuelve en `OverlayDataSource`. La interfaz puede importar CSV de productos,
-ventas, clientes o gastos y reemplazar cada entidad por separado. Ese overlay vive en memoria y se
-pierde al reiniciar la API; no es persistencia.
+En producción (Render) la fuente es Postgres. `npm run db:migrate` crea el esquema, deja
+productos/ventas/clientes/gastos **vacíos** y solo carga el histórico de mercado en `fx_rates`
+(respaldo del tipo de cambio en vivo). La demo comercial opcional es `npm run db:seed`.
 
-El avance de formalización usa otra tienda porque no forma parte de `DataSource`: con
-`DATABASE_URL` se guarda en la tabla `compliance`; sin conexión queda en memoria y también se pierde
-al reiniciar.
+La fuente base se envuelve en `OverlayDataSource`. La interfaz importa CSV por entidad:
+
+- con Postgres: el CSV se escribe en la base y sobrevive reinicios;
+- con seed: el CSV vive en memoria del proceso (solo local).
+
+El avance de formalización usa la tabla `compliance` cuando hay `DATABASE_URL`.
 
 Para una fuente nueva, implementá la interfaz y enchufala en `createContext()`. No hay que tocar
 herramientas ni prompts.
@@ -94,9 +97,9 @@ export class MiFuente implements DataSource {
 
 | Fuente | Esfuerzo | Cuándo |
 | ------ | -------- | ------ |
-| CSV desde la interfaz | Bajo | Validar el formato; se pierde al reiniciar |
-| Dataset autorizado en `data/seed/` | Bajo | Demo reproducible sin base |
-| PostgreSQL (Neon, Render o Supabase) | Medio | Persistencia de las entidades base |
+| PostgreSQL en Render + CSV | Bajo | Producción / pitch con datos reales |
+| `DATA_SOURCE=seed` local | Bajo | Desarrollo sin base |
+| `npm run db:seed` | Bajo | Demo reproducible en Postgres (opcional) |
 | API REST de Odoo (solo lectura) | Alto | Integración futura con un ERP existente |
 
 Si un campo no existe en la fuente real (típicamente `purchaseFxRate`), **no lo inventes**: hacelo

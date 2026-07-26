@@ -53,7 +53,7 @@ const APARTADOS = [
     id: 'datos',
     titulo: 'Mis datos',
     texto:
-      'Subís tus productos, ventas, clientes y gastos en CSV. Mientras no subas nada, todo el panel funciona con datos de ejemplo.',
+      'Subís tus productos, ventas, clientes y gastos en CSV. Con Postgres arrancan vacíos; lo que subís se guarda en la base.',
   },
   {
     id: 'marketing',

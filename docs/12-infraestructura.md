@@ -66,31 +66,24 @@ o lo más cerca posible.
 
 ## Datos y persistencia
 
-### Modo inicial
+### Producción (Render)
 
-`DATA_SOURCE=seed` carga los JSON de `data/seed/`. Es reproducible y no depende de una base.
+`DATA_SOURCE=postgres` + Render Postgres (`mentor-ia-db`, `basic-256mb`, Ohio). El build ejecuta
+`npm run db:migrate`: esquema vacío de negocio + histórico FX de mercado. Los CSV de la UI se
+escriben en Postgres y sobreviven reinicios.
 
-La API siempre envuelve la fuente base en `OverlayDataSource` para permitir CSV por entidad. Ese
-overlay vive en RAM:
+Todavía no hay autenticación ni tenancy: todos los visitantes de la instancia comparten la misma
+base. Eso es aceptable para el pitch de un solo comercio piloto; no para multi-cliente.
 
-- se comparte entre todos los visitantes de la única instancia;
-- se pierde al reiniciar o redesplegar;
-- no permite escalar horizontalmente con estado coherente.
+### Desarrollo local
 
-Sin `DATABASE_URL`, el progreso de formalización también vive en RAM.
+`DATA_SOURCE=seed` carga JSON de `data/seed/` sin necesidad de base. Los CSV quedan en memoria del
+proceso. Para probar Postgres en local: `DATABASE_URL=... DATA_SOURCE=postgres npm run db:migrate`.
 
-### PostgreSQL
+### Demo comercial opcional
 
-`PostgresDataSource` ya está implementado. Para habilitarlo:
-
-1. crear Neon o PostgreSQL;
-2. ejecutar `npm run db:migrate`;
-3. configurar `DATABASE_URL`;
-4. cambiar `DATA_SOURCE=postgres`;
-5. verificar `baseSource: "postgres"` en `/health`.
-
-Neon es la opción preferida si ya existe una base. Render Postgres también es compatible, pero no
-hay beneficio en migrar entre proveedores sólo por uniformidad.
+Los JSON de `data/seed/` (productos, ventas, etc.) no se cargan solos. Cuando haga falta una demo
+reproducible: `npm run db:seed`.
 
 ### Redis
 
@@ -132,8 +125,8 @@ Esto sigue siendo un MVP público:
 - las mutaciones de CSV y formalización son compartidas;
 - el rate limit en memoria no es defensa suficiente para producción.
 
-Antes de usar datos sensibles o abrir el producto a clientes se necesita autenticación, tenancy,
-persistencia del overlay y límites globales.
+Antes de usar datos sensibles o abrir el producto a clientes se necesita autenticación, tenancy
+y límites globales.
 
 ## Variables por servicio
 

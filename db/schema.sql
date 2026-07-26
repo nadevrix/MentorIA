@@ -75,6 +75,15 @@ CREATE TABLE IF NOT EXISTS fx_rates (
   source  text NOT NULL DEFAULT 'bcb'
 );
 
+-- Avance de formalización del negocio. Es estado del usuario, no catálogo legal.
+CREATE TABLE IF NOT EXISTS compliance (
+  item_id    text PRIMARY KEY,
+  estado     text NOT NULL DEFAULT 'pendiente',
+  nota       text,
+  vence      date,
+  updated_at timestamptz NOT NULL DEFAULT now()
+);
+
 -- Índices para los accesos que realmente hace el sistema.
 CREATE INDEX IF NOT EXISTS sales_date_idx        ON sales (date DESC);
 CREATE INDEX IF NOT EXISTS sales_customer_idx    ON sales (customer_id);

@@ -11,21 +11,18 @@ import {
   type Sale,
 } from '../types.js';
 import { mapRows, parseCsv, type Entity } from './csv.js';
+import { PostgresDataSource } from './postgres-source.js';
 import type { DataSource } from './source.js';
 
 /**
- * Fuente que superpone los datos del comercio sobre los de ejemplo.
+ * Capa de importación CSV sobre la fuente base.
  *
- * El punto de extensión sancionado: implementa DataSource y se enchufa en
- * createContext(), sin tocar ninguna herramienta ni ningún prompt.
+ * Con Postgres: el CSV se escribe en la base y sobrevive reinicios.
+ * Con seed (dev local): el CSV vive en memoria del proceso, como antes.
  *
- * La superposición es por entidad, y eso es deliberado: un comercio casi nunca
- * puede exportar las cuatro cosas de una. Si sube sólo el catálogo, sus
- * productos conviven con las ventas de ejemplo y el análisis cambiario ya sirve.
- * Mezclar datos reales con ejemplo es explícito y visible en la interfaz — lo
- * inaceptable sería que el usuario no supiera cuál está mirando.
- *
- * En memoria: se pierde al reiniciar el servidor. Persistir es el paso siguiente.
+ * La superposición es por entidad a propósito: un comercio casi nunca exporta
+ * las cuatro cosas de una. El estado (`propio` / `ejemplo` / `vacio`) deja
+ * explícito qué está mirando el usuario.
  */
 
 const SCHEMAS = {
@@ -48,9 +45,11 @@ export interface ImportReport {
 
 export interface OverlayStatus {
   entidad: Entity;
-  origen: 'propio' | 'ejemplo';
+  origen: 'propio' | 'ejemplo' | 'vacio';
   filas: number;
   cargadoEn: string | null;
+  /** true cuando los datos propios viven en Postgres. */
+  persistente: boolean;
 }
 
 export class OverlayDataSource implements DataSource {
@@ -65,12 +64,16 @@ export class OverlayDataSource implements DataSource {
     return this.base.name;
   }
 
+  private get store(): PostgresDataSource | null {
+    return this.base instanceof PostgresDataSource ? this.base : null;
+  }
+
   /**
    * Importa un CSV. Las filas inválidas no abortan la importación: se devuelven
    * con su número de fila y su motivo, porque un catálogo grande casi siempre
    * trae dos o tres filas sucias y perder las 800 buenas por eso es absurdo.
    */
-  importCsv(entity: Entity, csv: string): ImportReport {
+  async importCsv(entity: Entity, csv: string): Promise<ImportReport> {
     const raw = parseCsv(csv);
     const { ok, errores, columnas } = mapRows(entity, raw);
     const schema = SCHEMAS[entity] as z.ZodType<unknown>;
@@ -89,8 +92,16 @@ export class OverlayDataSource implements DataSource {
     });
 
     if (valid.length > 0) {
-      this.rows.set(entity, valid);
-      this.loadedAt.set(entity, new Date().toISOString());
+      const cuando = new Date().toISOString();
+      if (this.store) {
+        await this.store.replace(entity, valid);
+        // No guardar en RAM: la fuente de verdad es Postgres.
+        this.rows.delete(entity);
+        this.loadedAt.set(entity, cuando);
+      } else {
+        this.rows.set(entity, valid);
+        this.loadedAt.set(entity, cuando);
+      }
     }
 
     return {
@@ -102,8 +113,15 @@ export class OverlayDataSource implements DataSource {
     };
   }
 
-  /** Vuelve a los datos de ejemplo. */
-  reset(entity?: Entity): void {
+  /** Vacía la entidad (Postgres) o vuelve a los datos de ejemplo (seed). */
+  async reset(entity?: Entity): Promise<void> {
+    if (this.store) {
+      await this.store.clear(entity);
+      if (entity) this.loadedAt.delete(entity);
+      else this.loadedAt.clear();
+      return;
+    }
+
     if (entity) {
       this.rows.delete(entity);
       this.loadedAt.delete(entity);
@@ -121,14 +139,38 @@ export class OverlayDataSource implements DataSource {
       this.base.customers(),
       this.base.expenses(),
     ]);
+    const persistente = this.store !== null;
 
     return entidades.map((entidad, i) => {
-      const propio = this.rows.get(entidad);
+      const propioMemoria = this.rows.get(entidad);
+      const filasBase = base[i]?.length ?? 0;
+
+      if (persistente) {
+        return {
+          entidad,
+          origen: filasBase > 0 ? ('propio' as const) : ('vacio' as const),
+          filas: filasBase,
+          cargadoEn: this.loadedAt.get(entidad) ?? null,
+          persistente,
+        };
+      }
+
+      if (propioMemoria) {
+        return {
+          entidad,
+          origen: 'propio' as const,
+          filas: propioMemoria.length,
+          cargadoEn: this.loadedAt.get(entidad) ?? null,
+          persistente,
+        };
+      }
+
       return {
         entidad,
-        origen: propio ? 'propio' : 'ejemplo',
-        filas: propio ? propio.length : (base[i]?.length ?? 0),
-        cargadoEn: this.loadedAt.get(entidad) ?? null,
+        origen: filasBase > 0 ? ('ejemplo' as const) : ('vacio' as const),
+        filas: filasBase,
+        cargadoEn: null,
+        persistente,
       };
     });
   }

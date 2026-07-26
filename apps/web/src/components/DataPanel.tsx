@@ -4,20 +4,19 @@ import { API_URL } from '../lib/api';
 /**
  * Apartado de datos propios.
  *
- * Superponer por entidad es deliberado: un comercio casi nunca puede exportar
- * las cuatro cosas de una. Si sube sólo el catálogo, sus productos conviven con
- * las ventas de ejemplo y el análisis cambiario ya sirve. Lo que no se negocia
- * es que el usuario sepa siempre cuál está mirando — de ahí la etiqueta de
- * origen en cada fila.
+ * Con Postgres los CSV se guardan en la base. Con seed (solo local) viven en
+ * memoria del servidor. Cada fila muestra el origen: propio, vacío o ejemplo.
  */
 
 type Entidad = 'products' | 'sales' | 'customers' | 'expenses';
+type Origen = 'propio' | 'ejemplo' | 'vacio';
 
 interface Estado {
   entidad: Entidad;
-  origen: 'propio' | 'ejemplo';
+  origen: Origen;
   filas: number;
   cargadoEn: string | null;
+  persistente?: boolean;
 }
 
 interface Reporte {
@@ -51,6 +50,25 @@ const META: Record<Entidad, { titulo: string; ayuda: string; columnas: string }>
   },
 };
 
+function etiquetaOrigen(origen: Origen): { texto: string; clase: string } {
+  if (origen === 'propio') {
+    return {
+      texto: 'tus datos',
+      clase: 'bg-[var(--color-good)]/12 text-[var(--color-good)]',
+    };
+  }
+  if (origen === 'vacio') {
+    return {
+      texto: 'vacío',
+      clase: 'bg-black/[0.06] text-[var(--color-muted)]',
+    };
+  }
+  return {
+    texto: 'ejemplo',
+    clase: 'bg-[var(--color-gold)]/12 text-[var(--color-gold)]',
+  };
+}
+
 function Fila({
   estado,
   onImport,
@@ -67,6 +85,7 @@ function Fila({
   const input = useRef<HTMLInputElement>(null);
   const m = META[estado.entidad];
   const propio = estado.origen === 'propio';
+  const badge = etiquetaOrigen(estado.origen);
 
   return (
     <article className="rounded-[var(--radius-card)] glass p-5">
@@ -75,13 +94,9 @@ function Fila({
           <div className="flex items-center gap-2">
             <h3 className="text-[15px] font-semibold">{m.titulo}</h3>
             <span
-              className={`rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${
-                propio
-                  ? 'bg-[var(--color-good)]/12 text-[var(--color-good)]'
-                  : 'bg-[var(--color-gold)]/12 text-[var(--color-gold)]'
-              }`}
+              className={`rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${badge.clase}`}
             >
-              {propio ? 'tus datos' : 'ejemplo'}
+              {badge.texto}
             </span>
           </div>
           <p className="mt-1 text-xs text-[var(--color-muted)]">{m.ayuda}</p>
@@ -121,7 +136,7 @@ function Fila({
             onClick={() => onReset(estado.entidad)}
             className="rounded-full glass-soft px-4 py-2 text-xs font-semibold transition"
           >
-            Volver al ejemplo
+            {estado.persistente ? 'Vaciar' : 'Volver al ejemplo'}
           </button>
         )}
       </div>
@@ -134,7 +149,6 @@ function Fila({
           {reporte.rechazadas.length > 0 && (
             <>
               <p className="mt-1 text-[var(--color-muted)]">
-                {/* Las filas malas no abortan la importación: se listan para corregir. */}
                 Rechazadas ({reporte.rechazadas.length}):
               </p>
               <ul className="mt-1 space-y-0.5 text-[var(--color-muted)]">
@@ -208,15 +222,15 @@ export default function DataPanel({ onChanged }: { onChanged: () => void }) {
   }
 
   const propios = estados?.filter((e) => e.origen === 'propio').length ?? 0;
+  const persistente = estados?.some((e) => e.persistente) ?? false;
 
   return (
     <div className="space-y-4">
       <section className="rounded-[var(--radius-card)] glass p-5">
         <h2 className="text-[15px] font-semibold">Traé los datos de tu negocio</h2>
         <p className="mt-1 text-sm leading-relaxed text-[var(--color-muted)]">
-          Subí lo que tengas, entidad por entidad. Lo que no subas sigue usando datos de ejemplo, y
-          cada bloque te dice cuál está usando. Empezá por productos: sin tu catálogo, el análisis
-          del dólar no habla de tu negocio.
+          Subí lo que tengas, entidad por entidad. Lo que no subas queda vacío: el panel arranca
+          en cero hasta que cargues tus CSV. Empezá por productos.
         </p>
         {propios > 0 && (
           <p className="mt-3 rounded-xl bg-[var(--color-good)]/10 p-3 text-xs text-[var(--color-muted)]">
@@ -225,8 +239,9 @@ export default function DataPanel({ onChanged }: { onChanged: () => void }) {
           </p>
         )}
         <p className="mt-3 text-[11px] text-[var(--color-faint)]">
-          Los datos viven en memoria del servidor: se pierden al reiniciarlo. No se guardan en disco
-          ni se envían a ningún tercero.
+          {persistente
+            ? 'Los datos se guardan en PostgreSQL: sobreviven reinicios y redespliegues.'
+            : 'Modo local con datos de ejemplo: los CSV viven en memoria del servidor y se pierden al reiniciarlo.'}
         </p>
       </section>
 

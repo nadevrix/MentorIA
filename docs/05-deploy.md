@@ -69,7 +69,8 @@ Variables principales:
 | `GEMINI_MODEL` | `gemini-3.1-flash-lite` | Modelo principal |
 | `ANTHROPIC_API_KEY` | secreto opcional | Respaldo |
 | `CORS_ORIGIN` | `https://mentor-ia-web.onrender.com` | Origen autorizado |
-| `DATA_SOURCE` | `seed` | Datos versionados |
+| `DATA_SOURCE` | `postgres` | Base vacía de negocio + CSV persistente |
+| `DATABASE_URL` | desde Blueprint | Render Postgres (`mentor-ia-db`) |
 | `FX_SOURCE` | `dolar-blue-bolivia` | Tasa oficial unificada vía API pública, con fallback local |
 | `AI_RATE_LIMIT_MAX` | `6` | Solicitudes de IA por IP/ruta/ventana |
 | `AI_RATE_LIMIT_WINDOW_MS` | `60000` | Ventana del límite |
@@ -101,7 +102,7 @@ Respuesta esperada:
 {
   "ok": true,
   "dataSource": "overlay",
-  "baseSource": "seed",
+  "baseSource": "postgres",
   "fxSource": "dolar-blue-bolivia",
   "llm": {
     "provider": "gemini",
@@ -113,7 +114,7 @@ Respuesta esperada:
 ```
 
 `dataSource: "overlay"` es correcto: la capa de CSV envuelve a la fuente base. El campo que confirma
-si se usa JSON o Postgres es `baseSource`.
+Postgres es `baseSource: "postgres"`. El negocio arranca vacío hasta importar CSV.
 
 ### Panel determinista
 
@@ -132,23 +133,31 @@ Probar desde la URL pública:
 2. Una pregunta al agente debe mostrar `tool_use`, `tool_result` y texto incremental.
 3. Dos preguntas consecutivas deben completar sin 429 del proveedor.
 
-## PostgreSQL opcional
+## PostgreSQL (Render)
 
-El primer despliegue usa `DATA_SOURCE=seed`. Para conectar Neon:
+El Blueprint (`render.yaml`) ya define `mentor-ia-db` (plan `basic-256mb`, región Ohio) y enlaza
+`DATABASE_URL` a la API. En el build corre `npm run db:migrate`: crea el esquema, deja el negocio
+vacío y carga solo el histórico de mercado en `fx_rates`.
 
-1. Crear la base cerca de Ohio.
-2. Configurar `DATABASE_URL` en la API.
-3. Ejecutar localmente contra la base remota:
+Tras sincronizar el Blueprint:
+
+1. Confirmar que existe la base `mentor-ia-db` en el dashboard.
+2. Verificar `baseSource: "postgres"` en `/health`.
+3. En la UI, **Mis datos** debe mostrar las cuatro entidades en **vacío**.
+4. Subir un CSV de productos y confirmar que sobrevive un redeploy.
+
+Comandos útiles contra la base remota:
 
 ```bash
-DATABASE_URL='postgresql://...' npm run db:migrate
+DATABASE_URL='postgresql://...' npm run db:migrate   # esquema + FX si falta
+DATABASE_URL='postgresql://...' npm run db:seed      # demo comercial opcional
+DATABASE_URL='postgresql://...' npm run db:reset     # vacía el negocio (no toca FX)
 ```
 
-4. Cambiar `DATA_SOURCE=postgres`.
-5. Redesplegar la API.
-6. Confirmar `baseSource: "postgres"` en `/health`.
+No usar `db:reset` ni `db:seed` contra una base con datos reales que deban conservarse.
 
-No usar `db:reset` contra una base con datos que deban conservarse.
+Neon sigue siendo compatible (`DATA_SOURCE=postgres` + `DATABASE_URL`), pero con créditos de Render
+la opción por defecto es Render Postgres en la misma región que la API.
 
 ## Migración posterior del frontend a Netlify
 
@@ -181,8 +190,13 @@ Render.
 **Respuesta 429 de Gemini/Anthropic.** Es la cuota del proveedor, no el rate limit local. Activar
 facturación o cambiar `LLM_PROVIDER`.
 
-**Los CSV desaparecieron.** El overlay vive en memoria y se pierde en reinicios o despliegues. Es
-comportamiento actual, no almacenamiento persistente.
+**Los CSV desaparecieron (con `DATA_SOURCE=seed`).** En local los CSV viven en memoria. En
+producción con Postgres (`DATA_SOURCE=postgres`) deberían persistir; confirmar `baseSource:
+"postgres"` en `/health`. Si la importación falló, revisar logs de la API (p. ej. FK de clientes en
+ventas).
+
+**El build falla en `db:migrate`.** Verificar que `DATABASE_URL` esté enlazada desde
+`mentor-ia-db` y que la base ya exista (sincronizar el Blueprint).
 
 **El build no encuentra `@pyme/core`.** Ejecutar desde la raíz y usar los comandos workspace del
 Blueprint; no reemplazarlos por `vite build`.

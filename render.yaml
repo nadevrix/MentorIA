@@ -1,8 +1,15 @@
-# Todo el producto en Render: la API como web service y la interfaz como sitio
-# estático. Cuando lleguen los créditos de Netlify, mover el frontend allá es
+# Todo el producto en Render: API, frontend estático y Postgres.
+# Cuando lleguen los créditos de Netlify, mover el frontend allá es
 # cambiar de proveedor sin tocar código — `netlify.toml` ya está escrito.
 #
 # Por qué el reparto y qué hace cada pieza: docs/12-infraestructura.md
+
+databases:
+  - name: mentor-ia-db
+    plan: basic-256mb
+    region: ohio
+    postgresMajorVersion: "16"
+    # Misma región que la API: evita latencia entre servicio y base.
 
 services:
   # ---------------------------------------------------------------------------
@@ -17,11 +24,14 @@ services:
     # tras 15 min sin tráfico y tarda 30-60 s en despertar. Sobre un pitch de
     # 4 minutos eso es fatal, y son ~7 USD al mes de los créditos disponibles.
     plan: starter
-    # Misma región que la base de datos cuando se conecte Postgres: si la API
-    # queda en Oregon y la base en Ohio, cada consulta paga ~60 ms de ida y
-    # vuelta, y el panel hace varias por carga.
     region: ohio
+    # Esquema vacío + histórico FX de mercado. Sin demo comercial.
     buildCommand: npm ci && npm run build --workspace=@pyme/core && npm run build --workspace=@pyme/api
+    # La migración va acá y no en el build: preDeploy corre después de compilar y
+    # antes de arrancar, con el entorno de ejecución completo. Si el esquema no se
+    # puede aplicar, el deploy falla limpio en vez de levantar una app sin tablas.
+    # Sólo disponible en instancias pagas — con el plan free iría en buildCommand.
+    preDeployCommand: npm run db:migrate
     startCommand: node apps/api/dist/server.js
     healthCheckPath: /health
     envVars:
@@ -55,13 +65,17 @@ services:
         value: "2097152"
 
       # --- Datos ---
-      # El primer deploy usa los JSON versionados. Para Neon/Postgres, cambiar a
-      # `postgres`, agregar DATABASE_URL y ejecutar `npm run db:migrate`.
+      # Postgres vacío: productos/ventas/clientes/gastos arrancan en 0.
+      # Los CSV de la UI se persisten en la base.
       - key: DATA_SOURCE
-        value: seed
+        value: postgres
+      - key: DATABASE_URL
+        fromDatabase:
+          name: mentor-ia-db
+          property: connectionString
 
       # --- Tipo de cambio ---
-      # API pública con caché de 15 min y fallback automático al histórico local.
+      # API pública con caché de 15 min y fallback al histórico en fx_rates.
       - key: FX_SOURCE
         value: dolar-blue-bolivia
       - key: FIRECRAWL_API_KEY

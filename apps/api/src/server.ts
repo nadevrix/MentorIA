@@ -298,7 +298,7 @@ app.get('/api/taxes/formularios', async (c) => {
 const ENTIDADES = ['products', 'sales', 'customers', 'expenses'] as const;
 const overlay = overlayOf(ctx);
 
-/** Qué datos está usando el sistema: los del comercio o los de ejemplo. */
+/** Qué datos está usando el sistema: propios, ejemplo o vacío. */
 app.get('/api/data', async (c) => {
   if (!overlay) return c.json({ error: 'La fuente de datos no admite superposición' }, 400);
   return c.json({ entidades: await overlay.status() });
@@ -307,6 +307,7 @@ app.get('/api/data', async (c) => {
 /**
  * Importa un CSV para una entidad. El cuerpo es el CSV crudo, no JSON:
  * evita tener que escapar comillas y saltos de línea de un archivo real.
+ * Con DATA_SOURCE=postgres la importación se guarda en la base.
  */
 app.post('/api/data/:entidad', async (c) => {
   if (!overlay) return c.json({ error: 'La fuente de datos no admite superposición' }, 400);
@@ -320,21 +321,26 @@ app.post('/api/data/:entidad', async (c) => {
   if (!csv.trim()) return c.json({ error: 'El archivo llegó vacío' }, 400);
 
   try {
-    return c.json(overlay.importCsv(entidad as (typeof ENTIDADES)[number], csv));
+    return c.json(await overlay.importCsv(entidad as (typeof ENTIDADES)[number], csv));
   } catch (error) {
     console.error('[data]', error);
     return c.json({ error: error instanceof Error ? error.message : 'Error al importar' }, 500);
   }
 });
 
-/** Vuelve a los datos de ejemplo. */
+/** Vacía la entidad en Postgres, o vuelve al ejemplo si la base es seed. */
 app.delete('/api/data/:entidad', async (c) => {
   if (!overlay) return c.json({ error: 'La fuente de datos no admite superposición' }, 400);
   const entidad = c.req.param('entidad');
-  overlay.reset(
-    entidad === 'todo' ? undefined : (entidad as (typeof ENTIDADES)[number]),
-  );
-  return c.json({ entidades: await overlay.status() });
+  try {
+    await overlay.reset(
+      entidad === 'todo' ? undefined : (entidad as (typeof ENTIDADES)[number]),
+    );
+    return c.json({ entidades: await overlay.status() });
+  } catch (error) {
+    console.error('[data]', error);
+    return c.json({ error: error instanceof Error ? error.message : 'Error al vaciar' }, 500);
+  }
 });
 
 const ImageRequest = z.object({ prompt: z.string().min(3).max(4000) });
