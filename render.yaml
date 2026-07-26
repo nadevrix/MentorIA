@@ -40,11 +40,9 @@ services:
         sync: false
 
       # --- Frontend permitido ---
-      # La URL del sitio estático, sin barra final. Se completa después del
-      # primer deploy. `*` permite arrancar; hay que reemplazarlo por el dominio
-      # exacto de mentor-ia-web al terminar la configuración.
+      # URL pública del sitio estático, sin barra final.
       - key: CORS_ORIGIN
-        value: "*"
+        value: "https://mentor-ia-web.onrender.com"
 
       # Evita que una URL pública consuma sin límite las cuotas de los modelos.
       - key: AI_RATE_LIMIT_MAX

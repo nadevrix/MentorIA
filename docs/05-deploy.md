@@ -68,14 +68,14 @@ Variables principales:
 | `GEMINI_API_KEY` | secreto | Chat y resumen |
 | `GEMINI_MODEL` | `gemini-3.1-flash-lite` | Modelo principal |
 | `ANTHROPIC_API_KEY` | secreto opcional | Respaldo |
-| `CORS_ORIGIN` | `*` sólo al arrancar | Origen autorizado |
+| `CORS_ORIGIN` | `https://mentor-ia-web.onrender.com` | Origen autorizado |
 | `DATA_SOURCE` | `seed` | Datos versionados |
 | `FX_SOURCE` | `static` | Histórico local |
 | `AI_RATE_LIMIT_MAX` | `6` | Solicitudes de IA por IP/ruta/ventana |
 | `AI_RATE_LIMIT_WINDOW_MS` | `60000` | Ventana del límite |
 
-Después de conocer la URL del frontend, reemplazar `CORS_ORIGIN=*` por el dominio exacto, sin barra
-final:
+El repositorio ya contiene el dominio asignado. Si el Blueprint se replica con otro nombre, cambiar
+`CORS_ORIGIN` por el nuevo dominio exacto, sin barra final:
 
 ```text
 https://mentor-ia-web.onrender.com

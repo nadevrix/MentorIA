@@ -22,9 +22,9 @@ Las URL públicas se completan después del primer despliegue:
 
 | Servicio | URL |
 | --- | --- |
-| Web | `https://mentor-ia-web.onrender.com` _(confirmar dominio asignado)_ |
-| API | `https://mentor-ia-api.onrender.com` _(confirmar dominio asignado)_ |
-| Salud | `<URL_API>/health` |
+| Web | <https://mentor-ia-web.onrender.com> |
+| API | <https://mentor-ia-api.onrender.com> |
+| Salud | <https://mentor-ia-api.onrender.com/health> |
 
 ## Qué incluye
 
