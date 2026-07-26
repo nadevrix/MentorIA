@@ -30,8 +30,12 @@ function Delta({ label, antes, despues, format }: {
   );
 }
 
+/** Margen al que el negocio quiere sostener sus precios. */
+const MARGENES = [20, 25, 30, 35, 40] as const;
+
 export default function Simulator({ currentRate, onAsk }: Props) {
   const [rate, setRate] = useState(currentRate);
+  const [targetMargin, setTargetMargin] = useState(35);
   const [result, setResult] = useState<ScenarioResult | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -39,7 +43,7 @@ export default function Simulator({ currentRate, onAsk }: Props) {
   useEffect(() => {
     const controller = new AbortController();
     const timer = setTimeout(() => {
-      simulate(rate, controller.signal)
+      simulate(rate, targetMargin, controller.signal)
         .then((r) => {
           setResult(r);
           setError(null);
@@ -54,7 +58,7 @@ export default function Simulator({ currentRate, onAsk }: Props) {
       clearTimeout(timer);
       controller.abort();
     };
-  }, [rate]);
+  }, [rate, targetMargin]);
 
   const max = Math.ceil(currentRate * 2);
   const isScenario = Math.abs(rate - currentRate) > 0.01;
@@ -80,6 +84,49 @@ export default function Simulator({ currentRate, onAsk }: Props) {
         <output className="w-24 shrink-0 text-right text-2xl font-semibold tabular-nums text-[var(--color-accent)]">
           Bs {rate.toFixed(2)}
         </output>
+      </div>
+
+      <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
+        <div className="flex flex-wrap gap-1.5">
+          {[
+            { label: 'Hoy', value: currentRate },
+            { label: '+10%', value: currentRate * 1.1 },
+            { label: '+25%', value: currentRate * 1.25 },
+            { label: '+50%', value: currentRate * 1.5 },
+          ].map((atajo) => {
+            // "Hoy" vuelve exactamente al tipo vigente; los demás se redondean al paso del deslizador.
+            const value = atajo.label === 'Hoy' ? currentRate : Math.round(atajo.value * 4) / 4;
+            const on = Math.abs(rate - value) < 0.01;
+            return (
+              <button
+                key={atajo.label}
+                onClick={() => setRate(value)}
+                className={`rounded-full px-3 py-1 text-xs transition ${
+                  on
+                    ? 'bg-[var(--color-accent)]/15 font-semibold text-[var(--color-accent)]'
+                    : 'bg-[var(--color-raised)] text-[var(--color-muted)] hover:text-[var(--color-fg)]'
+                }`}
+              >
+                {atajo.label}
+              </button>
+            );
+          })}
+        </div>
+
+        <label className="flex items-center gap-2 text-xs text-[var(--color-muted)]">
+          Margen a sostener
+          <select
+            value={targetMargin}
+            onChange={(e) => setTargetMargin(Number(e.target.value))}
+            className="rounded-full bg-[var(--color-raised)] px-2.5 py-1 text-xs outline-none focus:ring-2 focus:ring-[var(--color-accent)]"
+          >
+            {MARGENES.map((m) => (
+              <option key={m} value={m}>
+                {m}%
+              </option>
+            ))}
+          </select>
+        </label>
       </div>
 
       {error && <p className="mt-3 text-sm text-[var(--color-bad)]">{error}</p>}
@@ -167,7 +214,10 @@ export default function Simulator({ currentRate, onAsk }: Props) {
 
           <button
             onClick={() =>
-              onAsk('precios', `¿Qué hago si el dólar llega a ${rate.toFixed(2)} Bs?`)
+              onAsk(
+                'precios',
+                `¿Qué hago si el dólar llega a ${rate.toFixed(2)} Bs? Quiero sostener un margen del ${targetMargin}%.`,
+              )
             }
             className="mt-4 rounded-full bg-[var(--color-accent-strong)] px-4 py-2 text-xs font-semibold text-white transition hover:brightness-110"
           >

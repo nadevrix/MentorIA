@@ -213,12 +213,13 @@ export async function generateImage(prompt: string, signal?: AbortSignal): Promi
 
 export async function simulate(
   tipoCambioSimulado: number,
+  margenObjetivoPct?: number,
   signal?: AbortSignal,
 ): Promise<ScenarioResult> {
   const res = await fetch(`${API_URL}/api/simulate`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ tipoCambioSimulado }),
+    body: JSON.stringify({ tipoCambioSimulado, margenObjetivoPct }),
     signal,
   });
   if (!res.ok) throw new Error('No se pudo simular el escenario');

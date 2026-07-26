@@ -225,9 +225,13 @@ El botón de cada hallazgo lleva al agente que lo puede resolver **con la pregun
 `App.tsx` remonta el chat con `key` para que el estado arranque limpio y no queden closures
 viejos de la conversación anterior.
 
-El simulador es un deslizador con recálculo en vivo (debounce de 180 ms, petición anterior
-abortada con `AbortController`) y termina en un botón que manda el escenario al agente de
-precios para que diga qué hacer.
+El simulador (`Simulator.tsx`, pestaña **Dólar**) es un deslizador con recálculo en vivo
+(debounce de 180 ms, petición anterior abortada con `AbortController`), atajos de escenario
+(Hoy / +10% / +25% / +50%) y un selector de **margen objetivo** que viaja como
+`margenObjetivoPct` a `/api/simulate`. Termina en un botón que manda el escenario al agente
+de precios para que diga qué hacer. Todo el cálculo es del backend (`simulate.ts`): el
+frontend nunca recalcula márgenes por su cuenta — un nacional no se revalúa con el dólar, y
+esa regla vive en un solo lugar.
 
 ---
 

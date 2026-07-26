@@ -1,4 +1,4 @@
-﻿import { bob, type Insight, type InsightsResponse, type Severity } from '../lib/api';
+import { bob, type Insight, type InsightsResponse, type Severity } from '../lib/api';
 
 interface Props {
   data: InsightsResponse | null;
@@ -7,56 +7,58 @@ interface Props {
   onAsk: (agentId: string, question: string) => void;
 }
 
-/** Jerarquía visual: nunca sólo color, cada nivel conserva su etiqueta en texto. */
-const SEVERITY: Record<
-  Severity,
-  { label: string; badge: string; bar: string; amount: string }
-> = {
+/**
+ * Rojo para lo crítico, ámbar para lo que se está deteriorando, gris para el
+ * resto. Nunca sólo color: cada nivel lleva también su etiqueta en texto.
+ */
+/**
+ * Jerarquía visual limpia: rojo para lo crítico, ámbar para lo alto, slate para media y baja.
+ * Sin emojis informales, con contraste y tipografía financiera profesional.
+ */
+const SEVERITY: Record<Severity, { label: string; bg: string; bar: string; amountColor: string }> = {
   critica: {
     label: 'Crítico',
-    badge: 'border border-red-200 bg-red-50 font-bold text-red-700',
-    bar: 'w-1.5 bg-red-600',
-    amount: 'font-bold text-red-600',
+    bg: 'bg-red-50 border border-red-200 text-red-700 font-bold',
+    bar: 'bg-red-600 w-1.5',
+    amountColor: 'text-red-600 font-bold text-xl',
   },
   alta: {
     label: 'Alta',
-    badge: 'border border-amber-200 bg-amber-50 font-bold text-amber-800',
-    bar: 'w-1.5 bg-amber-500',
-    amount: 'font-bold text-amber-700',
+    bg: 'bg-amber-50 border border-amber-200 text-amber-800 font-bold',
+    bar: 'bg-amber-500 w-1.5',
+    amountColor: 'text-amber-700 font-bold text-xl',
   },
   media: {
     label: 'Media',
-    badge: 'border border-slate-200 bg-slate-100 font-semibold text-slate-700',
-    bar: 'w-1 bg-slate-400',
-    amount: 'font-bold text-slate-800',
+    bg: 'bg-slate-100 border border-slate-200 text-slate-700 font-semibold',
+    bar: 'bg-slate-400 w-1',
+    amountColor: 'text-slate-800 font-bold text-xl',
   },
   baja: {
     label: 'Baja',
-    badge: 'border border-slate-200 bg-slate-50 font-medium text-slate-600',
-    bar: 'w-1 bg-slate-300',
-    amount: 'font-semibold text-slate-600',
+    bg: 'bg-slate-50 border border-slate-200 text-slate-600 font-medium',
+    bar: 'bg-slate-300 w-1',
+    amountColor: 'text-slate-600 font-semibold text-xl',
   },
 };
 
 function Row({ insight, onAsk }: { insight: Insight; onAsk: Props['onAsk'] }) {
   const s = SEVERITY[insight.severidad];
   return (
-    <article className="relative overflow-hidden rounded-[var(--radius-card)] glass p-5 pl-6 transition-shadow duration-200 hover:shadow-md">
+    <article className="relative overflow-hidden rounded-[var(--radius-card)] glass p-5 pl-6 transition-all duration-200 hover:shadow-md">
       <span className={`absolute inset-y-0 left-0 ${s.bar}`} aria-hidden />
 
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="min-w-0">
           <span
-            className={`inline-block rounded-full px-2.5 py-0.5 text-[11px] uppercase tracking-wider ${s.badge}`}
+            className={`inline-block rounded-full px-2.5 py-0.5 text-[11px] uppercase tracking-wider ${s.bg}`}
           >
             {s.label}
           </span>
-          <h3 className="mt-2 text-[15px] font-bold leading-snug text-slate-900">
-            {insight.titulo}
-          </h3>
+          <h3 className="mt-2 text-[15px] font-bold leading-snug text-slate-900">{insight.titulo}</h3>
         </div>
         <div className="shrink-0 text-right">
-          <div className={`text-xl ${s.amount}`}>
+          <div className={s.amountColor}>
             {bob(insight.impactoBob)}
           </div>
           <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
@@ -65,7 +67,7 @@ function Row({ insight, onAsk }: { insight: Insight; onAsk: Props['onAsk'] }) {
         </div>
       </div>
 
-      <p className="mt-2.5 text-sm leading-relaxed text-slate-600">{insight.detalle}</p>
+      <p className="mt-2.5 text-sm leading-relaxed text-slate-600 font-normal">{insight.detalle}</p>
 
       <div className="mt-4 flex flex-wrap items-center gap-3">
         <button

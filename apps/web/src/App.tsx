@@ -1,4 +1,4 @@
-﻿import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Ajustes from './components/Ajustes';
 import Ayuda from './components/Ayuda';
 import Chat from './components/Chat';
@@ -102,12 +102,11 @@ export default function App() {
 
   const fx = dashboard?.fx;
   const askIsForActive = ask !== null && ask.agentId === active?.id;
-  const hallazgosCount = insights?.insights.length ?? 0;
+  const hallazgosCount = insights?.insights?.length ?? 0;
 
-  // Los pendientes y hallazgos se ven desde la navegación, antes de abrir cada apartado.
+  // El contador de trámites va en la pestaña principal.
   const tabs: readonly Tab[] = [
     { id: 'resumen', label: 'Resumen' },
-    { id: 'urgencias', label: 'Urgencias', badge: hallazgosCount, emphasis: 'danger' },
     { id: 'dolar', label: 'Dólar' },
     { id: 'impuestos', label: 'Impuestos' },
     { id: 'tramites', label: 'Trámites', badge: tramitesPendientes },
@@ -119,34 +118,31 @@ export default function App() {
     <Shell
       tabs={tabs}
       activeTab={tab}
-      onTab={(id) => {
-        setTopNav('inicio');
-        setTab(id);
-      }}
+      onTab={setTab}
       topNav={topNav}
-      onTopNav={setTopNav}
-      urgencias={hallazgosCount}
-      onUrgencias={() => {
+      onTopNav={(nav) => setTopNav(nav)}
+      urgenciasBadge={hallazgosCount > 0 ? { count: hallazgosCount, montoBob: insights?.totalImpactoBob } : null}
+      onUrgenciasClick={() => {
         setTopNav('inicio');
         setTab('urgencias');
       }}
       title={
         topNav === 'ajustes'
-          ? 'Ajustes del negocio'
+          ? 'Ajustes del Negocio'
           : topNav === 'ayuda'
-            ? 'Centro de ayuda'
+            ? 'Centro de Ayuda'
             : tab === 'urgencias'
               ? 'Qué resolver hoy'
               : 'Panel principal'
       }
       subtitle={
         topNav === 'ajustes'
-          ? 'Configura el perfil de tu PyME y revisa el estado de sus fuentes de datos.'
+          ? 'Configura la identidad de tu PyME, fuentes de dólar y notificaciones.'
           : topNav === 'ayuda'
-            ? 'Guía rápida de los apartados, agentes y cálculos de Mentor IA.'
+            ? 'Guía de uso rápido, preguntas frecuentes y explicación de los 5 agentes.'
             : tab === 'urgencias'
-              ? `${hallazgosCount} hallazgo${hallazgosCount === 1 ? '' : 's'} ordenado${hallazgosCount === 1 ? '' : 's'} por urgencia e impacto.`
-              : 'El pulso de tu negocio y sus indicadores principales.'
+              ? `${hallazgosCount} hallazgos ordenados por urgencia e impacto en bolivianos.`
+              : 'Tus agentes ya revisaron el negocio. Esto es lo que encontraron.'
       }
       rate={fx ? { valor: fx.tipoCambio, variacionPct: fx.variacion30dPct } : null}
       aside={
@@ -165,8 +161,8 @@ export default function App() {
                     title={agent.tagline}
                     className={`flex shrink-0 items-center gap-2 rounded-full px-3.5 py-2 text-xs transition ${
                       on
-                        ? 'glass-soft glass-selected font-semibold'
-                        : 'glass-soft text-[var(--color-muted)] hover:border-slate-300 hover:text-[var(--color-fg)]'
+                        ? 'glass-soft border border-[var(--color-accent)]/60 bg-[var(--color-accent)]/15 font-semibold text-[var(--color-accent)] shadow-[0_0_15px_rgba(37,99,235,0.25)]'
+                        : 'glass-soft text-[var(--color-muted)] hover:text-[var(--color-fg)] hover:border-slate-300'
                     }`}
                   >
                     <Icon name={agent.icon} size={14} />
@@ -197,7 +193,6 @@ export default function App() {
       )}
 
       {topNav === 'ajustes' && <Ajustes />}
-
       {topNav === 'ayuda' && (
         <Ayuda
           agents={agents}
@@ -243,7 +238,7 @@ export default function App() {
             </div>
           )}
 
-          {/* El simulador vigente vive en Dólar y usa el régimen cambiario unificado. */}
+          {/* El simulador vive en Dólar, no acá: es una herramienta de ese tema. */}
           {tab === 'dolar' && <FxPanel data={dashboard} onAsk={handleAsk} />}
 
           {tab === 'impuestos' && <TaxPanel onAsk={handleAsk} />}

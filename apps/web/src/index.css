@@ -30,8 +30,12 @@
   --color-line: #dde4ed;
 
   /*
+<<<<<<< HEAD
    * Acentos. El azul separa la identidad de marca del rojo reservado para
    * pérdidas y urgencias, y mantiene contraste AA como texto y como fondo.
+=======
+   * Acentos. Azul profesional de marca (#2563eb y #1d4ed8).
+>>>>>>> victor3
    */
   --color-accent: #2563eb;
   --color-accent-strong: #1d4ed8;

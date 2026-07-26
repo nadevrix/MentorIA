@@ -9,9 +9,6 @@ import Icon from './Icon';
  * El perfil (tipo de sociedad, si tiene empleados, rubro) filtra lo que no
  * corresponde: pedirle el registro de empleador a alguien que trabaja solo
  * sería ruido, no ayuda.
- *
- * Es una lista para no olvidarse un trámite, no asesoría legal. La advertencia
- * va arriba, igual que en impuestos.
  */
 
 type Estado = 'pendiente' | 'hecho' | 'no_aplica';
@@ -43,21 +40,9 @@ const SIGUIENTE: Record<Estado, Estado> = {
 };
 
 const SELLO: Record<Estado, { label: string; texto: string; fondo: string }> = {
-  hecho: {
-    label: 'Hecho',
-    texto: 'font-semibold text-emerald-700',
-    fondo: 'border border-emerald-200/80 bg-emerald-50',
-  },
-  pendiente: {
-    label: 'Pendiente',
-    texto: 'font-semibold text-amber-800',
-    fondo: 'border border-amber-200/80 bg-amber-50',
-  },
-  no_aplica: {
-    label: 'No aplica',
-    texto: 'font-medium text-slate-500',
-    fondo: 'border border-slate-200 bg-slate-100',
-  },
+  hecho: { label: '✓ Hecho', texto: 'text-emerald-700 font-semibold', fondo: 'bg-emerald-50 border border-emerald-200/80 shadow-xs' },
+  pendiente: { label: '⏳ Pendiente', texto: 'text-amber-800 font-semibold', fondo: 'bg-amber-50 border border-amber-200/80 shadow-xs' },
+  no_aplica: { label: '⚪ No aplica', texto: 'text-slate-500 font-medium', fondo: 'bg-slate-100 border border-slate-200' },
 };
 
 const TIPOS = [
@@ -134,30 +119,30 @@ export default function FormalizacionPanel({ onAsk, onPendientes }: Props) {
     : 0;
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
       <section className="rounded-[var(--radius-card)] glass p-5">
-        <div className="flex items-start gap-2.5">
-          <Icon name="warning" size={16} className="mt-0.5 shrink-0 text-[var(--color-gold)]" />
+        <div className="flex items-start gap-3">
+          <Icon name="warning" size={18} className="mt-0.5 shrink-0 text-amber-500" />
           <div>
-            <h2 className="text-[15px] font-semibold">Formalización de la empresa</h2>
+            <h2 className="text-[15px] font-bold text-slate-900">Formalización de la empresa</h2>
             <p className="mt-1 text-sm leading-relaxed text-[var(--color-muted)]">
               {data?.nota ??
-                'Lista para no olvidarse un trámite. No es asesoría legal: confirmá cada requisito con la entidad.'}
+                'Guía de formalización para empresas en Bolivia. Revisa cada trámite y confirma requisitos con la entidad correspondiente.'}
             </p>
           </div>
         </div>
 
         <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-3 border-t border-[var(--color-line)] pt-4 text-xs">
           <div className="flex items-center gap-2">
-            <span className="text-[var(--color-muted)]">Tipo</span>
+            <span className="font-medium text-[var(--color-muted)]">Tipo:</span>
             {TIPOS.map((t) => (
               <button
                 key={t.id}
                 onClick={() => setTipo(t.id)}
-                className={`rounded-full px-3.5 py-1.5 font-semibold transition ${
+                className={`rounded-full px-3.5 py-1.5 text-xs font-semibold transition ${
                   tipo === t.id
-                    ? 'glass-soft glass-selected'
-                    : 'glass-soft text-[var(--color-muted)] hover:border-slate-300 hover:text-[var(--color-fg)]'
+                    ? 'glass-soft border border-[var(--color-accent)]/50 bg-[var(--color-accent)]/15 text-[var(--color-accent)] shadow-xs'
+                    : 'glass-soft text-[var(--color-muted)] hover:text-[var(--color-fg)] hover:border-slate-300'
                 }`}
               >
                 {t.label}
@@ -167,13 +152,13 @@ export default function FormalizacionPanel({ onAsk, onPendientes }: Props) {
 
           <button
             onClick={() => setEmpleados((v) => !v)}
-            className={`rounded-full px-3.5 py-1.5 font-semibold transition ${
+            className={`rounded-full px-3.5 py-1.5 text-xs font-semibold transition ${
               empleados
-                ? 'glass-soft glass-selected'
-                : 'glass-soft text-[var(--color-muted)] hover:border-slate-300 hover:text-[var(--color-fg)]'
+                ? 'glass-soft border border-[var(--color-accent)]/50 bg-[var(--color-accent)]/15 text-[var(--color-accent)] shadow-xs'
+                : 'glass-soft text-[var(--color-muted)] hover:text-[var(--color-fg)] hover:border-slate-300'
             }`}
           >
-            {empleados ? 'Con empleados' : 'Sin empleados'}
+            {empleados ? '✓ Tengo empleados' : '+ Tengo empleados'}
           </button>
 
           <div className="flex items-center gap-2">
@@ -185,10 +170,10 @@ export default function FormalizacionPanel({ onAsk, onPendientes }: Props) {
                   onClick={() =>
                     setRubros((v) => (on ? v.filter((x) => x !== r.id) : [...v, r.id]))
                   }
-                  className={`rounded-full px-3.5 py-1.5 font-semibold transition ${
+                  className={`rounded-full px-3.5 py-1.5 text-xs font-semibold transition ${
                     on
-                      ? 'glass-soft glass-selected'
-                      : 'glass-soft text-[var(--color-muted)] hover:border-slate-300 hover:text-[var(--color-fg)]'
+                      ? 'glass-soft border border-[var(--color-accent)]/50 bg-[var(--color-accent)]/15 text-[var(--color-accent)] shadow-xs'
+                      : 'glass-soft text-[var(--color-muted)] hover:text-[var(--color-fg)] hover:border-slate-300'
                   }`}
                 >
                   {r.label}
@@ -200,8 +185,7 @@ export default function FormalizacionPanel({ onAsk, onPendientes }: Props) {
 
         {data && !data.persistente && (
           <p className="mt-3 text-[11px] text-[var(--color-faint)]">
-            Sin base de datos configurada: el avance se guarda en memoria y se pierde al reiniciar
-            el servidor.
+            Sin base de datos configurada: el avance se guarda en memoria y se recupera en la sesión actual.
           </p>
         )}
       </section>
@@ -216,25 +200,26 @@ export default function FormalizacionPanel({ onAsk, onPendientes }: Props) {
         <>
           <div className="rounded-[var(--radius-card)] glass p-5">
             <div className="flex flex-wrap items-baseline justify-between gap-2">
-              <div className="flex flex-wrap items-center gap-2.5">
+              <div className="flex items-center gap-2.5">
                 <h3 className="text-[15px] font-bold text-slate-900">
                   {data.hechos} de {data.totalObligatorios} obligatorios completados
                 </h3>
-                <span className="rounded-full border border-blue-200 bg-blue-50 px-2.5 py-0.5 text-xs font-bold text-blue-700">
+                <span className="rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-bold text-blue-700 border border-blue-200">
                   {pct}% avance
                 </span>
               </div>
               <span className="text-xs font-medium text-[var(--color-muted)]">
                 {data.faltantes.length === 0
-                  ? 'Todo en regla según esta lista'
+                  ? '¡Felicidades! Todo en regla según esta lista.'
                   : `Te faltan ${data.faltantes.length} trámites`}
               </span>
             </div>
-            <div className="mt-3.5 h-2.5 overflow-hidden rounded-full border border-slate-300/60 bg-slate-200/80 p-0.5">
+
+            <div className="mt-3.5 h-2.5 overflow-hidden rounded-full bg-slate-200/80 p-0.5 border border-slate-300/60">
               <div
-                className="h-full rounded-full bg-gradient-to-r from-blue-600 via-indigo-500 to-emerald-500 transition-all duration-500"
+                className="h-full rounded-full transition-all duration-500 bg-gradient-to-r from-blue-600 via-indigo-500 to-emerald-500 shadow-xs"
                 style={{
-                  width: `${pct}%`,
+                  width: `${Math.max(2, pct)}%`,
                 }}
               />
             </div>
@@ -252,8 +237,8 @@ export default function FormalizacionPanel({ onAsk, onPendientes }: Props) {
                 >
                   ¿Por cuál trámite empiezo?
                 </button>
-                <span className="text-xs font-medium text-slate-500">
-                  El Director de Negocio puede ayudarte a priorizarlos.
+                <span className="text-xs text-slate-500 font-medium">
+                  Consulta al Director de Negocio para priorizar tus trámites pendientes.
                 </span>
               </div>
             )}
@@ -270,10 +255,8 @@ export default function FormalizacionPanel({ onAsk, onPendientes }: Props) {
                   return (
                     <li
                       key={i.id}
-                      className={`rounded-xl border border-slate-200/80 p-4 transition glass-soft ${
-                        i.estado === 'no_aplica'
-                          ? 'opacity-50'
-                          : 'shadow-sm hover:border-slate-300'
+                      className={`rounded-xl p-4 transition glass-soft border border-slate-200/80 ${
+                        i.estado === 'no_aplica' ? 'opacity-50' : 'hover:border-slate-300 shadow-xs'
                       }`}
                     >
                       <div className="flex flex-wrap items-start justify-between gap-3">
@@ -281,7 +264,7 @@ export default function FormalizacionPanel({ onAsk, onPendientes }: Props) {
                           <div className="flex flex-wrap items-center gap-2">
                             <span className="text-sm font-bold text-slate-900">{i.titulo}</span>
                             {i.obligatorio && i.estado !== 'no_aplica' && (
-                              <span className="rounded-full border border-red-200 bg-red-50 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-red-700">
+                              <span className="rounded-full bg-red-50 border border-red-200 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-red-700">
                                 Obligatorio
                               </span>
                             )}
@@ -291,7 +274,7 @@ export default function FormalizacionPanel({ onAsk, onPendientes }: Props) {
                               </span>
                             )}
                           </div>
-                          <p className="mt-1.5 text-xs leading-relaxed text-slate-600">
+                          <p className="mt-1.5 text-xs leading-relaxed text-slate-600 font-normal">
                             {i.descripcion}
                           </p>
                           <p className="mt-1.5 text-[11px] font-medium text-slate-500">
@@ -303,9 +286,9 @@ export default function FormalizacionPanel({ onAsk, onPendientes }: Props) {
                                   href={i.fuente}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="font-semibold text-[var(--color-accent)] underline hover:text-[var(--color-accent-strong)]"
+                                  className="text-[var(--color-accent)] font-semibold underline hover:text-[var(--color-accent-strong)]"
                                 >
-                                  Sitio oficial
+                                  Sitio Oficial
                                 </a>
                               </>
                             )}
@@ -314,8 +297,8 @@ export default function FormalizacionPanel({ onAsk, onPendientes }: Props) {
 
                         <button
                           onClick={() => void alternar(i)}
-                          title="Cambiar estado"
-                          className={`shrink-0 rounded-full px-3.5 py-1.5 text-[11px] uppercase tracking-wider transition hover:scale-105 active:scale-95 ${s.fondo} ${s.texto}`}
+                          title="Haz clic para cambiar estado"
+                          className={`shrink-0 rounded-full px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-wider transition hover:scale-105 active:scale-95 ${s.fondo} ${s.texto}`}
                         >
                           {s.label}
                         </button>

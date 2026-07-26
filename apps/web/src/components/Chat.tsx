@@ -1,4 +1,4 @@
-﻿import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { streamChat, type Agent, type ChatMessage } from '../lib/api';
 import FormattedMessage from './FormattedMessage';
 import Icon from './Icon';
@@ -24,7 +24,7 @@ export default function Chat({ agent, initialQuestion }: Props) {
   const [partial, setPartial] = useState('');
   const [traces, setTraces] = useState<Trace[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const bottom = useRef<HTMLDivElement>(null);
+  const chatContainerRef = useRef<HTMLDivElement>(null);
 
   // Cambiar de agente reinicia la conversación: cada agente tiene su propio contexto.
   useEffect(() => {
@@ -34,8 +34,14 @@ export default function Chat({ agent, initialQuestion }: Props) {
     setError(null);
   }, [agent.id]);
 
+  // Hacer auto-scroll ÚNICAMENTE en el contenedor interno del chat, sin desplazar la página principal.
   useEffect(() => {
-    bottom.current?.scrollIntoView({ behavior: 'smooth' });
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTo({
+        top: chatContainerRef.current.scrollHeight,
+        behavior: 'smooth',
+      });
+    }
   }, [messages, partial, traces]);
 
   // Se dispara una sola vez por montaje; el guard evita un doble envío en StrictMode.
@@ -93,8 +99,8 @@ export default function Chat({ agent, initialQuestion }: Props) {
   }
 
   return (
-    <div className="flex h-full flex-col">
-      <header className="border-b border-[var(--color-line)] p-4">
+    <div className="flex h-full min-h-0 flex-col overflow-hidden">
+      <header className="shrink-0 border-b border-[var(--color-line)] p-4">
         <div className="flex items-center gap-2">
           <Icon name={agent.icon} size={18} className="text-[var(--color-accent)]" />
           <h2 className="font-semibold">{agent.name}</h2>
@@ -102,7 +108,7 @@ export default function Chat({ agent, initialQuestion }: Props) {
         <p className="mt-1 text-xs text-[var(--color-muted)]">{agent.tagline}</p>
       </header>
 
-      <div className="flex-1 space-y-3 overflow-y-auto p-4">
+      <div ref={chatContainerRef} className="flex-1 min-h-0 space-y-3 overflow-y-auto p-4">
         {messages.length === 0 && !streaming && (
           <div className="space-y-2">
             <p className="text-sm text-[var(--color-muted)]">Probá con una de estas:</p>
@@ -159,8 +165,6 @@ export default function Chat({ agent, initialQuestion }: Props) {
             {error}
           </div>
         )}
-
-        <div ref={bottom} />
       </div>
 
       <form
@@ -168,7 +172,7 @@ export default function Chat({ agent, initialQuestion }: Props) {
           e.preventDefault();
           void send(draft);
         }}
-        className="flex gap-2 border-t border-[var(--color-line)] p-3"
+        className="shrink-0 flex gap-2 border-t border-[var(--color-line)] p-3 bg-white/40 backdrop-blur-md"
       >
         <input
           value={draft}

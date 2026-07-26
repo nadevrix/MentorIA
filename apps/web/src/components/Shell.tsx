@@ -1,4 +1,4 @@
-﻿import type { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import BrainMark from './BrainMark';
 import Icon from './Icon';
 
@@ -17,8 +17,6 @@ export interface Tab {
   disabled?: boolean;
   /** Cuántas cosas esperan acción. Se muestra sólo si es mayor que cero. */
   badge?: number;
-  /** Da a una pestaña una jerarquía semántica especial sin cambiar la marca global. */
-  emphasis?: 'danger';
 }
 
 export type TopNav = 'inicio' | 'ajustes' | 'ayuda';
@@ -27,15 +25,14 @@ interface Props {
   tabs: readonly Tab[];
   activeTab: string;
   onTab: (id: string) => void;
-  topNav: TopNav;
-  onTopNav: (nav: TopNav) => void;
+  topNav?: TopNav;
+  onTopNav?: (nav: TopNav) => void;
   title: string;
   subtitle?: string;
   /** Chip de la barra superior: el tipo de cambio vigente (único desde la unificación). */
   rate?: { valor: number; variacionPct?: number | null } | null;
-  /** Cantidad de hallazgos que requieren atención. */
-  urgencias: number;
-  onUrgencias: () => void;
+  urgenciasBadge?: { count: number; montoBob?: number } | null;
+  onUrgenciasClick?: () => void;
   headerRight?: ReactNode;
   children: ReactNode;
   aside: ReactNode;
@@ -56,13 +53,13 @@ export default function Shell({
   tabs,
   activeTab,
   onTab,
-  topNav,
+  topNav = 'inicio',
   onTopNav,
   title,
   subtitle,
   rate,
-  urgencias,
-  onUrgencias,
+  urgenciasBadge,
+  onUrgenciasClick,
   headerRight,
   children,
   aside,
@@ -73,42 +70,55 @@ export default function Shell({
     <div className="min-h-full p-3 lg:p-6">
       <div className="mx-auto flex h-[calc(100vh-1.5rem)] w-full max-w-[1440px] flex-col overflow-hidden rounded-[var(--radius-shell)] glass-shell lg:h-[calc(100vh-3rem)] lg:flex-row">
         <main className="flex min-w-0 flex-1 flex-col">
-          <header className="flex shrink-0 flex-wrap items-center gap-3 px-4 py-4 sm:px-6 sm:py-5 md:gap-6">
+          {/* flex-wrap: en móvil el menú y el chip del dólar bajan de línea en vez de desaparecer. */}
+          <header className="flex shrink-0 flex-wrap items-center gap-x-6 gap-y-2 px-4 py-4 md:px-6 md:py-5">
             <Logo />
 
-            <nav className="scroll-slim order-3 flex w-full items-center gap-2 overflow-x-auto text-sm md:order-none md:w-auto">
-              {(
-                [
-                  ['inicio', 'Inicio'],
-                  ['ajustes', 'Ajustes'],
-                  ['ayuda', 'Ayuda'],
-                ] as const
-              ).map(([id, label]) => (
-                <button
-                  key={id}
-                  type="button"
-                  aria-current={topNav === id ? 'page' : undefined}
-                  onClick={() => onTopNav(id)}
-                  className={`shrink-0 rounded-full px-3.5 py-1.5 font-medium transition ${
-                    topNav === id
-                      ? 'border border-[var(--color-accent)]/30 bg-[var(--color-accent)]/15 font-semibold text-[var(--color-accent-strong)]'
-                      : 'text-[var(--color-muted)] hover:bg-black/5 hover:text-[var(--color-fg)]'
-                  }`}
-                >
-                  {label}
-                </button>
-              ))}
+            <nav className="flex items-center gap-1 text-sm md:gap-2">
+              <button
+                type="button"
+                onClick={() => onTopNav?.('inicio')}
+                className={`rounded-full px-3.5 py-1.5 font-medium transition ${
+                  topNav === 'inicio'
+                    ? 'bg-[var(--color-accent)]/15 text-[var(--color-accent)] font-semibold border border-[var(--color-accent)]/30'
+                    : 'text-[var(--color-muted)] hover:text-[var(--color-fg)] hover:bg-black/5'
+                }`}
+              >
+                Inicio
+              </button>
+              <button
+                type="button"
+                onClick={() => onTopNav?.('ajustes')}
+                className={`rounded-full px-3.5 py-1.5 font-medium transition ${
+                  topNav === 'ajustes'
+                    ? 'bg-[var(--color-accent)]/15 text-[var(--color-accent)] font-semibold border border-[var(--color-accent)]/30'
+                    : 'text-[var(--color-muted)] hover:text-[var(--color-fg)] hover:bg-black/5'
+                }`}
+              >
+                Ajustes
+              </button>
+              <button
+                type="button"
+                onClick={() => onTopNav?.('ayuda')}
+                className={`rounded-full px-3.5 py-1.5 font-medium transition ${
+                  topNav === 'ayuda'
+                    ? 'bg-[var(--color-accent)]/15 text-[var(--color-accent)] font-semibold border border-[var(--color-accent)]/30'
+                    : 'text-[var(--color-muted)] hover:text-[var(--color-fg)] hover:bg-black/5'
+                }`}
+              >
+                Ayuda
+              </button>
             </nav>
 
-            <div className="ml-auto flex items-center gap-2 sm:gap-3">
+            <div className="ml-auto flex items-center gap-3">
               {rate && (
-                <div
-                  className="flex items-center gap-2 rounded-full glass-soft px-3 py-2 shadow-sm sm:px-4"
-                  aria-label={`Tipo de cambio: ${rate.valor} bolivianos`}
-                >
-                  <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-good)]" aria-hidden />
-                  <span className="hidden text-xs text-[var(--color-muted)] xl:inline">Dólar</span>
-                  <span className="text-sm font-semibold">Bs {rate.valor}</span>
+                <div className="flex items-center gap-2.5 rounded-full glass-soft px-4 py-2 shadow-sm">
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                  </span>
+                  <span className="text-xs text-[var(--color-muted)] font-medium">Dólar En Vivo</span>
+                  <span className="text-sm font-semibold tabular-nums">Bs {rate.valor}</span>
                   {rate.variacionPct != null && (
                     <span
                       className={`flex items-center gap-0.5 text-xs font-semibold ${
@@ -124,20 +134,22 @@ export default function Shell({
                   )}
                 </div>
               )}
+
+              {/* Botón de acceso a Urgencias */}
               <button
                 type="button"
-                onClick={onUrgencias}
-                className="flex items-center gap-1.5 rounded-full border border-red-500/30 bg-red-500/10 px-3 py-2 text-xs font-bold text-red-700 shadow-sm transition hover:bg-red-500/20 active:scale-95 sm:gap-2 sm:px-3.5"
+                onClick={onUrgenciasClick}
+                className="flex items-center gap-2 rounded-full border border-red-500/30 bg-red-500/10 px-3.5 py-1.5 text-xs font-bold text-red-600 shadow-sm transition hover:bg-red-500/20 active:scale-95"
                 title="Ver hallazgos urgentes del negocio"
               >
-                <span className="hidden sm:inline">Urgencias</span>
-                <span className="sm:hidden">Alertas</span>
-                {urgencias > 0 && (
+                <span>Urgencias</span>
+                {urgenciasBadge && urgenciasBadge.count > 0 && (
                   <span className="rounded-full bg-red-600 px-1.5 py-0.5 text-[10px] font-extrabold text-white">
-                    {urgencias}
+                    {urgenciasBadge.count}
                   </span>
                 )}
               </button>
+
               {headerRight}
             </div>
           </header>
@@ -150,69 +162,62 @@ export default function Shell({
               </div>
             </div>
 
-            {topNav === 'inicio' && (
-              <div
-                role="tablist"
-                className="scroll-slim mt-5 flex items-center gap-6 overflow-x-auto border-b border-[var(--color-line)]"
-              >
-                {tabs.map((tab) => {
-                  const active = tab.id === activeTab;
-                  const danger = tab.emphasis === 'danger';
-                  return (
-                    <button
-                      key={tab.id}
-                      role="tab"
-                      aria-selected={active}
-                      disabled={tab.disabled}
-                      onClick={() => onTab(tab.id)}
-                      className={`relative -mb-px shrink-0 pb-3 text-sm transition ${
-                        active
-                          ? danger
-                            ? 'font-bold text-red-700'
-                            : 'font-semibold text-[var(--color-fg)]'
-                          : tab.disabled
-                            ? 'cursor-not-allowed text-[var(--color-faint)]'
-                            : danger
-                              ? 'font-semibold text-red-600/80 hover:text-red-700'
-                              : 'text-[var(--color-muted)] hover:text-[var(--color-fg)]'
-                      }`}
-                    >
-                      {tab.label}
-                      {!tab.disabled && tab.badge != null && tab.badge > 0 && (
-                        <span
-                          title={`${tab.badge} pendiente(s)`}
-                          className={`ml-1.5 rounded-full px-2 py-0.5 text-[10px] font-bold ${
-                            danger
-                              ? 'bg-red-600 text-white'
-                              : 'bg-[var(--color-gold)]/15 text-[var(--color-gold)]'
-                          }`}
-                        >
-                          {tab.badge}
-                        </span>
-                      )}
-                      {tab.disabled && (
-                        <span className="ml-1.5 rounded bg-black/[0.06] px-1.5 py-0.5 text-[10px] uppercase tracking-wide">
-                          pronto
-                        </span>
-                      )}
-                      {active && (
-                        <span
-                          className={`absolute inset-x-0 -bottom-px h-[3px] rounded-full ${
-                            danger ? 'bg-red-600' : 'bg-[var(--color-accent)]'
-                          }`}
-                        />
-                      )}
-                    </button>
-                  );
-                })}
-              </div>
-            )}
+            <div
+              role="tablist"
+              className="mt-5 flex flex-wrap items-center gap-6 border-b border-[var(--color-line)]"
+            >
+              {tabs.map((tab) => {
+                const active = tab.id === activeTab;
+                return (
+                  <button
+                    key={tab.id}
+                    role="tab"
+                    aria-selected={active}
+                    disabled={tab.disabled}
+                    onClick={() => onTab(tab.id)}
+                    className={`relative -mb-px pb-3 text-sm transition ${
+                      active
+                        ? tab.id === 'urgencias'
+                          ? 'font-bold text-red-600'
+                          : 'font-semibold text-[var(--color-fg)]'
+                        : tab.disabled
+                          ? 'cursor-not-allowed text-[var(--color-faint)]'
+                          : tab.id === 'urgencias'
+                            ? 'font-semibold text-red-600/80 hover:text-red-600'
+                            : 'text-[var(--color-muted)] hover:text-[var(--color-fg)]'
+                    }`}
+                  >
+                    {tab.label}
+                    {!tab.disabled && tab.badge != null && tab.badge > 0 && (
+                      <span
+                        title={`${tab.badge} pendiente(s)`}
+                        className={`ml-1.5 rounded-full px-2 py-0.5 text-[10px] font-bold transition ${
+                          tab.id === 'urgencias'
+                            ? 'bg-red-600 text-white shadow-sm'
+                            : 'bg-[var(--color-gold)]/15 text-[var(--color-gold)] font-semibold'
+                        }`}
+                      >
+                        {tab.badge}
+                      </span>
+                    )}
+                    {tab.disabled && (
+                      <span className="ml-1.5 rounded bg-black/[0.06] px-1.5 py-0.5 text-[10px] uppercase tracking-wide">
+                        pronto
+                      </span>
+                    )}
+                    {active && (
+                      <span className="absolute inset-x-0 -bottom-px h-[3px] rounded-full bg-[var(--color-accent)]" />
+                    )}
+                  </button>
+                );
+              })}
+            </div>
 
             <div className="mt-5 space-y-4">{children}</div>
           </div>
         </main>
 
-        <aside className="glass-aside flex w-full shrink-0 flex-col border-t border-[var(--color-line)] lg:h-auto lg:w-[400px] lg:border-l lg:border-t-0">
+        <aside className="glass-aside flex w-full shrink-0 flex-col border-t border-[var(--color-line)] lg:h-full lg:max-h-full lg:overflow-hidden lg:w-[400px] lg:border-l lg:border-t-0">
           {aside}
         </aside>
       </div>
