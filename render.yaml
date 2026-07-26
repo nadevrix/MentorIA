@@ -1,20 +1,44 @@
 services:
   - type: web
-    name: pyme-ai-api
+    name: mentor-ia-api
     runtime: node
     plan: free
-    region: oregon
+    # Misma región que la base de datos cuando se conecte Postgres: si la API queda
+    # en Oregon y la base en Ohio, cada consulta paga ~60 ms de ida y vuelta, y el
+    # panel hace varias por carga.
+    region: ohio
     buildCommand: npm install && npm run build --workspace=@pyme/core && npm run build --workspace=@pyme/api
     startCommand: node apps/api/dist/server.js
     healthCheckPath: /health
     envVars:
       - key: NODE_VERSION
         value: "20"
+
+      # --- Motor de agentes ---
+      - key: LLM_PROVIDER
+        value: gemini
+      - key: GEMINI_API_KEY
+        sync: false          # se carga a mano en el panel de Render
+      - key: GEMINI_MODEL
+        value: gemini-3.1-flash-lite
+      # Respaldo: si Gemini rate-limitea en vivo, basta con poner LLM_PROVIDER=anthropic
       - key: ANTHROPIC_API_KEY
         sync: false
+
+      # --- Frontend permitido ---
       - key: CORS_ORIGIN
-        sync: false
+        sync: false          # la URL de Netlify, sin barra final
+
+      # --- Datos ---
+      # Sin DATA_SOURCE usa los JSON de data/seed/. Para Postgres:
+      # DATA_SOURCE=postgres + DATABASE_URL
       - key: DATA_SOURCE
-        value: seed
+        sync: false
+      - key: DATABASE_URL
+        sync: false
+
+      # --- Tipo de cambio ---
       - key: FX_SOURCE
         value: static
+      - key: FIRECRAWL_API_KEY
+        sync: false
