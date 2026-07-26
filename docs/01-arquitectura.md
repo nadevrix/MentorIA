@@ -32,7 +32,7 @@ y un agente es que acá el modelo **toma decisiones reales** sobre qué consulta
 │                    ┌────────────┴────────────┐               │
 │                    ▼                         ▼               │
 │              DataSource                 FxProvider           │
-│       (seed · Postgres · futuro Odoo) (estático · Firecrawl) │
+│       (seed · Postgres · Odoo)   (local · API · Firecrawl)   │
 └──────────────────────────────────────────────────────────────┘
 ```
 
@@ -43,9 +43,10 @@ El frontend migrará a Netlify cuando estén disponibles sus créditos; el resto
 ### 1. Fuentes (`data/`, `fx/`)
 
 `DataSource` y `FxProvider` son **interfaces**. Todo el sistema habla con ellas y nunca con una base de
-datos concreta. Hay implementaciones sobre JSON y PostgreSQL. Conectar otro origen, como Odoo, exige
-una clase que cumpla el contrato, sin tocar herramientas ni prompts. `DATA_SOURCE=supabase` todavía no
-es una implementación: cae de forma explícita a los datos semilla.
+datos concreta. Hay implementaciones sobre JSON y PostgreSQL; el tipo de cambio puede salir del
+histórico local, de la API pública de Dólar Blue Bolivia o de Firecrawl. Conectar otro origen, como
+Odoo, exige una clase que cumpla el contrato, sin tocar herramientas ni prompts.
+`DATA_SOURCE=supabase` todavía no es una implementación: cae de forma explícita a los datos semilla.
 
 ```ts
 interface DataSource {

@@ -66,7 +66,8 @@ LLM no esté disponible.
 - Simulador sobre el catálogo completo.
 - Datos JSON o PostgreSQL.
 - Importación CSV temporal por entidad.
-- Fuente estática de tipo de cambio y opción Firecrawl con fallback.
+- Tasa oficial unificada mediante API pública, con caché y fallback local; Firecrawl queda como
+  alternativa.
 
 ### Superficie de producto
 

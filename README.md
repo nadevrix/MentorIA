@@ -93,7 +93,7 @@ Navegador
                  └─ packages/core
                       ├─ LlmProvider: Gemini | Anthropic
                       ├─ DataSource: seed | PostgreSQL
-                      └─ FxProvider: static | Firecrawl con fallback
+                      └─ FxProvider: static | API pública | Firecrawl, con fallback
 ```
 
 ```text

@@ -112,9 +112,9 @@ mostrar capturas o código impacta la puntuación pero no descalifica.
 > reales sea la prioridad #2 del backlog.)*
 
 **"¿De dónde sacan el tipo de cambio?"**
-> Mostrar el campo `source` de la cotización. En modo estático se usa el histórico versionado; con
-> Firecrawl se consulta `boliviabolivar.com` y se vuelve al histórico si el scraping falla. No
-> presentar el scraping como una conexión directa al BCB.
+> Mostrar el campo `source` de la cotización. El deploy consulta la tasa oficial unificada en la API
+> pública de Dólar Blue Bolivia, con caché de 15 minutos y fallback al histórico versionado. La API
+> republica el dato del BCB; no presentarla como una conexión directa de Mentor IA al banco.
 
 **"¿Por qué no lo hace Odoo?"**
 > Porque modela un solo tipo de cambio y asume que es el oficial. Nosotros no reemplazamos al ERP:

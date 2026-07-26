@@ -70,7 +70,7 @@ Variables principales:
 | `ANTHROPIC_API_KEY` | secreto opcional | Respaldo |
 | `CORS_ORIGIN` | `https://mentor-ia-web.onrender.com` | Origen autorizado |
 | `DATA_SOURCE` | `seed` | Datos versionados |
-| `FX_SOURCE` | `static` | Histórico local |
+| `FX_SOURCE` | `dolar-blue-bolivia` | Tasa oficial unificada vía API pública, con fallback local |
 | `AI_RATE_LIMIT_MAX` | `6` | Solicitudes de IA por IP/ruta/ventana |
 | `AI_RATE_LIMIT_WINDOW_MS` | `60000` | Ventana del límite |
 
@@ -102,7 +102,7 @@ Respuesta esperada:
   "ok": true,
   "dataSource": "overlay",
   "baseSource": "seed",
-  "fxSource": "static",
+  "fxSource": "dolar-blue-bolivia",
   "llm": {
     "provider": "gemini",
     "model": "gemini-3.1-flash-lite"

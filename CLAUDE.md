@@ -40,7 +40,7 @@ packages/core/
   src/data/seed-source.ts       JSON
   src/data/postgres-source.ts   PostgreSQL
   src/data/overlay-source.ts    CSV temporal en memoria
-  src/fx/provider.ts            estático o Firecrawl con fallback
+  src/fx/provider.ts            estático, API pública o Firecrawl con fallback
   src/llm/                      adaptadores Gemini y Anthropic
   src/tools/index.ts            12 herramientas
   src/agents/index.ts           5 agentes

@@ -1,5 +1,6 @@
+import { z } from 'zod';
 import type { DataSource } from '../data/source.js';
-import type { FxRate } from '../types.js';
+import { FxRateSchema, type FxRate } from '../types.js';
 
 /**
  * Proveedor de tipo de cambio.
@@ -28,6 +29,101 @@ export class SeedFxProvider implements FxProvider {
     const latest = history.at(-1);
     if (!latest) throw new Error('No hay datos de tipo de cambio en la fuente');
     return latest;
+  }
+}
+
+const DOLAR_BLUE_API_URL = 'https://api.dolarbluebolivia.click';
+const DOLAR_BLUE_CACHE_TTL_MS = 15 * 60 * 1000;
+const DOLAR_BLUE_TIMEOUT_MS = 5_000;
+
+const UnifiedRateResponseSchema = z.object({
+  data: z.object({
+    effective_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+    source: z.string(),
+    sell: z.number().positive(),
+    kind: z.literal('official_unificado'),
+  }),
+});
+
+async function fetchJson(url: string): Promise<unknown> {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), DOLAR_BLUE_TIMEOUT_MS);
+  try {
+    const response = await fetch(url, {
+      headers: { Accept: 'application/json' },
+      signal: controller.signal,
+    });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    return response.json();
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
+/**
+ * Consulta la API pública de Dólar Blue Bolivia, pero toma su serie oficial
+ * unificada del BCB. Así se conserva una sola cotización vigente y no vuelve a
+ * introducir el modelo oficial/paralelo anterior al cambio de régimen.
+ */
+export class DolarBlueBoliviaApiFxProvider implements FxProvider {
+  readonly name = 'dolar-blue-bolivia';
+  private cachedRate?: { value: FxRate; expiresAt: number; live: boolean };
+  private currentRequest?: Promise<FxRate>;
+
+  constructor(private readonly fallback: FxProvider) {}
+
+  async current(): Promise<FxRate> {
+    if (this.cachedRate && this.cachedRate.expiresAt > Date.now()) {
+      return this.cachedRate.value;
+    }
+    if (this.currentRequest) return this.currentRequest;
+
+    this.currentRequest = this.loadCurrent().finally(() => {
+      this.currentRequest = undefined;
+    });
+    return this.currentRequest;
+  }
+
+  private async loadCurrent(): Promise<FxRate> {
+    try {
+      const response = UnifiedRateResponseSchema.parse(
+        await fetchJson(`${DOLAR_BLUE_API_URL}/v1/official-unificado`),
+      );
+      const rate = FxRateSchema.parse({
+        date: response.data.effective_date,
+        rate: response.data.sell,
+        regimen: 'flexible',
+        source: `${response.data.source} vía api.dolarbluebolivia.click`,
+      });
+      this.cachedRate = {
+        value: rate,
+        expiresAt: Date.now() + DOLAR_BLUE_CACHE_TTL_MS,
+        live: true,
+      };
+      return rate;
+    } catch (error) {
+      console.warn(
+        `[fx] La API de Dólar Blue Bolivia no respondió; usando fuente estática. ${
+          error instanceof Error ? error.message : 'Error desconocido'
+        }`,
+      );
+      const rate = await this.fallback.current();
+      this.cachedRate = {
+        value: rate,
+        expiresAt: Date.now() + DOLAR_BLUE_CACHE_TTL_MS,
+        live: false,
+      };
+      return rate;
+    }
+  }
+
+  async history(): Promise<FxRate[]> {
+    const baseHistory = await this.fallback.history();
+    const latest = await this.current();
+    if (!this.cachedRate?.live) return baseHistory;
+    return [...baseHistory.filter((rate) => rate.date !== latest.date), latest].sort((a, b) =>
+      a.date.localeCompare(b.date),
+    );
   }
 }
 
@@ -140,6 +236,10 @@ export class FirecrawlFxProvider implements FxProvider {
 export function createFxProvider(data: DataSource): FxProvider {
   const fxSource = process.env.FX_SOURCE?.toLowerCase();
   const hasKey = Boolean(process.env.FIRECRAWL_API_KEY);
+
+  if (fxSource === 'dolar-blue-bolivia') {
+    return new DolarBlueBoliviaApiFxProvider(new SeedFxProvider(data));
+  }
 
   // Una selección explícita siempre manda. La clave sólo activa Firecrawl
   // automáticamente cuando FX_SOURCE no está definido, por compatibilidad.

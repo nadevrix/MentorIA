@@ -26,7 +26,7 @@ Antes de agarrar algo grande, avisá en el grupo para que no lo hagan dos person
 | Impuestos y formalización | Formularios del SIN y trámites para abrir empresa |
 | Marketing | Candidatos con margen sano + generación de contenido |
 | Chat | Tablas markdown, trazas de herramientas y texto por SSE |
-| Tipo de cambio en vivo | `FirecrawlFxProvider` implementado, con fallback |
+| Tipo de cambio en vivo | API pública de Dólar Blue Bolivia con caché y fallback; Firecrawl disponible |
 | Postgres | `PostgresDataSource` + `db/schema.sql` + `db/migrate.mjs` escritos |
 
 ---
@@ -72,9 +72,9 @@ autorizados adentro**: una base con los mismos datos generados no mejora la demo
 
 ### 5. Tipo de cambio en vivo
 
-El deploy usa `static`, una captura versionada con fecha y fuente. `FirecrawlFxProvider` ya puede
-consultar la fuente en vivo. Antes de activarlo hay que validar que el selector siga extrayendo el
-valor correcto y **mantener el fallback**: un scraping caído nunca debe romper la demo.
+El deploy consulta `/v1/official-unificado` de la API pública de Dólar Blue Bolivia, valida la
+respuesta y mantiene caché por 15 minutos. Si la API tarda más de cinco segundos o falla, vuelve al
+histórico versionado. `FirecrawlFxProvider` queda como alternativa para el desafío del sponsor.
 
 ### 6. Alertas automáticas (reto Zavu, USD 500)
 
@@ -96,11 +96,11 @@ No hay autenticación ni aislamiento por empresa. El overlay CSV vive en memoria
 la única instancia. El rate limit protege parcialmente las llamadas de IA, pero antes de usar datos
 sensibles hacen falta auth, tenancy y persistencia.
 
-### El scraping del tipo de cambio es frágil
+### La fuente en vivo es externa
 
-`FirecrawlFxProvider` extrae la cotización con una expresión regular sobre el markdown de la
-página. Si la fuente cambia el maquetado, el fallback protege la demo pero el dato deja de ser en
-vivo. **Verificarlo el día del pitch** y anotar la fecha en `docs/04-datos.md`.
+La API pública está en beta y puede cambiar su contrato. Zod, el timeout y el fallback protegen la
+demo, pero hay que **verificar el endpoint el día del pitch**. Firecrawl sigue siendo más frágil
+porque extrae una cifra del contenido de una página con una expresión regular.
 
 ### El alcance creció más de lo que el pitch aguanta
 

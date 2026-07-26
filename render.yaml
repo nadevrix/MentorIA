@@ -61,8 +61,9 @@ services:
         value: seed
 
       # --- Tipo de cambio ---
+      # API pública con caché de 15 min y fallback automático al histórico local.
       - key: FX_SOURCE
-        value: static
+        value: dolar-blue-bolivia
       - key: FIRECRAWL_API_KEY
         sync: false
 

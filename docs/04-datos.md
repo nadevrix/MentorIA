@@ -115,13 +115,15 @@ citar fuentes, y el jurado lo va a preguntar.
 
 ```
 Actualizador del histórico: https://dolarbluebolivia.click/
-Fuente en vivo de la API:   https://boliviabolivar.com
-Método en vivo:             scraping con Firecrawl, caché 15 min y fallback a SeedFxProvider
-Respaldo:                   data/seed/fx.json
+Fuente en vivo de la API:   https://api.dolarbluebolivia.click/v1/official-unificado
+Método en vivo:             API JSON validada con Zod, caché 15 min, timeout 5 s
+Alternativa Firecrawl:      https://boliviabolivar.com
+Respaldo:                   data/seed/fx.json mediante SeedFxProvider
 ```
 
-El proveedor en vivo es una referencia de mercado, no una conexión directa al BCB. La UI y las
-respuestas deben mostrar el campo `source` que acompaña cada cotización.
+La API intermedia publica el tipo oficial unificado obtenido del BCB; no es una conexión directa
+de Mentor IA al banco. La UI y las respuestas deben mostrar el campo `source` que acompaña cada
+cotización.
 
 ## Colaboración con el Bolivia Data Track
 
