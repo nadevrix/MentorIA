@@ -230,6 +230,7 @@ npm run typecheck && npm run build
 | Agentes o herramientas | `docs/03-agentes.md` |
 | Datos o PostgreSQL | `docs/04-datos.md` |
 | Render o Netlify | `docs/05-deploy.md`, `docs/12-infraestructura.md` |
+| Saber qué exige el jurado, qué descalifica o cuándo es el deadline | `docs/13-evento.md` |
 | Demo | `docs/06-demo-pitch.md` |
 | Git y convenciones | `docs/07-convenciones.md` |
 | Hallazgos y simulador | `docs/08-insights.md` |

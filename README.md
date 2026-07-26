@@ -148,6 +148,7 @@ un dataset autorizado y anonimizado. Ver [docs/04-datos.md](docs/04-datos.md).
 | [10 — Prioridades](docs/10-prioridades.md) | Orden de trabajo |
 | [11 — Onboarding](docs/11-onboarding.md) | Arranque para colaboradores |
 | [12 — Infraestructura](docs/12-infraestructura.md) | Decisiones de hosting y operación |
+| [13 — El evento](docs/13-evento.md) | **Reglas, criterios, entregables y deadline** |
 
 ## Licencia
 
