@@ -136,8 +136,10 @@ Probar desde la URL pública:
 ## PostgreSQL (Render)
 
 El Blueprint (`render.yaml`) ya define `mentor-ia-db` (plan `basic-256mb`, región Ohio) y enlaza
-`DATABASE_URL` a la API. En el build corre `npm run db:migrate`: crea el esquema, deja el negocio
-vacío y carga solo el histórico de mercado en `fx_rates`.
+`DATABASE_URL` a la API. La migración corre en `preDeployCommand` (`npm run db:migrate`): después
+de compilar y antes de arrancar, con el entorno de ejecución completo. Crea el esquema, deja el
+negocio vacío y carga solo el histórico de mercado en `fx_rates`. Si el esquema no se puede
+aplicar, el deploy falla limpio en vez de levantar una app sin tablas.
 
 Tras sincronizar el Blueprint:
 
@@ -195,7 +197,7 @@ producción con Postgres (`DATA_SOURCE=postgres`) deberían persistir; confirmar
 "postgres"` en `/health`. Si la importación falló, revisar logs de la API (p. ej. FK de clientes en
 ventas).
 
-**El build falla en `db:migrate`.** Verificar que `DATABASE_URL` esté enlazada desde
+**El deploy falla en `db:migrate` (preDeploy).** Verificar que `DATABASE_URL` esté enlazada desde
 `mentor-ia-db` y que la base ya exista (sincronizar el Blueprint).
 
 **El build no encuentra `@pyme/core`.** Ejecutar desde la raíz y usar los comandos workspace del

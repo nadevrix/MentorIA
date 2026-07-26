@@ -68,9 +68,9 @@ o lo más cerca posible.
 
 ### Producción (Render)
 
-`DATA_SOURCE=postgres` + Render Postgres (`mentor-ia-db`, `basic-256mb`, Ohio). El build ejecuta
-`npm run db:migrate`: esquema vacío de negocio + histórico FX de mercado. Los CSV de la UI se
-escriben en Postgres y sobreviven reinicios.
+`DATA_SOURCE=postgres` + Render Postgres (`mentor-ia-db`, `basic-256mb`, Ohio). El
+`preDeployCommand` ejecuta `npm run db:migrate`: esquema vacío de negocio + histórico FX de
+mercado. Los CSV de la UI se escriben en Postgres y sobreviven reinicios.
 
 Todavía no hay autenticación ni tenancy: todos los visitantes de la instancia comparten la misma
 base. Eso es aceptable para el pitch de un solo comercio piloto; no para multi-cliente.
