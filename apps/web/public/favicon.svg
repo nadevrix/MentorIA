@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Mentor IA">
+  <title>Mentor IA</title>
+  <!--
+    Favicon: la misma marca de BrainMark.tsx, adaptada a 16px.
+
+    Tres cambios respecto del componente, todos por legibilidad al tamaño de una
+    pestaña:
+
+    1. Va sobre una teja azul sólida con el trazo en blanco. La marca suelta en
+       #2563eb se pierde contra la barra oscura de Chrome; la teja se lee igual
+       en claro y en oscuro.
+    2. Trazo de 2 en vez de 1,6 y nodos de radio 1,1 en vez de 0,9. A 16px un
+       trazo de 1,6 se aclara hasta desaparecer.
+    3. Se quitaron una traza y un nodo de la mitad izquierda. Los nodos de
+       (7,6 · 10,5) y (8 · 13,5) quedaban a 0,4px de distancia real y se fundían
+       en una mancha.
+
+    Color fijo, no currentColor: un favicon no hereda nada.
+  -->
+  <rect width="32" height="32" rx="7" fill="#2563eb" />
+  <g
+    transform="translate(4 4)"
+    fill="none"
+    stroke="#ffffff"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <!-- Silueta: dos lóbulos simétricos con un surco central. -->
+    <path d="M12 4.2c-1.5-1.3-3.6-1.3-5 0-.7.6-1.1 1.5-1.1 2.4-1.2.5-2 1.7-2 3 0 .8.3 1.5.8 2.1-.4.5-.6 1.2-.6 1.9 0 1.5 1 2.7 2.4 3.1.2 1.5 1.5 2.6 3 2.6 1 0 1.9-.5 2.5-1.2" />
+    <path d="M12 4.2c1.5-1.3 3.6-1.3 5 0 .7.6 1.1 1.5 1.1 2.4 1.2.5 2 1.7 2 3 0 .8-.3 1.5-.8 2.1.4.5.6 1.2.6 1.9 0 1.5-1 2.7-2.4 3.1-.2 1.5-1.5 2.6-3 2.6-1 0-1.9-.5-2.5-1.2" />
+    <path d="M12 4.2v14" />
+
+    <!-- Mitad izquierda: trazas rectas con nodos, lenguaje de circuito. -->
+    <path d="M9.4 7.6H7.6v2.1" />
+    <path d="M9.4 12.4H6.2" />
+    <circle cx="7.6" cy="10.5" r="1.1" fill="#ffffff" stroke="none" />
+    <circle cx="5.5" cy="12.4" r="1.1" fill="#ffffff" stroke="none" />
+
+    <!-- Mitad derecha: curvas orgánicas. -->
+    <path d="M14.6 7.4c1.1.2 1.8 1 1.9 2.1" />
+    <path d="M14.4 11.2c1.5 0 2.6.9 2.9 2.2" />
+    <path d="M14.8 15.4c.9-.2 1.6-.8 1.9-1.6" />
+  </g>
+</svg>
