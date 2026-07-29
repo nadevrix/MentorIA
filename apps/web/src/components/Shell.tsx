@@ -68,7 +68,20 @@ export default function Shell({
   // luces del lienzo y el vidrio se quedaría sin nada que refractar.
   return (
     <div className="min-h-full p-3 lg:p-6">
-      <div className="mx-auto flex h-[calc(100vh-1.5rem)] w-full max-w-[1440px] flex-col overflow-hidden rounded-[var(--radius-shell)] glass-shell lg:h-[calc(100vh-3rem)] lg:flex-row">
+      {/*
+        La altura fija es sólo de escritorio.
+
+        En el teléfono la lámina se apilaba en columna dentro de una altura de
+        pantalla con overflow oculto: el panel lateral quedaba abajo, sin límite
+        de alto y sin poder encogerse, así que empujaba al contenido principal
+        contra el techo y su propio final quedaba recortado. Resultado: no se
+        podía subir ni bajar.
+
+        Debajo de lg la lámina crece con su contenido y scrollea la página, que
+        es como se espera que se comporte una página en un teléfono. dvh en vez
+        de vh porque en móvil vh no descuenta la barra de direcciones.
+      */}
+      <div className="mx-auto flex w-full max-w-[1440px] flex-col overflow-hidden rounded-[var(--radius-shell)] glass-shell lg:h-[calc(100dvh-3rem)] lg:flex-row">
         <main className="flex min-w-0 flex-1 flex-col">
           {/* flex-wrap: en móvil el menú y el chip del dólar bajan de línea en vez de desaparecer. */}
           <header className="flex shrink-0 flex-wrap items-center gap-x-6 gap-y-2 px-4 py-4 md:px-6 md:py-5">
@@ -154,7 +167,8 @@ export default function Shell({
             </div>
           </header>
 
-          <div className="scroll-slim flex-1 overflow-y-auto px-6 pb-6">
+          {/* El scroll propio es de escritorio; en móvil scrollea la página. */}
+          <div className="scroll-slim flex-1 px-4 pb-6 md:px-6 lg:overflow-y-auto">
             <div className="flex flex-wrap items-end justify-between gap-3">
               <div>
                 <h1 className="text-[26px] font-bold leading-tight">{title}</h1>
@@ -217,7 +231,13 @@ export default function Shell({
           </div>
         </main>
 
-        <aside className="glass-aside flex w-full shrink-0 flex-col border-t border-[var(--color-line)] lg:h-full lg:max-h-full lg:overflow-hidden lg:w-[400px] lg:border-l lg:border-t-0">
+        {/*
+          En móvil se le da una altura acotada a propósito: sin ella el chat
+          crece con cada respuesta y la página se vuelve interminable. Con
+          70dvh, el chat conserva su propio scroll y el pulgar llega al campo
+          de escribir sin recorrer toda la conversación.
+        */}
+        <aside className="glass-aside flex h-[70dvh] w-full shrink-0 flex-col border-t border-[var(--color-line)] lg:h-full lg:max-h-full lg:overflow-hidden lg:w-[400px] lg:border-l lg:border-t-0">
           {aside}
         </aside>
       </div>
